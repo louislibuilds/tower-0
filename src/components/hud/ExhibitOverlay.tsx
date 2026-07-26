@@ -72,12 +72,36 @@ function WarehouseExhibit() {
   )
 }
 
-function LabExhibit() {
+function LabExhibit({ labRoomSlug }: { labRoomSlug: string | null }) {
   const { strings } = useSite()
   const l = strings.lab
+
+  if (labRoomSlug) {
+    const p = labProjects.find((proj) => proj.slug === labRoomSlug)
+    if (!p) return null
+    const loc = strings.projects[p.slug]
+    return (
+      <article className="exhibit-project exhibit-project--solo">
+        <h4>{loc?.title ?? p.title}</h4>
+        <p>{loc?.hook ?? p.hook}</p>
+        <div className="exhibit-project__meta">
+          <span>{l.role}: {loc?.role ?? p.role}</span>
+          {(loc?.course ?? p.course) && <span>{l.course}: {loc?.course ?? p.course}</span>}
+          {p.grade && <span>{p.mark} {p.grade}</span>}
+        </div>
+        <div className="exhibit-project__links">
+          {p.links.map((link) => (
+            <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer">{link.label} ↗</a>
+          ))}
+        </div>
+      </article>
+    )
+  }
+
   return (
     <>
       <p className="exhibit-card__body">{l.intro}</p>
+      <p className="exhibit-card__hint">{l.selectRoom}</p>
       <div className="exhibit-projects">
         {labProjects.map((p) => {
           const loc = strings.projects[p.slug]
@@ -85,15 +109,6 @@ function LabExhibit() {
             <article key={p.slug} className="exhibit-project">
               <h4>{loc?.title ?? p.title}</h4>
               <p>{loc?.hook ?? p.hook}</p>
-              <div className="exhibit-project__meta">
-                <span>{l.role}: {loc?.role ?? p.role}</span>
-                {(loc?.course ?? p.course) && <span>{l.course}: {loc?.course ?? p.course}</span>}
-              </div>
-              <div className="exhibit-project__links">
-                {p.links.map((link) => (
-                  <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer">{link.label} ↗</a>
-                ))}
-              </div>
             </article>
           )
         })}
@@ -209,11 +224,11 @@ function RoofExhibit() {
   )
 }
 
-function ExhibitBody({ floorId }: { floorId: FloorId }) {
+function ExhibitBody({ floorId, labRoomSlug }: { floorId: FloorId; labRoomSlug: string | null }) {
   switch (floorId) {
     case 'G': return <LobbyExhibit />
     case '23': return <WarehouseExhibit />
-    case '52': return <LabExhibit />
+    case '52': return <LabExhibit labRoomSlug={labRoomSlug} />
     case 'B2': return <InfraExhibit />
     case 'B10': return <TechExhibit />
     case '99': return <LibraryExhibit />
@@ -223,13 +238,14 @@ function ExhibitBody({ floorId }: { floorId: FloorId }) {
 }
 
 export function ExhibitOverlay() {
-  const { floorId, floor, direction, strings } = useSite()
+  const { floorId, labRoomSlug, floor, direction, strings } = useSite()
   const floorStrings = strings.floors[floorId]
+  const overlayKey = floorId === '52' && labRoomSlug ? `${floorId}-${labRoomSlug}` : floorId
 
   return (
     <AnimatePresence mode="wait" custom={direction}>
       <motion.aside
-        key={floorId}
+        key={overlayKey}
         className="exhibit-overlay"
         custom={direction}
         initial={{ opacity: 0, x: 40, filter: 'blur(6px)' }}
@@ -246,7 +262,7 @@ export function ExhibitOverlay() {
           </div>
         </header>
         <div className="exhibit-card__scroll">
-          <ExhibitBody floorId={floorId} />
+          <ExhibitBody floorId={floorId} labRoomSlug={labRoomSlug} />
         </div>
       </motion.aside>
     </AnimatePresence>
