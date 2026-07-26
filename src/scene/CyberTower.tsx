@@ -271,7 +271,9 @@ function ProgramFloorBand({
                 ? 1.2
                 : 0.95
               : viewMode === 'room' || viewMode === 'focus'
-                ? 0.92
+                ? program.id === '52' && labRoomSlug
+                  ? 1.02
+                  : 0.92
                 : viewMode === 'floor' && program.id === '52'
                   ? 0.85
                   : viewMode === 'floor' && (labRoomSlug || libraryRoomSlug || factoryStop !== null)
