@@ -10,7 +10,7 @@ interface FactoryRoomProps extends RoomProps {
   onSelectStop: (stop: number) => void
 }
 
-/** 23 · Factory — four semester production lines (Area 01 → 04) */
+/** 23 · Factory — four semester production lines with bold geometry */
 export function FactoryRoom({
   theme,
   accent,
@@ -20,22 +20,33 @@ export function FactoryRoom({
 }: FactoryRoomProps) {
   const m = themeMat(theme, accent, entered)
   const pal = getScenePalette(theme)
+  const floorEdges = useMemo(
+    () => new THREE.EdgesGeometry(new THREE.BoxGeometry(1.55, 0.02, 0.72)),
+    [],
+  )
 
   return (
     <group>
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.38, 0]}>
-        <planeGeometry args={[1.5, 0.6]} />
-        <meshStandardMaterial color={m.body} metalness={m.metalness} roughness={m.roughness} />
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.36, 0]}>
+        <planeGeometry args={[1.55, 0.72]} />
+        <meshStandardMaterial color={m.body} />
       </mesh>
+      <lineSegments geometry={floorEdges} position={[0, -0.35, 0]}>
+        <lineBasicMaterial color={pal.graphite} />
+      </lineSegments>
 
-      {/* Main conveyor spine */}
+      {/* Main conveyor belt — long rectangle */}
+      <mesh position={[0, -0.12, 0.1]}>
+        <boxGeometry args={[1.35, 0.06, 0.22]} />
+        <meshStandardMaterial color={pal.concrete} />
+      </mesh>
       <Line
         points={[
-          new THREE.Vector3(-0.7, -0.08, 0.08),
-          new THREE.Vector3(0.7, -0.08, 0.08),
+          new THREE.Vector3(-0.68, -0.08, 0.22),
+          new THREE.Vector3(0.68, -0.08, 0.22),
         ]}
         color={pal.graphite}
-        lineWidth={1.2}
+        lineWidth={2}
       />
 
       {FACTORY_AREAS.map((sem, i) => (
@@ -79,11 +90,8 @@ function ProductionLine({
 }) {
   const pal = getScenePalette(theme)
   const lit = active
-  const belt = useMemo(
-    () => [
-      new THREE.Vector3(-0.12, -0.06, 0.06),
-      new THREE.Vector3(0.12, -0.06, 0.06),
-    ],
+  const stationEdges = useMemo(
+    () => new THREE.EdgesGeometry(new THREE.BoxGeometry(0.28, 0.32, 0.28)),
     [],
   )
 
@@ -104,56 +112,43 @@ function ProductionLine({
           onSelect()
         }}
       >
-        <boxGeometry args={[0.28, 0.5, 0.35]} />
+        <boxGeometry args={[0.32, 0.55, 0.38]} />
         <meshBasicMaterial transparent opacity={0} />
       </mesh>
 
-      {/* Area marker post */}
-      <mesh position={[0, -0.15, 0]}>
-        <boxGeometry args={[0.22, 0.1, 0.18]} />
-        <meshStandardMaterial color={pal.concrete} roughness={0.85} />
+      {/* Station platform — square */}
+      <mesh position={[0, -0.06, 0.08]}>
+        <boxGeometry args={[0.28, 0.1, 0.28]} />
+        <meshStandardMaterial color={lit ? accent : pal.concrete} emissive={lit ? accent : '#000'} emissiveIntensity={lit ? 0.12 : 0} />
       </mesh>
 
-      {/* Belt */}
-      <Line points={belt} color={lit ? accent : pal.grid} lineWidth={lit ? 1.5 : 0.8} />
+      {/* Vertical marker — rectangle */}
+      <mesh position={[0, 0.14, 0.08]}>
+        <boxGeometry args={[0.18, 0.28, 0.12]} />
+        <meshStandardMaterial color={lit ? pal.glass : pal.resin} transparent opacity={0.85} />
+      </mesh>
+      <lineSegments geometry={stationEdges} position={[0, 0.14, 0.08]}>
+        <lineBasicMaterial color={lit ? accent : pal.graphite} />
+      </lineSegments>
 
-      {/* Crates on line — count grows with area index */}
+      {/* Crates on belt */}
       {Array.from({ length: index + 1 }).map((_, j) => (
-        <mesh key={j} position={[-0.06 + j * 0.08, -0.02 + j * 0.06, 0.1]}>
-          <boxGeometry args={[0.08, 0.08, 0.08]} />
-          <meshStandardMaterial
-            color={lit ? pal.glass : pal.resin}
-            transparent
-            opacity={entered ? 0.9 : 0.55}
-          />
+        <mesh key={j} position={[-0.08 + j * 0.1, -0.02, 0.22]}>
+          <boxGeometry args={[0.1, 0.1, 0.1]} />
+          <meshStandardMaterial color={lit ? pal.glass : pal.resin} />
         </mesh>
       ))}
 
-      {/* Overhead gantry arm */}
-      <mesh position={[0, 0.18, 0]}>
-        <boxGeometry args={[0.04, 0.22, 0.04]} />
-        <meshStandardMaterial color={pal.graphite} metalness={0.7} />
-      </mesh>
-      <mesh position={[0.08, 0.08, 0]}>
-        <boxGeometry args={[0.16, 0.03, 0.03]} />
-        <meshStandardMaterial color={pal.graphite} metalness={0.7} />
-      </mesh>
+      <Html center position={[0, 0.38, 0.18]} style={{ pointerEvents: 'none' }}>
+        <div className={`scene-label scene-label--lab ${lit ? 'scene-label--active' : ''}`}>
+          {label}
+        </div>
+      </Html>
 
-      {lit && entered && (
-        <Html center position={[0, 0.38, 0.12]} style={{ pointerEvents: 'none' }}>
-          <div className="scene-label scene-label--tiny">
-            {label}
-            <br />
-            {semesterLabel}
-          </div>
+      {entered && (
+        <Html center position={[0, 0.52, 0.14]} style={{ pointerEvents: 'none' }}>
+          <div className="scene-label scene-label--tiny">{semesterLabel}</div>
         </Html>
-      )}
-
-      {lit && entered && (
-        <mesh position={[0, 0.32, 0.12]}>
-          <planeGeometry args={[0.2, 0.05]} />
-          <meshBasicMaterial color={pal.paper} transparent opacity={0.9} />
-        </mesh>
       )}
     </group>
   )

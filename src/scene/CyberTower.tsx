@@ -20,6 +20,7 @@ import { FloorRoom } from './rooms'
 
 import type { ViewMode } from '../building/viewMode'
 import type { LibraryRoomSlug } from '../data/libraryRooms'
+import { RoofPlate } from './rooms/RoofRoom'
 
 interface CyberTowerProps {
   activeFloorId: FloorId
@@ -226,8 +227,17 @@ function ProgramFloorBand({
           )
         })}
 
-      {entered && extrude > 0.6 && (
-        <group position={[0, -0.05, d / 2 + 0.12]} scale={0.55}>
+      {entered && extrude > 0.6 && program.id !== 'roof' && (
+        <group
+          position={[0, -0.05, d / 2 + 0.12]}
+          scale={
+            viewMode === 'room' || viewMode === 'focus'
+              ? 1.05
+              : viewMode === 'floor' && (labRoomSlug || libraryRoomSlug || factoryStop !== null)
+                ? 0.88
+                : 0.72
+          }
+        >
           <FloorRoom
             floorId={program.id}
             theme={theme}
@@ -303,6 +313,7 @@ function Spire({
         <cylinderGeometry args={[0.012, 0.025, SPIRE_HEIGHT * 0.7, 6]} />
         <meshStandardMaterial color={active ? pal.signal : pal.graphite} metalness={0.8} roughness={0.2} />
       </mesh>
+      {active && extrude > 0.7 && <RoofPlate theme={theme} entered={active} />}
     </group>
   )
 }

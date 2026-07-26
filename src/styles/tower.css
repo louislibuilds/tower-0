@@ -18,6 +18,8 @@
   --text: var(--graphite);
   --text-dim: var(--graphite-mute);
   --accent: var(--signal);
+  --surface-elevated: var(--resin);
+  --graphite-line: color-mix(in srgb, var(--graphite) 28%, transparent);
   --font-display: 'Georgia', 'Times New Roman', serif;
   --font-mono: 'Consolas', 'Monaco', 'Courier New', monospace;
   --font-body: system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -44,6 +46,8 @@
   --bg: var(--paper);
   --text: var(--graphite);
   --text-dim: var(--graphite-mute);
+  --surface-elevated: #1A1B1D;
+  --graphite-line: color-mix(in srgb, var(--graphite) 28%, transparent);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -649,7 +653,13 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   margin-top: 0.35rem;
 }
 .exhibit-stats--hero { margin: 0.75rem 0 1rem; }
-.exhibit-stat--hero span { font-size: 1.75rem; color: var(--signal); }
+.exhibit-stat--hero span { font-size: 1.05rem; color: var(--signal); font-weight: 600; }
+.exhibit-stats--hero {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+.exhibit-stats--hero .exhibit-stat--hero label { font-size: 0.58rem; }
 .exhibit-stat--badge span { font-size: 1.1rem; }
 .exhibit-semester-tabs {
   display: flex;
@@ -704,8 +714,8 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   align-items: center;
   justify-content: center;
   padding: 2rem;
-  background: rgba(8, 10, 14, 0.55);
-  backdrop-filter: blur(6px);
+  background: rgba(8, 10, 14, 0.82);
+  backdrop-filter: blur(10px);
 }
 .focus-card {
   position: relative;
@@ -713,7 +723,12 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   padding: 1.75rem 1.5rem;
   border: 1px solid var(--graphite-line);
   background: var(--surface-elevated);
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
+  color: var(--text);
+}
+[data-theme='light'] .focus-card {
+  background: #F2F1ED;
+  border-color: color-mix(in srgb, var(--graphite) 22%, transparent);
 }
 .focus-card__close {
   position: absolute;
@@ -737,6 +752,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 .focus-card h3 {
   font-size: 1.15rem;
   margin-bottom: 0.5rem;
+  color: var(--text);
 }
 .focus-card__issuer {
   font-size: 0.78rem;
@@ -749,6 +765,14 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   color: var(--text-dim);
   margin-bottom: 1rem;
 }
+.focus-card__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  margin-bottom: 1rem;
+}
 .focus-card__action {
   display: inline-flex;
   align-items: center;
@@ -758,6 +782,37 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--accent);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+.focus-card__action:hover { opacity: 0.85; }
+
+.site-rail-divider {
+  height: 1px;
+  background: var(--line);
+  margin: 0.35rem 0;
+  list-style: none;
+}
+
+.scene-label--lab {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  padding: 0.2rem 0.45rem;
+  background: rgba(14, 15, 16, 0.85);
+  color: #e6e4df;
+  white-space: nowrap;
+}
+.scene-label--lab-title {
+  max-width: 180px;
+  white-space: normal;
+  text-align: center;
+}
+[data-theme='light'] .scene-label--lab {
+  background: rgba(242, 241, 237, 0.92);
+  color: #2a2c2e;
 }
 
 @media print {

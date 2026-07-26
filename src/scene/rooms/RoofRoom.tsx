@@ -3,7 +3,7 @@ import * as THREE from 'three'
 import { profile } from '../../data/profile'
 import { getScenePalette } from '../palette'
 import type { Theme } from '../../context/SiteContext'
-import { themeMat, type RoomProps } from './types'
+import { SPIRE_HEIGHT } from '../towerGeometry'
 
 function useIdentityPlateMap(theme: Theme) {
   const pal = getScenePalette(theme)
@@ -84,37 +84,50 @@ function useIdentityPlateMap(theme: Theme) {
   return tex
 }
 
-/** Roof · Identity plate on two posts (resume2 R-ROOF) */
-export function RoofRoom({ theme, accent, entered }: RoomProps) {
-  const m = themeMat(theme, accent, entered)
+/** Identity plate mounted at spire apex (resume2 R-ROOF) */
+export function RoofPlate({ theme, entered }: { theme: Theme; entered: boolean }) {
   const pal = getScenePalette(theme)
   const plateMap = useIdentityPlateMap(theme)
+  const apex = SPIRE_HEIGHT * 0.82
 
   return (
-    <group>
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.15, 0]}>
-        <ringGeometry args={[0.4, 0.65, 32]} />
-        <meshStandardMaterial color={m.edge} side={2} transparent opacity={0.6} />
+    <group position={[0, apex, 0]}>
+      {/* Base cap */}
+      <mesh position={[0, -0.04, 0]}>
+        <cylinderGeometry args={[0.14, 0.18, 0.06, 6]} />
+        <meshStandardMaterial color={pal.concrete} metalness={0.5} />
       </mesh>
 
       {/* Two posts */}
-      {[-0.22, 0.22].map((x) => (
-        <mesh key={x} position={[x, 0.08, 0.05]}>
-          <boxGeometry args={[0.04, 0.18, 0.04]} />
-          <meshStandardMaterial color={pal.concrete} metalness={0.6} />
+      {[-0.2, 0.2].map((x) => (
+        <mesh key={x} position={[x, 0.12, 0.04]}>
+          <boxGeometry args={[0.035, 0.28, 0.035]} />
+          <meshStandardMaterial color={pal.graphite} metalness={0.7} />
         </mesh>
       ))}
 
-      {/* Identity plate */}
-      <mesh position={[0, 0.22, 0.08]}>
-        <boxGeometry args={[0.55, 0.72, 0.025]} />
+      {/* Identity plate — vertical sign */}
+      <mesh position={[0, 0.38, 0.06]}>
+        <boxGeometry args={[0.62, 0.82, 0.028]} />
         <meshStandardMaterial map={plateMap} roughness={0.85} />
       </mesh>
 
-      {/* Plate frame */}
-      <mesh position={[0, 0.22, 0.095]}>
-        <boxGeometry args={[0.57, 0.74, 0.01]} />
-        <meshStandardMaterial color={pal.graphite} wireframe />
+      <mesh position={[0, 0.38, 0.075]}>
+        <boxGeometry args={[0.64, 0.84, 0.012]} />
+        <meshStandardMaterial color={entered ? pal.signal : pal.graphite} wireframe />
+      </mesh>
+    </group>
+  )
+}
+
+/** Roof band — minimal ring only (plate lives on spire) */
+export function RoofRoom({ theme, entered }: { theme: Theme; entered: boolean }) {
+  const pal = getScenePalette(theme)
+  return (
+    <group>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.12, 0]}>
+        <ringGeometry args={[0.35, 0.55, 32]} />
+        <meshStandardMaterial color={pal.concrete} side={2} transparent opacity={entered ? 0.7 : 0.4} />
       </mesh>
     </group>
   )

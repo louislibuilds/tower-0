@@ -36,7 +36,13 @@ export function OrthoRig({
   const prevKey = useRef('')
   const invalidate = useThree((s) => s.invalidate)
 
-  const focusTarget = selectedBookSlug ? 'book' : selectedCredentialSlug ? 'credential' : null
+  const focusTarget = selectedBookSlug
+    ? 'book'
+    : selectedCredentialSlug
+      ? 'credential'
+      : labRoomSlug && viewMode === 'focus'
+        ? 'lab'
+        : null
 
   useEffect(() => {
     const cam = camRef.current
