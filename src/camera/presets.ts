@@ -4,7 +4,7 @@ import type { ViewMode } from '../building/viewMode'
 import type { LibraryRoomSlug } from '../data/libraryRooms'
 import { getProgramFloor, programCenterY, programBaseY, towerTotalHeight } from '../scene/towerGeometry'
 import { FACTORY_STOPS } from '../scene/factoryStops'
-import { LAB_CAMERA_TARGETS } from '../scene/rooms/LaboratoryRoom'
+import { labStation } from '../scene/typologies/labAnchors'
 
 export interface CameraPreset {
   position: [number, number, number]
@@ -54,6 +54,21 @@ function interiorEntry(
   return {
     position: [roomCenter[0] + sign * 1.1, floorY + 0.2, roomCenter[2] + 2.6],
     lookAt: [roomCenter[0], roomCenter[1], roomCenter[2]],
+    zoom,
+  }
+}
+
+/** Tighter framing for 52F lab stations */
+function labStationEntry(
+  floorY: number,
+  target: [number, number, number],
+  from: 'left' | 'right',
+  zoom: number,
+): CameraPreset {
+  const sign = from === 'left' ? -1 : 1
+  return {
+    position: [target[0] + sign * 0.55, floorY + 0.32, target[2] + 0.95],
+    lookAt: [target[0], target[1], target[2]],
     zoom,
   }
 }
@@ -123,11 +138,12 @@ export function cameraPreset(
   }
 
   if (floorId === '52') {
-    const labPos = opts.labRoomSlug ? LAB_CAMERA_TARGETS[opts.labRoomSlug] : null
-    if (opts.labRoomSlug && viewMode === 'focus' && labPos) {
-      return interiorEntry(y, [labPos[0], y + 0.02, labPos[2]], 'right', 235)
+    const station = opts.labRoomSlug ? labStation(opts.labRoomSlug) : null
+    if (station && (viewMode === 'room' || viewMode === 'focus')) {
+      const target: [number, number, number] = [station.pos[0], y + 0.04, station.pos[2]]
+      return labStationEntry(y, target, station.cameraSide, station.zoom)
     }
-    return interiorEntry(y, [0, y + 0.02, -0.05], 'right', 138)
+    return labStationEntry(y, [0, y + 0.04, 0], 'right', 185)
   }
 
   if (floorId === '99') {
@@ -141,12 +157,12 @@ export function cameraPreset(
       return interiorEntry(y, [0, y + 0.04, -0.08], 'right', 210)
     }
     if (archive && viewMode === 'room') {
-      return interiorEntry(y, [0.34, y + 0.02, -0.05], 'right', 180)
+      return labStationEntry(y, [0.34, y + 0.04, -0.05], 'right', 265)
     }
     if (library && viewMode === 'room') {
-      return interiorEntry(y, [-0.34, y + 0.02, -0.05], 'left', 180)
+      return labStationEntry(y, [-0.34, y + 0.04, -0.05], 'left', 275)
     }
-    return closeStation(y, [0, y + 0.02, 0], 'front', 100, 0.42)
+    return closeStation(y, [0, y + 0.02, 0], 'front', 118, 0.42)
   }
 
   return closeStation(y, [0, y, 0], 'front', 72, 0.55)

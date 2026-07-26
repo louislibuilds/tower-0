@@ -49,6 +49,9 @@ export function DelayedExhibitOverlay() {
 
   if (viewMode === 'focus' || viewMode === 'tower' || !visible || !bootDone || isBootSequence(phase) || phase === 'exit' || phase === 'void') return null
 
+  // Lab + library/archive panels paused — 3D stations only for now
+  if (floorId === '52' || floorId === '99') return null
+
   return (
     <div className="exhibit-overlay-wrap exhibit-overlay-wrap--enter">
       <ExhibitOverlay />

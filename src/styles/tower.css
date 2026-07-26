@@ -893,29 +893,6 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   text-transform: uppercase;
 }
 
-.typology-thesis {
-  width: 7.5rem;
-  text-align: center;
-  pointer-events: none;
-  user-select: none;
-}
-.typology-thesis__zh {
-  margin: 0;
-  font-family: Georgia, 'Noto Serif TC', serif;
-  font-size: 0.62rem;
-  letter-spacing: 0.12em;
-  color: var(--ink);
-  opacity: 0.9;
-}
-.typology-thesis__en {
-  margin: 0.2rem 0 0;
-  font-family: monospace;
-  font-size: 0.48rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--mute);
-}
-
 @media print {
   .site-canvas, .site-rail, .site-chrome, .site-anno { display: none; }
   .exhibit-overlay { position: static; width: 100%; margin: 0; border: 1px solid #ccc; }
