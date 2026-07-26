@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 
-import { LOCALE_LABELS, STRINGS, type Locale, type LocaleStrings } from '../i18n/strings'
+import { HTML_LANG, LOCALE_LABELS, STRINGS, isLocale, type Locale, type LocaleStrings } from '../i18n/strings'
 
 import type { FloorId } from '../building/program'
 
@@ -125,11 +125,9 @@ function loadTheme(): Theme {
 
 
 function loadLocale(): Locale {
-
   if (typeof window === 'undefined') return 'en'
-
-  return (localStorage.getItem('tower0-locale') as Locale) || 'en'
-
+  const stored = localStorage.getItem('tower0-locale')
+  return isLocale(stored) ? stored : 'en'
 }
 
 
@@ -506,7 +504,7 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
     localStorage.setItem('tower0-locale', l)
 
-    document.documentElement.lang = l === 'en' ? 'en' : l
+    document.documentElement.lang = HTML_LANG[l]
 
   }, [])
 
@@ -516,7 +514,7 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
     document.documentElement.dataset.theme = theme
 
-    document.documentElement.lang = locale === 'en' ? 'en' : locale
+    document.documentElement.lang = HTML_LANG[locale]
 
   }, [theme, locale])
 

@@ -1,4 +1,5 @@
 /** Site 9 color law — INK (dark) / PAPER (light) from resume2 */
+/** Chicken accent: window lit ~8%, tower mass ~10% max — see internal-docs/PALETTE-AUDIT.md */
 export interface ScenePalette {
   print: 'paper' | 'ink'
   paper: string

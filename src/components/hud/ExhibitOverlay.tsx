@@ -25,8 +25,8 @@ function LobbyExhibit() {
   return (
     <>
       <p className="exhibit-card__eyebrow">{s.welcome}</p>
-      <blockquote className="exhibit-card__thesis">{profile.thesis}</blockquote>
-      <p className="exhibit-card__body">{profile.summary}</p>
+      <blockquote className="exhibit-card__thesis">{s.thesis}</blockquote>
+      <p className="exhibit-card__body">{s.bio}</p>
 
       <div className="exhibit-stats exhibit-stats--hero">
         <div className="exhibit-stat exhibit-stat--hero">
