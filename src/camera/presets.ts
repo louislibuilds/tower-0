@@ -56,14 +56,6 @@ function interiorEntry(
   }
 }
 
-const LAB_ROOM_TARGETS: Record<string, [number, number, number]> = {
-  'unihack-2026': [-0.55, 0, 0.28],
-  'cloud-computing': [0, 0, -0.18],
-  nlp: [0.55, 0, 0.28],
-  dl: [-0.32, 0, -0.32],
-  kata: [0.38, 0, -0.28],
-}
-
 export function cameraPreset(
   floorId: FloorId,
   viewMode: ViewMode,
@@ -126,10 +118,8 @@ export function cameraPreset(
 
   if (floorId === '52') {
     if (opts.labRoomSlug && (viewMode === 'room' || viewMode === 'focus')) {
-      const base = LAB_ROOM_TARGETS[opts.labRoomSlug] ?? [0, 0, 0]
-      const target: [number, number, number] = [base[0], y + 0.05, base[2]]
-      const zoom = viewMode === 'focus' ? 210 : 185
-      return interiorEntry(y, target, base[0] < 0 ? 'left' : 'right', zoom)
+      const zoom = viewMode === 'focus' ? 215 : 195
+      return interiorEntry(y, [0, y + 0.02, -0.05], 'right', zoom)
     }
     return closeStation(y, [0, y + 0.02, 0], 'diagR', 108, 0.38)
   }
@@ -139,16 +129,16 @@ export function cameraPreset(
     const library = opts.libraryRoomSlug === 'library'
 
     if (opts.focusTarget === 'book' && library) {
-      return interiorEntry(y, [-0.42, y + 0.06, 0.1], 'left', 205)
+      return interiorEntry(y, [0, y + 0.04, -0.08], 'left', 210)
     }
     if (opts.focusTarget === 'credential' && archive) {
-      return interiorEntry(y, [0.38, y + 0.06, 0.08], 'right', 205)
+      return interiorEntry(y, [0, y + 0.04, -0.08], 'right', 210)
     }
     if (archive && viewMode === 'room') {
-      return interiorEntry(y, [0.38, y + 0.04, 0.06], 'right', 175)
+      return interiorEntry(y, [0.34, y + 0.02, -0.05], 'right', 180)
     }
     if (library && viewMode === 'room') {
-      return interiorEntry(y, [-0.42, y + 0.04, 0.1], 'left', 175)
+      return interiorEntry(y, [-0.34, y + 0.02, -0.05], 'left', 180)
     }
     return closeStation(y, [0, y + 0.02, 0], 'front', 100, 0.42)
   }
