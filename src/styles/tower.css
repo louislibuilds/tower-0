@@ -696,6 +696,70 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 }
 .exhibit-experience__item ul { padding-left: 1rem; }
 
+.focus-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: rgba(8, 10, 14, 0.55);
+  backdrop-filter: blur(6px);
+}
+.focus-card {
+  position: relative;
+  width: min(420px, 92vw);
+  padding: 1.75rem 1.5rem;
+  border: 1px solid var(--graphite-line);
+  background: var(--surface-elevated);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.35);
+}
+.focus-card__close {
+  position: absolute;
+  top: 0.65rem;
+  right: 0.75rem;
+  border: none;
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.focus-card__eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--graphite-mute);
+  margin-bottom: 0.5rem;
+}
+.focus-card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.5rem;
+}
+.focus-card__issuer {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  margin-bottom: 0.75rem;
+}
+.focus-card__body {
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+  margin-bottom: 1rem;
+}
+.focus-card__action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
 @media print {
   .site-canvas, .site-rail, .site-chrome, .site-anno { display: none; }
   .exhibit-overlay { position: static; width: 100%; margin: 0; border: 1px solid #ccc; }

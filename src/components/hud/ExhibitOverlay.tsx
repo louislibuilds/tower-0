@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useSite } from '../../context/SiteContext'
 import { profile } from '../../data/profile'
-import { gradeSummary, semesters } from '../../data/academic'
+import { gradeSummary } from '../../data/academic'
 import { labProjects } from '../../data/projects'
 import { credentials } from '../../data/credentials'
 import { experiences } from '../../data/experience'
@@ -11,15 +11,7 @@ import type { FloorId } from '../../building/program'
 import type { LibraryRoomSlug } from '../../data/libraryRooms'
 import { LIBRARY_ROOMS } from '../../data/libraryRooms'
 
-const CRED_KEYS = [
-  'deans-list',
-  'degree',
-  'techfest',
-  'tsa-founder',
-  'tsa-vp',
-  'tsa-consultant',
-  'acf',
-] as const
+import { FACTORY_AREAS, areaLabel } from '../../scene/factoryStops'
 
 function gradeClass(grade: string) {
   if (grade === 'HD') return 'grade-hd'
@@ -37,6 +29,10 @@ function LobbyExhibit() {
       <p className="exhibit-card__body">{profile.summary}</p>
 
       <div className="exhibit-stats exhibit-stats--hero">
+        <div className="exhibit-stat exhibit-stat--hero">
+          <span>{profile.gpa}/{profile.gpaScale}</span>
+          <label>{s.gpa}</label>
+        </div>
         <div className="exhibit-stat exhibit-stat--hero">
           <span>{profile.wam}</span>
           <label>{s.wam}</label>
@@ -78,10 +74,31 @@ function LobbyExhibit() {
   )
 }
 
-function WarehouseExhibit({ warehouseStop }: { warehouseStop: number }) {
-  const { strings, setWarehouseStop } = useSite()
-  const w = strings.warehouse
-  const activeSem = semesters[warehouseStop]
+function FactoryOverview() {
+  const { strings } = useSite()
+  const w = strings.factory
+  return (
+    <>
+      <div className="exhibit-stats">
+        <div className="exhibit-stat"><span>{profile.wam}</span><label>{w.wam}</label></div>
+        <div className="exhibit-stat"><span>{profile.cp}</span><label>{w.cp}</label></div>
+        <div className="exhibit-stat"><span>{gradeSummary.HD}</span><label>{w.hd}</label></div>
+        <div className="exhibit-stat"><span>{gradeSummary.D}</span><label>{w.d}</label></div>
+      </div>
+      <p className="exhibit-card__hint">{w.overview}</p>
+      <div className="exhibit-semester-tabs">
+        {FACTORY_AREAS.map((sem, i) => (
+          <span key={sem.id} className="exhibit-tab-label">{areaLabel(i)} · {sem.label}</span>
+        ))}
+      </div>
+    </>
+  )
+}
+
+function FactoryExhibit({ factoryStop }: { factoryStop: number }) {
+  const { strings, toggleFactoryStop } = useSite()
+  const w = strings.factory
+  const activeSem = FACTORY_AREAS[factoryStop]
 
   return (
     <>
@@ -92,17 +109,17 @@ function WarehouseExhibit({ warehouseStop }: { warehouseStop: number }) {
         <div className="exhibit-stat"><span>{gradeSummary.D}</span><label>{w.d}</label></div>
       </div>
 
-      <p className="exhibit-card__hint">{w.selectSemester}</p>
+      <p className="exhibit-card__hint">{w.selectArea}</p>
 
       <div className="exhibit-semester-tabs">
-        {semesters.map((sem, i) => (
+        {FACTORY_AREAS.map((sem, i) => (
           <button
             key={sem.id}
             type="button"
-            className={warehouseStop === i ? 'is-active' : undefined}
-            onClick={() => setWarehouseStop(i)}
+            className={factoryStop === i ? 'is-active' : undefined}
+            onClick={() => toggleFactoryStop(i)}
           >
-            {sem.label}
+            {areaLabel(i)} · {sem.label}
           </button>
         ))}
       </div>
@@ -111,7 +128,7 @@ function WarehouseExhibit({ warehouseStop }: { warehouseStop: number }) {
         <div className="exhibit-timeline exhibit-timeline--focus">
           <div className="exhibit-timeline__sem">
             <div className="exhibit-timeline__head">
-              <strong>{activeSem.label}</strong>
+              <strong>{areaLabel(factoryStop)} · {activeSem.label}</strong>
               {activeSem.avgMark !== null && <span>{w.avg} {activeSem.avgMark}</span>}
             </div>
             {activeSem.subjects.map((sub) => (
@@ -125,12 +142,12 @@ function WarehouseExhibit({ warehouseStop }: { warehouseStop: number }) {
       )}
 
       <details className="exhibit-details">
-        <summary>{w.allSemesters}</summary>
+        <summary>{w.allAreas}</summary>
         <div className="exhibit-timeline">
-          {semesters.map((sem) => (
+          {FACTORY_AREAS.map((sem, i) => (
             <div key={sem.id} className="exhibit-timeline__sem">
               <div className="exhibit-timeline__head">
-                <strong>{sem.label}</strong>
+                <strong>{areaLabel(i)} · {sem.label}</strong>
                 {sem.avgMark !== null && <span>{w.avg} {sem.avgMark}</span>}
               </div>
               {sem.subjects.map((sub) => (
@@ -258,11 +275,10 @@ function ArchiveExhibit() {
     <>
       <p className="exhibit-card__body">{l.archiveIntro}</p>
       <div className="exhibit-credentials">
-        {CRED_KEYS.map((key, idx) => {
-          const cred = credentials[idx]
-          const loc = strings.credentials[key]
+        {credentials.map((cred) => {
+          const loc = strings.credentials[cred.slug as keyof typeof strings.credentials]
           return (
-            <article key={key} className="exhibit-credential">
+            <article key={cred.slug} className="exhibit-credential">
               <time>{cred.year}</time>
               <h4>{loc?.title ?? cred.title}</h4>
               <p>{loc?.detail ?? cred.detail}</p>
@@ -372,16 +388,16 @@ function ExhibitBody({
   floorId,
   labRoomSlug,
   libraryRoomSlug,
-  warehouseStop,
+  factoryStop,
 }: {
   floorId: FloorId
   labRoomSlug: string | null
   libraryRoomSlug: LibraryRoomSlug | null
-  warehouseStop: number
+  factoryStop: number | null
 }) {
   switch (floorId) {
     case 'G': return <LobbyExhibit />
-    case '23': return <WarehouseExhibit warehouseStop={warehouseStop} />
+    case '23': return factoryStop !== null ? <FactoryExhibit factoryStop={factoryStop} /> : <FactoryOverview />
     case '52': return <LabExhibit labRoomSlug={labRoomSlug} />
     case 'B2': return <InfraExhibit />
     case 'B10': return <TechExhibit />
@@ -392,16 +408,18 @@ function ExhibitBody({
 }
 
 export function ExhibitOverlay() {
-  const { floorId, labRoomSlug, libraryRoomSlug, warehouseStop, floor, direction, strings } = useSite()
+  const { floorId, labRoomSlug, libraryRoomSlug, factoryStop, floor, direction, strings, viewMode } = useSite()
   const floorStrings = strings.floors[floorId]
   const overlayKey =
     floorId === '52' && labRoomSlug
       ? `${floorId}-${labRoomSlug}`
       : floorId === '99' && libraryRoomSlug
         ? `${floorId}-${libraryRoomSlug}`
-        : floorId === '23'
-          ? `${floorId}-${warehouseStop}`
+        : floorId === '23' && factoryStop !== null
+          ? `${floorId}-${factoryStop}`
           : floorId
+
+  if (viewMode === 'focus') return null
 
   return (
     <AnimatePresence mode="wait" custom={direction}>
@@ -427,7 +445,7 @@ export function ExhibitOverlay() {
             floorId={floorId}
             labRoomSlug={labRoomSlug}
             libraryRoomSlug={libraryRoomSlug}
-            warehouseStop={warehouseStop}
+            factoryStop={factoryStop}
           />
         </div>
       </motion.aside>

@@ -3,6 +3,7 @@ import { useSite } from '../context/SiteContext'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import { useWebGL } from '../hooks/useWebGL'
 import { ExhibitOverlay } from './hud/ExhibitOverlay'
+import { FocusOverlay } from './hud/FocusOverlay'
 import { SiteAnnotation, SiteChrome, SiteRail, SiteTitleblock } from './hud/SiteChrome'
 import { TowerSilhouette } from './TowerSilhouette'
 
@@ -13,18 +14,23 @@ const TowerScene = lazy(() =>
 export function TowerShell() {
   const {
     floorId,
+    viewMode,
     hoveredFloorId,
     labRoomSlug,
     libraryRoomSlug,
-    warehouseStop,
+    factoryStop,
+    selectedBookSlug,
+    selectedCredentialSlug,
     theme,
     strings,
-    goToFloor,
+    toggleFloor,
     setHoveredFloor,
-    setLabRoomSlug,
+    toggleLabRoom,
     setHoveredLabSlug,
-    setLibraryRoomSlug,
-    setWarehouseStop,
+    toggleLibraryRoom,
+    toggleFactoryStop,
+    handleBookClick,
+    toggleCredential,
   } = useSite()
   const reducedMotion = useReducedMotion()
   const webgl = useWebGL()
@@ -36,20 +42,25 @@ export function TowerShell() {
         <Suspense fallback={<div className="site-fallback-bg"><TowerSilhouette activeId={floorId} /></div>}>
           <TowerScene
             activeFloorId={floorId}
+            viewMode={viewMode}
             hoveredFloorId={hoveredFloorId}
             labRoomSlug={labRoomSlug}
             libraryRoomSlug={libraryRoomSlug}
-            warehouseStop={warehouseStop}
+            factoryStop={factoryStop}
+            selectedBookSlug={selectedBookSlug}
+            selectedCredentialSlug={selectedCredentialSlug}
             reducedMotion={reducedMotion}
             theme={theme}
             bootLabel={strings.site.constructing}
             onFloorHover={setHoveredFloor}
-            onFloorClick={goToFloor}
-            onLabRoomClick={setLabRoomSlug}
+            onFloorClick={toggleFloor}
+            onLabRoomClick={toggleLabRoom}
             onLabRoomHover={setHoveredLabSlug}
-            onLibraryRoomClick={setLibraryRoomSlug}
+            onLibraryRoomClick={toggleLibraryRoom}
             onLibraryRoomHover={() => {}}
-            onWarehouseStop={setWarehouseStop}
+            onFactoryStop={toggleFactoryStop}
+            onBookClick={handleBookClick}
+            onCredentialClick={toggleCredential}
           />
         </Suspense>
       ) : (
@@ -65,7 +76,8 @@ export function TowerShell() {
       <SiteRail />
       <SiteChrome />
       <SiteAnnotation />
-      <ExhibitOverlay />
+      <FocusOverlay />
+      {viewMode !== 'focus' && <ExhibitOverlay />}
     </div>
   )
 }

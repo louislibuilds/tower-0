@@ -1,5 +1,7 @@
 import { FLOORS } from '../../building/program'
-import { semesters } from '../../data/academic'
+import { FACTORY_AREAS, areaLabel } from '../../scene/factoryStops'
+import { libraryBooks } from '../../data/libraryBooks'
+import { credentials } from '../../data/credentials'
 import { labProjects } from '../../data/projects'
 import { LIBRARY_ROOMS } from '../../data/libraryRooms'
 import { profile } from '../../data/profile'
@@ -59,19 +61,21 @@ export function SiteTitleblock() {
 export function SiteRail() {
   const {
     floorId,
-    goToFloor,
     labRoomSlug,
     libraryRoomSlug,
-    warehouseStop,
-    setLabRoomSlug,
-    setLibraryRoomSlug,
-    setWarehouseStop,
+    factoryStop,
+    toggleFloor,
+    toggleLabRoom,
+    toggleLibraryRoom,
+    toggleFactoryStop,
+    toggleBook,
+    toggleCredential,
     strings,
   } = useSite()
 
   return (
     <aside className="site-rail">
-      <button type="button" className="site-rail-brand" onClick={() => goToFloor('G')}>
+      <button type="button" className="site-rail-brand" onClick={() => toggleFloor('G')}>
         <span className="site-rail-title">{strings.site.siteTitle}</span>
         <span className="site-rail-code">{strings.site.siteCode}</span>
       </button>
@@ -83,21 +87,21 @@ export function SiteRail() {
             const loc = strings.floors[floor.id]
             return (
               <li key={floor.id} className={active ? 'is-active' : undefined}>
-                <button type="button" onClick={() => goToFloor(floor.id)}>
+                <button type="button" onClick={() => toggleFloor(floor.id)}>
                   <span className="site-rail-id">{floor.label}</span>
                   <span>{loc?.title ?? floor.title}</span>
                 </button>
 
                 {floor.id === '23' && active && (
                   <ul className="site-rail-rooms">
-                    {semesters.map((sem, i) => (
+                    {FACTORY_AREAS.map((sem, i) => (
                       <li key={sem.id}>
                         <button
                           type="button"
-                          className={warehouseStop === i ? 'is-room-active' : undefined}
-                          onClick={() => setWarehouseStop(i)}
+                          className={factoryStop === i ? 'is-room-active' : undefined}
+                          onClick={() => toggleFactoryStop(i)}
                         >
-                          {sem.label}
+                          {areaLabel(i)} · {sem.label}
                         </button>
                       </li>
                     ))}
@@ -113,7 +117,7 @@ export function SiteRail() {
                           <button
                             type="button"
                             className={labRoomSlug === p.slug ? 'is-room-active' : undefined}
-                            onClick={() => setLabRoomSlug(p.slug)}
+                            onClick={() => toggleLabRoom(p.slug)}
                           >
                             {locP?.title ?? p.title}
                           </button>
@@ -130,7 +134,7 @@ export function SiteRail() {
                         <button
                           type="button"
                           className={libraryRoomSlug === room.slug ? 'is-room-active' : undefined}
-                          onClick={() => setLibraryRoomSlug(room.slug)}
+                          onClick={() => toggleLibraryRoom(room.slug)}
                         >
                           {room.slug === 'archive'
                             ? strings.library.archiveTitle
@@ -138,6 +142,22 @@ export function SiteRail() {
                         </button>
                       </li>
                     ))}
+                    {libraryRoomSlug === 'library' &&
+                      libraryBooks.map((book) => (
+                        <li key={book.slug}>
+                          <button type="button" onClick={() => toggleBook(book.slug)}>
+                            ↳ {book.title}
+                          </button>
+                        </li>
+                      ))}
+                    {libraryRoomSlug === 'archive' &&
+                      credentials.slice(0, 4).map((cred) => (
+                        <li key={cred.slug}>
+                          <button type="button" onClick={() => toggleCredential(cred.slug)}>
+                            ↳ {cred.title}
+                          </button>
+                        </li>
+                      ))}
                   </ul>
                 )}
               </li>
@@ -153,7 +173,7 @@ export function SiteRail() {
 
 /** Bottom-center annotation */
 export function SiteAnnotation() {
-  const { hoveredFloorId, hoveredLabSlug, floorId, labRoomSlug, libraryRoomSlug, warehouseStop, strings } =
+  const { hoveredFloorId, hoveredLabSlug, floorId, labRoomSlug, libraryRoomSlug, factoryStop, strings } =
     useSite()
 
   if (hoveredLabSlug && floorId === '52') {
@@ -201,10 +221,10 @@ export function SiteAnnotation() {
     }
 
     if (floorId === '23') {
-      const sem = semesters[warehouseStop]
+      const sem = factoryStop !== null ? FACTORY_AREAS[factoryStop] : null
       return (
         <div className="site-anno site-anno--muted">
-          {f.label} · {sem?.label ?? loc?.title}
+          {f.label} · {sem ? `${areaLabel(factoryStop!)} · ${sem.label}` : loc?.title}
         </div>
       )
     }

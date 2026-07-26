@@ -12,6 +12,8 @@ export const profile = {
   institution: 'University of Technology Sydney',
   programCode: 'C04295',
   wam: 86.9,
+  gpa: 6.5,
+  gpaScale: 7,
   cp: 96,
   deansList: true,
   programStart: 'Aug 2024',

@@ -4,92 +4,54 @@ import gsap from 'gsap'
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import type { FloorId } from '../building/program'
+import type { ViewMode } from '../building/viewMode'
 import type { LibraryRoomSlug } from '../data/libraryRooms'
-import { getProgramFloor, programCenterY, towerTotalHeight } from '../scene/towerGeometry'
-import { WAREHOUSE_STOPS } from '../scene/timelineStops'
+import { cameraPreset } from './presets'
 import { DUR, EASE_SITE } from '../scene/motion'
-
-interface CameraPreset {
-  position: [number, number, number]
-  lookAt: [number, number, number]
-  zoom: number
-}
-
-function presetForFloor(
-  floorId: FloorId,
-  warehouseStop: number,
-  libraryRoomSlug: LibraryRoomSlug | null,
-): CameraPreset {
-  const pf = getProgramFloor(floorId)
-  const y = programCenterY(pf)
-  const isBasement = floorId === 'B10' || floorId === 'B2'
-  const isRoof = floorId === 'roof'
-
-  if (floorId === 'G') {
-    const midY = towerTotalHeight() / 2 - 1
-    return { position: [6.5, midY + 0.5, 16], lookAt: [0, midY - 0.2, 0], zoom: 30 }
-  }
-
-  if (isRoof) {
-    return { position: [2.5, y + 2.2, 11], lookAt: [0, y + 0.3, 0], zoom: 44 }
-  }
-
-  if (isBasement) {
-    const depth = floorId === 'B10' ? 9.5 : 9
-    return { position: [5, y + 1.0, depth], lookAt: [0, y - 0.05, 0], zoom: 46 }
-  }
-
-  if (floorId === '23') {
-    const stopX = WAREHOUSE_STOPS[Math.min(warehouseStop, WAREHOUSE_STOPS.length - 1)] ?? 0
-    return {
-      position: [stopX + 0.2, y + 0.85, 10],
-      lookAt: [stopX, y + 0.05, 0],
-      zoom: 52,
-    }
-  }
-
-  if (floorId === '52') {
-    return { position: [3.8, y + 0.75, 9], lookAt: [0, y + 0.05, 0], zoom: 50 }
-  }
-
-  if (floorId === '99') {
-    const lib = libraryRoomSlug === 'library'
-    return {
-      position: [lib ? 1.8 : 4.2, y + 0.9, 9.5],
-      lookAt: [lib ? -0.45 : 0.35, y + 0.05, 0],
-      zoom: 50,
-    }
-  }
-
-  return { position: [4, y + 0.6, 8.5], lookAt: [0, y, 0], zoom: 42 }
-}
+import { towerTotalHeight } from '../scene/towerGeometry'
 
 interface OrthoRigProps {
   floorId: FloorId
-  warehouseStop: number
+  viewMode: ViewMode
+  factoryStop: number | null
   libraryRoomSlug: LibraryRoomSlug | null
+  labRoomSlug: string | null
+  selectedBookSlug: string | null
+  selectedCredentialSlug: string | null
   reducedMotion: boolean
 }
 
-export function OrthoRig({ floorId, warehouseStop, libraryRoomSlug, reducedMotion }: OrthoRigProps) {
+export function OrthoRig({
+  floorId,
+  viewMode,
+  factoryStop,
+  libraryRoomSlug,
+  labRoomSlug,
+  selectedBookSlug,
+  selectedCredentialSlug,
+  reducedMotion,
+}: OrthoRigProps) {
   const camRef = useRef<THREE.OrthographicCamera>(null)
   const look = useRef(new THREE.Vector3(0, 4, 0))
-  const prevFloor = useRef<FloorId>(floorId)
-  const prevStop = useRef(warehouseStop)
-  const prevLib = useRef(libraryRoomSlug)
+  const prevKey = useRef('')
   const invalidate = useThree((s) => s.invalidate)
+
+  const focusTarget = selectedBookSlug ? 'book' : selectedCredentialSlug ? 'credential' : null
 
   useEffect(() => {
     const cam = camRef.current
     if (!cam) return
 
-    const target = presetForFloor(floorId, warehouseStop, libraryRoomSlug)
-    const isRoof = floorId === 'roof'
-    const sameFloor = prevFloor.current === floorId
-    const panOnly =
-      sameFloor &&
-      ((floorId === '23' && prevStop.current !== warehouseStop) ||
-        (floorId === '99' && prevLib.current !== libraryRoomSlug))
+    const target = cameraPreset(floorId, viewMode, {
+      factoryStop,
+      libraryRoomSlug,
+      labRoomSlug,
+      focusTarget,
+    })
+
+    const key = `${floorId}-${viewMode}-${factoryStop}-${libraryRoomSlug}-${labRoomSlug}-${focusTarget}`
+    const sameFloor = prevKey.current.startsWith(`${floorId}-`)
+    const panOnly = sameFloor && prevKey.current !== key && viewMode !== 'tower'
 
     if (reducedMotion) {
       cam.position.set(...target.position)
@@ -98,9 +60,7 @@ export function OrthoRig({ floorId, warehouseStop, libraryRoomSlug, reducedMotio
       cam.lookAt(look.current)
       cam.updateProjectionMatrix()
       invalidate()
-      prevFloor.current = floorId
-      prevStop.current = warehouseStop
-      prevLib.current = libraryRoomSlug
+      prevKey.current = key
       return
     }
 
@@ -114,13 +74,18 @@ export function OrthoRig({ floorId, warehouseStop, libraryRoomSlug, reducedMotio
       lz: look.current.z,
     }
 
+    const isRoofClose = floorId === 'roof' && (viewMode === 'room' || viewMode === 'focus' || viewMode === 'floor')
     const duration = panOnly
       ? DUR.pan
-      : isRoof
-        ? DUR.roofAscent
-        : sameFloor
-          ? DUR.civic
-          : DUR.threshold
+      : viewMode === 'focus'
+        ? DUR.focus
+        : isRoofClose
+          ? DUR.roofAscent
+          : viewMode === 'tower'
+            ? DUR.threshold
+            : viewMode === 'room'
+              ? DUR.room
+              : DUR.civic
 
     const tween = gsap.to(from, {
       x: target.position[0],
@@ -142,13 +107,20 @@ export function OrthoRig({ floorId, warehouseStop, libraryRoomSlug, reducedMotio
       },
     })
 
-    prevFloor.current = floorId
-    prevStop.current = warehouseStop
-    prevLib.current = libraryRoomSlug
+    prevKey.current = key
     return () => {
       tween.kill()
     }
-  }, [floorId, warehouseStop, libraryRoomSlug, reducedMotion, invalidate])
+  }, [
+    floorId,
+    viewMode,
+    factoryStop,
+    libraryRoomSlug,
+    labRoomSlug,
+    focusTarget,
+    reducedMotion,
+    invalidate,
+  ])
 
   useFrame(() => {
     camRef.current?.lookAt(look.current)
@@ -161,8 +133,8 @@ export function OrthoRig({ floorId, warehouseStop, libraryRoomSlug, reducedMotio
       makeDefault
       near={0.1}
       far={300}
-      position={[6.5, midY + 0.5, 16]}
-      zoom={30}
+      position={[7.5, midY + 1.2, 19]}
+      zoom={26}
     />
   )
 }
