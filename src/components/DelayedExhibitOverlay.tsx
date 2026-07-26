@@ -8,6 +8,7 @@ import type { ViewMode } from '../building/viewMode'
 import { ExhibitOverlay } from './hud/ExhibitOverlay'
 
 function overlayDelayMs(floorId: FloorId, viewMode: ViewMode): number {
+  if (viewMode === 'focus') return DUR.focus * 850
   if (viewMode === 'room') return DUR.room * 850
   if (viewMode === 'floor' && floorId === 'roof') return DUR.roofAscent * 850
   if (viewMode === 'floor') return DUR.civic * 850
@@ -47,7 +48,7 @@ export function DelayedExhibitOverlay() {
     return () => window.clearTimeout(t)
   }, [key, reducedMotion, floorId, viewMode])
 
-  if (viewMode === 'focus' || viewMode === 'tower' || !visible || !bootDone || isBootSequence(phase) || phase === 'exit' || phase === 'void') return null
+  if (viewMode === 'tower' || !visible || !bootDone || isBootSequence(phase) || phase === 'exit' || phase === 'void') return null
 
   return (
     <div className="exhibit-overlay-wrap exhibit-overlay-wrap--enter">

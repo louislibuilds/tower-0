@@ -28,6 +28,11 @@ export function RackHall({ theme, accent, entered, active }: TypologyProps) {
         </group>
       ))}
 
+      <mesh position={[0, 0.04, -0.02]}>
+        <boxGeometry args={[0.92, 0.04, 0.08]} />
+        <meshStandardMaterial color={m.pal.graphite} metalness={0.5} />
+      </mesh>
+
       {/* Print slot — KATA output bay */}
       <group position={[0.42, 0.08, 0.18]}>
         <mesh position={[0, 0.1, 0]}>

@@ -1,10 +1,1 @@
-export {
-  DocumentFoundryStation,
-  InterviewBooth,
-  LabTypology,
-  LaunchPadStation,
-  MocapStage,
-  ServerRackBay,
-  StationPlinth,
-  type LabTypologySlug,
-} from './labs/index'
+export { LabTypology, StationPlinth, type LabTypologySlug } from './labs/index'

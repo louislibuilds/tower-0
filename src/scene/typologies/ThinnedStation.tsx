@@ -21,7 +21,7 @@ export function ThinnedStation({ thin, children }: { thin: boolean; children: Re
         const m = mat as THREE.MeshStandardMaterial
         if (!m.isMeshStandardMaterial) return
         m.transparent = true
-        m.opacity = thin ? 0.08 : 1
+        m.opacity = thin ? 0.1 : 1
         m.depthWrite = !thin
       })
     })
