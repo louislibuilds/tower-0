@@ -1,15 +1,20 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { useSite } from '../context/SiteContext'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import { useWebGL } from '../hooks/useWebGL'
 import { DelayedExhibitOverlay } from './DelayedExhibitOverlay'
 import { FocusOverlay } from './hud/FocusOverlay'
+import { SceneBootSplash } from './SceneBootSplash'
 import { SiteAnnotation, SiteChrome, SiteRail, SiteTitleblock } from './hud/SiteChrome'
 import { TowerSilhouette } from './TowerSilhouette'
 
 const TowerScene = lazy(() =>
   import('../scene/TowerScene').then((m) => ({ default: m.TowerScene })),
 )
+
+function preloadTowerScene() {
+  void import('../scene/TowerScene')
+}
 
 export function TowerShell() {
   const {
@@ -36,10 +41,14 @@ export function TowerShell() {
   const webgl = useWebGL()
   const use3D = webgl && !reducedMotion
 
+  useEffect(() => {
+    if (use3D) preloadTowerScene()
+  }, [use3D])
+
   return (
     <div className="site-root" data-experience="siteline">
       {use3D ? (
-        <Suspense fallback={<div className="site-fallback-bg"><TowerSilhouette activeId={floorId} /></div>}>
+        <Suspense fallback={<SceneBootSplash label={strings.site.constructing} />}>
           <TowerScene
             activeFloorId={floorId}
             viewMode={viewMode}

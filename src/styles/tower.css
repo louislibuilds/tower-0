@@ -103,6 +103,25 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   pointer-events: none;
 }
 
+.site-scene-loading {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--paper);
+}
+.site-scene-loading__label {
+  position: absolute;
+  bottom: 4.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  color: var(--signal);
+  pointer-events: none;
+}
+
 .site-fallback-bg {
   position: absolute;
   inset: 0;
