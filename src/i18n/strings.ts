@@ -4,12 +4,20 @@ export type Theme = 'dark' | 'light'
 export interface LocaleStrings {
   site: {
     name: string
+    siteTitle: string
+    siteCode: string
+    zoneName: string
+    architectName: string
+    architectRole: string
     tagline: string
     constructing: string
     fallback: string
     floors: string
+    hint: string
     themeDark: string
     themeLight: string
+    themeInk: string
+    themePaper: string
   }
   floors: Record<
     string,
@@ -34,6 +42,7 @@ export interface LocaleStrings {
   }
   lab: {
     intro: string
+    selectRoom: string
     role: string
     team: string
     course: string
@@ -75,13 +84,21 @@ export interface LocaleStrings {
 
 const en: LocaleStrings = {
   site: {
-    name: 'TOWER 0',
+    name: 'Tower Zone 0',
+    siteTitle: 'The Tower of STEM, Zone 0',
+    siteCode: 'ZONE · 0',
+    zoneName: 'Tower Zone 0',
+    architectName: 'Louis Li',
+    architectRole: 'Master of IT · Full-stack',
     tagline: 'Software is not written. It is constructed.',
     constructing: 'Constructing…',
     fallback: '2D plan view',
     floors: 'FLOORS',
+    hint: 'Select a room on the model',
     themeDark: 'Dark',
     themeLight: 'Light',
+    themeInk: 'INK',
+    themePaper: 'PAPER',
   },
   floors: {
     B10: {
@@ -138,7 +155,7 @@ const en: LocaleStrings = {
     hint: 'Select a floor from the rail — the tower is the map.',
   },
   warehouse: { wam: 'WAM', cp: 'Credit Points', hd: 'High Distinction', d: 'Distinction', avg: 'Avg' },
-  lab: { intro: 'Five project rooms on this floor.', role: 'Role', team: 'Team', course: 'Course' },
+  lab: { intro: 'Five project rooms on this floor.', selectRoom: 'Select a room on the model or rail.', role: 'Role', team: 'Team', course: 'Course' },
   infra: {
     skillsTitle: 'Skills — Risers & Pipes',
     coursesTitle: 'Course Links → Projects',
@@ -218,13 +235,21 @@ const en: LocaleStrings = {
 
 const zhTW: LocaleStrings = {
   site: {
-    name: 'TOWER 0',
+    name: 'Tower Zone 0',
+    siteTitle: 'The Tower of STEM, Zone 0',
+    siteCode: 'ZONE · 0',
+    zoneName: 'Tower Zone 0',
+    architectName: 'Louis Li',
+    architectRole: '資訊科技碩士 · 全端開發',
     tagline: '軟體不是寫出來的，是建造出來的。',
     constructing: '建造中…',
     fallback: '2D 平面圖',
     floors: '樓層',
+    hint: '在模型上選擇一個房間',
     themeDark: '深色',
     themeLight: '淺色',
+    themeInk: 'INK',
+    themePaper: 'PAPER',
   },
   floors: {
     B10: {
@@ -281,7 +306,7 @@ const zhTW: LocaleStrings = {
     hint: '從樓層導覽選擇 — 這座塔就是你的地圖。',
   },
   warehouse: { wam: 'WAM', cp: '學分', hd: '高級優等', d: '優等', avg: '平均' },
-  lab: { intro: '本層五間專案房。', role: '角色', team: '團隊', course: '課程' },
+  lab: { intro: '本層五間專案房。', selectRoom: '在模型或左側面板選擇一間房。', role: '角色', team: '團隊', course: '課程' },
   infra: {
     skillsTitle: '技能 — 管線與機電',
     coursesTitle: '課程連結 → 專案',
@@ -363,12 +388,9 @@ const zhCN: LocaleStrings = {
   ...zhTW,
   site: {
     ...zhTW.site,
-    tagline: '软件不是写出来的，是建造出来的。',
-    constructing: '建造中…',
-    fallback: '2D 平面图',
-    floors: '楼层',
-    themeDark: '深色',
-    themeLight: '浅色',
+    siteTitle: 'The Tower of STEM, Zone 0',
+    architectRole: '信息技术硕士 · 全栈开发',
+    hint: '在模型上选择一个房间',
   },
   floors: {
     B10: { title: '科技中心', subtitle: 'GitHub · 打印简历', exhibitTitle: '科技中心 · B10', exhibitHook: '源代码、部署产物、可打印简历。' },
@@ -386,7 +408,7 @@ const zhCN: LocaleStrings = {
     hint: '从楼层导览选择 — 这座塔就是你的地图。',
   },
   warehouse: { wam: 'WAM', cp: '学分', hd: '高级优等', d: '优等', avg: '平均' },
-  lab: { intro: '本层五间项目房。', role: '角色', team: '团队', course: '课程' },
+  lab: { intro: '本层五间项目房。', selectRoom: '在模型或左侧面板选择一间房。', role: '角色', team: '团队', course: '课程' },
   infra: { skillsTitle: '技能 — 管线与机电', coursesTitle: '课程链接 → 项目', viewProject: '查看项目 ↗' },
   tech: {
     ...zhTW.tech,

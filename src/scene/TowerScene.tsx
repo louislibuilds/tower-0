@@ -3,17 +3,21 @@ import { Suspense, useCallback, useEffect, useState } from 'react'
 import type { Theme } from '../context/SiteContext'
 import type { FloorId } from '../building/program'
 import { OrthoRig, SiteLights } from '../camera/OrthoRig'
+import { getScenePalette } from './palette'
 import { CyberTower } from './CyberTower'
 import { BootController } from './CyberTowerBoot'
 
 interface TowerSceneProps {
   activeFloorId: FloorId
   hoveredFloorId: FloorId | null
+  labRoomSlug: string | null
   reducedMotion: boolean
   theme: Theme
   bootLabel: string
   onFloorHover: (id: FloorId | null) => void
   onFloorClick: (id: FloorId) => void
+  onLabRoomClick: (slug: string) => void
+  onLabRoomHover: (slug: string | null) => void
 }
 
 function InvalidateOnChange({ floorId, theme }: { floorId: FloorId; theme: Theme }) {
@@ -25,8 +29,20 @@ function InvalidateOnChange({ floorId, theme }: { floorId: FloorId; theme: Theme
 }
 
 function SceneContent(props: TowerSceneProps & { extrude: number; ink: number }) {
-  const { activeFloorId, hoveredFloorId, reducedMotion, theme, extrude, ink, onFloorHover, onFloorClick } = props
-  const bg = theme === 'dark' ? '#030308' : '#eae6df'
+  const {
+    activeFloorId,
+    hoveredFloorId,
+    labRoomSlug,
+    reducedMotion,
+    theme,
+    extrude,
+    ink,
+    onFloorHover,
+    onFloorClick,
+    onLabRoomClick,
+    onLabRoomHover,
+  } = props
+  const bg = getScenePalette(theme).paper
 
   return (
     <>
@@ -37,11 +53,14 @@ function SceneContent(props: TowerSceneProps & { extrude: number; ink: number })
       <CyberTower
         activeFloorId={activeFloorId}
         hoveredFloorId={hoveredFloorId}
+        labRoomSlug={labRoomSlug}
         extrude={extrude}
         ink={ink}
         theme={theme}
         onFloorHover={onFloorHover}
         onFloorClick={onFloorClick}
+        onLabRoomClick={onLabRoomClick}
+        onLabRoomHover={onLabRoomHover}
       />
     </>
   )
@@ -50,11 +69,14 @@ function SceneContent(props: TowerSceneProps & { extrude: number; ink: number })
 export function TowerScene({
   activeFloorId,
   hoveredFloorId,
+  labRoomSlug,
   reducedMotion,
   theme,
   bootLabel,
   onFloorHover,
   onFloorClick,
+  onLabRoomClick,
+  onLabRoomHover,
 }: TowerSceneProps) {
   const [extrude, setExtrude] = useState(reducedMotion ? 1 : 0)
   const [ink, setInk] = useState(reducedMotion ? 1 : 0)
@@ -81,11 +103,14 @@ export function TowerScene({
             <SceneContent
               activeFloorId={activeFloorId}
               hoveredFloorId={hoveredFloorId}
+              labRoomSlug={labRoomSlug}
               reducedMotion={reducedMotion}
               theme={theme}
               bootLabel={bootLabel}
               onFloorHover={onFloorHover}
               onFloorClick={onFloorClick}
+              onLabRoomClick={onLabRoomClick}
+              onLabRoomHover={onLabRoomHover}
               extrude={extrude}
               ink={ink}
             />

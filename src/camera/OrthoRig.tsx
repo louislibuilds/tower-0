@@ -117,17 +117,17 @@ export function SiteLights({ theme }: { theme: 'dark' | 'light' }) {
   if (theme === 'light') {
     return (
       <>
-        <ambientLight intensity={0.8} />
-        <directionalLight position={[10, 20, 8]} intensity={1.0} />
-        <directionalLight position={[-8, 12, -5]} intensity={0.25} />
+        <ambientLight intensity={0.85} />
+        <directionalLight position={[10, 20, 8]} intensity={0.95} color="#ffffff" />
+        <directionalLight position={[-8, 12, -5]} intensity={0.2} color="#ffffff" />
       </>
     )
   }
   return (
     <>
-      <ambientLight intensity={0.2} />
-      <directionalLight position={[6, 18, 8]} intensity={0.55} color="#8090ff" />
-      <directionalLight position={[-5, 10, -4]} intensity={0.12} color="#ff4080" />
+      <ambientLight intensity={0.35} />
+      <directionalLight position={[6, 18, 8]} intensity={0.65} color="#E6E4DF" />
+      <directionalLight position={[-5, 10, -4]} intensity={0.15} color="#6A7078" />
     </>
   )
 }

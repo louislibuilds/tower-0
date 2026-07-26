@@ -2,6 +2,7 @@ import { Line } from '@react-three/drei'
 import { useMemo } from 'react'
 import * as THREE from 'three'
 import type { Theme } from '../../context/SiteContext'
+import { getScenePalette } from '../palette'
 
 interface CircuitBaseProps {
   extrude: number
@@ -10,8 +11,9 @@ interface CircuitBaseProps {
 }
 
 export function CircuitBase({ extrude, theme, active }: CircuitBaseProps) {
-  const accent = theme === 'dark' ? (active ? '#00e5ff' : '#1a4060') : '#333333'
-  const boardColor = theme === 'dark' ? '#0a1020' : '#e8e4dc'
+  const pal = getScenePalette(theme)
+  const accent = active ? pal.signal : pal.grid
+  const boardColor = pal.shade
 
   const traces = useMemo(() => {
     const runs: THREE.Vector3[][] = []
@@ -40,48 +42,19 @@ export function CircuitBase({ extrude, theme, active }: CircuitBaseProps) {
     <group position={[0, -0.5 * extrude, 0]}>
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
         <planeGeometry args={[8, 6]} />
-        <meshStandardMaterial
-          color={boardColor}
-          roughness={0.7}
-          metalness={theme === 'dark' ? 0.4 : 0.1}
-          emissive={active && theme === 'dark' ? '#001830' : '#000000'}
-          emissiveIntensity={active ? 0.5 : 0}
-        />
+        <meshStandardMaterial color={boardColor} roughness={0.85} metalness={0.15} />
       </mesh>
 
       {traces.map((pts, i) => (
-        <Line key={i} points={pts} color={accent} lineWidth={0.8} transparent opacity={0.7} />
+        <Line key={i} points={pts} color={accent} lineWidth={0.8} transparent opacity={0.55} />
       ))}
 
       {chips.map(([x, z], i) => (
         <mesh key={i} position={[x, 0.06, z]}>
           <boxGeometry args={[0.5, 0.08, 0.35]} />
-          <meshStandardMaterial
-            color={theme === 'dark' ? '#141c30' : '#ccc8c0'}
-            emissive={active && theme === 'dark' ? accent : '#000000'}
-            emissiveIntensity={active ? 0.6 : 0}
-            metalness={0.8}
-            roughness={0.3}
-          />
+          <meshStandardMaterial color={pal.concrete} metalness={0.5} roughness={0.4} />
         </mesh>
       ))}
-
-      {/* Drip effect — circuit "melting" downward */}
-      {theme === 'dark' &&
-        Array.from({ length: 12 }).map((_, i) => {
-          const x = -3 + i * 0.55
-          const len = 0.3 + (i % 4) * 0.15
-          return (
-            <Line
-              key={`drip-${i}`}
-              points={[new THREE.Vector3(x, 0.04, 2.8), new THREE.Vector3(x + (i % 2 ? 0.05 : -0.05), 0.04 - len, 2.8)]}
-              color={accent}
-              lineWidth={0.5}
-              transparent
-              opacity={0.35}
-            />
-          )
-        })}
     </group>
   )
 }
