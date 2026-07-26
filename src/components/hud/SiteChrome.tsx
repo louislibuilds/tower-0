@@ -143,22 +143,22 @@ export function SiteRail() {
                         </button>
                       </li>
                     ))}
-                    <li className="site-rail-divider" aria-hidden="true" />
-                    {libraryBooks.map((book) => (
-                      <li key={book.slug}>
-                        <button type="button" onClick={() => toggleBook(book.slug)}>
-                          ↳ {book.title}
-                        </button>
-                      </li>
-                    ))}
-                    <li className="site-rail-divider" aria-hidden="true" />
-                    {credentials.slice(0, 6).map((cred) => (
-                      <li key={cred.slug}>
-                        <button type="button" onClick={() => toggleCredential(cred.slug)}>
-                          ↳ {cred.title}
-                        </button>
-                      </li>
-                    ))}
+                    {libraryRoomSlug === 'library' &&
+                      libraryBooks.map((book) => (
+                        <li key={book.slug}>
+                          <button type="button" onClick={() => toggleBook(book.slug)}>
+                            ↳ {book.title}
+                          </button>
+                        </li>
+                      ))}
+                    {libraryRoomSlug === 'archive' &&
+                      credentials.slice(0, 6).map((cred) => (
+                        <li key={cred.slug}>
+                          <button type="button" onClick={() => toggleCredential(cred.slug)}>
+                            ↳ {cred.title}
+                          </button>
+                        </li>
+                      ))}
                   </ul>
                 )}
               </li>

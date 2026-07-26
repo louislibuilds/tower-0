@@ -20,7 +20,6 @@ import { FloorRoom } from './rooms'
 
 import type { ViewMode } from '../building/viewMode'
 import type { LibraryRoomSlug } from '../data/libraryRooms'
-import { RoofPlate } from './rooms/RoofRoom'
 
 interface CyberTowerProps {
   activeFloorId: FloorId
@@ -219,27 +218,38 @@ function ProgramFloorBand({
             <mesh key={i} position={[x, 0, d / 2 + 0.008]}>
               <planeGeometry args={[0.05, h * 0.75]} />
               <meshStandardMaterial
-                color={lit ? pal.glass : pal.shade}
+                color={theme === 'dark' ? pal.glass : lit ? pal.glass : pal.shade}
+                emissive={theme === 'dark' ? (lit ? pal.signal : '#1a2840') : '#000000'}
+                emissiveIntensity={theme === 'dark' ? (lit ? 0.55 : 0.12) : 0}
                 transparent
-                opacity={lit ? 0.7 : 0.35}
+                opacity={theme === 'dark' ? 0.85 : lit ? 0.7 : 0.35}
               />
             </mesh>
           )
         })}
 
-      {entered && extrude > 0.6 && program.id !== 'roof' && (
+      {theme === 'dark' && entered && !wireframe && (
+        <pointLight position={[0, 0.15, d / 2 + 0.3]} intensity={0.35} distance={2.5} color={pal.signal} decay={2} />
+      )}
+
+      {entered && extrude > 0.6 && (
         <group
           position={[0, -0.05, d / 2 + 0.12]}
           scale={
-            viewMode === 'room' || viewMode === 'focus'
-              ? 1.05
-              : viewMode === 'floor' && (labRoomSlug || libraryRoomSlug || factoryStop !== null)
-                ? 0.88
-                : 0.72
+            program.id === 'roof'
+              ? viewMode === 'room' || viewMode === 'focus'
+                ? 1.2
+                : 0.95
+              : viewMode === 'room' || viewMode === 'focus'
+                ? 1.05
+                : viewMode === 'floor' && (labRoomSlug || libraryRoomSlug || factoryStop !== null)
+                  ? 0.88
+                  : 0.72
           }
         >
           <FloorRoom
             floorId={program.id}
+            bandHeight={program.bandHeight}
             theme={theme}
             accent={pal.signal}
             entered={entered}
@@ -313,7 +323,6 @@ function Spire({
         <cylinderGeometry args={[0.012, 0.025, SPIRE_HEIGHT * 0.7, 6]} />
         <meshStandardMaterial color={active ? pal.signal : pal.graphite} metalness={0.8} roughness={0.2} />
       </mesh>
-      {active && extrude > 0.7 && <RoofPlate theme={theme} entered={active} />}
     </group>
   )
 }
@@ -347,6 +356,8 @@ export function CyberTower({
   const shaftSegments = useMemo(() => getShaftSegments(), [])
   const glowRef = useRef<THREE.PointLight>(null)
   const isolate = viewMode !== 'tower' && activeFloorId !== 'G'
+  const hideGround = activeFloorId === 'B2' || activeFloorId === 'B10'
+  const isNight = theme === 'dark'
 
   useEffect(() => {
     if (!glowRef.current) return
@@ -374,10 +385,12 @@ export function CyberTower({
     <group>
       <fog attach="fog" args={[pal.paper, 30, 70]} />
 
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.02, 0]}>
-        <planeGeometry args={[60, 60]} />
-        <meshStandardMaterial color={pal.paper} roughness={1} />
-      </mesh>
+      {!hideGround && (
+        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.02, 0]}>
+          <planeGeometry args={[60, 60]} />
+          <meshStandardMaterial color={pal.paper} roughness={1} />
+        </mesh>
+      )}
 
       <Line points={[[-8, 0.03, 0], [8, 0.03, 0]]} color={pal.graphite} lineWidth={1} transparent opacity={0.35} />
 
@@ -444,8 +457,12 @@ export function CyberTower({
         </>
       )}
 
-      {isolate && theme === 'dark' && extrude > 0.5 && (
-        <pointLight ref={glowRef} position={[1.2, activeY * extrude, 2]} intensity={0.6} distance={5} decay={2} />
+      {isolate && isNight && extrude > 0.5 && (
+        <pointLight ref={glowRef} position={[1.2, activeY * extrude, 2]} intensity={0.8} distance={6} decay={2} />
+      )}
+
+      {isNight && extrude > 0.5 && (
+        <ambientLight intensity={0.12} color="#2F6BFF" />
       )}
     </group>
   )
