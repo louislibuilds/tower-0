@@ -1,4 +1,5 @@
 import { labProjects } from '../../data/projects'
+import { labLabel } from '../../scene/rooms/LaboratoryRoom'
 import { libraryBooks } from '../../data/libraryBooks'
 import { credentials } from '../../data/credentials'
 import { useSite } from '../../context/SiteContext'
@@ -63,14 +64,14 @@ export function FocusOverlay() {
     const project = labProjects.find((p) => p.slug === labRoomSlug)
     const loc = project ? strings.projects[project.slug] : null
     if (!project) return null
-    const labCode = `Lab-${String(labProjects.findIndex((p) => p.slug === labRoomSlug) + 1).padStart(3, '0')}`
+    const labCode = String(labProjects.findIndex((p) => p.slug === labRoomSlug) + 1).padStart(3, '0')
     return (
       <div className="focus-overlay" role="dialog" aria-modal="true">
         <article className="focus-card">
           <button type="button" className="focus-card__close" onClick={() => toggleLabRoom(labRoomSlug)} aria-label="Close">
             ×
           </button>
-          <p className="focus-card__eyebrow">{labCode} · Experiment</p>
+          <p className="focus-card__eyebrow">{labLabel(labCode, labRoomSlug)}</p>
           <h3>{loc?.title ?? project.title}</h3>
           <p className="focus-card__body">{loc?.hook ?? project.hook}</p>
           <div className="focus-card__meta">

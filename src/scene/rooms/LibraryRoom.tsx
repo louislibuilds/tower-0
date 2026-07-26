@@ -196,28 +196,43 @@ function LibraryInterior({
         </mesh>
       ))}
 
-      {libraryBooks.map((book, i) => {
-        const row = Math.floor(i / 2)
-        const col = i % 2
-        const active = selectedBookSlug === book.slug
-        const colors = ['#2F6BFF', '#3a7a4a', '#8a4a4a', '#6a5a8a', '#8a7a3a']
-        return (
-          <mesh
-            key={book.slug}
-            position={[-0.14 + col * 0.28, 0.06 + row * 0.18, -d / 2 + 0.2]}
-            onClick={(e) => { e.stopPropagation(); onBookClick(book.slug) }}
-            onPointerOver={() => { document.body.style.cursor = 'pointer' }}
-            onPointerOut={() => { document.body.style.cursor = 'crosshair' }}
-          >
-            <boxGeometry args={[0.09, 0.2, 0.08]} />
-            <meshStandardMaterial
-              color={active ? accent : colors[i % colors.length]}
-              emissive={active ? accent : '#000'}
-              emissiveIntensity={active ? 0.2 : 0}
-            />
-          </mesh>
-        )
-      })}
+      {Array.from({ length: 4 }).flatMap((_, row) =>
+        Array.from({ length: 6 }).map((__, col) => {
+          const bookIdx = row * 2 + (col < 2 ? col : -1)
+          const book = col < 2 && bookIdx < libraryBooks.length ? libraryBooks[bookIdx] : null
+          const x = -0.25 + col * 0.1
+          const y = 0.05 + row * 0.14
+          const colors = ['#2F6BFF', '#3a7a4a', '#8a4a4a', '#6a5a8a', '#8a7a3a', '#4a6a8a', '#7a5a4a']
+          const tint = colors[(row * 6 + col) % colors.length]
+          const active = book && selectedBookSlug === book.slug
+
+          if (book) {
+            return (
+              <mesh
+                key={`${row}-${col}`}
+                position={[x, y, -d / 2 + 0.2]}
+                onClick={(e) => { e.stopPropagation(); onBookClick(book.slug) }}
+                onPointerOver={() => { document.body.style.cursor = 'pointer' }}
+                onPointerOut={() => { document.body.style.cursor = 'crosshair' }}
+              >
+                <boxGeometry args={[0.07, 0.16, 0.07]} />
+                <meshStandardMaterial
+                  color={active ? accent : tint}
+                  emissive={active ? accent : '#000'}
+                  emissiveIntensity={active ? 0.2 : 0}
+                />
+              </mesh>
+            )
+          }
+
+          return (
+            <mesh key={`${row}-${col}`} position={[x, y, -d / 2 + 0.2]}>
+              <boxGeometry args={[0.06, 0.14 + (col % 3) * 0.02, 0.06]} />
+              <meshStandardMaterial color={tint} />
+            </mesh>
+          )
+        }),
+      )}
     </RoomShell>
   )
 }

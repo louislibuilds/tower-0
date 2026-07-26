@@ -3,6 +3,7 @@ import type { ViewMode } from '../building/viewMode'
 import type { LibraryRoomSlug } from '../data/libraryRooms'
 import { getProgramFloor, programCenterY, programBaseY, towerTotalHeight } from '../scene/towerGeometry'
 import { FACTORY_STOPS } from '../scene/factoryStops'
+import { LAB_CAMERA_TARGETS } from '../scene/rooms/LaboratoryRoom'
 
 export interface CameraPreset {
   position: [number, number, number]
@@ -92,18 +93,12 @@ export function cameraPreset(
 
   if (floorId === 'B10') {
     const target: [number, number, number] = [0, y + 0.02, 0.05]
-    if (viewMode === 'room' || viewMode === 'focus') {
-      return interiorEntry(y, target, 'right', 145)
-    }
-    return closeStation(y, target, 'diagR', 95, 0.45)
+    return interiorEntry(y, target, 'right', viewMode === 'focus' ? 165 : 158)
   }
 
   if (floorId === 'B2') {
     const target: [number, number, number] = [0, y + 0.02, 0.05]
-    if (viewMode === 'room' || viewMode === 'focus') {
-      return interiorEntry(y, target, 'left', 145)
-    }
-    return closeStation(y, target, 'diagL', 95, 0.45)
+    return interiorEntry(y, target, 'left', viewMode === 'focus' ? 165 : 158)
   }
 
   if (floorId === '23') {
@@ -111,17 +106,17 @@ export function cameraPreset(
     if (stop !== null && (viewMode === 'room' || viewMode === 'focus')) {
       const sx = FACTORY_STOPS[stop] ?? 0
       const target: [number, number, number] = [sx, y + 0.02, 0.12]
-      return closeStation(y, target, stop % 2 === 0 ? 'left' : 'right', 148)
+      return closeStation(y, target, stop % 2 === 0 ? 'left' : 'right', 198)
     }
-    return closeStation(y, [0, y + 0.02, 0.1], 'front', 105, 0.4)
+    return closeStation(y, [0, y + 0.02, 0.1], 'front', 168, 0.35)
   }
 
   if (floorId === '52') {
-    if (opts.labRoomSlug && (viewMode === 'room' || viewMode === 'focus')) {
-      const zoom = viewMode === 'focus' ? 215 : 195
-      return interiorEntry(y, [0, y + 0.02, -0.05], 'right', zoom)
+    const labPos = opts.labRoomSlug ? LAB_CAMERA_TARGETS[opts.labRoomSlug] : null
+    if (opts.labRoomSlug && viewMode === 'focus' && labPos) {
+      return interiorEntry(y, [labPos[0], y + 0.02, labPos[2]], 'right', 235)
     }
-    return closeStation(y, [0, y + 0.02, 0], 'diagR', 108, 0.38)
+    return interiorEntry(y, [0, y + 0.02, -0.05], 'right', 138)
   }
 
   if (floorId === '99') {

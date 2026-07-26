@@ -261,19 +261,17 @@ export function SiteProvider({ children }: { children: ReactNode }) {
   const toggleLabRoom = useCallback((slug: string) => {
     if (labRoomSlug === slug) {
       if (viewMode === 'focus') {
-        setViewMode('room')
-      } else if (viewMode === 'room') {
-        setViewMode('focus')
-      } else {
         setLabRoomSlugState(null)
         setViewMode('floor')
+      } else {
+        setViewMode('focus')
       }
       return
     }
     setLabRoomSlugState(slug)
     setSelectedBookSlugState(null)
     setSelectedCredentialSlugState(null)
-    setViewMode('room')
+    setViewMode('focus')
   }, [labRoomSlug, viewMode])
 
 

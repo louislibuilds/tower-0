@@ -3,6 +3,7 @@ import { FACTORY_AREAS, areaLabel } from '../../scene/factoryStops'
 import { libraryBooks } from '../../data/libraryBooks'
 import { credentials } from '../../data/credentials'
 import { labProjects } from '../../data/projects'
+import { labLabel } from '../../scene/rooms/LaboratoryRoom'
 import { LIBRARY_ROOMS } from '../../data/libraryRooms'
 import { profile } from '../../data/profile'
 import { useSite } from '../../context/SiteContext'
@@ -111,8 +112,7 @@ export function SiteRail() {
                 {floor.id === '52' && active && (
                   <ul className="site-rail-rooms">
                     {labProjects.map((p, i) => {
-                      const locP = strings.projects[p.slug]
-                      const code = `Lab-${String(i + 1).padStart(3, '0')}`
+                      const code = String(i + 1).padStart(3, '0')
                       return (
                         <li key={p.slug}>
                           <button
@@ -120,7 +120,7 @@ export function SiteRail() {
                             className={labRoomSlug === p.slug ? 'is-room-active' : undefined}
                             onClick={() => toggleLabRoom(p.slug)}
                           >
-                            {code} · {locP?.title ?? p.title.split(' — ')[0]}
+                            {labLabel(code, p.slug)}
                           </button>
                         </li>
                       )

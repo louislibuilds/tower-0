@@ -201,11 +201,11 @@ function ProgramFloorBand({
           opacity={
             wireframe
               ? 0.06
-              : entered && (viewMode === 'room' || viewMode === 'focus')
+              : entered && viewMode !== 'tower'
                 ? 0.2
                 : 1
           }
-          depthWrite={!wireframe && !(entered && (viewMode === 'room' || viewMode === 'focus'))}
+          depthWrite={!wireframe && !(entered && viewMode !== 'tower')}
         />
       </mesh>
 
@@ -248,9 +248,11 @@ function ProgramFloorBand({
                 : 0.95
               : viewMode === 'room' || viewMode === 'focus'
                 ? 1.05
-                : viewMode === 'floor' && (labRoomSlug || libraryRoomSlug || factoryStop !== null)
-                  ? 0.88
-                  : 0.72
+                : viewMode === 'floor' && program.id === '52'
+                  ? 0.98
+                  : viewMode === 'floor' && (labRoomSlug || libraryRoomSlug || factoryStop !== null)
+                    ? 0.88
+                    : 0.72
           }
         >
           <FloorRoom
@@ -362,7 +364,8 @@ export function CyberTower({
   const shaftSegments = useMemo(() => getShaftSegments(), [])
   const glowRef = useRef<THREE.PointLight>(null)
   const isolate = viewMode !== 'tower' && activeFloorId !== 'G'
-  const hideGround = activeFloorId === 'B2' || activeFloorId === 'B10'
+  const hideGround =
+    viewMode !== 'tower' || activeFloorId === 'B2' || activeFloorId === 'B10'
   const isNight = theme === 'dark'
 
   useEffect(() => {
@@ -398,7 +401,9 @@ export function CyberTower({
         </mesh>
       )}
 
-      <Line points={[[-8, 0.03, 0], [8, 0.03, 0]]} color={pal.graphite} lineWidth={1} transparent opacity={0.35} />
+      {!hideGround && (
+        <Line points={[[-8, 0.03, 0], [8, 0.03, 0]]} color={pal.graphite} lineWidth={1} transparent opacity={0.35} />
+      )}
 
       {footprint.length >= 2 && (
         <Line points={footprint} color={pal.signal} lineWidth={1.5} transparent opacity={ink} />
