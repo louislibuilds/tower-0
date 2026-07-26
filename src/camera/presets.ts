@@ -1,7 +1,7 @@
 import type { FloorId } from '../building/program'
 import type { ViewMode } from '../building/viewMode'
 import type { LibraryRoomSlug } from '../data/libraryRooms'
-import { getProgramFloor, programCenterY, towerTotalHeight } from '../scene/towerGeometry'
+import { getProgramFloor, programCenterY, programBaseY, SPIRE_HEIGHT, towerTotalHeight } from '../scene/towerGeometry'
 import { FACTORY_STOPS } from '../scene/factoryStops'
 
 export interface CameraPreset {
@@ -10,12 +10,51 @@ export interface CameraPreset {
   zoom: number
 }
 
-const LAB_ROOM_OFFSETS: Record<string, [number, number, number]> = {
-  'unihack-2026': [-0.55, 0.05, 0.28],
-  'cloud-computing': [0, 0.12, -0.18],
-  nlp: [0.55, 0.05, 0.28],
-  dl: [-0.32, -0.18, -0.32],
-  kata: [0.38, -0.18, -0.28],
+/** Spire apex Y — identity plate mounts here */
+export function roofPlateY(): number {
+  const roof = getProgramFloor('roof')
+  return programBaseY(roof) + roof.bandHeight + SPIRE_HEIGHT * 0.82
+}
+
+type Side = 'front' | 'left' | 'right' | 'diagL' | 'diagR'
+
+const SIDE_OFFSET: Record<Side, [number, number]> = {
+  front: [0.4, 4.2],
+  left: [-1.8, 3.8],
+  right: [1.8, 3.8],
+  diagL: [-1.2, 4.8],
+  diagR: [1.2, 4.8],
+}
+
+function closeStation(
+  y: number,
+  target: [number, number, number],
+  side: Side,
+  zoom: number,
+  eyeLift = 0.45,
+): CameraPreset {
+  const [ox, oz] = SIDE_OFFSET[side]
+  return {
+    position: [target[0] + ox, y + eyeLift, target[2] + oz],
+    lookAt: target,
+    zoom,
+  }
+}
+
+const LAB_ROOM_TARGETS: Record<string, [number, number, number]> = {
+  'unihack-2026': [-0.55, 0, 0.28],
+  'cloud-computing': [0, 0, -0.18],
+  nlp: [0.55, 0, 0.28],
+  dl: [-0.32, 0, -0.32],
+  kata: [0.38, 0, -0.28],
+}
+
+const LAB_SIDES: Record<string, Side> = {
+  'unihack-2026': 'left',
+  'cloud-computing': 'front',
+  nlp: 'right',
+  dl: 'diagL',
+  kata: 'diagR',
 }
 
 export function cameraPreset(
@@ -25,7 +64,7 @@ export function cameraPreset(
     factoryStop: number | null
     libraryRoomSlug: LibraryRoomSlug | null
     labRoomSlug: string | null
-    focusTarget: 'book' | 'credential' | null
+    focusTarget: 'book' | 'credential' | 'lab' | null
   },
 ): CameraPreset {
   const pf = getProgramFloor(floorId)
@@ -33,52 +72,63 @@ export function cameraPreset(
   const midY = towerTotalHeight() / 2 - 1
 
   if (viewMode === 'tower' || (floorId === 'G' && viewMode !== 'floor')) {
-    return { position: [7.5, midY + 1.2, 19], lookAt: [0, midY - 0.3, 0], zoom: 26 }
+    return { position: [8.5, midY + 2, 22], lookAt: [0, midY - 0.5, 0], zoom: 24 }
   }
 
   if (floorId === 'roof') {
+    const plateY = roofPlateY()
+    const target: [number, number, number] = [0, plateY - 0.05, 0.06]
     if (viewMode === 'focus' || viewMode === 'room') {
-      return { position: [0.35, y + 0.55, 5.2], lookAt: [0, y + 0.18, 0.28], zoom: 155 }
+      return closeStation(plateY, target, 'diagR', 185, 0.15)
     }
     if (viewMode === 'floor') {
-      return { position: [1.2, y + 1.8, 8], lookAt: [0, y + 0.35, 0.15], zoom: 72 }
+      return { position: [1.4, plateY + 0.35, 5.5], lookAt: [0, plateY - 0.1, 0], zoom: 95 }
     }
-    return { position: [2.5, y + 2.2, 11], lookAt: [0, y + 0.3, 0], zoom: 44 }
+    return { position: [2.8, plateY + 0.8, 9], lookAt: [0, plateY - 0.2, 0], zoom: 52 }
   }
 
   if (floorId === 'G') {
-    return { position: [4.5, y + 0.9, 8], lookAt: [0, y + 0.05, 0], zoom: 62 }
+    if (viewMode === 'room' || viewMode === 'focus') {
+      return closeStation(y, [0, y - 0.02, 0.08], 'diagL', 118)
+    }
+    return closeStation(y, [0, y, 0], 'front', 78, 0.75)
   }
 
-  if (floorId === 'B10' || floorId === 'B2') {
-    const z = viewMode === 'room' ? 6.5 : 8.5
-    const zoom = viewMode === 'room' ? 78 : 58
-    return { position: [4.8, y + 1.0, z], lookAt: [0, y - 0.05, 0], zoom }
+  if (floorId === 'B10') {
+    const target: [number, number, number] = [0, y - 0.08, 0]
+    if (viewMode === 'room' || viewMode === 'focus') {
+      return closeStation(y, target, 'right', 125)
+    }
+    return closeStation(y, target, 'diagR', 88, 0.65)
+  }
+
+  if (floorId === 'B2') {
+    const target: [number, number, number] = [0, y - 0.08, 0]
+    if (viewMode === 'room' || viewMode === 'focus') {
+      return closeStation(y, target, 'left', 125)
+    }
+    return closeStation(y, target, 'diagL', 88, 0.65)
   }
 
   if (floorId === '23') {
     const stop = opts.factoryStop
     if (stop !== null && (viewMode === 'room' || viewMode === 'focus')) {
       const sx = FACTORY_STOPS[stop] ?? 0
-      return {
-        position: [sx + 0.15, y + 0.65, 6.2],
-        lookAt: [sx, y + 0.02, 0.05],
-        zoom: 88,
-      }
+      const target: [number, number, number] = [sx, y - 0.05, 0.1]
+      return closeStation(y, target, stop % 2 === 0 ? 'left' : 'right', 135)
     }
-    return { position: [0.2, y + 1.0, 7.5], lookAt: [0, y + 0.05, 0], zoom: 64 }
+    return closeStation(y, [0, y - 0.05, 0.08], 'front', 98, 0.55)
   }
 
   if (floorId === '52') {
     if (opts.labRoomSlug && (viewMode === 'room' || viewMode === 'focus')) {
-      const off = LAB_ROOM_OFFSETS[opts.labRoomSlug] ?? [0, 0, 0]
-      return {
-        position: [off[0] + 0.25, y + off[1] + 0.55, 6],
-        lookAt: [off[0], y + off[1] + 0.1, off[2]],
-        zoom: 92,
-      }
+      const base = LAB_ROOM_TARGETS[opts.labRoomSlug] ?? [0, 0, 0]
+      const target: [number, number, number] = [base[0], y + base[1] * 0.3, base[2]]
+      const side = LAB_SIDES[opts.labRoomSlug] ?? 'front'
+      const zoom = viewMode === 'focus' ? 155 : 128
+      return closeStation(y, target, side, zoom, 0.35)
     }
-    return { position: [3.5, y + 0.85, 7.2], lookAt: [0, y + 0.05, 0], zoom: 66 }
+    return closeStation(y, [0, y - 0.05, 0], 'diagR', 102, 0.5)
   }
 
   if (floorId === '99') {
@@ -86,19 +136,19 @@ export function cameraPreset(
     const library = opts.libraryRoomSlug === 'library'
 
     if (opts.focusTarget === 'book' && library) {
-      return { position: [-0.55, y + 0.55, 5.5], lookAt: [-0.42, y + 0.12, 0.08], zoom: 108 }
+      return closeStation(y, [-0.42, y + 0.05, 0.12], 'left', 168, 0.3)
     }
     if (opts.focusTarget === 'credential' && archive) {
-      return { position: [0.5, y + 0.55, 5.5], lookAt: [0.38, y + 0.15, -0.02], zoom: 108 }
+      return closeStation(y, [0.38, y + 0.05, 0.08], 'right', 168, 0.3)
     }
     if (archive && viewMode === 'room') {
-      return { position: [0.65, y + 0.75, 6.5], lookAt: [0.38, y + 0.08, -0.05], zoom: 82 }
+      return closeStation(y, [0.38, y + 0.02, 0.06], 'right', 132, 0.38)
     }
     if (library && viewMode === 'room') {
-      return { position: [-0.55, y + 0.75, 6.5], lookAt: [-0.42, y + 0.08, 0.1], zoom: 82 }
+      return closeStation(y, [-0.42, y + 0.02, 0.1], 'left', 132, 0.38)
     }
-    return { position: [0.3, y + 1.0, 7.8], lookAt: [0, y + 0.05, 0], zoom: 64 }
+    return closeStation(y, [0, y - 0.05, 0], 'front', 96, 0.55)
   }
 
-  return { position: [4, y + 0.75, 7.5], lookAt: [0, y, 0], zoom: 58 }
+  return closeStation(y, [0, y, 0], 'front', 72, 0.6)
 }

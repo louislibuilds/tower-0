@@ -210,7 +210,7 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
         } else {
 
-          setViewMode('floor')
+          setViewMode(id === 'roof' ? 'room' : 'floor')
 
         }
 
@@ -222,7 +222,7 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
       clearSubs()
 
-      setViewMode('floor')
+      setViewMode(id === 'roof' ? 'room' : 'floor')
 
     },
 
@@ -248,7 +248,7 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
       clearSubs()
 
-      setViewMode('floor')
+      setViewMode(id === 'roof' ? 'room' : 'floor')
 
     },
 
@@ -259,24 +259,22 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
 
   const toggleLabRoom = useCallback((slug: string) => {
-
-    setLabRoomSlugState((prev) => {
-
-      if (prev === slug) {
-
+    if (labRoomSlug === slug) {
+      if (viewMode === 'focus') {
+        setViewMode('room')
+      } else if (viewMode === 'room') {
+        setViewMode('focus')
+      } else {
+        setLabRoomSlugState(null)
         setViewMode('floor')
-
-        return null
-
       }
-
-      setViewMode('room')
-
-      return slug
-
-    })
-
-  }, [])
+      return
+    }
+    setLabRoomSlugState(slug)
+    setSelectedBookSlugState(null)
+    setSelectedCredentialSlugState(null)
+    setViewMode('room')
+  }, [labRoomSlug, viewMode])
 
 
 
@@ -333,45 +331,31 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
 
   const toggleBook = useCallback((slug: string) => {
-
+    setLibraryRoomSlugState('library')
+    setSelectedCredentialSlugState(null)
     setSelectedBookSlugState((prev) => {
-
       if (prev === slug) {
-
         setViewMode('room')
-
         return null
-
       }
-
       setViewMode('focus')
-
       return slug
-
     })
-
   }, [])
 
 
 
   const toggleCredential = useCallback((slug: string) => {
-
+    setLibraryRoomSlugState('archive')
+    setSelectedBookSlugState(null)
     setSelectedCredentialSlugState((prev) => {
-
       if (prev === slug) {
-
         setViewMode('room')
-
         return null
-
       }
-
       setViewMode('focus')
-
       return slug
-
     })
-
   }, [])
 
 
