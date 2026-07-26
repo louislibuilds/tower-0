@@ -37,12 +37,12 @@ function LobbyExhibit() {
           <span>{profile.wam}</span>
           <label>{s.wam}</label>
         </div>
-        <div className="exhibit-stat">
+        <div className="exhibit-stat exhibit-stat--hero">
           <span>{gradeSummary.HD}</span>
           <label>{s.hdCount}</label>
         </div>
         {profile.deansList && (
-          <div className="exhibit-stat exhibit-stat--badge">
+          <div className="exhibit-stat exhibit-stat--hero">
             <span>✦</span>
             <label>{s.deansList}</label>
           </div>
@@ -73,12 +73,16 @@ function LobbyExhibit() {
 function FactoryOverview() {
   const { strings } = useSite()
   const w = strings.factory
+  const s = strings.lobby
   return (
     <>
-      <div className="exhibit-stats">
-        <div className="exhibit-stat"><span>{profile.wam}</span><label>{w.wam}</label></div>
-        <div className="exhibit-stat"><span>{gradeSummary.HD}</span><label>{w.hd}</label></div>
-        <div className="exhibit-stat"><span>{gradeSummary.D}</span><label>{w.d}</label></div>
+      <div className="exhibit-stats exhibit-stats--hero">
+        <div className="exhibit-stat exhibit-stat--hero"><span>{profile.wam}</span><label>{w.wam}</label></div>
+        <div className="exhibit-stat exhibit-stat--hero"><span>{gradeSummary.HD}</span><label>{w.hd}</label></div>
+        <div className="exhibit-stat exhibit-stat--hero"><span>{gradeSummary.D}</span><label>{w.d}</label></div>
+        {profile.deansList && (
+          <div className="exhibit-stat exhibit-stat--hero"><span>✦</span><label>{s.deansList}</label></div>
+        )}
       </div>
       <p className="exhibit-card__hint">{w.selectArea}</p>
       <div className="exhibit-timeline">
@@ -104,15 +108,18 @@ function FactoryOverview() {
 function FactoryExhibit({ factoryStop }: { factoryStop: number }) {
   const { strings, toggleFactoryStop } = useSite()
   const w = strings.factory
+  const s = strings.lobby
   const activeSem = FACTORY_AREAS[factoryStop]
 
   return (
     <>
-      <div className="exhibit-stats">
-        <div className="exhibit-stat"><span>{profile.wam}</span><label>{w.wam}</label></div>
-        <div className="exhibit-stat"><span>{profile.cp}</span><label>{w.cp}</label></div>
-        <div className="exhibit-stat"><span>{gradeSummary.HD}</span><label>{w.hd}</label></div>
-        <div className="exhibit-stat"><span>{gradeSummary.D}</span><label>{w.d}</label></div>
+      <div className="exhibit-stats exhibit-stats--hero">
+        <div className="exhibit-stat exhibit-stat--hero"><span>{profile.wam}</span><label>{w.wam}</label></div>
+        <div className="exhibit-stat exhibit-stat--hero"><span>{gradeSummary.HD}</span><label>{w.hd}</label></div>
+        <div className="exhibit-stat exhibit-stat--hero"><span>{gradeSummary.D}</span><label>{w.d}</label></div>
+        {profile.deansList && (
+          <div className="exhibit-stat exhibit-stat--hero"><span>✦</span><label>{s.deansList}</label></div>
+        )}
       </div>
 
       <p className="exhibit-card__hint">{w.selectArea}</p>

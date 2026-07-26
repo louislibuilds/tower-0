@@ -652,15 +652,25 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   color: var(--graphite-mute);
   margin-top: 0.35rem;
 }
-.exhibit-stats--hero { margin: 0.75rem 0 1rem; }
-.exhibit-stat--hero span { font-size: 1.05rem; color: var(--signal); font-weight: 600; }
 .exhibit-stats--hero {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.5rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.35rem;
+  margin: 0.75rem 0 1rem;
 }
+.exhibit-stats--hero .exhibit-stat {
+  min-width: 0;
+  text-align: center;
+}
+.exhibit-stats--hero .exhibit-stat span,
+.exhibit-stats--hero .exhibit-stat label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+.exhibit-stat--hero span { font-size: 1.05rem; color: var(--signal); font-weight: 600; }
 .exhibit-stats--hero .exhibit-stat--hero label { font-size: 0.58rem; }
-.exhibit-stat--badge span { font-size: 1.1rem; }
 .exhibit-semester-tabs {
   display: flex;
   flex-wrap: wrap;
