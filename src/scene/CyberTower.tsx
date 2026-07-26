@@ -198,8 +198,14 @@ function ProgramFloorBand({
           roughness={0.85}
           metalness={0.05}
           transparent
-          opacity={wireframe ? 0.06 : 1}
-          depthWrite={!wireframe}
+          opacity={
+            wireframe
+              ? 0.06
+              : entered && (viewMode === 'room' || viewMode === 'focus')
+                ? 0.2
+                : 1
+          }
+          depthWrite={!wireframe && !(entered && (viewMode === 'room' || viewMode === 'focus'))}
         />
       </mesh>
 
@@ -234,7 +240,7 @@ function ProgramFloorBand({
 
       {entered && extrude > 0.6 && (
         <group
-          position={[0, -0.05, d / 2 + 0.12]}
+          position={[0, -h * 0.06, 0]}
           scale={
             program.id === 'roof'
               ? viewMode === 'room' || viewMode === 'focus'
