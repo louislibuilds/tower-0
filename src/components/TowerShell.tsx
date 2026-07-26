@@ -2,7 +2,7 @@ import { lazy, Suspense } from 'react'
 import { useSite } from '../context/SiteContext'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import { useWebGL } from '../hooks/useWebGL'
-import { ExhibitOverlay } from './hud/ExhibitOverlay'
+import { DelayedExhibitOverlay } from './DelayedExhibitOverlay'
 import { FocusOverlay } from './hud/FocusOverlay'
 import { SiteAnnotation, SiteChrome, SiteRail, SiteTitleblock } from './hud/SiteChrome'
 import { TowerSilhouette } from './TowerSilhouette'
@@ -77,7 +77,7 @@ export function TowerShell() {
       <SiteChrome />
       <SiteAnnotation />
       <FocusOverlay />
-      {viewMode !== 'focus' && <ExhibitOverlay />}
+      {viewMode !== 'focus' && <DelayedExhibitOverlay />}
     </div>
   )
 }

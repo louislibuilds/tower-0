@@ -81,7 +81,7 @@ function ProductionLine({
   const pal = getScenePalette(theme)
   const lit = active
   const stationEdges = useMemo(
-    () => new THREE.EdgesGeometry(new THREE.BoxGeometry(0.28, 0.32, 0.28)),
+    () => new THREE.EdgesGeometry(new THREE.BoxGeometry(0.22, 0.26, 0.22)),
     [],
   )
 
@@ -102,36 +102,36 @@ function ProductionLine({
           onSelect()
         }}
       >
-        <boxGeometry args={[0.32, 0.55, 0.38]} />
+        <boxGeometry args={[0.26, 0.45, 0.32]} />
         <meshBasicMaterial transparent opacity={0} />
       </mesh>
 
-      <mesh position={[0, 0.1, 0]}>
-        <boxGeometry args={[0.28, 0.1, 0.28]} />
+      <mesh position={[0, 0.08, 0]}>
+        <boxGeometry args={[0.22, 0.08, 0.22]} />
         <meshStandardMaterial color={lit ? accent : pal.concrete} emissive={lit ? accent : '#000'} emissiveIntensity={lit ? 0.12 : 0} />
       </mesh>
 
-      <mesh position={[0, 0.3, 0]}>
-        <boxGeometry args={[0.18, 0.28, 0.12]} />
+      <mesh position={[0, 0.24, 0]}>
+        <boxGeometry args={[0.14, 0.22, 0.1]} />
         <meshStandardMaterial color={lit ? pal.glass : pal.resin} transparent opacity={0.85} />
       </mesh>
-      <lineSegments geometry={stationEdges} position={[0, 0.3, 0]}>
+      <lineSegments geometry={stationEdges} position={[0, 0.24, 0]}>
         <lineBasicMaterial color={lit ? accent : pal.graphite} />
       </lineSegments>
 
       {Array.from({ length: index + 1 }).map((_, j) => (
-        <mesh key={j} position={[-0.08 + j * 0.1, 0.16, 0.12]}>
-          <boxGeometry args={[0.1, 0.1, 0.1]} />
+        <mesh key={j} position={[-0.06 + j * 0.08, 0.13, 0.1]}>
+          <boxGeometry args={[0.08, 0.08, 0.08]} />
           <meshStandardMaterial color={lit ? pal.glass : pal.resin} />
         </mesh>
       ))}
 
-      <Html center position={[0, 0.52, 0.15]} style={{ pointerEvents: 'none' }}>
+      <Html center position={[0, 0.44, 0.12]} style={{ pointerEvents: 'none' }}>
         <div className={`scene-label scene-label--lab ${lit ? 'scene-label--active' : ''}`}>{label}</div>
       </Html>
 
       {entered && (
-        <Html center position={[0, 0.64, 0.1]} style={{ pointerEvents: 'none' }}>
+        <Html center position={[0, 0.54, 0.08]} style={{ pointerEvents: 'none' }}>
           <div className="scene-label scene-label--tiny">{semesterLabel}</div>
         </Html>
       )}

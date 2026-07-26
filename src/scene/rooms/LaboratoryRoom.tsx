@@ -1,35 +1,59 @@
 import { Html } from '@react-three/drei'
 import { labProjects } from '../../data/projects'
 import { getScenePalette } from '../palette'
+import { WireBox } from '../primitives/WireBox'
 import { RoomShell } from '../primitives/RoomShell'
 import { themeMat, type RoomProps } from './types'
 
+/** Five labs in a row — spread inside floor shell */
 const LAB_LAYOUT: { slug: string; code: string; pos: [number, number, number] }[] = [
-  { slug: 'unihack-2026', code: 'Lab-001', pos: [-0.48, 0, -0.08] },
-  { slug: 'cloud-computing', code: 'Lab-002', pos: [0, 0, 0.12] },
-  { slug: 'nlp', code: 'Lab-003', pos: [0.48, 0, -0.08] },
-  { slug: 'dl', code: 'Lab-004', pos: [-0.28, 0, 0.22] },
-  { slug: 'kata', code: 'Lab-005', pos: [0.32, 0, 0.22] },
+  { slug: 'unihack-2026', code: '001', pos: [-0.56, 0, -0.05] },
+  { slug: 'cloud-computing', code: '002', pos: [-0.28, 0, -0.05] },
+  { slug: 'nlp', code: '003', pos: [0, 0, -0.05] },
+  { slug: 'dl', code: '004', pos: [0.28, 0, -0.05] },
+  { slug: 'kata', code: '005', pos: [0.56, 0, -0.05] },
 ]
 
-const FLOOR_W = 1.35
-const FLOOR_D = 0.88
-const FLOOR_H = 0.5
+export const LAB_CAMERA_TARGETS: Record<string, [number, number, number]> = Object.fromEntries(
+  LAB_LAYOUT.map(({ slug, pos }) => [slug, pos]),
+)
+
+export function labShortTitle(slug: string): string {
+  const p = labProjects.find((x) => x.slug === slug)
+  if (!p) return slug
+  const t = p.title.split(' — ')[0]
+  if (slug === 'unihack-2026') return 'Unihack 2026'
+  if (slug === 'cloud-computing') return 'SUNishop'
+  if (slug === 'nlp') return 'Mock Interview'
+  if (slug === 'dl') return 'VTuber Mocap'
+  if (slug === 'kata') return 'KATA'
+  return t
+}
+
+export function labLabel(code: string, slug: string): string {
+  return `Lab - ${code} ${labShortTitle(slug)}`
+}
+
+const FLOOR_W = 1.55
+const FLOOR_D = 0.72
+const FLOOR_H = 0.46
 
 interface LaboratoryRoomProps extends RoomProps {
   labRoomSlug: string | null
   roomFocus: boolean
+  floorOverview: boolean
   onLabRoomClick: (slug: string) => void
   onLabRoomHover: (slug: string | null) => void
 }
 
-/** 52 · Laboratory — interior floor with numbered box rooms */
+/** 52 · Laboratory — five spaced box rooms in one interior */
 export function LaboratoryRoom({
   theme,
   accent,
   entered,
   labRoomSlug,
   roomFocus,
+  floorOverview,
   onLabRoomClick,
   onLabRoomHover,
 }: LaboratoryRoomProps) {
@@ -37,25 +61,15 @@ export function LaboratoryRoom({
   const pal = getScenePalette(theme)
 
   if (roomFocus && labRoomSlug) {
-    const project = labProjects.find((p) => p.slug === labRoomSlug)
     const layout = LAB_LAYOUT.find((l) => l.slug === labRoomSlug)
-
     return (
-      <RoomShell width={0.72} depth={0.55} height={0.48} color={accent} floorColor={m.body}>
-        <mesh position={[0, 0.18, -0.55 / 2 + 0.15]}>
-          <boxGeometry args={[0.5, 0.3, 0.08]} />
-          <meshStandardMaterial color={pal.resin} transparent opacity={0.35} />
-        </mesh>
-        <Html center position={[0, 0.38, 0.1]} style={{ pointerEvents: 'none' }}>
-          <div className="scene-label scene-label--lab">{layout?.code ?? 'Lab'}</div>
+      <RoomShell width={0.62} depth={0.48} height={0.42} color={accent} floorColor={m.body}>
+        <WireBox size={[0.48, 0.28, 0.08]} position={[0, 0.16, -0.48 / 2 + 0.12]} color={pal.graphite} fillOpacity={0.1} />
+        <Html center position={[0, 0.34, 0.08]} style={{ pointerEvents: 'none' }}>
+          <div className="scene-label scene-label--lab scene-label--one-line">
+            {layout ? labLabel(layout.code, layout.slug) : 'Lab'}
+          </div>
         </Html>
-        {project && (
-          <Html center position={[0, 0.28, -0.05]} style={{ pointerEvents: 'none' }}>
-            <div className="scene-label scene-label--active scene-label--lab-title">
-              {project.title.split(' — ')[0]}
-            </div>
-          </Html>
-        )}
       </RoomShell>
     )
   }
@@ -64,19 +78,17 @@ export function LaboratoryRoom({
     <RoomShell width={FLOOR_W} depth={FLOOR_D} height={FLOOR_H} color={pal.graphite} floorColor={m.body}>
       {LAB_LAYOUT.map(({ slug, code, pos }) => {
         const active = labRoomSlug === slug
-        const project = labProjects.find((p) => p.slug === slug)
-        if (!project) return null
+        const showAll = floorOverview && entered
         return (
           <LabBox
             key={slug}
             slug={slug}
             code={code}
-            title={project.title}
             position={pos}
             active={active}
+            highlighted={showAll || active}
             theme={theme}
             accent={accent}
-            entered={entered}
             onClick={() => onLabRoomClick(slug)}
             onHover={onLabRoomHover}
           />
@@ -89,30 +101,29 @@ export function LaboratoryRoom({
 function LabBox({
   slug,
   code,
-  title,
   position,
   active,
+  highlighted,
   theme,
   accent,
-  entered,
   onClick,
   onHover,
 }: {
   slug: string
   code: string
-  title: string
   position: [number, number, number]
   active: boolean
+  highlighted: boolean
   theme: RoomProps['theme']
   accent: string
-  entered: boolean
   onClick: () => void
   onHover: (slug: string | null) => void
 }) {
   const pal = getScenePalette(theme)
-  const w = 0.28
-  const d = 0.26
-  const h = 0.3
+  const w = 0.22
+  const d = 0.2
+  const h = 0.26
+  const lit = active || highlighted
 
   return (
     <group position={position}>
@@ -133,28 +144,23 @@ function LabBox({
           onClick()
         }}
       >
-        <boxGeometry args={[w + 0.06, h + 0.06, d + 0.06]} />
+        <boxGeometry args={[w + 0.08, h + 0.08, d + 0.08]} />
         <meshBasicMaterial transparent opacity={0} />
       </mesh>
 
-      <RoomShell
-        width={w}
-        depth={d}
-        height={h}
-        color={active ? accent : pal.graphite}
-        floorColor={pal.resin}
-        openFront
+      <WireBox
+        size={[w, h, d]}
+        position={[0, h / 2 + 0.02, 0]}
+        color={lit ? accent : pal.graphite}
+        fillOpacity={lit ? 0.14 : 0.06}
+        fillColor={lit ? pal.glass : pal.resin}
       />
 
-      <Html center position={[0, h / 2 + 0.1, 0]} style={{ pointerEvents: 'none' }}>
-        <div className={`scene-label scene-label--lab ${active ? 'scene-label--active' : ''}`}>{code}</div>
+      <Html center position={[0, h + 0.14, 0.02]} style={{ pointerEvents: 'none' }}>
+        <div className={`scene-label scene-label--lab scene-label--one-line ${active ? 'scene-label--active' : ''}`}>
+          {labLabel(code, slug)}
+        </div>
       </Html>
-
-      {(active || entered) && (
-        <Html center position={[0, h / 2 + 0.22, 0]} style={{ pointerEvents: 'none' }}>
-          <div className="scene-label scene-label--tiny">{title.split(' — ')[0]}</div>
-        </Html>
-      )}
     </group>
   )
 }
