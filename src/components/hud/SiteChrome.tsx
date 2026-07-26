@@ -12,10 +12,15 @@ import { getFloor } from '../../building/program'
 
 /** Top-right — lang + Day/Night toggle */
 export function SiteChrome() {
-  const { strings, theme, toggleTheme, locale, setLocale, localeLabels } = useSite()
+  const { strings, theme, toggleTheme, locale, setLocale, localeLabels, bootDone, startExit, phase } = useSite()
 
   return (
     <div className="site-chrome">
+      {bootDone && phase !== 'exit' && phase !== 'void' && (
+        <button type="button" className="site-chrome-exit" onClick={startExit}>
+          Roll drawing
+        </button>
+      )}
       <div className="site-chrome-langs" role="group" aria-label="Language">
         {(Object.keys(localeLabels) as Locale[]).map((l) => (
           <button

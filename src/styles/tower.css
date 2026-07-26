@@ -891,6 +891,91 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   .exhibit-overlay { position: static; width: 100%; margin: 0; border: 1px solid #ccc; }
 }
 
+.site-chrome-exit {
+  appearance: none;
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--graphite-mute);
+  padding: 0.35rem 0.55rem;
+  cursor: pointer;
+  font: inherit;
+  letter-spacing: 0.08em;
+  font-size: 0.62rem;
+  transition: color 0.2s, border-color 0.2s;
+}
+.site-chrome-exit:hover {
+  color: var(--signal);
+  border-color: color-mix(in srgb, var(--signal) 40%, transparent);
+}
+
+.site-stamp {
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  pointer-events: none;
+  text-align: center;
+  font-family: var(--font-mono);
+  animation: stamp-fade 0.6s var(--ease-site) both;
+}
+.site-stamp__code {
+  margin: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  color: var(--signal);
+}
+.site-stamp__name {
+  margin: 0.35rem 0 0;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  color: var(--graphite);
+}
+.site-stamp__rev {
+  margin: 0.5rem 0 0;
+  font-size: 0.52rem;
+  letter-spacing: 0.12em;
+  color: var(--graphite-mute);
+}
+@keyframes stamp-fade {
+  from { opacity: 0; transform: translate(-50%, -48%); }
+  to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+.site-exit-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  pointer-events: auto;
+}
+.site-exit-overlay__label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  color: var(--graphite-mute);
+  margin: 0;
+}
+.site-exit-overlay__btn {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--graphite);
+  background: transparent;
+  color: var(--graphite);
+  cursor: pointer;
+}
+.site-exit-overlay__btn:hover {
+  color: var(--signal);
+  border-color: var(--signal);
+}
+
 /* ── Dev: Phase A primitive gallery ── */
 .typology-gallery {
   min-height: 100dvh;

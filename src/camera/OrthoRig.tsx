@@ -4,6 +4,7 @@ import gsap from 'gsap'
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import type { FloorId } from '../building/program'
+import type { SitePhase } from '../building/sitePhase'
 import type { ViewMode } from '../building/viewMode'
 import type { LibraryRoomSlug } from '../data/libraryRooms'
 import { cameraPreset } from './presets'
@@ -13,6 +14,8 @@ import { towerTotalHeight } from '../scene/towerGeometry'
 interface OrthoRigProps {
   floorId: FloorId
   viewMode: ViewMode
+  phase: SitePhase
+  bootDone: boolean
   factoryStop: number | null
   libraryRoomSlug: LibraryRoomSlug | null
   labRoomSlug: string | null
@@ -24,6 +27,8 @@ interface OrthoRigProps {
 export function OrthoRig({
   floorId,
   viewMode,
+  phase,
+  bootDone,
   factoryStop,
   libraryRoomSlug,
   labRoomSlug,
@@ -49,13 +54,15 @@ export function OrthoRig({
     if (!cam) return
 
     const target = cameraPreset(floorId, viewMode, {
+      phase,
+      bootDone,
       factoryStop,
       libraryRoomSlug,
       labRoomSlug,
       focusTarget,
     })
 
-    const key = `${floorId}-${viewMode}-${factoryStop}-${libraryRoomSlug}-${labRoomSlug}-${focusTarget}`
+    const key = `${phase}-${floorId}-${viewMode}-${factoryStop}-${libraryRoomSlug}-${labRoomSlug}-${focusTarget}`
     const sameFloor = prevKey.current.startsWith(`${floorId}-`)
     const panOnly = sameFloor && prevKey.current !== key && viewMode !== 'tower'
 
@@ -81,9 +88,12 @@ export function OrthoRig({
     }
 
     const isRoofClose = floorId === 'roof' && (viewMode === 'room' || viewMode === 'focus' || viewMode === 'floor')
+    const isBoot = phase === 'boot' || phase === 'survey'
     const duration = panOnly
       ? DUR.pan
-      : viewMode === 'focus'
+      : isBoot
+        ? DUR.extrude
+        : viewMode === 'focus'
         ? DUR.focus
         : isRoofClose
           ? DUR.roofAscent
@@ -120,6 +130,8 @@ export function OrthoRig({
   }, [
     floorId,
     viewMode,
+    phase,
+    bootDone,
     factoryStop,
     libraryRoomSlug,
     labRoomSlug,

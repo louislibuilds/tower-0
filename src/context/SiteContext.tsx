@@ -6,6 +6,10 @@ import type { FloorId } from '../building/program'
 
 import type { ViewMode } from '../building/viewMode'
 
+import type { SitePhase } from '../building/sitePhase'
+
+import { isInteractionLocked } from '../building/sitePhase'
+
 import type { LibraryRoomSlug } from '../data/libraryRooms'
 
 import { libraryBooks } from '../data/libraryBooks'
@@ -29,6 +33,12 @@ interface SiteContextValue {
   floorId: FloorId
 
   viewMode: ViewMode
+
+  phase: SitePhase
+
+  bootDone: boolean
+
+  interactionLocked: boolean
 
   hoveredFloorId: FloorId | null
 
@@ -87,6 +97,14 @@ interface SiteContextValue {
   setLocale: (l: Locale) => void
 
   localeLabels: typeof LOCALE_LABELS
+
+  finishBoot: () => void
+
+  setPhase: (p: SitePhase) => void
+
+  startExit: () => void
+
+  reopenSite: () => void
 
 }
 
@@ -158,6 +176,10 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
   const [viewMode, setViewMode] = useState<ViewMode>('tower')
 
+  const [phase, setPhase] = useState<SitePhase>('boot')
+
+  const [bootDone, setBootDone] = useState(false)
+
   const [hoveredFloorId, setHoveredFloor] = useState<FloorId | null>(null)
 
   const [labRoomSlug, setLabRoomSlugState] = useState<string | null>(null)
@@ -200,6 +222,8 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
     (id: FloorId) => {
 
+      if (isInteractionLocked(phase)) return
+
       if (id === nav.floorId) {
 
         if (viewMode !== 'tower') {
@@ -226,15 +250,59 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
     },
 
-    [nav, viewMode, clearSubs],
+    [nav, viewMode, clearSubs, phase],
 
   )
+
+
+
+  const finishBoot = useCallback(() => {
+
+    setPhase('lobby')
+
+    setBootDone(true)
+
+    nav.goToFloor('G')
+
+    setViewMode('floor')
+
+  }, [nav])
+
+
+
+  const startExit = useCallback(() => {
+
+    clearSubs()
+
+    setPhase('exit')
+
+    setViewMode('tower')
+
+  }, [clearSubs])
+
+
+
+  const reopenSite = useCallback(() => {
+
+    setPhase('boot')
+
+    setBootDone(false)
+
+    clearSubs()
+
+    setViewMode('tower')
+
+    nav.goToFloor('G')
+
+  }, [nav, clearSubs])
 
 
 
   const goToFloor = useCallback(
 
     (id: FloorId) => {
+
+      if (isInteractionLocked(phase)) return
 
       if (id === nav.floorId && viewMode !== 'tower') {
 
@@ -252,7 +320,7 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
     },
 
-    [nav, viewMode, toggleFloor, clearSubs],
+    [nav, viewMode, toggleFloor, clearSubs, phase],
 
   )
 
@@ -452,6 +520,12 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
       viewMode,
 
+      phase,
+
+      bootDone,
+
+      interactionLocked: isInteractionLocked(phase),
+
       hoveredFloorId,
 
       hoveredLabSlug,
@@ -510,6 +584,14 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
       localeLabels: LOCALE_LABELS,
 
+      finishBoot,
+
+      setPhase,
+
+      startExit,
+
+      reopenSite,
+
     }),
 
     [
@@ -523,6 +605,10 @@ export function SiteProvider({ children }: { children: ReactNode }) {
       nav,
 
       viewMode,
+
+      phase,
+
+      bootDone,
 
       hoveredFloorId,
 
@@ -561,6 +647,12 @@ export function SiteProvider({ children }: { children: ReactNode }) {
       toggleTheme,
 
       setLocale,
+
+      finishBoot,
+
+      startExit,
+
+      reopenSite,
 
     ],
 
