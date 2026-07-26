@@ -1,11 +1,13 @@
 import { FLOORS } from '../../building/program'
+import { semesters } from '../../data/academic'
 import { labProjects } from '../../data/projects'
+import { LIBRARY_ROOMS } from '../../data/libraryRooms'
 import { profile } from '../../data/profile'
 import { useSite } from '../../context/SiteContext'
 import type { Locale } from '../../i18n/strings'
 import { getFloor } from '../../building/program'
 
-/** Top-right — lang + INK/PAPER toggle (Site 9 chrome) */
+/** Top-right — lang + Day/Night toggle */
 export function SiteChrome() {
   const { strings, theme, toggleTheme, locale, setLocale, localeLabels } = useSite()
 
@@ -27,15 +29,15 @@ export function SiteChrome() {
         type="button"
         className="site-chrome-theme"
         onClick={toggleTheme}
-        aria-label={theme === 'dark' ? strings.site.themePaper : strings.site.themeInk}
+        aria-label={theme === 'dark' ? strings.site.themeLight : strings.site.themeDark}
       >
-        {theme === 'dark' ? strings.site.themePaper : strings.site.themeInk}
+        {theme === 'dark' ? strings.site.themeLight : strings.site.themeDark}
       </button>
     </div>
   )
 }
 
-/** Top-left title block — architect field */
+/** Top-left title block */
 export function SiteTitleblock() {
   const { strings } = useSite()
 
@@ -53,9 +55,19 @@ export function SiteTitleblock() {
   )
 }
 
-/** Left rail — brand card + floor list + lab sub-rooms */
+/** Left rail — brand card + floor list + sub-rooms */
 export function SiteRail() {
-  const { floorId, goToFloor, labRoomSlug, setLabRoomSlug, strings } = useSite()
+  const {
+    floorId,
+    goToFloor,
+    labRoomSlug,
+    libraryRoomSlug,
+    warehouseStop,
+    setLabRoomSlug,
+    setLibraryRoomSlug,
+    setWarehouseStop,
+    strings,
+  } = useSite()
 
   return (
     <aside className="site-rail">
@@ -75,6 +87,23 @@ export function SiteRail() {
                   <span className="site-rail-id">{floor.label}</span>
                   <span>{loc?.title ?? floor.title}</span>
                 </button>
+
+                {floor.id === '23' && active && (
+                  <ul className="site-rail-rooms">
+                    {semesters.map((sem, i) => (
+                      <li key={sem.id}>
+                        <button
+                          type="button"
+                          className={warehouseStop === i ? 'is-room-active' : undefined}
+                          onClick={() => setWarehouseStop(i)}
+                        >
+                          {sem.label}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+
                 {floor.id === '52' && active && (
                   <ul className="site-rail-rooms">
                     {labProjects.map((p) => {
@@ -93,6 +122,24 @@ export function SiteRail() {
                     })}
                   </ul>
                 )}
+
+                {floor.id === '99' && active && (
+                  <ul className="site-rail-rooms">
+                    {LIBRARY_ROOMS.map((room) => (
+                      <li key={room.slug}>
+                        <button
+                          type="button"
+                          className={libraryRoomSlug === room.slug ? 'is-room-active' : undefined}
+                          onClick={() => setLibraryRoomSlug(room.slug)}
+                        >
+                          {room.slug === 'archive'
+                            ? strings.library.archiveTitle
+                            : strings.library.libraryTitle}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </li>
             )
           })}
@@ -104,9 +151,10 @@ export function SiteRail() {
   )
 }
 
-/** Bottom-center annotation — hover label or default hint */
+/** Bottom-center annotation */
 export function SiteAnnotation() {
-  const { hoveredFloorId, hoveredLabSlug, floorId, labRoomSlug, strings } = useSite()
+  const { hoveredFloorId, hoveredLabSlug, floorId, labRoomSlug, libraryRoomSlug, warehouseStop, strings } =
+    useSite()
 
   if (hoveredLabSlug && floorId === '52') {
     const project = labProjects.find((p) => p.slug === hoveredLabSlug)
@@ -131,6 +179,7 @@ export function SiteAnnotation() {
   if (floorId !== 'G') {
     const f = getFloor(floorId)
     const loc = strings.floors[floorId]
+
     if (floorId === '52' && labRoomSlug) {
       const project = labProjects.find((p) => p.slug === labRoomSlug)
       const locP = project ? strings.projects[project.slug] : null
@@ -140,6 +189,26 @@ export function SiteAnnotation() {
         </div>
       )
     }
+
+    if (floorId === '99' && libraryRoomSlug) {
+      const roomLabel =
+        libraryRoomSlug === 'archive' ? strings.library.archiveTitle : strings.library.libraryTitle
+      return (
+        <div className="site-anno site-anno--muted">
+          {f.label} · {roomLabel}
+        </div>
+      )
+    }
+
+    if (floorId === '23') {
+      const sem = semesters[warehouseStop]
+      return (
+        <div className="site-anno site-anno--muted">
+          {f.label} · {sem?.label ?? loc?.title}
+        </div>
+      )
+    }
+
     return (
       <div className="site-anno site-anno--muted">
         {f.label} · {loc?.title ?? f.title}

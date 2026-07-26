@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { LOCALE_LABELS, STRINGS, type Locale, type LocaleStrings } from '../i18n/strings'
 import type { FloorId } from '../building/program'
+import type { LibraryRoomSlug } from '../data/libraryRooms'
 import { useFloorNavigation } from '../hooks/useFloorNavigation'
 
 export type Theme = 'dark' | 'light'
@@ -15,7 +16,11 @@ interface SiteContextValue {
   floor: ReturnType<typeof useFloorNavigation>['floor']
   direction: number
   labRoomSlug: string | null
+  libraryRoomSlug: LibraryRoomSlug | null
+  warehouseStop: number
   setLabRoomSlug: (slug: string | null) => void
+  setLibraryRoomSlug: (slug: LibraryRoomSlug | null) => void
+  setWarehouseStop: (stop: number) => void
   setHoveredLabSlug: (slug: string | null) => void
   goToFloor: (id: FloorId) => void
   setHoveredFloor: (id: FloorId | null) => void
@@ -44,9 +49,19 @@ export function SiteProvider({ children }: { children: ReactNode }) {
   const [hoveredFloorId, setHoveredFloor] = useState<FloorId | null>(null)
   const [labRoomSlug, setLabRoomSlugState] = useState<string | null>(null)
   const [hoveredLabSlug, setHoveredLabSlug] = useState<string | null>(null)
+  const [libraryRoomSlug, setLibraryRoomSlugState] = useState<LibraryRoomSlug | null>(null)
+  const [warehouseStop, setWarehouseStopState] = useState(0)
 
   const setLabRoomSlug = useCallback((slug: string | null) => {
     setLabRoomSlugState(slug)
+  }, [])
+
+  const setLibraryRoomSlug = useCallback((slug: LibraryRoomSlug | null) => {
+    setLibraryRoomSlugState(slug)
+  }, [])
+
+  const setWarehouseStop = useCallback((stop: number) => {
+    setWarehouseStopState(Math.max(0, stop))
   }, [])
 
   const goToFloor = useCallback(
@@ -56,6 +71,8 @@ export function SiteProvider({ children }: { children: ReactNode }) {
         setLabRoomSlugState(null)
         setHoveredLabSlug(null)
       }
+      if (id !== '99') setLibraryRoomSlugState(null)
+      if (id !== '23') setWarehouseStopState(0)
     },
     [nav],
   )
@@ -92,11 +109,15 @@ export function SiteProvider({ children }: { children: ReactNode }) {
       hoveredFloorId,
       hoveredLabSlug,
       labRoomSlug,
+      libraryRoomSlug,
+      warehouseStop,
       floor: nav.floor,
       direction: nav.direction,
       goToFloor,
       setHoveredFloor,
       setLabRoomSlug,
+      setLibraryRoomSlug,
+      setWarehouseStop,
       setHoveredLabSlug,
       setTheme,
       toggleTheme,
@@ -111,11 +132,15 @@ export function SiteProvider({ children }: { children: ReactNode }) {
       hoveredFloorId,
       hoveredLabSlug,
       labRoomSlug,
+      libraryRoomSlug,
+      warehouseStop,
       goToFloor,
       setTheme,
       toggleTheme,
       setLocale,
       setLabRoomSlug,
+      setLibraryRoomSlug,
+      setWarehouseStop,
     ],
   )
 

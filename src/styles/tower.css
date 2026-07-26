@@ -642,6 +642,59 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   margin-bottom: 0.75rem;
 }
 .exhibit-project--solo h4 { font-size: 1.05rem; margin-bottom: 0.5rem; }
+.exhibit-project__stack {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--graphite-mute);
+  margin-top: 0.35rem;
+}
+.exhibit-stats--hero { margin: 0.75rem 0 1rem; }
+.exhibit-stat--hero span { font-size: 1.75rem; color: var(--signal); }
+.exhibit-stat--badge span { font-size: 1.1rem; }
+.exhibit-semester-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 0.75rem;
+}
+.exhibit-semester-tabs button {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.06em;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--paper) 92%, transparent);
+}
+.exhibit-semester-tabs button.is-active {
+  border-color: var(--signal);
+  color: var(--signal);
+}
+.exhibit-details {
+  margin-top: 1rem;
+  font-size: 0.75rem;
+}
+.exhibit-details summary {
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  color: var(--graphite-mute);
+  margin-bottom: 0.5rem;
+}
+.exhibit-experience { display: flex; flex-direction: column; gap: 0.65rem; }
+.exhibit-experience__item strong { display: block; font-size: 0.82rem; }
+.exhibit-experience__item span {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--graphite-mute);
+}
+.exhibit-experience__item p,
+.exhibit-experience__item li {
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  color: var(--text-dim);
+}
+.exhibit-experience__item ul { padding-left: 1rem; }
 
 @media print {
   .site-canvas, .site-rail, .site-chrome, .site-anno { display: none; }

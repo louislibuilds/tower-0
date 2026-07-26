@@ -2,6 +2,7 @@ import { Canvas, useThree } from '@react-three/fiber'
 import { Suspense, useCallback, useEffect, useState } from 'react'
 import type { Theme } from '../context/SiteContext'
 import type { FloorId } from '../building/program'
+import type { LibraryRoomSlug } from '../data/libraryRooms'
 import { OrthoRig, SiteLights } from '../camera/OrthoRig'
 import { getScenePalette } from './palette'
 import { CyberTower } from './CyberTower'
@@ -11,6 +12,8 @@ interface TowerSceneProps {
   activeFloorId: FloorId
   hoveredFloorId: FloorId | null
   labRoomSlug: string | null
+  libraryRoomSlug: LibraryRoomSlug | null
+  warehouseStop: number
   reducedMotion: boolean
   theme: Theme
   bootLabel: string
@@ -18,6 +21,9 @@ interface TowerSceneProps {
   onFloorClick: (id: FloorId) => void
   onLabRoomClick: (slug: string) => void
   onLabRoomHover: (slug: string | null) => void
+  onLibraryRoomClick: (slug: LibraryRoomSlug) => void
+  onLibraryRoomHover: (slug: LibraryRoomSlug | null) => void
+  onWarehouseStop: (stop: number) => void
 }
 
 function InvalidateOnChange({ floorId, theme }: { floorId: FloorId; theme: Theme }) {
@@ -33,6 +39,8 @@ function SceneContent(props: TowerSceneProps & { extrude: number; ink: number })
     activeFloorId,
     hoveredFloorId,
     labRoomSlug,
+    libraryRoomSlug,
+    warehouseStop,
     reducedMotion,
     theme,
     extrude,
@@ -41,6 +49,9 @@ function SceneContent(props: TowerSceneProps & { extrude: number; ink: number })
     onFloorClick,
     onLabRoomClick,
     onLabRoomHover,
+    onLibraryRoomClick,
+    onLibraryRoomHover,
+    onWarehouseStop,
   } = props
   const bg = getScenePalette(theme).paper
 
@@ -49,11 +60,18 @@ function SceneContent(props: TowerSceneProps & { extrude: number; ink: number })
       <InvalidateOnChange floorId={activeFloorId} theme={theme} />
       <color attach="background" args={[bg]} />
       <SiteLights theme={theme} />
-      <OrthoRig floorId={activeFloorId} reducedMotion={reducedMotion} />
+      <OrthoRig
+        floorId={activeFloorId}
+        warehouseStop={warehouseStop}
+        libraryRoomSlug={libraryRoomSlug}
+        reducedMotion={reducedMotion}
+      />
       <CyberTower
         activeFloorId={activeFloorId}
         hoveredFloorId={hoveredFloorId}
         labRoomSlug={labRoomSlug}
+        libraryRoomSlug={libraryRoomSlug}
+        warehouseStop={warehouseStop}
         extrude={extrude}
         ink={ink}
         theme={theme}
@@ -61,23 +79,32 @@ function SceneContent(props: TowerSceneProps & { extrude: number; ink: number })
         onFloorClick={onFloorClick}
         onLabRoomClick={onLabRoomClick}
         onLabRoomHover={onLabRoomHover}
+        onLibraryRoomClick={onLibraryRoomClick}
+        onLibraryRoomHover={onLibraryRoomHover}
+        onWarehouseStop={onWarehouseStop}
       />
     </>
   )
 }
 
-export function TowerScene({
-  activeFloorId,
-  hoveredFloorId,
-  labRoomSlug,
-  reducedMotion,
-  theme,
-  bootLabel,
-  onFloorHover,
-  onFloorClick,
-  onLabRoomClick,
-  onLabRoomHover,
-}: TowerSceneProps) {
+export function TowerScene(props: TowerSceneProps) {
+  const {
+    activeFloorId,
+    hoveredFloorId,
+    labRoomSlug,
+    libraryRoomSlug,
+    warehouseStop,
+    reducedMotion,
+    theme,
+    bootLabel,
+    onFloorHover,
+    onFloorClick,
+    onLabRoomClick,
+    onLabRoomHover,
+    onLibraryRoomClick,
+    onLibraryRoomHover,
+    onWarehouseStop,
+  } = props
   const [extrude, setExtrude] = useState(reducedMotion ? 1 : 0)
   const [ink, setInk] = useState(reducedMotion ? 1 : 0)
   const [booted, setBooted] = useState(reducedMotion)
@@ -104,6 +131,8 @@ export function TowerScene({
               activeFloorId={activeFloorId}
               hoveredFloorId={hoveredFloorId}
               labRoomSlug={labRoomSlug}
+              libraryRoomSlug={libraryRoomSlug}
+              warehouseStop={warehouseStop}
               reducedMotion={reducedMotion}
               theme={theme}
               bootLabel={bootLabel}
@@ -111,6 +140,9 @@ export function TowerScene({
               onFloorClick={onFloorClick}
               onLabRoomClick={onLabRoomClick}
               onLabRoomHover={onLabRoomHover}
+              onLibraryRoomClick={onLibraryRoomClick}
+              onLibraryRoomHover={onLibraryRoomHover}
+              onWarehouseStop={onWarehouseStop}
               extrude={extrude}
               ink={ink}
             />
