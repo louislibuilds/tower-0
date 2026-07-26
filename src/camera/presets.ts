@@ -93,6 +93,10 @@ export function cameraPreset(
     return { position: [10, midY + 2.5, 20], lookAt: [0, 0.4, 0], zoom: 28 }
   }
 
+  if (opts.phase === 'exit' || opts.phase === 'void') {
+    return { position: [9, midY + 2.2, 24], lookAt: [0, midY - 0.5, 0], zoom: 22 }
+  }
+
   if (viewMode === 'tower' || (floorId === 'G' && viewMode !== 'floor' && opts.phase !== 'lobby')) {
     return { position: [8.5, midY + 2, 22], lookAt: [0, midY - 0.5, 0], zoom: 24 }
   }

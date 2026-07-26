@@ -11,6 +11,7 @@ export interface LocaleStrings {
     architectRole: string
     tagline: string
     constructing: string
+    rollingDrawing: string
     fallback: string
     floors: string
     hint: string
@@ -109,6 +110,7 @@ const en: LocaleStrings = {
     architectRole: 'Master of IT · Full-stack',
     tagline: 'Software is not written. It is constructed.',
     constructing: 'Constructing…',
+    rollingDrawing: 'Rolling drawing…',
     fallback: '2D plan view',
     floors: 'FLOORS',
     hint: 'Select a room on the model',
@@ -287,6 +289,7 @@ const zhTW: LocaleStrings = {
     architectRole: '資訊科技碩士 · 全端開發',
     tagline: '軟體不是寫出來的，是建造出來的。',
     constructing: '建造中…',
+    rollingDrawing: '收圖中…',
     fallback: '2D 平面圖',
     floors: '樓層',
     hint: '在模型上選擇一個房間',
