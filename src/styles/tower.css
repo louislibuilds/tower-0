@@ -656,7 +656,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 .exhibit-stat--hero span { font-size: 1.05rem; color: var(--signal); font-weight: 600; }
 .exhibit-stats--hero {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 0.5rem;
 }
 .exhibit-stats--hero .exhibit-stat--hero label { font-size: 0.58rem; }

@@ -331,32 +331,32 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
 
   const toggleBook = useCallback((slug: string) => {
+    if (selectedBookSlug === slug) {
+      setSelectedBookSlugState(null)
+      setLibraryRoomSlugState(null)
+      setViewMode('floor')
+      return
+    }
     setLibraryRoomSlugState('library')
     setSelectedCredentialSlugState(null)
-    setSelectedBookSlugState((prev) => {
-      if (prev === slug) {
-        setViewMode('room')
-        return null
-      }
-      setViewMode('focus')
-      return slug
-    })
-  }, [])
+    setSelectedBookSlugState(slug)
+    setViewMode('focus')
+  }, [selectedBookSlug])
 
 
 
   const toggleCredential = useCallback((slug: string) => {
+    if (selectedCredentialSlug === slug) {
+      setSelectedCredentialSlugState(null)
+      setLibraryRoomSlugState(null)
+      setViewMode('floor')
+      return
+    }
     setLibraryRoomSlugState('archive')
     setSelectedBookSlugState(null)
-    setSelectedCredentialSlugState((prev) => {
-      if (prev === slug) {
-        setViewMode('room')
-        return null
-      }
-      setViewMode('focus')
-      return slug
-    })
-  }, [])
+    setSelectedCredentialSlugState(slug)
+    setViewMode('focus')
+  }, [selectedCredentialSlug])
 
 
 

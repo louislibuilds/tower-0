@@ -38,10 +38,6 @@ function LobbyExhibit() {
           <label>{s.wam}</label>
         </div>
         <div className="exhibit-stat">
-          <span>{profile.cp}</span>
-          <label>{s.cp}</label>
-        </div>
-        <div className="exhibit-stat">
           <span>{gradeSummary.HD}</span>
           <label>{s.hdCount}</label>
         </div>
@@ -81,14 +77,24 @@ function FactoryOverview() {
     <>
       <div className="exhibit-stats">
         <div className="exhibit-stat"><span>{profile.wam}</span><label>{w.wam}</label></div>
-        <div className="exhibit-stat"><span>{profile.cp}</span><label>{w.cp}</label></div>
         <div className="exhibit-stat"><span>{gradeSummary.HD}</span><label>{w.hd}</label></div>
         <div className="exhibit-stat"><span>{gradeSummary.D}</span><label>{w.d}</label></div>
       </div>
-      <p className="exhibit-card__hint">{w.overview}</p>
-      <div className="exhibit-semester-tabs">
+      <p className="exhibit-card__hint">{w.selectArea}</p>
+      <div className="exhibit-timeline">
         {FACTORY_AREAS.map((sem, i) => (
-          <span key={sem.id} className="exhibit-tab-label">{areaLabel(i)} · {sem.label}</span>
+          <div key={sem.id} className="exhibit-timeline__sem">
+            <div className="exhibit-timeline__head">
+              <strong>{areaLabel(i)} · {sem.label}</strong>
+              {sem.avgMark !== null && <span>{w.avg} {sem.avgMark}</span>}
+            </div>
+            {sem.subjects.map((sub) => (
+              <div key={sub.code} className="exhibit-timeline__row">
+                <span>{sub.code} {sub.title}</span>
+                <span className={gradeClass(sub.grade)}>{sub.mark ?? '—'} {sub.grade}</span>
+              </div>
+            ))}
+          </div>
         ))}
       </div>
     </>

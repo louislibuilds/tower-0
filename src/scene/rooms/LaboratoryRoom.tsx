@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import * as THREE from 'three'
 import { labProjects } from '../../data/projects'
 import { getScenePalette } from '../palette'
+import { WireBox } from '../primitives/WireBox'
 import { themeMat, type RoomProps } from './types'
 
 const LAB_LAYOUT: { slug: string; code: string; pos: [number, number, number] }[] = [
@@ -139,7 +140,6 @@ function LabBox({
   onHover: (slug: string | null) => void
 }) {
   const pal = getScenePalette(theme)
-  const edges = useMemo(() => new THREE.EdgesGeometry(new THREE.BoxGeometry(0.34, 0.32, 0.34)), [])
 
   return (
     <group position={position}>
@@ -165,17 +165,13 @@ function LabBox({
       </mesh>
 
       {/* Box room */}
-      <mesh position={[0, 0.12, 0]}>
-        <boxGeometry args={[0.34, 0.32, 0.34]} />
-        <meshStandardMaterial
-          color={active ? pal.glass : pal.resin}
-          transparent
-          opacity={active ? 0.95 : entered ? 0.75 : 0.5}
-        />
-      </mesh>
-      <lineSegments geometry={edges} position={[0, 0.12, 0]}>
-        <lineBasicMaterial color={active ? accent : pal.graphite} />
-      </lineSegments>
+      <WireBox
+        size={[0.34, 0.32, 0.34]}
+        position={[0, 0.12, 0]}
+        color={active ? accent : pal.graphite}
+        fillOpacity={active ? 0.15 : 0.08}
+        fillColor={active ? pal.glass : pal.resin}
+      />
 
       {/* Door */}
       <mesh position={[0, 0.02, 0.18]}>

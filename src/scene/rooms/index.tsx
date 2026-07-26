@@ -11,15 +11,15 @@ import { RoofRoom } from './RoofRoom'
 import { TechCentreRoom } from './TechCentreRoom'
 import type { RoomProps } from './types'
 
-const STANDARD_ROOMS: Record<Exclude<FloorId, '52' | '23' | '99'>, ComponentType<RoomProps>> = {
+const STANDARD_ROOMS: Record<'G' | 'B2' | 'B10', ComponentType<RoomProps>> = {
   G: LobbyRoom,
   B2: InfraRoom,
   B10: TechCentreRoom,
-  roof: RoofRoom,
 }
 
 interface FloorRoomProps extends RoomProps {
   floorId: FloorId
+  bandHeight?: number
   viewMode: ViewMode
   labRoomSlug?: string | null
   libraryRoomSlug?: LibraryRoomSlug | null
@@ -37,6 +37,7 @@ interface FloorRoomProps extends RoomProps {
 
 export function FloorRoom({
   floorId,
+  bandHeight = 0.9,
   viewMode,
   theme,
   accent,
@@ -104,7 +105,10 @@ export function FloorRoom({
     )
   }
 
-  const Room = STANDARD_ROOMS[floorId as Exclude<FloorId, '52' | '23' | '99'>]
+  const Room = floorId === 'G' || floorId === 'B2' || floorId === 'B10' ? STANDARD_ROOMS[floorId] : null
+  if (floorId === 'roof') {
+    return <RoofRoom theme={theme} entered={entered} bandHeight={bandHeight} />
+  }
   if (!Room) return null
   return <Room theme={theme} accent={accent} entered={entered} hover={hover} />
 }
