@@ -1,7 +1,8 @@
 import { RoomShell } from '../primitives/RoomShell'
-import { WireBox } from '../primitives/WireBox'
-import { LabTypology } from './labs'
-import { LAB_STATIONS, labStation } from './labAnchors'
+import { lab52Interior, STATION_OVERVIEW } from './interiorScale'
+import { LabTypology, StationPlinth } from './labs'
+import { LAB_STATIONS } from './labAnchors'
+import { ThinnedStation } from './ThinnedStation'
 import { typologyMat, type TypologyProps } from './types'
 
 export {
@@ -22,10 +23,6 @@ export function labLabel(code: string, slug: string): string {
   return `Lab - ${code} ${labShortTitle(slug)}`
 }
 
-const FLOOR_W = 1.55
-const FLOOR_D = 0.72
-const FLOOR_H = 0.46
-
 interface BenchRowProps extends TypologyProps {
   labRoomSlug: string | null
   roomFocus: boolean
@@ -34,54 +31,46 @@ interface BenchRowProps extends TypologyProps {
   onLabRoomHover: (slug: string | null) => void
 }
 
-/** 52 · Laboratory — five independent stations (resume2 scatter, not a row) */
+/** 52 · Laboratory — five independent stations (resume2 scatter) */
 export function BenchRow({
   theme,
   accent,
   entered,
   labRoomSlug,
-  roomFocus,
-  floorOverview,
   onLabRoomClick,
   onLabRoomHover,
 }: BenchRowProps) {
   const m = typologyMat(theme, accent, entered)
-
-  if (roomFocus && labRoomSlug) {
-    return (
-      <LabStationBlock
-        slug={labRoomSlug}
-        code={labStation(labRoomSlug)?.code ?? '000'}
-        theme={theme}
-        accent={accent}
-        entered={entered}
-        active
-        enlarged
-        onClick={() => onLabRoomClick(labRoomSlug)}
-        onHover={onLabRoomHover}
-      />
-    )
-  }
+  const interior = lab52Interior()
+  const enteringLab = !!labRoomSlug
 
   return (
-    <RoomShell width={FLOOR_W} depth={FLOOR_D} height={FLOOR_H} color={m.pal.graphite} floorColor={m.body}>
-      {LAB_STATIONS.map(({ slug, code, pos }) => {
+    <RoomShell
+      width={interior.w}
+      depth={interior.d}
+      height={interior.h}
+      color={m.pal.graphite}
+      floorColor={m.body}
+    >
+      {LAB_STATIONS.map(({ slug, pos }) => {
         const active = labRoomSlug === slug
-        const showAll = floorOverview && entered
-        if (labRoomSlug && labRoomSlug !== slug) return null
+        const thin = enteringLab && !active
+        const lit = active || (entered && !enteringLab)
+
         return (
           <group key={slug} position={pos}>
-            <LabStationBlock
-              slug={slug}
-              code={code}
-              theme={theme}
-              accent={accent}
-              entered={entered}
-              active={active}
-              highlighted={showAll || active}
-              onClick={() => onLabRoomClick(slug)}
-              onHover={onLabRoomHover}
-            />
+            <ThinnedStation thin={thin}>
+              <LabStationBlock
+                slug={slug}
+                theme={theme}
+                accent={accent}
+                entered={entered}
+                lit={lit}
+                thin={thin}
+                onClick={() => onLabRoomClick(slug)}
+                onHover={onLabRoomHover}
+              />
+            </ThinnedStation>
           </group>
         )
       })}
@@ -94,34 +83,28 @@ function LabStationBlock({
   theme,
   accent,
   entered,
-  active,
-  highlighted = false,
-  enlarged = false,
+  lit,
+  thin,
   onClick,
   onHover,
 }: {
   slug: string
-  code: string
   theme: TypologyProps['theme']
   accent: string
   entered: boolean
-  active: boolean
-  highlighted?: boolean
-  enlarged?: boolean
+  lit: boolean
+  thin: boolean
   onClick: () => void
   onHover: (slug: string | null) => void
 }) {
-  const m = typologyMat(theme, accent, entered)
-  const lit = active || highlighted
-  const w = enlarged ? 0.72 : 0.3
-  const d = enlarged ? 0.55 : 0.26
-  const h = enlarged ? 0.44 : 0.3
+  const { w, d, h } = STATION_OVERVIEW
 
   return (
     <group>
       <mesh
         visible={false}
         onPointerOver={(e) => {
+          if (thin) return
           e.stopPropagation()
           onHover(slug)
           document.body.style.cursor = 'pointer'
@@ -132,32 +115,19 @@ function LabStationBlock({
           document.body.style.cursor = 'crosshair'
         }}
         onClick={(e) => {
+          if (thin) return
           e.stopPropagation()
           onClick()
         }}
       >
-        <boxGeometry args={[w + 0.12, h + 0.12, d + 0.12]} />
+        <boxGeometry args={[w + 0.1, h + 0.1, d + 0.1]} />
         <meshBasicMaterial transparent opacity={0} />
       </mesh>
 
-      <RoomShell
-        width={w}
-        depth={d}
-        height={h}
-        color={lit ? accent : m.pal.graphite}
-        floorColor={m.body}
-        openFront
-      >
-        <WireBox
-          size={[w * 0.82, h * 0.55, 0.06]}
-          position={[0, h * 0.38, -d / 2 + 0.1]}
-          color={m.pal.graphite}
-          fillOpacity={0.08}
-        />
-        <group position={[0, h * 0.22, 0.04]} scale={enlarged ? 1.35 : 1}>
-          <LabTypology slug={slug} theme={theme} accent={accent} entered={entered} active={lit} />
-        </group>
-      </RoomShell>
+      <StationPlinth theme={theme} accent={accent} entered={entered} active={lit} width={w} depth={d} />
+      <group position={[0, 0.06, 0]}>
+        <LabTypology slug={slug} theme={theme} accent={accent} entered={entered} active={lit} />
+      </group>
     </group>
   )
 }
