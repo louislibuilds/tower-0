@@ -186,6 +186,22 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
   const [hoveredLabSlug, setHoveredLabSlug] = useState<string | null>(null)
 
+  const setHoveredFloorSafe = useCallback(
+    (id: FloorId | null) => {
+      if (isInteractionLocked(phase)) return
+      setHoveredFloor(id)
+    },
+    [phase],
+  )
+
+  const setHoveredLabSlugSafe = useCallback(
+    (slug: string | null) => {
+      if (isInteractionLocked(phase)) return
+      setHoveredLabSlug(slug)
+    },
+    [phase],
+  )
+
   const [libraryRoomSlug, setLibraryRoomSlugState] = useState<LibraryRoomSlug | null>(null)
 
   const [factoryStop, setFactoryStopState] = useState<number | null>(null)
@@ -271,6 +287,7 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
 
   const startExit = useCallback(() => {
+    if (isInteractionLocked(phase)) return
 
     clearSubs()
 
@@ -278,7 +295,7 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
     setViewMode('tower')
 
-  }, [clearSubs])
+  }, [clearSubs, phase])
 
 
 
@@ -327,6 +344,7 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
 
   const toggleLabRoom = useCallback((slug: string) => {
+    if (isInteractionLocked(phase)) return
     if (labRoomSlug === slug) {
       setLabRoomSlugState(null)
       setViewMode('floor')
@@ -336,11 +354,12 @@ export function SiteProvider({ children }: { children: ReactNode }) {
     setSelectedBookSlugState(null)
     setSelectedCredentialSlugState(null)
     setViewMode('room')
-  }, [labRoomSlug])
+  }, [labRoomSlug, phase])
 
 
 
   const toggleLibraryRoom = useCallback((slug: LibraryRoomSlug) => {
+    if (isInteractionLocked(phase)) return
 
     setLibraryRoomSlugState((prev) => {
 
@@ -366,11 +385,12 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
     })
 
-  }, [])
+  }, [phase])
 
 
 
   const toggleFactoryStop = useCallback((stop: number) => {
+    if (isInteractionLocked(phase)) return
 
     setFactoryStopState((prev) => {
 
@@ -388,11 +408,12 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
     })
 
-  }, [])
+  }, [phase])
 
 
 
   const toggleBook = useCallback((slug: string) => {
+    if (isInteractionLocked(phase)) return
     if (selectedBookSlug === slug) {
       setSelectedBookSlugState(null)
       setLibraryRoomSlugState(null)
@@ -403,11 +424,12 @@ export function SiteProvider({ children }: { children: ReactNode }) {
     setSelectedCredentialSlugState(null)
     setSelectedBookSlugState(slug)
     setViewMode('focus')
-  }, [selectedBookSlug])
+  }, [selectedBookSlug, phase])
 
 
 
   const toggleCredential = useCallback((slug: string) => {
+    if (isInteractionLocked(phase)) return
     if (selectedCredentialSlug === slug) {
       setSelectedCredentialSlugState(null)
       setLibraryRoomSlugState(null)
@@ -418,13 +440,15 @@ export function SiteProvider({ children }: { children: ReactNode }) {
     setSelectedBookSlugState(null)
     setSelectedCredentialSlugState(slug)
     setViewMode('focus')
-  }, [selectedCredentialSlug])
+  }, [selectedCredentialSlug, phase])
 
 
 
   const handleBookClick = useCallback(
 
     (slug: string) => {
+
+      if (isInteractionLocked(phase)) return
 
       if (selectedBookSlug === slug && viewMode === 'focus') {
 
@@ -440,7 +464,7 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
     },
 
-    [selectedBookSlug, viewMode, toggleBook],
+    [selectedBookSlug, viewMode, toggleBook, phase],
 
   )
 
@@ -544,7 +568,7 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
       goToFloor,
 
-      setHoveredFloor,
+      setHoveredFloor: setHoveredFloorSafe,
 
       setLabRoomSlug: setLabRoomSlugState,
 
@@ -570,7 +594,7 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
       setSelectedCredentialSlug: setSelectedCredentialSlugState,
 
-      setHoveredLabSlug,
+      setHoveredLabSlug: setHoveredLabSlugSafe,
 
       setTheme,
 
@@ -649,6 +673,10 @@ export function SiteProvider({ children }: { children: ReactNode }) {
       startExit,
 
       reopenSite,
+
+      setHoveredFloorSafe,
+
+      setHoveredLabSlugSafe,
 
     ],
 

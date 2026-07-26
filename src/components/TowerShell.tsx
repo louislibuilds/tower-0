@@ -93,7 +93,12 @@ export function TowerShell() {
       <StampOverlay visible={phase === 'boot' || phase === 'survey'} />
       {phase === 'void' && <ExitOverlay onReopen={reopenSite} />}
       <FocusOverlay />
-      {bootDone && phase !== 'void' && viewMode !== 'focus' && <DelayedExhibitOverlay />}
+      {bootDone && phase !== 'void' && phase !== 'exit' && viewMode !== 'focus' && <DelayedExhibitOverlay />}
+      {phase === 'exit' && (
+        <div className="site-exit-progress" aria-hidden="true">
+          {strings.site.rollingDrawing}
+        </div>
+      )}
     </div>
   )
 }
