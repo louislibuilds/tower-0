@@ -57,6 +57,7 @@ export function FloorRailHud() {
                 aria-current={active ? 'true' : undefined}
               >
                 <span className="floor-rail-hud__code">{floor.label}</span>
+                <span className="floor-rail-hud__num">F{floor.floorNumber}</span>
                 <span className="floor-rail-hud__name">{loc?.title ?? floor.title}</span>
               </button>
             </li>
@@ -76,8 +77,9 @@ export function ElevatorHud() {
       <span className="elevator-hud-bar__arrow">
         {direction > 0 ? '▲' : direction < 0 ? '▼' : '●'}
       </span>
-      <span className="elevator-hud-bar__floor">{floor.label}</span>
-      <span className="elevator-hud-bar__title">{loc?.title ?? floor.title}</span>
+        <span className="elevator-hud-bar__floor">{floor.label}</span>
+        <span className="elevator-hud-bar__num">F{floor.floorNumber}</span>
+        <span className="elevator-hud-bar__title">{loc?.title ?? floor.title}</span>
     </div>
   )
 }

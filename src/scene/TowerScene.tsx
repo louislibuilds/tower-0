@@ -3,13 +3,17 @@ import { Suspense, useCallback, useEffect, useState } from 'react'
 import type { Theme } from '../context/SiteContext'
 import type { FloorId } from '../building/program'
 import { OrthoRig, SiteLights } from '../camera/OrthoRig'
-import { BootController, CyberTower } from './CyberTower'
+import { CyberTower } from './CyberTower'
+import { BootController } from './CyberTowerBoot'
 
 interface TowerSceneProps {
   activeFloorId: FloorId
+  hoveredFloorId: FloorId | null
   reducedMotion: boolean
   theme: Theme
   bootLabel: string
+  onFloorHover: (id: FloorId | null) => void
+  onFloorClick: (id: FloorId) => void
 }
 
 function InvalidateOnChange({ floorId, theme }: { floorId: FloorId; theme: Theme }) {
@@ -20,13 +24,8 @@ function InvalidateOnChange({ floorId, theme }: { floorId: FloorId; theme: Theme
   return null
 }
 
-function SceneContent({
-  activeFloorId,
-  reducedMotion,
-  theme,
-  extrude,
-  ink,
-}: TowerSceneProps & { extrude: number; ink: number }) {
+function SceneContent(props: TowerSceneProps & { extrude: number; ink: number }) {
+  const { activeFloorId, hoveredFloorId, reducedMotion, theme, extrude, ink, onFloorHover, onFloorClick } = props
   const bg = theme === 'dark' ? '#030308' : '#eae6df'
 
   return (
@@ -37,16 +36,26 @@ function SceneContent({
       <OrthoRig floorId={activeFloorId} reducedMotion={reducedMotion} />
       <CyberTower
         activeFloorId={activeFloorId}
+        hoveredFloorId={hoveredFloorId}
         extrude={extrude}
         ink={ink}
-        reducedMotion={reducedMotion}
         theme={theme}
+        onFloorHover={onFloorHover}
+        onFloorClick={onFloorClick}
       />
     </>
   )
 }
 
-export function TowerScene({ activeFloorId, reducedMotion, theme, bootLabel }: TowerSceneProps) {
+export function TowerScene({
+  activeFloorId,
+  hoveredFloorId,
+  reducedMotion,
+  theme,
+  bootLabel,
+  onFloorHover,
+  onFloorClick,
+}: TowerSceneProps) {
   const [extrude, setExtrude] = useState(reducedMotion ? 1 : 0)
   const [ink, setInk] = useState(reducedMotion ? 1 : 0)
   const [booted, setBooted] = useState(reducedMotion)
@@ -71,9 +80,12 @@ export function TowerScene({ activeFloorId, reducedMotion, theme, bootLabel }: T
           >
             <SceneContent
               activeFloorId={activeFloorId}
+              hoveredFloorId={hoveredFloorId}
               reducedMotion={reducedMotion}
               theme={theme}
               bootLabel={bootLabel}
+              onFloorHover={onFloorHover}
+              onFloorClick={onFloorClick}
               extrude={extrude}
               ink={ink}
             />

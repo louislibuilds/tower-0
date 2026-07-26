@@ -3,8 +3,8 @@ import { useThree } from '@react-three/fiber'
 import gsap from 'gsap'
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
-import { getFloor, type FloorId } from '../building/program'
-import { getTier, SPIRE_BASE, tierCenterY } from '../scene/towerTiers'
+import type { FloorId } from '../building/program'
+import { getProgramFloor, programCenterY, towerTotalHeight } from '../scene/towerGeometry'
 import { DUR, EASE_SITE } from '../scene/motion'
 
 interface CameraPreset {
@@ -14,22 +14,24 @@ interface CameraPreset {
 }
 
 function presetForFloor(floorId: FloorId): CameraPreset {
-  const tier = getTier(floorId)
-  const y = tier ? tierCenterY(tier) : getFloor(floorId).yCenter
+  const pf = getProgramFloor(floorId)
+  const y = programCenterY(pf)
   const isBasement = floorId === 'B10' || floorId === 'B2'
   const isRoof = floorId === 'roof'
 
-  // Hero orthographic — slight low angle looking up (cyberpunk skyline)
+  // G · lobby — pull back to show full slim tower
   if (floorId === 'G') {
-    return { position: [7, 2.5, 10], lookAt: [0, 2.8, 0], zoom: 38 }
+    const midY = towerTotalHeight() / 2 - 1
+    return { position: [5, midY, 14], lookAt: [0, midY, 0], zoom: 28 }
   }
   if (isRoof) {
-    return { position: [4, SPIRE_BASE + 2, 9], lookAt: [0, SPIRE_BASE + 0.5, 0], zoom: 40 }
+    return { position: [3.5, y + 1.5, 10], lookAt: [0, y, 0], zoom: 38 }
   }
   if (isBasement) {
-    return { position: [7, y + 0.5, 8], lookAt: [0, y, 0], zoom: 42 }
+    return { position: [4.5, y + 0.8, 9], lookAt: [0, y, 0], zoom: 40 }
   }
-  return { position: [6.5, y + 1.2, 9], lookAt: [0, y, 0], zoom: 44 }
+  // Tower program floors — frame the band + room
+  return { position: [4, y + 0.6, 8.5], lookAt: [0, y, 0], zoom: 42 }
 }
 
 interface OrthoRigProps {
@@ -39,7 +41,7 @@ interface OrthoRigProps {
 
 export function OrthoRig({ floorId, reducedMotion }: OrthoRigProps) {
   const camRef = useRef<THREE.OrthographicCamera>(null)
-  const look = useRef(new THREE.Vector3(0, 2.8, 0))
+  const look = useRef(new THREE.Vector3(0, 4, 0))
   const prevFloor = useRef<FloorId>(floorId)
   const invalidate = useThree((s) => s.invalidate)
 
@@ -98,14 +100,15 @@ export function OrthoRig({ floorId, reducedMotion }: OrthoRigProps) {
     }
   }, [floorId, reducedMotion, invalidate])
 
+  const midY = towerTotalHeight() / 2 - 1
   return (
     <OrthographicCamera
       ref={camRef}
       makeDefault
       near={0.1}
-      far={200}
-      position={[7, 2.5, 10]}
-      zoom={38}
+      far={300}
+      position={[5, midY, 14]}
+      zoom={28}
     />
   )
 }
@@ -114,18 +117,17 @@ export function SiteLights({ theme }: { theme: 'dark' | 'light' }) {
   if (theme === 'light') {
     return (
       <>
-        <ambientLight intensity={0.75} />
-        <directionalLight position={[10, 15, 8]} intensity={1.1} />
-        <directionalLight position={[-8, 10, -5]} intensity={0.3} />
+        <ambientLight intensity={0.8} />
+        <directionalLight position={[10, 20, 8]} intensity={1.0} />
+        <directionalLight position={[-8, 12, -5]} intensity={0.25} />
       </>
     )
   }
   return (
     <>
-      <ambientLight intensity={0.25} />
-      <directionalLight position={[8, 14, 6]} intensity={0.6} color="#8090ff" />
-      <directionalLight position={[-6, 8, -4]} intensity={0.15} color="#ff60a0" />
-      <pointLight position={[0, 8, 4]} intensity={0.4} color="#00e5ff" distance={20} />
+      <ambientLight intensity={0.2} />
+      <directionalLight position={[6, 18, 8]} intensity={0.55} color="#8090ff" />
+      <directionalLight position={[-5, 10, -4]} intensity={0.12} color="#ff4080" />
     </>
   )
 }

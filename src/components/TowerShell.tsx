@@ -11,7 +11,7 @@ const TowerScene = lazy(() =>
 )
 
 export function TowerShell() {
-  const { floorId, theme, strings } = useSite()
+  const { floorId, hoveredFloorId, theme, strings, goToFloor, setHoveredFloor } = useSite()
   const reducedMotion = useReducedMotion()
   const webgl = useWebGL()
   const use3D = webgl && !reducedMotion
@@ -22,9 +22,12 @@ export function TowerShell() {
         <Suspense fallback={<div className="site-fallback-bg"><TowerSilhouette activeId={floorId} /></div>}>
           <TowerScene
             activeFloorId={floorId}
+            hoveredFloorId={hoveredFloorId}
             reducedMotion={reducedMotion}
             theme={theme}
             bootLabel={strings.site.constructing}
+            onFloorHover={setHoveredFloor}
+            onFloorClick={goToFloor}
           />
         </Suspense>
       ) : (

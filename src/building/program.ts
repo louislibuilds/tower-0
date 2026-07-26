@@ -1,3 +1,5 @@
+import { getProgramFloor, programCenterY } from '../scene/towerGeometry'
+
 export type FloorId = 'B10' | 'B2' | 'G' | '23' | '52' | '99' | 'roof'
 
 export interface FloorDef {
@@ -7,83 +9,42 @@ export interface FloorDef {
   zone: 'basement' | 'ground' | 'tower' | 'roof'
   title: string
   subtitle: string
-  /** 0 = lowest (B10), 6 = highest (roof) — for elevator animation */
+  floorNumber: number
   elevation: number
-  /** 3D scene Y center (meters) */
   yCenter: number
 }
 
+function def(
+  id: FloorId,
+  label: string,
+  zone: FloorDef['zone'],
+  title: string,
+  subtitle: string,
+  floorNumber: number,
+  elevation: number,
+): FloorDef {
+  const pf = getProgramFloor(id)
+  return {
+    id,
+    label,
+    code: label,
+    zone,
+    title,
+    subtitle,
+    floorNumber,
+    elevation,
+    yCenter: programCenterY(pf),
+  }
+}
+
 export const FLOORS: FloorDef[] = [
-  {
-    id: 'B10',
-    label: 'B10',
-    code: 'B10',
-    zone: 'basement',
-    title: 'Tech Centre',
-    subtitle: 'GitHub · Print Résumé',
-    elevation: 0,
-    yCenter: -3.2,
-  },
-  {
-    id: 'B2',
-    label: 'B2',
-    code: 'B2',
-    zone: 'basement',
-    title: 'Infrastructure',
-    subtitle: 'Skills · Courses · Project Links',
-    elevation: 1,
-    yCenter: -1.8,
-  },
-  {
-    id: 'G',
-    label: 'G',
-    code: 'G',
-    zone: 'ground',
-    title: 'Lobby',
-    subtitle: 'Welcome · About · Thesis',
-    elevation: 2,
-    yCenter: 0.6,
-  },
-  {
-    id: '23',
-    label: '23',
-    code: '23',
-    zone: 'tower',
-    title: 'Warehouse',
-    subtitle: 'Academic Timeline · Semester Grades',
-    elevation: 3,
-    yCenter: 1.9,
-  },
-  {
-    id: '52',
-    label: '52',
-    code: '52',
-    zone: 'tower',
-    title: 'Laboratory',
-    subtitle: 'Group Projects · Research',
-    elevation: 4,
-    yCenter: 3.2,
-  },
-  {
-    id: '99',
-    label: '99',
-    code: '99',
-    zone: 'tower',
-    title: 'Library & Archive',
-    subtitle: 'Awards · Credentials · Leadership',
-    elevation: 5,
-    yCenter: 4.5,
-  },
-  {
-    id: 'roof',
-    label: 'R',
-    code: 'roof',
-    zone: 'roof',
-    title: 'Roof',
-    subtitle: 'Contact · Identity Plate',
-    elevation: 6,
-    yCenter: 5.8,
-  },
+  def('B10', 'B10', 'basement', 'Tech Centre', 'GitHub · Print Résumé', -10, 0),
+  def('B2', 'B2', 'basement', 'Infrastructure', 'Skills · Courses · Project Links', -2, 1),
+  def('G', 'G', 'ground', 'Lobby', 'Welcome · About · Thesis', 0, 2),
+  def('23', '23', 'tower', 'Warehouse', 'Academic Timeline · Semester Grades', 23, 3),
+  def('52', '52', 'tower', 'Laboratory', 'Group Projects · Research', 52, 4),
+  def('99', '99', 'tower', 'Library & Archive', 'Awards · Credentials · Leadership', 99, 5),
+  def('roof', 'R', 'roof', 'Roof', 'Contact · Identity Plate', 101, 6),
 ]
 
 export const DEFAULT_FLOOR: FloorId = 'G'

@@ -10,9 +10,11 @@ interface SiteContextValue {
   locale: Locale
   strings: LocaleStrings
   floorId: FloorId
+  hoveredFloorId: FloorId | null
   floor: ReturnType<typeof useFloorNavigation>['floor']
   direction: number
   goToFloor: (id: FloorId) => void
+  setHoveredFloor: (id: FloorId | null) => void
   setTheme: (t: Theme) => void
   toggleTheme: () => void
   setLocale: (l: Locale) => void
@@ -35,6 +37,7 @@ export function SiteProvider({ children }: { children: ReactNode }) {
   const nav = useFloorNavigation()
   const [theme, setThemeState] = useState<Theme>(loadTheme)
   const [locale, setLocaleState] = useState<Locale>(loadLocale)
+  const [hoveredFloorId, setHoveredFloor] = useState<FloorId | null>(null)
 
   const setTheme = useCallback((t: Theme) => {
     setThemeState(t)
@@ -65,15 +68,17 @@ export function SiteProvider({ children }: { children: ReactNode }) {
       locale,
       strings,
       floorId: nav.floorId,
+      hoveredFloorId,
       floor: nav.floor,
       direction: nav.direction,
       goToFloor: nav.goToFloor,
+      setHoveredFloor,
       setTheme,
       toggleTheme,
       setLocale,
       localeLabels: LOCALE_LABELS,
     }),
-    [theme, locale, strings, nav, setTheme, toggleTheme, setLocale],
+    [theme, locale, strings, nav, hoveredFloorId, setTheme, toggleTheme, setLocale],
   )
 
   return <SiteContext.Provider value={value}>{children}</SiteContext.Provider>
