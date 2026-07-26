@@ -1,4 +1,5 @@
 import { Html } from '@react-three/drei'
+import { Fragment } from 'react'
 import { credentials } from '../../data/credentials'
 import { libraryBooks } from '../../data/libraryBooks'
 import type { LibraryRoomSlug } from '../../data/libraryRooms'
@@ -251,8 +252,8 @@ function StackRoomInterior({
 
           if (book) {
             return (
+              <Fragment key={`${row}-${col}`}>
               <mesh
-                key={`${row}-${col}`}
                 position={[x, y, -d / 2 + 0.2]}
                 onClick={(e) => {
                   e.stopPropagation()
@@ -272,6 +273,11 @@ function StackRoomInterior({
                   emissiveIntensity={active ? 0.2 : 0}
                 />
               </mesh>
+              <mesh position={[x, y + 0.09, -d / 2 + 0.2]}>
+                <boxGeometry args={[0.05, 0.02, 0.05]} />
+                <meshStandardMaterial color="#e8e4dc" />
+              </mesh>
+              </Fragment>
             )
           }
 
@@ -339,6 +345,10 @@ function VaultWallInterior({
                 emissive={active ? accent : '#000'}
                 emissiveIntensity={active ? 0.15 : 0}
               />
+            </mesh>
+            <mesh position={[0, 0.06, 0.028]}>
+              <circleGeometry args={[0.018, 12]} />
+              <meshStandardMaterial color={m.pal.chicken} metalness={0.6} />
             </mesh>
           </group>
         )

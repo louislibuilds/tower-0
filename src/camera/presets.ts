@@ -4,7 +4,7 @@ import type { ViewMode } from '../building/viewMode'
 import type { LibraryRoomSlug } from '../data/libraryRooms'
 import { getProgramFloor, programCenterY, programBaseY, towerTotalHeight } from '../scene/towerGeometry'
 import { FACTORY_STOPS } from '../scene/factoryStops'
-import { labStation } from '../scene/typologies/labAnchors'
+import { labStation } from '../scene/typologies/labCamera'
 
 export interface CameraPreset {
   position: [number, number, number]

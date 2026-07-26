@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect } from 'react'
+import { lazy, Suspense } from 'react'
 import { useSite } from '../context/SiteContext'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import { useWebGL } from '../hooks/useWebGL'
@@ -12,10 +12,6 @@ import { TowerSilhouette } from './TowerSilhouette'
 const TowerScene = lazy(() =>
   import('../scene/TowerScene').then((m) => ({ default: m.TowerScene })),
 )
-
-function preloadTowerScene() {
-  void import('../scene/TowerScene')
-}
 
 export function TowerShell() {
   const {
@@ -45,10 +41,6 @@ export function TowerShell() {
   const reducedMotion = useReducedMotion()
   const webgl = useWebGL()
   const use3D = webgl && !reducedMotion
-
-  useEffect(() => {
-    if (use3D) preloadTowerScene()
-  }, [use3D])
 
   return (
     <div className="site-root" data-experience="siteline">
@@ -93,7 +85,7 @@ export function TowerShell() {
       <StampOverlay visible={phase === 'boot' || phase === 'survey'} />
       {phase === 'void' && <ExitOverlay onReopen={reopenSite} />}
       <FocusOverlay />
-      {bootDone && phase !== 'void' && phase !== 'exit' && viewMode !== 'focus' && <DelayedExhibitOverlay />}
+      {bootDone && phase !== 'void' && phase !== 'exit' && viewMode !== 'tower' && <DelayedExhibitOverlay />}
       {phase === 'exit' && (
         <div className="site-exit-progress" aria-hidden="true">
           {strings.site.rollingDrawing}

@@ -1,6 +1,6 @@
 import { typologyMat, type TypologyProps } from '../types'
 
-/** 005 · Document Foundry — paper stack + printer + status LED */
+/** 005 · Document Foundry — paper stack + printer slot + chicken LED + output tray */
 export function DocumentFoundryStation({ theme, accent, entered, active }: TypologyProps) {
   const m = typologyMat(theme, accent, entered)
   const lit = entered || active
@@ -19,8 +19,12 @@ export function DocumentFoundryStation({ theme, accent, entered, active }: Typol
           emissiveIntensity={lit ? 0.45 : 0}
         />
       </mesh>
-      {Array.from({ length: 4 }).map((_, i) => (
-        <mesh key={i} position={[-0.04 + i * 0.022, 0.02 + i * 0.01, -0.03]}>
+      <mesh position={[0.05, 0.025, -0.02]}>
+        <boxGeometry args={[0.05, 0.01, 0.06]} />
+        <meshStandardMaterial color="#d8d4cc" />
+      </mesh>
+      {Array.from({ length: 5 }).map((_, i) => (
+        <mesh key={i} position={[-0.04 + i * 0.018, 0.02 + i * 0.008, -0.03]}>
           <boxGeometry args={[0.06, 0.008, 0.045]} />
           <meshStandardMaterial color="#d8d4cc" />
         </mesh>

@@ -781,6 +781,60 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 }
 .exhibit-experience__item ul { padding-left: 1rem; }
 
+.focus-hint {
+  position: absolute;
+  bottom: 4.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 14;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.35rem 0.65rem;
+  border: 1px solid color-mix(in srgb, var(--graphite) 25%, transparent);
+  background: color-mix(in srgb, var(--paper) 92%, transparent);
+  pointer-events: auto;
+}
+.focus-hint__label {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--graphite-mute);
+}
+.focus-hint__back {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--signal);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+.focus-hint__back:hover { opacity: 0.85; }
+
+.exhibit-card__action {
+  display: inline-flex;
+  margin-top: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--signal);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+.exhibit-card__action:hover { opacity: 0.85; }
+.exhibit-card__issuer {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  margin-bottom: 0.5rem;
+}
+
 .focus-overlay {
   position: fixed;
   inset: 0;

@@ -108,6 +108,12 @@ export interface LocaleStrings {
   credentials: Record<string, { title: string; detail?: string }>
   skillGroups: Record<string, string>
   platformApps: Record<string, { name: string; hook: string }>
+  focus: {
+    panelHint: string
+    back: string
+    bookOpen: string
+    credentialEyebrow: string
+  }
 }
 
 const en: LocaleStrings = {
@@ -297,6 +303,12 @@ const en: LocaleStrings = {
     'kata-editor': { name: 'KATA Editor', hook: 'Résumé variants with live preview and PDF export.' },
     'kata-tracker': { name: 'KATA Tracker', hook: 'Local-first job application tracker.' },
   },
+  focus: {
+    panelHint: 'Focus detail · side panel',
+    back: 'Back to room',
+    bookOpen: 'Open link ↗',
+    credentialEyebrow: 'Credential · focus',
+  },
 }
 
 const zhTW: LocaleStrings = {
@@ -485,6 +497,12 @@ const zhTW: LocaleStrings = {
     nagi: { name: 'nagi', hook: '作品集即建築 — bubblechickenlab.com 多語 CMS。' },
     'kata-editor': { name: 'KATA 編輯器', hook: '履歷變體即時預覽與 PDF 匯出。' },
     'kata-tracker': { name: 'KATA 追蹤器', hook: '本地優先的求職申請追蹤。' },
+  },
+  focus: {
+    panelHint: '特寫詳情 · 右側面板',
+    back: '返回房間',
+    bookOpen: '開啟連結 ↗',
+    credentialEyebrow: '證書 · 特寫',
   },
 }
 
@@ -757,6 +775,12 @@ const ja: LocaleStrings = {
     nagi: { name: 'nagi', hook: 'ポートフォリオ即建築 — bubblechickenlab.com 多言語 CMS。' },
     'kata-editor': { name: 'KATA エディター', hook: '履歴書バリアントのライブプレビューと PDF エクスポート。' },
     'kata-tracker': { name: 'KATA トラッカー', hook: 'ローカルファーストの求人応募トラッカー。' },
+  },
+  focus: {
+    panelHint: 'フォーカス詳細 · サイドパネル',
+    back: 'ルームに戻る',
+    bookOpen: 'リンクを開く ↗',
+    credentialEyebrow: '資格 · フォーカス',
   },
 }
 

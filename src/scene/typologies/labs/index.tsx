@@ -1,12 +1,5 @@
-import type { ComponentType } from 'react'
+import { lazy, Suspense, type ComponentType } from 'react'
 import { typologyMat, type TypologyProps } from '../types'
-import { DocumentFoundryStation } from './DocumentFoundryStation'
-import { InterviewBooth } from './InterviewBooth'
-import { LaunchPadStation } from './LaunchPadStation'
-import { MocapStage } from './MocapStage'
-import { ServerRackBay } from './ServerRackBay'
-
-export { DocumentFoundryStation, InterviewBooth, LaunchPadStation, MocapStage, ServerRackBay }
 
 export type LabTypologySlug =
   | 'unihack-2026'
@@ -14,6 +7,20 @@ export type LabTypologySlug =
   | 'nlp'
   | 'dl'
   | 'kata'
+
+const LaunchPadStation = lazy(() =>
+  import('./LaunchPadStation').then((m) => ({ default: m.LaunchPadStation })),
+)
+const ServerRackBay = lazy(() =>
+  import('./ServerRackBay').then((m) => ({ default: m.ServerRackBay })),
+)
+const InterviewBooth = lazy(() =>
+  import('./InterviewBooth').then((m) => ({ default: m.InterviewBooth })),
+)
+const MocapStage = lazy(() => import('./MocapStage').then((m) => ({ default: m.MocapStage })))
+const DocumentFoundryStation = lazy(() =>
+  import('./DocumentFoundryStation').then((m) => ({ default: m.DocumentFoundryStation })),
+)
 
 const LAB_TYPOLOGY: Record<LabTypologySlug, ComponentType<TypologyProps>> = {
   'unihack-2026': LaunchPadStation,
@@ -26,7 +33,11 @@ const LAB_TYPOLOGY: Record<LabTypologySlug, ComponentType<TypologyProps>> = {
 export function LabTypology({ slug, ...props }: TypologyProps & { slug: string }) {
   const Comp = LAB_TYPOLOGY[slug as LabTypologySlug]
   if (!Comp) return null
-  return <Comp {...props} />
+  return (
+    <Suspense fallback={null}>
+      <Comp {...props} />
+    </Suspense>
+  )
 }
 
 /** Plinth slab under each station */

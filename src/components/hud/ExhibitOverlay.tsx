@@ -4,6 +4,7 @@ import { profile } from '../../data/profile'
 import { gradeSummary } from '../../data/academic'
 import { labProjects } from '../../data/projects'
 import { credentials } from '../../data/credentials'
+import { libraryBooks } from '../../data/libraryBooks'
 import { experiences } from '../../data/experience'
 import { platformApps, platformSummary } from '../../data/platform'
 import { courseLinks, skillGroups } from '../../data/skills'
@@ -397,6 +398,49 @@ function RoofExhibit() {
   )
 }
 
+function FocusExhibit() {
+  const { strings, selectedBookSlug, selectedCredentialSlug, handleBookClick } = useSite()
+  const f = strings.focus
+
+  if (selectedBookSlug) {
+    const book = libraryBooks.find((b) => b.slug === selectedBookSlug)
+    if (!book) return null
+    return (
+      <>
+        <p className="exhibit-card__eyebrow">{strings.library.libraryTitle}</p>
+        <h3 className="exhibit-card__name">{book.title}</h3>
+        <p className="exhibit-card__body">
+          {book.slug === 'nagi'
+            ? strings.platformApps.nagi.hook
+            : book.slug === 'kata'
+              ? strings.platformApps['kata-editor'].hook
+              : book.url}
+        </p>
+        <button type="button" className="exhibit-card__action" onClick={() => handleBookClick(book.slug)}>
+          {f.bookOpen}
+        </button>
+      </>
+    )
+  }
+
+  if (selectedCredentialSlug) {
+    const cred = credentials.find((c) => c.slug === selectedCredentialSlug)
+    const loc = cred ? strings.credentials[cred.slug as keyof typeof strings.credentials] : null
+    if (!cred) return null
+    return (
+      <>
+        <p className="exhibit-card__eyebrow">{f.credentialEyebrow}</p>
+        <time className="exhibit-card__meta">{cred.year}</time>
+        <h3 className="exhibit-card__name">{loc?.title ?? cred.title}</h3>
+        <p className="exhibit-card__issuer">{cred.issuer}</p>
+        <p className="exhibit-card__body">{loc?.detail ?? cred.detail}</p>
+      </>
+    )
+  }
+
+  return null
+}
+
 function ExhibitBody({
   floorId,
   labRoomSlug,
@@ -421,18 +465,29 @@ function ExhibitBody({
 }
 
 export function ExhibitOverlay() {
-  const { floorId, labRoomSlug, libraryRoomSlug, factoryStop, floor, direction, strings, viewMode } = useSite()
+  const {
+    floorId,
+    labRoomSlug,
+    libraryRoomSlug,
+    factoryStop,
+    floor,
+    direction,
+    strings,
+    viewMode,
+    selectedBookSlug,
+    selectedCredentialSlug,
+  } = useSite()
   const floorStrings = strings.floors[floorId]
   const overlayKey =
-    floorId === '52' && labRoomSlug
-      ? `${floorId}-${labRoomSlug}`
-      : floorId === '99' && libraryRoomSlug
-        ? `${floorId}-${libraryRoomSlug}`
-        : floorId === '23' && factoryStop !== null
-          ? `${floorId}-${factoryStop}`
-          : floorId
-
-  if (viewMode === 'focus') return null
+    viewMode === 'focus'
+      ? `focus-${selectedBookSlug ?? selectedCredentialSlug ?? 'none'}`
+      : floorId === '52' && labRoomSlug
+        ? `${floorId}-${labRoomSlug}`
+        : floorId === '99' && libraryRoomSlug
+          ? `${floorId}-${libraryRoomSlug}`
+          : floorId === '23' && factoryStop !== null
+            ? `${floorId}-${factoryStop}`
+            : floorId
 
   return (
     <AnimatePresence mode="wait" custom={direction}>
@@ -454,12 +509,16 @@ export function ExhibitOverlay() {
           </div>
         </header>
         <div className="exhibit-card__scroll">
-          <ExhibitBody
-            floorId={floorId}
-            labRoomSlug={labRoomSlug}
-            libraryRoomSlug={libraryRoomSlug}
-            factoryStop={factoryStop}
-          />
+          {viewMode === 'focus' ? (
+            <FocusExhibit />
+          ) : (
+            <ExhibitBody
+              floorId={floorId}
+              labRoomSlug={labRoomSlug}
+              libraryRoomSlug={libraryRoomSlug}
+              factoryStop={factoryStop}
+            />
+          )}
         </div>
       </motion.aside>
     </AnimatePresence>
