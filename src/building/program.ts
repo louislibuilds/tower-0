@@ -9,6 +9,8 @@ export interface FloorDef {
   subtitle: string
   /** 0 = lowest (B10), 6 = highest (roof) — for elevator animation */
   elevation: number
+  /** 3D scene Y center (meters) */
+  yCenter: number
 }
 
 export const FLOORS: FloorDef[] = [
@@ -20,6 +22,7 @@ export const FLOORS: FloorDef[] = [
     title: 'Tech Centre',
     subtitle: 'GitHub · Print Résumé',
     elevation: 0,
+    yCenter: -3.2,
   },
   {
     id: 'B2',
@@ -29,6 +32,7 @@ export const FLOORS: FloorDef[] = [
     title: 'Infrastructure',
     subtitle: 'Skills · Courses · Project Links',
     elevation: 1,
+    yCenter: -1.8,
   },
   {
     id: 'G',
@@ -38,6 +42,7 @@ export const FLOORS: FloorDef[] = [
     title: 'Lobby',
     subtitle: 'Welcome · About · Thesis',
     elevation: 2,
+    yCenter: 0.6,
   },
   {
     id: '23',
@@ -47,6 +52,7 @@ export const FLOORS: FloorDef[] = [
     title: 'Warehouse',
     subtitle: 'Academic Timeline · Semester Grades',
     elevation: 3,
+    yCenter: 1.9,
   },
   {
     id: '52',
@@ -56,6 +62,7 @@ export const FLOORS: FloorDef[] = [
     title: 'Laboratory',
     subtitle: 'Group Projects · Research',
     elevation: 4,
+    yCenter: 3.2,
   },
   {
     id: '99',
@@ -65,6 +72,7 @@ export const FLOORS: FloorDef[] = [
     title: 'Library & Archive',
     subtitle: 'Awards · Credentials · Leadership',
     elevation: 5,
+    yCenter: 4.5,
   },
   {
     id: 'roof',
@@ -74,6 +82,7 @@ export const FLOORS: FloorDef[] = [
     title: 'Roof',
     subtitle: 'Contact · Identity Plate',
     elevation: 6,
+    yCenter: 5.8,
   },
 ]
 

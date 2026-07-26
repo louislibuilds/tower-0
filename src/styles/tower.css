@@ -76,13 +76,60 @@ button {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1.5rem 1rem;
+  padding: 1rem 0.75rem;
   border-right: 1px solid var(--border);
   background: var(--surface);
   position: sticky;
   top: 0;
   height: 100dvh;
-  gap: 1.5rem;
+  gap: 1rem;
+  min-width: 180px;
+}
+
+.tower-scene {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  min-height: 280px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.tower-scene__canvas {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 280px;
+}
+
+.tower-scene--booting .tower-scene__canvas {
+  opacity: 0.6;
+}
+
+.tower-scene--ready .tower-scene__canvas {
+  opacity: 1;
+  transition: opacity 0.4s ease;
+}
+
+.tower-scene__boot-label {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.tower-shell__fallback-note {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--muted);
+  text-align: center;
+  letter-spacing: 0.06em;
 }
 
 .tower-shell__main {
