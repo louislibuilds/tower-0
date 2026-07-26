@@ -1,0 +1,432 @@
+export type Locale = 'en' | 'zh-TW' | 'zh-CN'
+export type Theme = 'dark' | 'light'
+
+export interface LocaleStrings {
+  site: {
+    name: string
+    tagline: string
+    constructing: string
+    fallback: string
+    floors: string
+    themeDark: string
+    themeLight: string
+  }
+  floors: Record<
+    string,
+    { title: string; subtitle: string; exhibitTitle: string; exhibitHook: string }
+  >
+  lobby: {
+    welcome: string
+    thesis: string
+    bio: string
+    degree: string
+    institution: string
+    wam: string
+    location: string
+    hint: string
+  }
+  warehouse: {
+    wam: string
+    cp: string
+    hd: string
+    d: string
+    avg: string
+  }
+  lab: {
+    intro: string
+    role: string
+    team: string
+    course: string
+  }
+  infra: {
+    skillsTitle: string
+    coursesTitle: string
+    viewProject: string
+  }
+  tech: {
+    intro: string
+    github: string
+    githubDesc: string
+    kata: string
+    kataDesc: string
+    print: string
+    printDesc: string
+    reposTitle: string
+    openProfile: string
+    openKata: string
+    printNow: string
+  }
+  library: {
+    hero: string
+    heroSub: string
+  }
+  roof: {
+    site: string
+    footer: string
+    copy: string
+  }
+  projects: Record<
+    string,
+    { title: string; hook: string; role: string; team?: string; course?: string }
+  >
+  credentials: Record<string, { title: string; detail?: string }>
+  skillGroups: Record<string, string>
+}
+
+const en: LocaleStrings = {
+  site: {
+    name: 'TOWER 0',
+    tagline: 'Software is not written. It is constructed.',
+    constructing: 'Constructing…',
+    fallback: '2D plan view',
+    floors: 'FLOORS',
+    themeDark: 'Dark',
+    themeLight: 'Light',
+  },
+  floors: {
+    B10: {
+      title: 'Tech Centre',
+      subtitle: 'GitHub · Print Résumé',
+      exhibitTitle: 'Tech Centre · B10',
+      exhibitHook: 'Source control, deployment artifacts, printable résumé sheets.',
+    },
+    B2: {
+      title: 'Infrastructure',
+      subtitle: 'Skills · Courses · Links',
+      exhibitTitle: 'Infrastructure · B2',
+      exhibitHook: 'Risers, pipes, and the circuit board beneath the tower.',
+    },
+    G: {
+      title: 'Lobby',
+      subtitle: 'Welcome · About',
+      exhibitTitle: 'Lobby · Ground',
+      exhibitHook: 'Thesis wall and identity plate at grade.',
+    },
+    '23': {
+      title: 'Warehouse',
+      subtitle: 'Timeline · Grades',
+      exhibitTitle: 'Warehouse · 23',
+      exhibitHook: 'Every semester shelved — marks, grades, milestones.',
+    },
+    '52': {
+      title: 'Laboratory',
+      subtitle: 'Group Projects',
+      exhibitTitle: 'Laboratory · 52',
+      exhibitHook: 'Five project rooms — hackathon to research pipeline.',
+    },
+    '99': {
+      title: 'Library & Archive',
+      subtitle: 'Awards · Credentials',
+      exhibitTitle: 'Library · 99',
+      exhibitHook: 'Degrees, dean\'s list, leadership, certificates.',
+    },
+    roof: {
+      title: 'Roof',
+      subtitle: 'Contact',
+      exhibitTitle: 'Roof · Contact',
+      exhibitHook: 'Identity plate under open sky.',
+    },
+  },
+  lobby: {
+    welcome: 'Welcome to',
+    thesis: 'Software is not written. It is constructed.',
+    bio: 'Full-stack developer · UTS MIT · Sydney. I construct software the way buildings are built: load-bearing boundaries, service risers, and rooms that each tell a story.',
+    degree: 'Degree',
+    institution: 'Institution',
+    wam: 'WAM',
+    location: 'Location',
+    hint: 'Select a floor from the rail — the tower is the map.',
+  },
+  warehouse: { wam: 'WAM', cp: 'Credit Points', hd: 'High Distinction', d: 'Distinction', avg: 'Avg' },
+  lab: { intro: 'Five project rooms on this floor.', role: 'Role', team: 'Team', course: 'Course' },
+  infra: {
+    skillsTitle: 'Skills — Risers & Pipes',
+    coursesTitle: 'Course Links → Projects',
+    viewProject: 'View project ↗',
+  },
+  tech: {
+    intro: 'Underground tech centre — repos, exports, deployment.',
+    github: 'GitHub',
+    githubDesc: 'louislibuilds — repos, commits, open source',
+    kata: 'KATA Editor',
+    kataDesc: 'Craft & export résumé with PDF export',
+    print: 'Print Résumé',
+    printDesc: 'Print identity plate or use KATA for full sheets',
+    reposTitle: 'Highlighted Repos',
+    openProfile: 'Open profile ↗',
+    openKata: 'Open KATA ↗',
+    printNow: 'Print now',
+  },
+  library: {
+    hero: 'Archive & Credentials',
+    heroSub: 'Master of Information Technology · UTS · WAM 86.9',
+  },
+  roof: {
+    site: 'SITE · TOWER 0',
+    footer: 'Software is not written. It is constructed.',
+    copy: '© {year} Louis Li · Tower 0',
+  },
+  projects: {
+    'unihack-2026': {
+      title: 'UniHack 2026 — Your Rock Is Coming',
+      hook: '48-hour MVP: map discovery + 7-day weather forecasts.',
+      role: 'Team Lead & Technical Director',
+      team: 'Cross-functional hackathon team',
+    },
+    'cloud-computing': {
+      title: 'SUNishop — Cloud E-Commerce',
+      hook: 'LAMP → MERN migration with CI and AWS Academy deployment.',
+      role: 'Full-stack Developer',
+      course: '42904 (100 HD) · 42891 (95 HD)',
+    },
+    nlp: {
+      title: 'Mock Interview Coach',
+      hook: 'STT-powered mock interviews with STAR-based NLP feedback.',
+      role: 'Lead Developer',
+      course: '42850 NLP Algorithms (94 HD)',
+    },
+    dl: {
+      title: 'VTuber Motion Pipeline',
+      hook: 'Real-time pose → VRM avatar via MediaPipe, Kalidokit, gesture CNN.',
+      role: 'Software Dev · Productization',
+      team: 'Ko-Chun Liao, Junjie Niu',
+      course: '42028 Deep Learning & CNN (95 HD)',
+    },
+    kata: {
+      title: 'KATA — Resume & Job Tracker',
+      hook: 'Unified job-search: craft résumés, deploy PDFs, track applications.',
+      role: 'Sole Builder',
+    },
+  },
+  credentials: {
+    'deans-list': { title: "Dean's List 2026", detail: 'UTS Faculty of Engineering & IT' },
+    degree: { title: 'Master of Information Technology', detail: 'C04295 · 96 CP · WAM 86.9' },
+    techfest: { title: 'TechFest AI Showcase Nominee', detail: 'VTuber Motion Pipeline' },
+    'tsa-founder': { title: 'UTS TSA — Co-founder', detail: '1,000+ followers' },
+    'tsa-vp': { title: 'Vice President & Secretary', detail: 'Jun 2025 – Jun 2026' },
+    'tsa-consultant': { title: 'Consultant', detail: 'UTS TSA advisory' },
+    acf: { title: 'ACF Mentoring Program', detail: 'Australia Career Forum · 2026' },
+  },
+  skillGroups: {
+    Languages: 'Languages',
+    Frontend: 'Frontend',
+    'Backend & Data': 'Backend & Data',
+    'Cloud & DevOps': 'Cloud & DevOps',
+    'ML / AI': 'ML / AI',
+  },
+}
+
+const zhTW: LocaleStrings = {
+  site: {
+    name: 'TOWER 0',
+    tagline: '軟體不是寫出來的，是建造出來的。',
+    constructing: '建造中…',
+    fallback: '2D 平面圖',
+    floors: '樓層',
+    themeDark: '深色',
+    themeLight: '淺色',
+  },
+  floors: {
+    B10: {
+      title: '科技中心',
+      subtitle: 'GitHub · 列印履歷',
+      exhibitTitle: '科技中心 · B10',
+      exhibitHook: '原始碼、部署產物、可列印履歷。',
+    },
+    B2: {
+      title: '基礎設施',
+      subtitle: '技能 · 課程 · 連結',
+      exhibitTitle: '基礎設施 · B2',
+      exhibitHook: '塔樓底下的管線、機電井與電路板。',
+    },
+    G: {
+      title: '大廳',
+      subtitle: '歡迎 · 關於',
+      exhibitTitle: '大廳 · 地面',
+      exhibitHook: '論述牆與地面層的身份铭牌。',
+    },
+    '23': {
+      title: '倉庫',
+      subtitle: '時間軸 · 成績',
+      exhibitTitle: '倉庫 · 23F',
+      exhibitHook: '每學期的成績與里程碑，逐一上架。',
+    },
+    '52': {
+      title: '實驗室',
+      subtitle: '團隊專案',
+      exhibitTitle: '實驗室 · 52F',
+      exhibitHook: '五間專案房 — 從黑客松到研究管線。',
+    },
+    '99': {
+      title: '圖書館 & 檔案室',
+      subtitle: '獎項 · 證書',
+      exhibitTitle: '圖書館 · 99F',
+      exhibitHook: '學位、院長榮譽榜、領導經歷、證書。',
+    },
+    roof: {
+      title: '屋頂',
+      subtitle: '聯絡',
+      exhibitTitle: '屋頂 · 聯絡',
+      exhibitHook: '開闊天空下的身份铭牌。',
+    },
+  },
+  lobby: {
+    welcome: '歡迎來到',
+    thesis: '軟體不是寫出來的，是建造出來的。',
+    bio: '全端開發者 · UTS 資訊科技碩士 · 雪梨。我以建築的方式構建軟體：承重邊界、服務井道、每個房間訴說一段故事。',
+    degree: '學位',
+    institution: '學校',
+    wam: 'WAM',
+    location: '地點',
+    hint: '從樓層導覽選擇 — 這座塔就是你的地圖。',
+  },
+  warehouse: { wam: 'WAM', cp: '學分', hd: '高級優等', d: '優等', avg: '平均' },
+  lab: { intro: '本層五間專案房。', role: '角色', team: '團隊', course: '課程' },
+  infra: {
+    skillsTitle: '技能 — 管線與機電',
+    coursesTitle: '課程連結 → 專案',
+    viewProject: '查看專案 ↗',
+  },
+  tech: {
+    intro: '地下科技中心 — 程式庫、匯出、部署。',
+    github: 'GitHub',
+    githubDesc: 'louislibuilds — 開源專案與提交紀錄',
+    kata: 'KATA 編輯器',
+    kataDesc: '撰寫與匯出 PDF 履歷',
+    print: '列印履歷',
+    printDesc: '列印身份铭牌或使用 KATA 完整版',
+    reposTitle: '精選 Repos',
+    openProfile: '開啟 GitHub ↗',
+    openKata: '開啟 KATA ↗',
+    printNow: '立即列印',
+  },
+  library: {
+    hero: '檔案室 & 證書',
+    heroSub: '資訊科技碩士 · UTS · WAM 86.9',
+  },
+  roof: {
+    site: 'SITE · TOWER 0',
+    footer: '軟體不是寫出來的，是建造出來的。',
+    copy: '© {year} Louis Li · Tower 0',
+  },
+  projects: {
+    'unihack-2026': {
+      title: 'UniHack 2026 — Your Rock Is Coming',
+      hook: '48 小時 MVP：地圖探索 + 7 日天氣預報。',
+      role: '隊長 & 技術總監',
+      team: '跨領域黑客松團隊',
+    },
+    'cloud-computing': {
+      title: 'SUNishop — 雲端電商',
+      hook: 'LAMP → MERN 遷移，CI 與 AWS Academy 部署。',
+      role: '全端開發',
+      course: '42904 (100 HD) · 42891 (95 HD)',
+    },
+    nlp: {
+      title: 'Mock Interview Coach',
+      hook: 'STT 模擬面試，STAR 框架 NLP 評分回饋。',
+      role: '主要開發',
+      course: '42850 NLP 演算法 (94 HD)',
+    },
+    dl: {
+      title: 'VTuber 動作管線',
+      hook: '即時姿態 → VRM 虛擬角色，MediaPipe + Kalidokit + CNN。',
+      role: '軟體開發 · 產品化',
+      team: 'Ko-Chun Liao, Junjie Niu',
+      course: '42028 深度學習 & CNN (95 HD)',
+    },
+    kata: {
+      title: 'KATA — 履歷 & 求職追蹤',
+      hook: '統一求職平台：撰寫履歷、匯出 PDF、追蹤申請。',
+      role: '獨立開發',
+    },
+  },
+  credentials: {
+    'deans-list': { title: '院長榮譽榜 2026', detail: 'UTS 工程與資訊科技學院' },
+    degree: { title: '資訊科技碩士', detail: 'C04295 · 96 學分 · WAM 86.9' },
+    techfest: { title: 'TechFest AI 展示提名', detail: 'VTuber 動作管線專案' },
+    'tsa-founder': { title: 'UTS 台灣學生會 — 共同創辦人', detail: '1,000+ 追蹤者' },
+    'tsa-vp': { title: '副會長 & 秘書', detail: '2025/06 – 2026/06' },
+    'tsa-consultant': { title: '顧問', detail: 'UTS TSA 營運諮詢' },
+    acf: { title: 'ACF 導師計畫', detail: 'Australia Career Forum · 2026' },
+  },
+  skillGroups: {
+    Languages: '程式語言',
+    Frontend: '前端',
+    'Backend & Data': '後端 & 資料',
+    'Cloud & DevOps': '雲端 & DevOps',
+    'ML / AI': '機器學習 / AI',
+  },
+}
+
+const zhCN: LocaleStrings = {
+  ...zhTW,
+  site: {
+    ...zhTW.site,
+    tagline: '软件不是写出来的，是建造出来的。',
+    constructing: '建造中…',
+    fallback: '2D 平面图',
+    floors: '楼层',
+    themeDark: '深色',
+    themeLight: '浅色',
+  },
+  floors: {
+    B10: { title: '科技中心', subtitle: 'GitHub · 打印简历', exhibitTitle: '科技中心 · B10', exhibitHook: '源代码、部署产物、可打印简历。' },
+    B2: { title: '基础设施', subtitle: '技能 · 课程 · 链接', exhibitTitle: '基础设施 · B2', exhibitHook: '塔楼下的管线、机电井与电路板。' },
+    G: { title: '大厅', subtitle: '欢迎 · 关于', exhibitTitle: '大厅 · 地面', exhibitHook: '论述墙与地面层的身份铭牌。' },
+    '23': { title: '仓库', subtitle: '时间轴 · 成绩', exhibitTitle: '仓库 · 23F', exhibitHook: '每学期的成绩与里程碑，逐一上架。' },
+    '52': { title: '实验室', subtitle: '团队项目', exhibitTitle: '实验室 · 52F', exhibitHook: '五间项目房 — 从黑客松到研究管线。' },
+    '99': { title: '图书馆 & 档案室', subtitle: '奖项 · 证书', exhibitTitle: '图书馆 · 99F', exhibitHook: '学位、院长荣誉榜、领导经历、证书。' },
+    roof: { title: '屋顶', subtitle: '联系', exhibitTitle: '屋顶 · 联系', exhibitHook: '开阔天空下的身份铭牌。' },
+  },
+  lobby: {
+    ...zhTW.lobby,
+    thesis: '软件不是写出来的，是建造出来的。',
+    bio: '全栈开发者 · UTS 信息技术硕士 · 悉尼。我以建筑的方式构建软件：承重边界、服务井道、每个房间诉说一段故事。',
+    hint: '从楼层导览选择 — 这座塔就是你的地图。',
+  },
+  warehouse: { wam: 'WAM', cp: '学分', hd: '高级优等', d: '优等', avg: '平均' },
+  lab: { intro: '本层五间项目房。', role: '角色', team: '团队', course: '课程' },
+  infra: { skillsTitle: '技能 — 管线与机电', coursesTitle: '课程链接 → 项目', viewProject: '查看项目 ↗' },
+  tech: {
+    ...zhTW.tech,
+    intro: '地下科技中心 — 代码库、导出、部署。',
+    print: '打印简历',
+    printDesc: '打印身份铭牌或使用 KATA 完整版',
+    openProfile: '打开 GitHub ↗',
+    printNow: '立即打印',
+  },
+  library: { hero: '档案室 & 证书', heroSub: '信息技术硕士 · UTS · WAM 86.9' },
+  roof: { ...zhTW.roof, footer: '软件不是写出来的，是建造出来的。' },
+  projects: {
+    'unihack-2026': { ...zhTW.projects['unihack-2026'], hook: '48 小时 MVP：地图探索 + 7 日天气预报。', role: '队长 & 技术总监', team: '跨领域黑客松团队' },
+    'cloud-computing': { ...zhTW.projects['cloud-computing'], title: 'SUNishop — 云端电商', hook: 'LAMP → MERN 迁移，CI 与 AWS Academy 部署。', role: '全端开发' },
+    nlp: { ...zhTW.projects.nlp, hook: 'STT 模拟面试，STAR 框架 NLP 评分反馈。', role: '主要开发', course: '42850 NLP 算法 (94 HD)' },
+    dl: { ...zhTW.projects.dl, title: 'VTuber 动作管线', hook: '实时姿态 → VRM 虚拟角色，MediaPipe + Kalidokit + CNN。', role: '软件开发 · 产品化' },
+    kata: { ...zhTW.projects.kata, title: 'KATA — 简历 & 求职追踪', hook: '统一求职平台：撰写简历、导出 PDF、追踪申请。', role: '独立开发' },
+  },
+  credentials: {
+    'deans-list': { title: '院长荣誉榜 2026', detail: 'UTS 工程与信息技术学院' },
+    degree: { title: '信息技术硕士', detail: 'C04295 · 96 学分 · WAM 86.9' },
+    techfest: { title: 'TechFest AI 展示提名', detail: 'VTuber 动作管线项目' },
+    'tsa-founder': { title: 'UTS 台湾学生会 — 共同创办人', detail: '1,000+ 追踪者' },
+    'tsa-vp': { title: '副会长 & 秘书', detail: '2025/06 – 2026/06' },
+    'tsa-consultant': { title: '顾问', detail: 'UTS TSA 运营咨询' },
+    acf: { title: 'ACF 导师计划', detail: 'Australia Career Forum · 2026' },
+  },
+  skillGroups: {
+    Languages: '编程语言',
+    Frontend: '前端',
+    'Backend & Data': '后端 & 数据',
+    'Cloud & DevOps': '云端 & DevOps',
+    'ML / AI': '机器学习 / AI',
+  },
+}
+
+export const STRINGS: Record<Locale, LocaleStrings> = { en, 'zh-TW': zhTW, 'zh-CN': zhCN }
+
+export const LOCALE_LABELS: Record<Locale, string> = {
+  en: 'EN',
+  'zh-TW': '繁',
+  'zh-CN': '简',
+}

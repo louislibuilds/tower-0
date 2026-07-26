@@ -1,56 +1,47 @@
 import { lazy, Suspense } from 'react'
-import { FLOORS } from '../building/program'
-import { useFloorNavigation } from '../hooks/useFloorNavigation'
+import { useSite } from '../context/SiteContext'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import { useWebGL } from '../hooks/useWebGL'
-import { ElevatorHUD } from './ElevatorHUD'
-import { FloorPanel } from './FloorPanel'
-import { FloorRail } from './FloorRail'
+import { ExhibitOverlay } from './hud/ExhibitOverlay'
+import { ElevatorHud, FloorRailHud, SiteChrome } from './hud/SiteChrome'
 import { TowerSilhouette } from './TowerSilhouette'
 
 const TowerScene = lazy(() =>
   import('../scene/TowerScene').then((m) => ({ default: m.TowerScene })),
 )
 
-const MAX_ELEVATION = FLOORS[FLOORS.length - 1].elevation
-
 export function TowerShell() {
-  const { floorId, floor, direction, goToFloor } = useFloorNavigation()
+  const { floorId, theme, strings } = useSite()
   const reducedMotion = useReducedMotion()
   const webgl = useWebGL()
   const use3D = webgl && !reducedMotion
 
   return (
-    <div className="tower-shell">
-      <aside className="tower-shell__left">
-        {use3D ? (
-          <Suspense fallback={<TowerSilhouette activeId={floorId} />}>
-            <TowerScene activeFloorId={floorId} reducedMotion={reducedMotion} />
-          </Suspense>
-        ) : (
+    <div className="site-root">
+      {use3D ? (
+        <Suspense fallback={<div className="site-fallback-bg"><TowerSilhouette activeId={floorId} /></div>}>
+          <TowerScene
+            activeFloorId={floorId}
+            reducedMotion={reducedMotion}
+            theme={theme}
+            bootLabel={strings.site.constructing}
+          />
+        </Suspense>
+      ) : (
+        <div className="site-fallback-bg">
           <TowerSilhouette activeId={floorId} />
-        )}
-        <ElevatorHUD
-          floorLabel={floor.label}
-          floorTitle={floor.title}
-          elevation={floor.elevation}
-          maxElevation={MAX_ELEVATION}
-          direction={direction}
-        />
-        {!use3D && (
-          <p className="tower-shell__fallback-note" aria-live="polite">
-            2D plan view{!webgl ? ' · WebGL unavailable' : ' · reduced motion'}
+          <p className="site-fallback-note">
+            {strings.site.fallback}{!webgl ? ' · WebGL' : ''}{reducedMotion ? ' · reduced motion' : ''}
           </p>
-        )}
-      </aside>
+        </div>
+      )}
 
-      <main className="tower-shell__main">
-        <FloorPanel floor={floor} direction={direction} />
-      </main>
-
-      <aside className="tower-shell__right">
-        <FloorRail activeId={floorId} onSelect={goToFloor} />
-      </aside>
+      <div className="site-hud">
+        <SiteChrome />
+        <ElevatorHud />
+        <ExhibitOverlay />
+        <FloorRailHud />
+      </div>
     </div>
   )
 }

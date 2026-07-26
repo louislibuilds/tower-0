@@ -2,48 +2,32 @@
 
 > **Software is not written. It is constructed.**
 
-Louis Li's Master of IT portfolio — a building you navigate floor by floor.
+Louis Li's Master of IT portfolio — a cyberpunk skyscraper you navigate floor by floor.
 
-**Live:** _(deploy to Vercel)_
+**Repo:** [github.com/louislibuilds/tower-0](https://github.com/louislibuilds/tower-0)
 
 ## Floor Plan
 
-| Floor | Zone | Room | Content |
-|-------|------|------|---------|
-| **Roof** | R | Contact | Name, email, GitHub, LinkedIn, nagi, KATA |
-| **99** | Tower | Library & Archive | Dean's List, MIT degree, UTS TSA leadership, awards |
-| **52** | Tower | Laboratory | UniHack 2026, Cloud, NLP, DL, KATA |
-| **23** | Tower | Warehouse | Academic timeline · semester grades · WAM |
-| **G** | Ground | Lobby | Welcome · thesis · about |
-| **B2** | Basement | Infrastructure | Skills · course links → projects |
-| **B10** | Basement | Tech Centre | GitHub · print résumé · repo highlights |
+| Floor | Room | Content |
+|-------|------|---------|
+| **Roof** | Contact | Email, GitHub, LinkedIn, nagi, KATA |
+| **99** | Library & Archive | Dean's List, MIT degree, UTS TSA, awards |
+| **52** | Laboratory | UniHack 2026, Cloud, NLP, DL, KATA |
+| **23** | Warehouse | Academic timeline · semester grades |
+| **G** | Lobby | Welcome · thesis · about |
+| **B2** | Infrastructure | Skills · course → project links |
+| **B10** | Tech Centre | GitHub · print résumé |
 
-URL deep links: `#/G`, `#/23`, `#/52`, `#/B2`, `#/B10`, `#/99`, `#/roof`
+URL: `#/G`, `#/23`, `#/52`, `#/B2`, `#/B10`, `#/99`, `#/roof`
 
-## Architecture
+## Features
 
-Inspired by [salieri009/resume2](https://github.com/salieri009/resume2) — portfolio as orthogonal building.
-
-```
-src/
-  building/program.ts    Floor definitions, yCenter, hash routing
-  scene/
-    TowerScene.tsx       R3F Canvas + boot sequence
-    TowerBuilding.tsx    3D tower mass, windows, elevator shaft
-    palette.ts           INK theme colors
-    motion.ts            GSAP durations & tower dimensions
-  camera/OrthoRig.tsx    Orthographic camera per floor
-  data/                  Profile, academic, projects, credentials, skills
-  components/            Shell, HUD, panels, 2D fallback silhouette
-  hooks/                 useFloorNavigation, useReducedMotion, useWebGL
-  styles/tower.css
-```
-
-**Phase 1:** 2D tower UI with Framer Motion elevator transitions, hash routing, responsive layout.
-
-**Phase 2 (current):** React Three Fiber orthographic 3D tower — boot ink→extrude sequence, per-floor camera travel, lit windows, elevator shaft. Lazy-loaded; falls back to 2D SVG when WebGL unavailable or `prefers-reduced-motion`.
-
-**Phase 3 (planned):** Per-floor room exhibits, multi-language, PAPER/INK theme toggle.
+- **Full-viewport 3D tower** — art-deco tiered cyberpunk skyscraper (React Three Fiber, orthographic camera)
+- **Per-floor exhibits** — holographic 3D markers + glass overlay cards
+- **Boot sequence** — footprint ink → tower extrude
+- **Themes** — Dark (neon cyberpunk) / Light (ink drawing)
+- **i18n** — English · 繁體中文 · 简体中文
+- **2D fallback** — SVG plan when WebGL unavailable or reduced motion
 
 ## Development
 
@@ -51,19 +35,26 @@ src/
 npm install
 npm run dev      # localhost:5173
 npm run build
-npm run preview  # localhost:4173
-npm run lint
+npm run preview
 ```
 
 ## Deploy
 
-Vercel — connect `louislibuilds/tower-0` repo.
+Connect repo to [Vercel](https://vercel.com) — framework preset **Vite**, output `dist`.
 
-## Related
+## Architecture
 
-- [bubblechickenlab.com](https://www.bubblechickenlab.com) — nagi portfolio / blog / CMS
-- [KATA](https://www.bubblechickenlab.com/kata) — résumé editor
-- [masters-portfolio docs](../masters-portfolio/) — planning reference
+```
+src/
+  scene/CyberTower.tsx       Tiered tower + spire + circuit base
+  scene/exhibits/            Floor holograms, circuit board
+  components/hud/            SiteChrome, ExhibitOverlay, FloorRail
+  context/SiteContext.tsx    Theme + locale + navigation
+  i18n/strings.ts            EN / zh-TW / zh-CN
+  camera/OrthoRig.tsx        Per-floor orthographic camera
+```
+
+Inspired by [salieri009/resume2](https://github.com/salieri009/resume2) · cyberpunk reference art.
 
 ## License
 

@@ -4,6 +4,7 @@ import gsap from 'gsap'
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import { getFloor, type FloorId } from '../building/program'
+import { getTier, SPIRE_BASE, tierCenterY } from '../scene/towerTiers'
 import { DUR, EASE_SITE } from '../scene/motion'
 
 interface CameraPreset {
@@ -13,17 +14,22 @@ interface CameraPreset {
 }
 
 function presetForFloor(floorId: FloorId): CameraPreset {
-  const y = getFloor(floorId).yCenter
+  const tier = getTier(floorId)
+  const y = tier ? tierCenterY(tier) : getFloor(floorId).yCenter
   const isBasement = floorId === 'B10' || floorId === 'B2'
   const isRoof = floorId === 'roof'
 
+  // Hero orthographic — slight low angle looking up (cyberpunk skyline)
+  if (floorId === 'G') {
+    return { position: [7, 2.5, 10], lookAt: [0, 2.8, 0], zoom: 38 }
+  }
   if (isRoof) {
-    return { position: [5, y + 3.5, 9], lookAt: [0, y - 0.5, 0], zoom: 42 }
+    return { position: [4, SPIRE_BASE + 2, 9], lookAt: [0, SPIRE_BASE + 0.5, 0], zoom: 40 }
   }
   if (isBasement) {
-    return { position: [6, y + 1.2, 7], lookAt: [0, y, 0], zoom: 48 }
+    return { position: [7, y + 0.5, 8], lookAt: [0, y, 0], zoom: 42 }
   }
-  return { position: [5.5, y + 1.8, 8], lookAt: [0, y, 0], zoom: 52 }
+  return { position: [6.5, y + 1.2, 9], lookAt: [0, y, 0], zoom: 44 }
 }
 
 interface OrthoRigProps {
@@ -33,7 +39,7 @@ interface OrthoRigProps {
 
 export function OrthoRig({ floorId, reducedMotion }: OrthoRigProps) {
   const camRef = useRef<THREE.OrthographicCamera>(null)
-  const look = useRef(new THREE.Vector3(0, 0.6, 0))
+  const look = useRef(new THREE.Vector3(0, 2.8, 0))
   const prevFloor = useRef<FloorId>(floorId)
   const invalidate = useThree((s) => s.invalidate)
 
@@ -92,15 +98,34 @@ export function OrthoRig({ floorId, reducedMotion }: OrthoRigProps) {
     }
   }, [floorId, reducedMotion, invalidate])
 
-  return <OrthographicCamera ref={camRef} makeDefault near={0.1} far={200} position={[5.5, 2.4, 8]} zoom={52} />
+  return (
+    <OrthographicCamera
+      ref={camRef}
+      makeDefault
+      near={0.1}
+      far={200}
+      position={[7, 2.5, 10]}
+      zoom={38}
+    />
+  )
 }
 
-export function SiteLights() {
+export function SiteLights({ theme }: { theme: 'dark' | 'light' }) {
+  if (theme === 'light') {
+    return (
+      <>
+        <ambientLight intensity={0.75} />
+        <directionalLight position={[10, 15, 8]} intensity={1.1} />
+        <directionalLight position={[-8, 10, -5]} intensity={0.3} />
+      </>
+    )
+  }
   return (
     <>
-      <ambientLight intensity={0.55} />
-      <directionalLight position={[8, 12, 6]} intensity={0.85} />
-      <directionalLight position={[-6, 8, -4]} intensity={0.25} />
+      <ambientLight intensity={0.25} />
+      <directionalLight position={[8, 14, 6]} intensity={0.6} color="#8090ff" />
+      <directionalLight position={[-6, 8, -4]} intensity={0.15} color="#ff60a0" />
+      <pointLight position={[0, 8, 4]} intensity={0.4} color="#00e5ff" distance={20} />
     </>
   )
 }
