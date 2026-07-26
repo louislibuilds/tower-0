@@ -28,6 +28,7 @@ export interface LocaleStrings {
     degree: string
     institution: string
     wam: string
+    gpa: string
     cp: string
     hdCount: string
     deansList: string
@@ -36,14 +37,15 @@ export interface LocaleStrings {
     experienceTitle: string
     hint: string
   }
-  warehouse: {
+  factory: {
     wam: string
     cp: string
     hd: string
     d: string
     avg: string
-    selectSemester: string
-    allSemesters: string
+    selectArea: string
+    allAreas: string
+    overview: string
   }
   lab: {
     intro: string
@@ -133,10 +135,10 @@ const en: LocaleStrings = {
       exhibitHook: 'Thesis wall and identity plate at grade.',
     },
     '23': {
-      title: 'Warehouse',
-      subtitle: 'Timeline · Grades',
-      exhibitTitle: 'Warehouse · 23',
-      exhibitHook: 'Every semester shelved — marks, grades, milestones.',
+      title: 'Factory',
+      subtitle: 'Production Lines · Grades',
+      exhibitTitle: 'Factory · 23',
+      exhibitHook: 'Four semester assembly lines — marks, grades, milestones.',
     },
     '52': {
       title: 'Laboratory',
@@ -164,6 +166,7 @@ const en: LocaleStrings = {
     degree: 'Degree',
     institution: 'Institution',
     wam: 'WAM',
+    gpa: 'GPA',
     cp: 'Credit Points',
     hdCount: 'HD',
     deansList: "Dean's List",
@@ -172,14 +175,15 @@ const en: LocaleStrings = {
     experienceTitle: 'Experience',
     hint: 'Select a floor from the rail — the tower is the map.',
   },
-  warehouse: {
+  factory: {
     wam: 'WAM',
     cp: 'Credit Points',
     hd: 'High Distinction',
     d: 'Distinction',
     avg: 'Avg',
-    selectSemester: 'Select a semester plinth on the model or rail.',
-    allSemesters: 'All semesters',
+    selectArea: 'Select a production line (Area 01–04) on the model or rail.',
+    allAreas: 'All production lines',
+    overview: 'Four semester lines run parallel — click an area to zoom in.',
   },
   lab: { intro: 'Five project rooms on this floor.', selectRoom: 'Select a room on the model or rail.', role: 'Role', team: 'Team', course: 'Course' },
   infra: {
@@ -309,10 +313,10 @@ const zhTW: LocaleStrings = {
       exhibitHook: '論述牆與地面層的身份铭牌。',
     },
     '23': {
-      title: '倉庫',
-      subtitle: '時間軸 · 成績',
-      exhibitTitle: '倉庫 · 23F',
-      exhibitHook: '每學期的成績與里程碑，逐一上架。',
+      title: '工廠',
+      subtitle: '產線 · 成績',
+      exhibitTitle: '工廠 · 23F',
+      exhibitHook: '四條學期產線 — 成績、等級、里程碑。',
     },
     '52': {
       title: '實驗室',
@@ -340,6 +344,7 @@ const zhTW: LocaleStrings = {
     degree: '學位',
     institution: '學校',
     wam: 'WAM',
+    gpa: 'GPA',
     cp: '學分',
     hdCount: 'HD',
     deansList: '院長榮譽榜',
@@ -348,14 +353,15 @@ const zhTW: LocaleStrings = {
     experienceTitle: '經歷',
     hint: '從樓層導覽選擇 — 這座塔就是你的地圖。',
   },
-  warehouse: {
+  factory: {
     wam: 'WAM',
     cp: '學分',
     hd: '高級優等',
     d: '優等',
     avg: '平均',
-    selectSemester: '在模型或左側面板選擇學期。',
-    allSemesters: '全部學期',
+    selectArea: '在模型或左側面板選擇產線（Area 01–04）。',
+    allAreas: '全部產線',
+    overview: '四條學期產線並行 — 點選區域以拉近檢視。',
   },
   lab: { intro: '本層五間專案房。', selectRoom: '在模型或左側面板選擇一間房。', role: '角色', team: '團隊', course: '課程' },
   infra: {
@@ -461,7 +467,7 @@ const zhCN: LocaleStrings = {
     B10: { title: '科技中心', subtitle: 'GitHub · 打印简历', exhibitTitle: '科技中心 · B10', exhibitHook: '源代码、部署产物、可打印简历。' },
     B2: { title: '基础设施', subtitle: '技能 · 课程 · 链接', exhibitTitle: '基础设施 · B2', exhibitHook: '塔楼下的管线、机电井与电路板。' },
     G: { title: '大厅', subtitle: '欢迎 · 关于', exhibitTitle: '大厅 · 地面', exhibitHook: '论述墙与地面层的身份铭牌。' },
-    '23': { title: '仓库', subtitle: '时间轴 · 成绩', exhibitTitle: '仓库 · 23F', exhibitHook: '每学期的成绩与里程碑，逐一上架。' },
+    '23': { title: '工厂', subtitle: '产线 · 成绩', exhibitTitle: '工厂 · 23F', exhibitHook: '四条学期产线 — 成绩、等级、里程碑。' },
     '52': { title: '实验室', subtitle: '团队项目', exhibitTitle: '实验室 · 52F', exhibitHook: '五间项目房 — 从黑客松到研究管线。' },
     '99': { title: '图书馆 & 档案室', subtitle: '奖项 · 证书', exhibitTitle: '图书馆 · 99F', exhibitHook: '学位、院长荣誉榜、领导经历、证书。' },
     roof: { title: '屋顶', subtitle: '联系', exhibitTitle: '屋顶 · 联系', exhibitHook: '开阔天空下的身份铭牌。' },
@@ -474,7 +480,7 @@ const zhCN: LocaleStrings = {
     deansList: '院长荣誉榜',
     experienceTitle: '经历',
   },
-  warehouse: { ...zhTW.warehouse, selectSemester: '在模型或左侧面板选择学期。', allSemesters: '全部学期' },
+  factory: { ...zhTW.factory, selectArea: '在模型或左侧面板选择产线（Area 01–04）。', allAreas: '全部产线', overview: '四条学期产线并行 — 点击区域以拉近查看。' },
   lab: { intro: '本层五间项目房。', selectRoom: '在模型或左侧面板选择一间房。', role: '角色', team: '团队', course: '课程' },
   infra: { skillsTitle: '技能 — 管线与机电', coursesTitle: '课程链接 → 项目', viewProject: '查看项目 ↗' },
   tech: {

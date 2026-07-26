@@ -18,6 +18,7 @@ import { getScenePalette } from './palette'
 import { CircuitBase } from './exhibits/CircuitBase'
 import { FloorRoom } from './rooms'
 
+import type { ViewMode } from '../building/viewMode'
 import type { LibraryRoomSlug } from '../data/libraryRooms'
 
 interface CyberTowerProps {
@@ -25,7 +26,10 @@ interface CyberTowerProps {
   hoveredFloorId: FloorId | null
   labRoomSlug: string | null
   libraryRoomSlug: LibraryRoomSlug | null
-  warehouseStop: number
+  factoryStop: number | null
+  viewMode: ViewMode
+  selectedBookSlug: string | null
+  selectedCredentialSlug: string | null
   extrude: number
   ink: number
   theme: Theme
@@ -35,7 +39,9 @@ interface CyberTowerProps {
   onLabRoomHover: (slug: string | null) => void
   onLibraryRoomClick: (slug: LibraryRoomSlug) => void
   onLibraryRoomHover: (slug: LibraryRoomSlug | null) => void
-  onWarehouseStop: (stop: number) => void
+  onFactoryStop: (stop: number) => void
+  onBookClick: (slug: string) => void
+  onCredentialClick: (slug: string) => void
 }
 
 function ShaftSection({
@@ -116,14 +122,19 @@ function ProgramFloorBand({
   wireframe,
   labRoomSlug,
   libraryRoomSlug,
-  warehouseStop,
+  factoryStop,
+  viewMode,
+  selectedBookSlug,
+  selectedCredentialSlug,
   onFloorHover,
   onFloorClick,
   onLabRoomClick,
   onLabRoomHover,
   onLibraryRoomClick,
   onLibraryRoomHover,
-  onWarehouseStop,
+  onFactoryStop,
+  onBookClick,
+  onCredentialClick,
 }: {
   program: ProgramFloor
   active: boolean
@@ -134,14 +145,19 @@ function ProgramFloorBand({
   wireframe: boolean
   labRoomSlug: string | null
   libraryRoomSlug: LibraryRoomSlug | null
-  warehouseStop: number
+  factoryStop: number | null
+  viewMode: ViewMode
+  selectedBookSlug: string | null
+  selectedCredentialSlug: string | null
   onFloorHover: (id: FloorId | null) => void
   onFloorClick: (id: FloorId) => void
   onLabRoomClick: (slug: string) => void
   onLabRoomHover: (slug: string | null) => void
   onLibraryRoomClick: (slug: LibraryRoomSlug) => void
   onLibraryRoomHover: (slug: LibraryRoomSlug | null) => void
-  onWarehouseStop: (stop: number) => void
+  onFactoryStop: (stop: number) => void
+  onBookClick: (slug: string) => void
+  onCredentialClick: (slug: string) => void
 }) {
   const pal = getScenePalette(theme)
   const baseY = programBaseY(program)
@@ -220,12 +236,17 @@ function ProgramFloorBand({
             hover={hovered}
             labRoomSlug={labRoomSlug}
             libraryRoomSlug={libraryRoomSlug}
-            warehouseStop={warehouseStop}
+            factoryStop={factoryStop}
+            viewMode={viewMode}
+            selectedBookSlug={selectedBookSlug}
+            selectedCredentialSlug={selectedCredentialSlug}
             onLabRoomClick={onLabRoomClick}
             onLabRoomHover={onLabRoomHover}
             onLibraryRoomClick={onLibraryRoomClick}
             onLibraryRoomHover={onLibraryRoomHover}
-            onWarehouseStop={onWarehouseStop}
+            onFactoryStop={onFactoryStop}
+            onBookClick={onBookClick}
+            onCredentialClick={onCredentialClick}
           />
         </group>
       )}
@@ -291,7 +312,10 @@ export function CyberTower({
   hoveredFloorId,
   labRoomSlug,
   libraryRoomSlug,
-  warehouseStop,
+  factoryStop,
+  viewMode,
+  selectedBookSlug,
+  selectedCredentialSlug,
   extrude,
   ink,
   theme,
@@ -301,7 +325,9 @@ export function CyberTower({
   onLabRoomHover,
   onLibraryRoomClick,
   onLibraryRoomHover,
-  onWarehouseStop,
+  onFactoryStop,
+  onBookClick,
+  onCredentialClick,
 }: CyberTowerProps) {
   const pal = getScenePalette(theme)
   const invalidate = useThree((s) => s.invalidate)
@@ -309,7 +335,7 @@ export function CyberTower({
   const activeY = programCenterY(activeProgram)
   const shaftSegments = useMemo(() => getShaftSegments(), [])
   const glowRef = useRef<THREE.PointLight>(null)
-  const isolate = activeFloorId !== 'G'
+  const isolate = viewMode !== 'tower' && activeFloorId !== 'G'
 
   useEffect(() => {
     if (!glowRef.current) return
@@ -378,14 +404,19 @@ export function CyberTower({
                 wireframe={wireframe}
                 labRoomSlug={labRoomSlug}
                 libraryRoomSlug={libraryRoomSlug}
-                warehouseStop={warehouseStop}
+                factoryStop={factoryStop}
+                viewMode={viewMode}
+                selectedBookSlug={selectedBookSlug}
+                selectedCredentialSlug={selectedCredentialSlug}
                 onFloorHover={onFloorHover}
                 onFloorClick={onFloorClick}
                 onLabRoomClick={onLabRoomClick}
                 onLabRoomHover={onLabRoomHover}
                 onLibraryRoomClick={onLibraryRoomClick}
                 onLibraryRoomHover={onLibraryRoomHover}
-                onWarehouseStop={onWarehouseStop}
+                onFactoryStop={onFactoryStop}
+                onBookClick={onBookClick}
+                onCredentialClick={onCredentialClick}
               />
             )
           })}

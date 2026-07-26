@@ -1,13 +1,14 @@
 import type { ComponentType } from 'react'
 import type { FloorId } from '../../building/program'
+import type { ViewMode } from '../../building/viewMode'
 import type { LibraryRoomSlug } from '../../data/libraryRooms'
+import { FactoryRoom } from './FactoryRoom'
 import { ArchiveLibraryRoom } from './LibraryRoom'
 import { InfraRoom } from './InfraRoom'
 import { LaboratoryRoom } from './LaboratoryRoom'
 import { LobbyRoom } from './LobbyRoom'
 import { RoofRoom } from './RoofRoom'
 import { TechCentreRoom } from './TechCentreRoom'
-import { WarehouseRoom } from './WarehouseRoom'
 import type { RoomProps } from './types'
 
 const STANDARD_ROOMS: Record<Exclude<FloorId, '52' | '23' | '99'>, ComponentType<RoomProps>> = {
@@ -19,31 +20,43 @@ const STANDARD_ROOMS: Record<Exclude<FloorId, '52' | '23' | '99'>, ComponentType
 
 interface FloorRoomProps extends RoomProps {
   floorId: FloorId
+  viewMode: ViewMode
   labRoomSlug?: string | null
   libraryRoomSlug?: LibraryRoomSlug | null
-  warehouseStop?: number
+  factoryStop?: number | null
+  selectedBookSlug?: string | null
+  selectedCredentialSlug?: string | null
   onLabRoomClick?: (slug: string) => void
   onLabRoomHover?: (slug: string | null) => void
   onLibraryRoomClick?: (slug: LibraryRoomSlug) => void
   onLibraryRoomHover?: (slug: LibraryRoomSlug | null) => void
-  onWarehouseStop?: (stop: number) => void
+  onFactoryStop?: (stop: number) => void
+  onBookClick?: (slug: string) => void
+  onCredentialClick?: (slug: string) => void
 }
 
 export function FloorRoom({
   floorId,
+  viewMode,
   theme,
   accent,
   entered,
   hover,
   labRoomSlug = null,
   libraryRoomSlug = null,
-  warehouseStop = 0,
+  factoryStop = null,
+  selectedBookSlug = null,
+  selectedCredentialSlug = null,
   onLabRoomClick = () => {},
   onLabRoomHover = () => {},
   onLibraryRoomClick = () => {},
   onLibraryRoomHover = () => {},
-  onWarehouseStop = () => {},
+  onFactoryStop = () => {},
+  onBookClick = () => {},
+  onCredentialClick = () => {},
 }: FloorRoomProps) {
+  const roomFocus = viewMode === 'room' || viewMode === 'focus'
+
   if (floorId === '52') {
     return (
       <LaboratoryRoom
@@ -52,6 +65,7 @@ export function FloorRoom({
         entered={entered}
         hover={hover}
         labRoomSlug={labRoomSlug}
+        roomFocus={roomFocus && !!labRoomSlug}
         onLabRoomClick={onLabRoomClick}
         onLabRoomHover={onLabRoomHover}
       />
@@ -60,13 +74,13 @@ export function FloorRoom({
 
   if (floorId === '23') {
     return (
-      <WarehouseRoom
+      <FactoryRoom
         theme={theme}
         accent={accent}
         entered={entered}
         hover={hover}
-        warehouseStop={warehouseStop}
-        onSelectStop={onWarehouseStop}
+        factoryStop={factoryStop}
+        onSelectStop={onFactoryStop}
       />
     )
   }
@@ -79,8 +93,13 @@ export function FloorRoom({
         entered={entered}
         hover={hover}
         libraryRoomSlug={libraryRoomSlug}
+        roomFocus={roomFocus && !!libraryRoomSlug}
+        selectedBookSlug={selectedBookSlug}
+        selectedCredentialSlug={selectedCredentialSlug}
         onLibraryRoomClick={onLibraryRoomClick}
         onLibraryRoomHover={onLibraryRoomHover}
+        onBookClick={onBookClick}
+        onCredentialClick={onCredentialClick}
       />
     )
   }

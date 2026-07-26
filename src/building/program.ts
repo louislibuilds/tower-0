@@ -41,7 +41,7 @@ export const FLOORS: FloorDef[] = [
   def('B10', 'B10', 'basement', 'Tech Centre', 'GitHub · Print Résumé', -10, 0),
   def('B2', 'B2', 'basement', 'Infrastructure', 'Skills · Courses · Project Links', -2, 1),
   def('G', 'G', 'ground', 'Lobby', 'Welcome · About · Thesis', 0, 2),
-  def('23', '23', 'tower', 'Warehouse', 'Academic Timeline · Semester Grades', 23, 3),
+  def('23', '23', 'tower', 'Factory', 'Academic Timeline · Semester Lines', 23, 3),
   def('52', '52', 'tower', 'Laboratory', 'Group Projects · Research', 52, 4),
   def('99', '99', 'tower', 'Library & Archive', 'Awards · Credentials · Leadership', 99, 5),
   def('roof', 'R', 'roof', 'Roof', 'Contact · Identity Plate', 101, 6),
