@@ -3,6 +3,7 @@ import { useSite } from '../context/SiteContext'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import { useWebGL } from '../hooks/useWebGL'
 import { DelayedExhibitOverlay } from './DelayedExhibitOverlay'
+import { ExitOverlay, StampOverlay } from './hud/StampOverlay'
 import { FocusOverlay } from './hud/FocusOverlay'
 import { SceneBootSplash } from './SceneBootSplash'
 import { SiteAnnotation, SiteChrome, SiteRail, SiteTitleblock } from './hud/SiteChrome'
@@ -36,6 +37,10 @@ export function TowerShell() {
     toggleFactoryStop,
     handleBookClick,
     toggleCredential,
+    phase,
+    bootDone,
+    interactionLocked,
+    reopenSite,
   } = useSite()
   const reducedMotion = useReducedMotion()
   const webgl = useWebGL()
@@ -82,11 +87,13 @@ export function TowerShell() {
       )}
 
       <SiteTitleblock />
-      <SiteRail />
+      {!interactionLocked && <SiteRail />}
       <SiteChrome />
-      <SiteAnnotation />
+      {!interactionLocked && <SiteAnnotation />}
+      <StampOverlay visible={phase === 'boot' || phase === 'survey'} />
+      {phase === 'void' && <ExitOverlay onReopen={reopenSite} />}
       <FocusOverlay />
-      {viewMode !== 'focus' && <DelayedExhibitOverlay />}
+      {bootDone && phase !== 'void' && viewMode !== 'focus' && <DelayedExhibitOverlay />}
     </div>
   )
 }

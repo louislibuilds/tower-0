@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { isBootSequence } from '../building/sitePhase'
 import { useSite } from '../context/SiteContext'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import { DUR } from '../scene/motion'
@@ -18,6 +19,8 @@ export function DelayedExhibitOverlay() {
   const {
     floorId,
     viewMode,
+    phase,
+    bootDone,
     labRoomSlug,
     libraryRoomSlug,
     factoryStop,
@@ -44,7 +47,7 @@ export function DelayedExhibitOverlay() {
     return () => window.clearTimeout(t)
   }, [key, reducedMotion, floorId, viewMode])
 
-  if (viewMode === 'focus' || viewMode === 'tower' || !visible) return null
+  if (viewMode === 'focus' || viewMode === 'tower' || !visible || !bootDone || isBootSequence(phase) || phase === 'exit' || phase === 'void') return null
 
   return (
     <div className="exhibit-overlay-wrap exhibit-overlay-wrap--enter">

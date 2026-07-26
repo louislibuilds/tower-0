@@ -1,4 +1,5 @@
 import type { FloorId } from '../building/program'
+import type { SitePhase } from '../building/sitePhase'
 import type { ViewMode } from '../building/viewMode'
 import type { LibraryRoomSlug } from '../data/libraryRooms'
 import { getProgramFloor, programCenterY, programBaseY, towerTotalHeight } from '../scene/towerGeometry'
@@ -61,6 +62,8 @@ export function cameraPreset(
   floorId: FloorId,
   viewMode: ViewMode,
   opts: {
+    phase: SitePhase
+    bootDone: boolean
     factoryStop: number | null
     libraryRoomSlug: LibraryRoomSlug | null
     labRoomSlug: string | null
@@ -71,8 +74,16 @@ export function cameraPreset(
   const y = programCenterY(pf)
   const midY = towerTotalHeight() / 2 - 1
 
-  if (viewMode === 'tower' || (floorId === 'G' && viewMode !== 'floor')) {
+  if (opts.phase === 'boot' || opts.phase === 'survey') {
+    return { position: [10, midY + 2.5, 20], lookAt: [0, 0.4, 0], zoom: 28 }
+  }
+
+  if (viewMode === 'tower' || (floorId === 'G' && viewMode !== 'floor' && opts.phase !== 'lobby')) {
     return { position: [8.5, midY + 2, 22], lookAt: [0, midY - 0.5, 0], zoom: 24 }
+  }
+
+  if (opts.phase === 'lobby' && floorId === 'G' && viewMode === 'floor') {
+    return closeStation(y, [0, y, 0], 'front', 78, 0.65)
   }
 
   if (floorId === 'roof') {

@@ -3,7 +3,12 @@ import { useThree } from '@react-three/fiber'
 import { useEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 import type { Theme } from '../context/SiteContext'
-import type { FloorId } from '../building/program'
+import { getFloor, type FloorId } from '../building/program'
+import {
+  bandExtrudeProgress,
+  shaftExtrudeProgress,
+  spireExtrudeProgress,
+} from '../building/sitePhase'
 import {
   getProgramFloor,
   getShaftSegments,
@@ -16,6 +21,8 @@ import {
 } from './towerGeometry'
 import { getScenePalette } from './palette'
 import { CircuitBase } from './exhibits/CircuitBase'
+import { TowerMass } from './mass/TowerMass'
+import { EdgeInkContext, WindowMatrix } from './primitives'
 import { FloorRoom } from './rooms'
 
 import type { ViewMode } from '../building/viewMode'
@@ -32,6 +39,8 @@ interface CyberTowerProps {
   selectedCredentialSlug: string | null
   extrude: number
   ink: number
+  teardownFill?: number
+  teardownBlueprint?: number
   theme: Theme
   onFloorHover: (id: FloorId | null) => void
   onFloorClick: (id: FloorId) => void
@@ -56,8 +65,9 @@ function ShaftSection({
   wireframe: boolean
 }) {
   const pal = getScenePalette(theme)
-  const y = segment.yBottom + (segment.height / 2) * extrude
-  const h = segment.height * extrude
+  const shaftExtrude = shaftExtrudeProgress(extrude)
+  const y = segment.yBottom + (segment.height / 2) * shaftExtrude
+  const h = segment.height * shaftExtrude
   const w = segment.width * 0.92
   const d = segment.depth * 0.92
   const edges = useMemo(() => new THREE.EdgesGeometry(new THREE.BoxGeometry(w, h, d)), [w, h, d])
@@ -74,6 +84,8 @@ function ShaftSection({
     }
     return lines
   }, [h, w, d, segment.floorCount])
+
+  if (shaftExtrude < 0.01) return null
 
   return (
     <group position={[0, y, 0]}>
@@ -117,7 +129,10 @@ function ProgramFloorBand({
   active,
   hovered,
   entered,
-  extrude,
+  globalExtrude,
+  bandIndex,
+  totalBands,
+  teardownFill,
   theme,
   wireframe,
   labRoomSlug,
@@ -140,7 +155,10 @@ function ProgramFloorBand({
   active: boolean
   hovered: boolean
   entered: boolean
-  extrude: number
+  globalExtrude: number
+  bandIndex: number
+  totalBands: number
+  teardownFill: number
   theme: Theme
   wireframe: boolean
   labRoomSlug: string | null
@@ -160,13 +178,19 @@ function ProgramFloorBand({
   onCredentialClick: (slug: string) => void
 }) {
   const pal = getScenePalette(theme)
+  const bandProgress = bandExtrudeProgress(globalExtrude, bandIndex, totalBands)
   const baseY = programBaseY(program)
-  const y = baseY + (program.bandHeight / 2) * extrude
-  const h = program.bandHeight * extrude
+  const y = baseY + (program.bandHeight / 2) * bandProgress
+  const h = program.bandHeight * bandProgress
   const w = program.width
   const d = program.depth
   const lit = active || hovered
   const edges = useMemo(() => new THREE.EdgesGeometry(new THREE.BoxGeometry(w, h, d)), [w, h, d])
+  const isNight = theme === 'dark'
+  const zone = getFloor(program.id).zone
+  const windowPattern = zone === 'basement' ? 'basement' as const : zone === 'roof' ? 'tower' as const : 'grid' as const
+
+  if (bandProgress < 0.01) return null
 
   return (
     <group position={[0, y, 0]}>
@@ -201,9 +225,9 @@ function ProgramFloorBand({
           opacity={
             wireframe
               ? 0.06
-              : entered && viewMode !== 'tower'
-                ? 0.2
-                : 1
+              : (entered && viewMode !== 'tower'
+                  ? 0.2
+                  : 1) * teardownFill
           }
           depthWrite={!wireframe && !(entered && viewMode !== 'tower')}
         />
@@ -217,28 +241,26 @@ function ProgramFloorBand({
         />
       </lineSegments>
 
-      {!wireframe &&
-        Array.from({ length: 5 }).map((_, i) => {
-          const x = -w / 2 + 0.15 + i * ((w - 0.3) / 4)
-          return (
-            <mesh key={i} position={[x, 0, d / 2 + 0.008]}>
-              <planeGeometry args={[0.05, h * 0.75]} />
-              <meshStandardMaterial
-                color={theme === 'dark' ? pal.glass : lit ? pal.glass : pal.shade}
-                emissive={theme === 'dark' ? (lit ? pal.signal : '#1a2840') : '#000000'}
-                emissiveIntensity={theme === 'dark' ? (lit ? 0.55 : 0.12) : 0}
-                transparent
-                opacity={theme === 'dark' ? 0.85 : lit ? 0.7 : 0.35}
-              />
-            </mesh>
-          )
-        })}
+      {!wireframe && (
+        <group position={[0, 0, d / 2 + 0.01]}>
+          <WindowMatrix
+            width={w * 0.88}
+            height={h * 0.72}
+            cols={zone === 'basement' ? 4 : 5}
+            rows={zone === 'roof' ? 2 : 4}
+            pattern={windowPattern}
+            night={isNight}
+            active={lit}
+            chickenRatio={0.1}
+          />
+        </group>
+      )}
 
-      {theme === 'dark' && entered && !wireframe && (
+      {isNight && entered && !wireframe && (
         <pointLight position={[0, 0.15, d / 2 + 0.3]} intensity={0.35} distance={2.5} color={pal.signal} decay={2} />
       )}
 
-      {entered && extrude > 0.6 && (
+      {entered && bandProgress > 0.6 && (
         <group
           position={[0, -h * 0.06, 0]}
           scale={
@@ -309,7 +331,10 @@ function Spire({
   wireframe: boolean
 }) {
   const pal = getScenePalette(theme)
-  const y = yBase * extrude
+  const spireProgress = spireExtrudeProgress(extrude)
+  const y = yBase * spireProgress
+
+  if (spireProgress < 0.01) return null
 
   return (
     <group position={[0, y, 0]}>
@@ -346,6 +371,8 @@ export function CyberTower({
   selectedCredentialSlug,
   extrude,
   ink,
+  teardownFill = 1,
+  teardownBlueprint = 0,
   theme,
   onFloorHover,
   onFloorClick,
@@ -376,21 +403,16 @@ export function CyberTower({
 
   const footprintW = PROGRAM_FLOORS[0].width
   const footprintD = PROGRAM_FLOORS[0].depth
-  const footprint = useMemo(() => {
-    const pts = [
-      new THREE.Vector3(-footprintW / 2, 0.02, -footprintD / 2),
-      new THREE.Vector3(footprintW / 2, 0.02, -footprintD / 2),
-      new THREE.Vector3(footprintW / 2, 0.02, footprintD / 2),
-      new THREE.Vector3(-footprintW / 2, 0.02, footprintD / 2),
-      new THREE.Vector3(-footprintW / 2, 0.02, -footprintD / 2),
-    ]
-    return pts.slice(0, Math.max(2, Math.floor(pts.length * ink)))
-  }, [ink, footprintW, footprintD])
+  const edgeInk = useMemo(() => {
+    if (teardownBlueprint <= 0) return null
+    return '#' + new THREE.Color(pal.graphite).lerp(new THREE.Color(pal.blueprint), teardownBlueprint).getHexString()
+  }, [teardownBlueprint, pal.graphite, pal.blueprint])
 
   const roofProgram = getProgramFloor('roof')
   const spireBase = programBaseY(roofProgram) + roofProgram.bandHeight
 
   return (
+    <EdgeInkContext.Provider value={edgeInk}>
     <group>
       <fog attach="fog" args={[pal.paper, 30, 70]} />
 
@@ -405,9 +427,13 @@ export function CyberTower({
         <Line points={[[-8, 0.03, 0], [8, 0.03, 0]]} color={pal.graphite} lineWidth={1} transparent opacity={0.35} />
       )}
 
-      {footprint.length >= 2 && (
-        <Line points={footprint} color={pal.signal} lineWidth={1.5} transparent opacity={ink} />
-      )}
+      <TowerMass
+        ink={ink}
+        extrude={extrude}
+        theme={theme}
+        footprintW={footprintW}
+        footprintD={footprintD}
+      />
 
       {extrude > 0.1 && (
         <CircuitBase
@@ -423,7 +449,7 @@ export function CyberTower({
             <ShaftSection key={i} segment={seg} extrude={extrude} theme={theme} wireframe={isolate} />
           ))}
 
-          {PROGRAM_FLOORS.map((program) => {
+          {PROGRAM_FLOORS.map((program, bandIndex) => {
             const entered = program.id === activeFloorId
             const hovered = program.id === hoveredFloorId
             const wireframe = isolate && !entered
@@ -434,7 +460,10 @@ export function CyberTower({
                 active={entered}
                 hovered={hovered}
                 entered={entered}
-                extrude={extrude}
+                globalExtrude={extrude}
+                bandIndex={bandIndex}
+                totalBands={PROGRAM_FLOORS.length}
+                teardownFill={teardownFill}
                 theme={theme}
                 wireframe={wireframe}
                 labRoomSlug={labRoomSlug}
@@ -456,7 +485,7 @@ export function CyberTower({
             )
           })}
 
-          {extrude > 0.85 && (
+          {spireExtrudeProgress(extrude) > 0.01 && (
             <Spire
               yBase={spireBase}
               extrude={extrude}
@@ -476,7 +505,8 @@ export function CyberTower({
         <ambientLight intensity={0.12} color="#2F6BFF" />
       )}
     </group>
+    </EdgeInkContext.Provider>
   )
 }
 
-export { BootController } from './CyberTowerBoot'
+export { BootController } from './controllers/BootController'
