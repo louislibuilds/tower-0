@@ -58,7 +58,7 @@ function interiorEntry(
   }
 }
 
-/** Tighter framing for 52F lab stations */
+/** Tighter framing for 52F lab stations — band shell stays in frame */
 function labStationEntry(
   floorY: number,
   target: [number, number, number],
@@ -67,7 +67,7 @@ function labStationEntry(
 ): CameraPreset {
   const sign = from === 'left' ? -1 : 1
   return {
-    position: [target[0] + sign * 0.55, floorY + 0.32, target[2] + 0.95],
+    position: [target[0] + sign * 0.55, floorY + 0.32, target[2] + 1.35],
     lookAt: [target[0], target[1], target[2]],
     zoom,
   }
@@ -143,7 +143,7 @@ export function cameraPreset(
       const target: [number, number, number] = [station.pos[0], y + 0.04, station.pos[2]]
       return labStationEntry(y, target, station.cameraSide, station.zoom)
     }
-    return labStationEntry(y, [0, y + 0.04, 0], 'right', 185)
+    return labStationEntry(y, [0, y + 0.04, 0], 'right', 165)
   }
 
   if (floorId === '99') {

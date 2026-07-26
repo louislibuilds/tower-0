@@ -57,12 +57,12 @@ function ShaftSection({
   segment,
   extrude,
   theme,
-  wireframe,
+  shellFade,
 }: {
   segment: ShaftSegment
   extrude: number
   theme: Theme
-  wireframe: boolean
+  shellFade: boolean
 }) {
   const pal = getScenePalette(theme)
   const shaftExtrude = shaftExtrudeProgress(extrude)
@@ -89,20 +89,20 @@ function ShaftSection({
 
   return (
     <group position={[0, y, 0]}>
-      {!wireframe && (
+      {!shellFade && (
         <mesh>
           <boxGeometry args={[w, h, d]} />
           <meshStandardMaterial color={pal.resin} roughness={0.85} metalness={0.05} />
         </mesh>
       )}
-      {wireframe && (
+      {shellFade && (
         <mesh>
           <boxGeometry args={[w, h, d]} />
-          <meshStandardMaterial color={pal.resin} transparent opacity={0.05} depthWrite={false} />
+          <meshStandardMaterial color={pal.resin} transparent opacity={0.08} depthWrite={false} />
         </mesh>
       )}
       <lineSegments geometry={edges}>
-        <lineBasicMaterial color={pal.graphite} transparent opacity={wireframe ? 0.35 : 0.55} />
+        <lineBasicMaterial color={pal.graphite} transparent opacity={shellFade ? 0.5 : 0.55} />
       </lineSegments>
       {Array.from({ length: 5 }).map((_, i) => {
         const x = -w / 2 + 0.12 + i * ((w - 0.24) / 4)
@@ -112,7 +112,7 @@ function ShaftSection({
             <meshStandardMaterial
               color={pal.shade}
               transparent
-              opacity={wireframe ? 0.15 : 0.4}
+              opacity={shellFade ? 0.12 : 0.4}
             />
           </mesh>
         )
@@ -134,7 +134,7 @@ function ProgramFloorBand({
   totalBands,
   teardownFill,
   theme,
-  wireframe,
+  shellFade,
   labRoomSlug,
   libraryRoomSlug,
   factoryStop,
@@ -160,7 +160,7 @@ function ProgramFloorBand({
   totalBands: number
   teardownFill: number
   theme: Theme
-  wireframe: boolean
+  shellFade: boolean
   labRoomSlug: string | null
   libraryRoomSlug: LibraryRoomSlug | null
   factoryStop: number | null
@@ -189,6 +189,14 @@ function ProgramFloorBand({
   const isNight = theme === 'dark'
   const zone = getFloor(program.id).zone
   const windowPattern = zone === 'basement' ? 'basement' as const : zone === 'roof' ? 'tower' as const : 'grid' as const
+
+  const fillOpacity = (() => {
+    if (shellFade) return 0.12
+    if (entered && viewMode !== 'tower') {
+      return viewMode === 'floor' ? 0.35 : 0.32
+    }
+    return 1
+  })() * teardownFill
 
   if (bandProgress < 0.01) return null
 
@@ -222,14 +230,8 @@ function ProgramFloorBand({
           roughness={0.85}
           metalness={0.05}
           transparent
-          opacity={
-            wireframe
-              ? 0.06
-              : (entered && viewMode !== 'tower'
-                  ? 0.2
-                  : 1) * teardownFill
-          }
-          depthWrite={!wireframe && !(entered && viewMode !== 'tower')}
+          opacity={fillOpacity}
+          depthWrite={fillOpacity > 0.25}
         />
       </mesh>
 
@@ -237,11 +239,11 @@ function ProgramFloorBand({
         <lineBasicMaterial
           color={lit ? pal.signal : pal.graphite}
           transparent
-          opacity={wireframe ? 0.9 : lit ? 1 : 0.65}
+          opacity={shellFade ? 0.7 : lit ? 1 : 0.65}
         />
       </lineSegments>
 
-      {!wireframe && (
+      {
         <group position={[0, 0, d / 2 + 0.01]}>
           <WindowMatrix
             width={w * 0.88}
@@ -254,9 +256,9 @@ function ProgramFloorBand({
             chickenRatio={0.1}
           />
         </group>
-      )}
+      }
 
-      {isNight && entered && !wireframe && (
+      {isNight && entered && (
         <pointLight position={[0, 0.15, d / 2 + 0.3]} intensity={0.35} distance={2.5} color={pal.signal} decay={2} />
       )}
 
@@ -269,11 +271,11 @@ function ProgramFloorBand({
                 ? 1.2
                 : 0.95
               : viewMode === 'room' || viewMode === 'focus'
-                ? 1.05
+                ? 0.92
                 : viewMode === 'floor' && program.id === '52'
-                  ? 0.98
+                  ? 0.85
                   : viewMode === 'floor' && (labRoomSlug || libraryRoomSlug || factoryStop !== null)
-                    ? 0.88
+                    ? 0.82
                     : 0.72
           }
         >
@@ -311,7 +313,7 @@ function ProgramFloorBand({
 
       <mesh position={[0, h / 2 + 0.012, 0]}>
         <boxGeometry args={[w + 0.04, 0.025, d + 0.04]} />
-        <meshStandardMaterial color={pal.graphite} transparent opacity={wireframe ? 0.4 : 0.8} />
+        <meshStandardMaterial color={pal.graphite} transparent opacity={shellFade ? 0.45 : 0.8} />
       </mesh>
     </group>
   )
@@ -322,17 +324,18 @@ function Spire({
   extrude,
   theme,
   active,
-  wireframe,
+  shellFade,
 }: {
   yBase: number
   extrude: number
   theme: Theme
   active: boolean
-  wireframe: boolean
+  shellFade: boolean
 }) {
   const pal = getScenePalette(theme)
   const spireProgress = spireExtrudeProgress(extrude)
   const y = yBase * spireProgress
+  const faded = shellFade && !active
 
   if (spireProgress < 0.01) return null
 
@@ -346,8 +349,8 @@ function Spire({
             <meshStandardMaterial
               color={pal.concrete}
               transparent
-              opacity={wireframe && !active ? 0.06 : 1}
-              depthWrite={!(wireframe && !active)}
+              opacity={faded ? 0.12 : 1}
+              depthWrite={!faded}
             />
           </mesh>
         )
@@ -446,13 +449,13 @@ export function CyberTower({
       {extrude > 0.02 && (
         <>
           {shaftSegments.map((seg, i) => (
-            <ShaftSection key={i} segment={seg} extrude={extrude} theme={theme} wireframe={isolate} />
+            <ShaftSection key={i} segment={seg} extrude={extrude} theme={theme} shellFade={isolate} />
           ))}
 
           {PROGRAM_FLOORS.map((program, bandIndex) => {
             const entered = program.id === activeFloorId
             const hovered = program.id === hoveredFloorId
-            const wireframe = isolate && !entered
+            const shellFade = isolate && !entered
             return (
               <ProgramFloorBand
                 key={program.id}
@@ -465,7 +468,7 @@ export function CyberTower({
                 totalBands={PROGRAM_FLOORS.length}
                 teardownFill={teardownFill}
                 theme={theme}
-                wireframe={wireframe}
+                shellFade={shellFade}
                 labRoomSlug={labRoomSlug}
                 libraryRoomSlug={libraryRoomSlug}
                 factoryStop={factoryStop}
@@ -491,7 +494,7 @@ export function CyberTower({
               extrude={extrude}
               theme={theme}
               active={activeFloorId === 'roof'}
-              wireframe={isolate && activeFloorId !== 'roof'}
+              shellFade={isolate && activeFloorId !== 'roof'}
             />
           )}
         </>
