@@ -1,3 +1,4 @@
+import { useSite } from '../../context/SiteContext'
 import { profile } from '../../data/profile'
 
 const contactLinks = [
@@ -10,10 +11,12 @@ const contactLinks = [
 ]
 
 export function RoofPanel() {
+  const { strings } = useSite()
+  const r = strings.roof
   return (
     <div className="panel roof-panel">
       <div className="roof-panel__plate">
-        <p className="roof-panel__site">SITE · TOWER 0</p>
+        <p className="roof-panel__site">{r.site}</p>
         <h2 className="roof-panel__name">{profile.displayName}</h2>
         <p className="roof-panel__legal">{profile.legalName}</p>
         <p className="roof-panel__location">{profile.location}</p>
@@ -35,8 +38,8 @@ export function RoofPanel() {
       </div>
 
       <footer className="roof-panel__footer">
-        <p>Software is not written. It is constructed.</p>
-        <p className="roof-panel__copy">© {new Date().getFullYear()} Louis Li · Tower 0</p>
+        <p>{r.footer}</p>
+        <p className="roof-panel__copy">{r.copy.replace('{year}', String(new Date().getFullYear()))}</p>
       </footer>
     </div>
   )

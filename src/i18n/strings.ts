@@ -1,4 +1,4 @@
-export type Locale = 'en' | 'zh-TW' | 'zh-CN'
+export type Locale = 'en' | 'zh-TW' | 'zh-CN' | 'ja'
 export type Theme = 'dark' | 'light'
 
 export interface LocaleStrings {
@@ -17,6 +17,16 @@ export interface LocaleStrings {
     hint: string
     themeDark: string
     themeLight: string
+    rollDrawing: string
+  }
+  stamp: {
+    code: string
+    name: string
+    rev: string
+  }
+  exit: {
+    label: string
+    reopen: string
   }
   floors: Record<
     string,
@@ -116,6 +126,16 @@ const en: LocaleStrings = {
     hint: 'Select a room on the model',
     themeDark: 'Night',
     themeLight: 'Day',
+    rollDrawing: 'Roll drawing',
+  },
+  stamp: {
+    code: 'TOWER 0',
+    name: 'LOUIS LI',
+    rev: 'LEARNING IS CONSTRUCTION · REV A',
+  },
+  exit: {
+    label: 'END OF SET',
+    reopen: 'REOPEN THE TOWER',
   },
   floors: {
     B10: {
@@ -163,7 +183,7 @@ const en: LocaleStrings = {
   },
   lobby: {
     welcome: 'Welcome to',
-    thesis: 'Software is not written. It is constructed.',
+    thesis: 'Every tower rises from the ground — learning is construction.',
     bio: 'Full-stack developer · UTS MIT · Sydney. I construct software the way buildings are built.',
     degree: 'Degree',
     institution: 'Institution',
@@ -273,7 +293,7 @@ const en: LocaleStrings = {
     'ML / AI': 'ML / AI',
   },
   platformApps: {
-    nagi: { name: 'nagi', hook: 'Portfolio-as-architecture — trilingual CMS on bubblechickenlab.com.' },
+    nagi: { name: 'nagi', hook: 'Portfolio-as-architecture — multilingual CMS on bubblechickenlab.com.' },
     'kata-editor': { name: 'KATA Editor', hook: 'Résumé variants with live preview and PDF export.' },
     'kata-tracker': { name: 'KATA Tracker', hook: 'Local-first job application tracker.' },
   },
@@ -295,6 +315,16 @@ const zhTW: LocaleStrings = {
     hint: '在模型上選擇一個房間',
     themeDark: '夜間',
     themeLight: '日間',
+    rollDrawing: '收圖',
+  },
+  stamp: {
+    code: 'TOWER 0',
+    name: 'LOUIS LI',
+    rev: 'LEARNING IS CONSTRUCTION · REV A',
+  },
+  exit: {
+    label: 'END OF SET',
+    reopen: 'REOPEN THE TOWER',
   },
   floors: {
     B10: {
@@ -342,7 +372,7 @@ const zhTW: LocaleStrings = {
   },
   lobby: {
     welcome: '歡迎來到',
-    thesis: '軟體不是寫出來的，是建造出來的。',
+    thesis: '萬丈高樓平地起 · 學習即建造',
     bio: '全端開發者 · UTS 資訊科技碩士 · 雪梨。',
     degree: '學位',
     institution: '學校',
@@ -452,7 +482,7 @@ const zhTW: LocaleStrings = {
     'ML / AI': '機器學習 / AI',
   },
   platformApps: {
-    nagi: { name: 'nagi', hook: '作品集即建築 — bubblechickenlab.com 三語 CMS。' },
+    nagi: { name: 'nagi', hook: '作品集即建築 — bubblechickenlab.com 多語 CMS。' },
     'kata-editor': { name: 'KATA 編輯器', hook: '履歷變體即時預覽與 PDF 匯出。' },
     'kata-tracker': { name: 'KATA 追蹤器', hook: '本地優先的求職申請追蹤。' },
   },
@@ -477,7 +507,7 @@ const zhCN: LocaleStrings = {
   },
   lobby: {
     ...zhTW.lobby,
-    thesis: '软件不是写出来的，是建造出来的。',
+    thesis: '万丈高楼平地起 · 学习即建造',
     bio: '全栈开发者 · UTS 信息技术硕士 · 悉尼。',
     hint: '从楼层导览选择 — 这座塔就是你的地图。',
     deansList: '院长荣誉榜',
@@ -529,16 +559,223 @@ const zhCN: LocaleStrings = {
     'ML / AI': '机器学习 / AI',
   },
   platformApps: {
-    nagi: { name: 'nagi', hook: '作品集即建筑 — bubblechickenlab.com 三语 CMS。' },
+    nagi: { name: 'nagi', hook: '作品集即建筑 — bubblechickenlab.com 多语 CMS。' },
     'kata-editor': { name: 'KATA 编辑器', hook: '简历变体即时预览与 PDF 导出。' },
     'kata-tracker': { name: 'KATA 追踪器', hook: '本地优先的求职申请追踪。' },
   },
 }
 
-export const STRINGS: Record<Locale, LocaleStrings> = { en, 'zh-TW': zhTW, 'zh-CN': zhCN }
+const ja: LocaleStrings = {
+  site: {
+    name: 'Tower Zone 0',
+    siteTitle: 'The Tower of STEM, Zone 0',
+    siteCode: 'ZONE · 0',
+    zoneName: 'Tower Zone 0',
+    architectName: 'Louis Li',
+    architectRole: '情報工学修士 · フルスタック',
+    tagline: 'ソフトウェアは書かれるのではない。組み立てられる。',
+    constructing: '建造中…',
+    rollingDrawing: '図面を巻き取り中…',
+    fallback: '2D 平面図',
+    floors: '階',
+    hint: 'モデル上の部屋を選択',
+    themeDark: 'ナイト',
+    themeLight: 'デイ',
+    rollDrawing: '図面を巻く',
+  },
+  stamp: {
+    code: 'TOWER 0',
+    name: 'LOUIS LI',
+    rev: 'LEARNING IS CONSTRUCTION · REV A',
+  },
+  exit: {
+    label: 'END OF SET',
+    reopen: 'REOPEN THE TOWER',
+  },
+  floors: {
+    B10: {
+      title: 'テックセンター',
+      subtitle: 'GitHub · 履歴書印刷',
+      exhibitTitle: 'テックセンター · B10',
+      exhibitHook: 'ソース管理、デプロイ成果物、印刷可能な履歴書。',
+    },
+    B2: {
+      title: 'インフラ',
+      subtitle: 'スキル · コース · リンク',
+      exhibitTitle: 'インフラ · B2',
+      exhibitHook: '塔の下の立管、配管、回路基板。',
+    },
+    G: {
+      title: 'ロビー',
+      subtitle: 'ようこそ · プロフィール',
+      exhibitTitle: 'ロビー · 地面',
+      exhibitHook: 'テーゼの壁と地上階のアイデンティティプレート。',
+    },
+    '23': {
+      title: 'ファクトリー',
+      subtitle: '生産ライン · 成績',
+      exhibitTitle: 'ファクトリー · 23F',
+      exhibitHook: '4学期の組立ライン — 成績、グレード、マイルストーン。',
+    },
+    '52': {
+      title: 'ラボラトリー',
+      subtitle: 'グループプロジェクト',
+      exhibitTitle: 'ラボラトリー · 52F',
+      exhibitHook: '5つのプロジェクトルーム — ハッカソンから研究パイプラインまで。',
+    },
+    '99': {
+      title: '図書館 & アーカイブ',
+      subtitle: '受賞 · 資格',
+      exhibitTitle: '図書館 · 99F',
+      exhibitHook: '学位、ディーンズリスト、リーダーシップ、証書。',
+    },
+    roof: {
+      title: '屋上',
+      subtitle: '連絡先',
+      exhibitTitle: '屋上 · 連絡先',
+      exhibitHook: '開けた空の下のアイデンティティプレート。',
+    },
+  },
+  lobby: {
+    welcome: 'ようこそ',
+    thesis: '万丈高層は平地から起こる · 学びは建造である',
+    bio: 'フルスタック開発者 · UTS 情報工学修士 · シドニー。',
+    degree: '学位',
+    institution: '大学',
+    wam: 'WAM',
+    gpa: 'GPA',
+    cp: '単位',
+    hdCount: 'HD',
+    deansList: 'ディーンズリスト',
+    program: 'プログラム',
+    location: '所在地',
+    experienceTitle: '経歴',
+    hint: '左のレールから階を選択 — この塔が地図です。',
+  },
+  factory: {
+    wam: 'WAM',
+    cp: '単位',
+    hd: 'High Distinction',
+    d: 'Distinction',
+    avg: '平均',
+    selectArea: 'モデルまたはレールで生産ライン（Area 01–04）を選択。',
+    allAreas: 'すべての生産ライン',
+    overview: '4学期のラインが並行 — エリアをクリックしてズーム。',
+  },
+  lab: {
+    intro: 'この階に5つのプロジェクトルーム。',
+    selectRoom: 'モデルまたはレールでルームを選択。',
+    role: '役割',
+    team: 'チーム',
+    course: 'コース',
+  },
+  infra: {
+    skillsTitle: 'スキル — 立管と配管',
+    coursesTitle: 'コースリンク → プロジェクト',
+    viewProject: 'プロジェクトを見る ↗',
+  },
+  tech: {
+    intro: '地下テックセンター — リポジトリ、エクスポート、デプロイ。',
+    github: 'GitHub',
+    githubDesc: 'louislibuilds — リポジトリ、コミット、オープンソース',
+    nagi: 'bubblechickenlab',
+    nagiDesc: '3アプリ本番プラットフォーム — nagi、KATA エディター、求人トラッカー',
+    kata: 'KATA エディター',
+    kataDesc: 'PDF エクスポート付き履歴書作成',
+    print: '履歴書を印刷',
+    printDesc: 'アイデンティティプレートを印刷、または KATA で完全版',
+    reposTitle: '注目リポジトリ',
+    openProfile: 'プロフィールを開く ↗',
+    openNagi: 'サイトを開く ↗',
+    openKata: 'KATA を開く ↗',
+    printNow: '今すぐ印刷',
+  },
+  library: {
+    hero: 'アーカイブ & 図書館',
+    heroSub: '情報工学修士 · UTS · WAM 86.9',
+    archiveTitle: 'アーカイブ',
+    libraryTitle: '図書館',
+    archiveIntro: '資格の引き出し — 学位、ディーンズリスト、リーダーシップ、証書。',
+    libraryIntro: '読書机 — bubblechickenlab プラットフォーム、執筆、サイドプロジェクト。',
+    selectRoom: 'モデルまたはレールでアーカイブまたは図書館を選択。',
+    experienceTitle: 'リーダーシップ & プラットフォーム',
+  },
+  roof: {
+    site: 'SITE · TOWER 0',
+    footer: 'ソフトウェアは書かれるのではない。組み立てられる。',
+    copy: '© {year} Louis Li · Tower 0',
+  },
+  projects: {
+    'unihack-2026': {
+      title: 'UniHack 2026 — Your Rock Is Coming',
+      hook: '48時間 MVP：地図探索 + 7日間天気予報。',
+      role: 'チームリード & テクニカルディレクター',
+      team: 'クロスファンクショナルハッカソンチーム',
+    },
+    'cloud-computing': {
+      title: 'SUNishop — クラウド E コマース',
+      hook: 'LAMP → MERN 移行、CI と AWS Academy デプロイ。',
+      role: 'フルスタック開発者',
+      course: '42904 (100 HD) · 42891 (95 HD)',
+    },
+    nlp: {
+      title: 'Mock Interview Coach',
+      hook: 'STT 模擬面接、STAR フレームワーク NLP フィードバック。',
+      role: 'リード開発者',
+      course: '42850 NLP アルゴリズム (94 HD)',
+    },
+    dl: {
+      title: 'VTuber モーションパイプライン',
+      hook: 'リアルタイム姿勢 → VRM アバター、MediaPipe + Kalidokit + CNN。',
+      role: 'ソフトウェア開発 · 製品化',
+      team: 'Ko-Chun Liao, Junjie Niu',
+      course: '42028 深層学習 & CNN (95 HD)',
+    },
+    kata: {
+      title: 'KATA — 履歴書 & 求人トラッカー',
+      hook: '統合求人プラットフォーム：履歴書作成、PDF エクスポート、応募追跡。',
+      role: '単独開発者',
+    },
+  },
+  credentials: {
+    'deans-list': { title: 'ディーンズリスト 2026', detail: 'UTS 工学・IT 学部' },
+    degree: { title: '情報工学修士', detail: 'C04295 · 96 単位 · WAM 86.9' },
+    techfest: { title: 'TechFest AI ショーケースノミネート', detail: 'VTuber モーションパイプライン' },
+    'tsa-founder': { title: 'UTS TSA — 共同創設者', detail: '1,000+ フォロワー' },
+    'tsa-vp': { title: '副会長 & 秘書', detail: '2025/06 – 2026/06' },
+    'tsa-consultant': { title: 'コンサルタント', detail: 'UTS TSA アドバイザリー' },
+    acf: { title: 'ACF メンタリングプログラム', detail: 'Australia Career Forum · 2026' },
+  },
+  skillGroups: {
+    Languages: '言語',
+    Frontend: 'フロントエンド',
+    'Backend & Data': 'バックエンド & データ',
+    'Cloud & DevOps': 'クラウド & DevOps',
+    'ML / AI': 'ML / AI',
+  },
+  platformApps: {
+    nagi: { name: 'nagi', hook: 'ポートフォリオ即建築 — bubblechickenlab.com 多言語 CMS。' },
+    'kata-editor': { name: 'KATA エディター', hook: '履歴書バリアントのライブプレビューと PDF エクスポート。' },
+    'kata-tracker': { name: 'KATA トラッカー', hook: 'ローカルファーストの求人応募トラッカー。' },
+  },
+}
+
+export const STRINGS: Record<Locale, LocaleStrings> = { en, 'zh-TW': zhTW, 'zh-CN': zhCN, ja }
 
 export const LOCALE_LABELS: Record<Locale, string> = {
   en: 'EN',
   'zh-TW': '繁',
   'zh-CN': '简',
+  ja: '日',
+}
+
+export const HTML_LANG: Record<Locale, string> = {
+  en: 'en',
+  'zh-TW': 'zh-Hant',
+  'zh-CN': 'zh-Hans',
+  ja: 'ja',
+}
+
+export function isLocale(value: string | null): value is Locale {
+  return value !== null && value in STRINGS
 }

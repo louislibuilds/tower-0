@@ -18,7 +18,7 @@ export function SiteChrome() {
     <div className="site-chrome">
       {bootDone && phase !== 'exit' && phase !== 'void' && (
         <button type="button" className="site-chrome-exit" onClick={startExit}>
-          Roll drawing
+          {strings.site.rollDrawing}
         </button>
       )}
       <div className="site-chrome-langs" role="group" aria-label="Language">
