@@ -5,11 +5,18 @@ export const profile = {
   thesis:
     'Master of Information Technology graduate (UTS) building full-stack systems — from cloud infrastructure to NLP pipelines — with a portfolio-as-architecture mindset.',
   bio: 'Full-stack developer · UTS MIT · Sydney. I construct software the way buildings are built: load-bearing boundaries, service risers, and rooms that each tell a story.',
+  summary:
+    'Full-stack engineer operating a 3-app production platform on bubblechickenlab.com — sole builder from database schema to deploy. React/TypeScript, Supabase, Three.js. UTS MIT (WAM 86.9 · Dean\'s List). Bilingual EN/ZH.',
   location: 'Sydney, NSW, Australia',
   degree: 'Master of Information Technology',
   institution: 'University of Technology Sydney',
+  programCode: 'C04295',
   wam: 86.9,
   cp: 96,
+  deansList: true,
+  programStart: 'Aug 2024',
+  programEnd: 'Aug 2026',
+  gradeSummary: { HD: 9, D: 6, CR: 1 } as const,
   links: {
     email: 'mailto:louis.li.builds@gmail.com',
     github: 'https://github.com/louislibuilds',

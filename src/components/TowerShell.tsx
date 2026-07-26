@@ -11,8 +11,21 @@ const TowerScene = lazy(() =>
 )
 
 export function TowerShell() {
-  const { floorId, hoveredFloorId, labRoomSlug, theme, strings, goToFloor, setHoveredFloor, setLabRoomSlug, setHoveredLabSlug } =
-    useSite()
+  const {
+    floorId,
+    hoveredFloorId,
+    labRoomSlug,
+    libraryRoomSlug,
+    warehouseStop,
+    theme,
+    strings,
+    goToFloor,
+    setHoveredFloor,
+    setLabRoomSlug,
+    setHoveredLabSlug,
+    setLibraryRoomSlug,
+    setWarehouseStop,
+  } = useSite()
   const reducedMotion = useReducedMotion()
   const webgl = useWebGL()
   const use3D = webgl && !reducedMotion
@@ -25,6 +38,8 @@ export function TowerShell() {
             activeFloorId={floorId}
             hoveredFloorId={hoveredFloorId}
             labRoomSlug={labRoomSlug}
+            libraryRoomSlug={libraryRoomSlug}
+            warehouseStop={warehouseStop}
             reducedMotion={reducedMotion}
             theme={theme}
             bootLabel={strings.site.constructing}
@@ -32,6 +47,9 @@ export function TowerShell() {
             onFloorClick={goToFloor}
             onLabRoomClick={setLabRoomSlug}
             onLabRoomHover={setHoveredLabSlug}
+            onLibraryRoomClick={setLibraryRoomSlug}
+            onLibraryRoomHover={() => {}}
+            onWarehouseStop={setWarehouseStop}
           />
         </Suspense>
       ) : (

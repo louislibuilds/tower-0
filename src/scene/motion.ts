@@ -1,9 +1,11 @@
 export const DUR = {
   ink: 0.8,
   extrude: 1.6,
-  civic: 0.7,
-  threshold: 1.1,
-  roofAscent: 1.4,
+  civic: 0.85,
+  threshold: 1.25,
+  roofAscent: 1.5,
+  assemble: 0.55,
+  pan: 0.7,
 } as const
 
 export const EASE_SITE = 'power2.inOut'

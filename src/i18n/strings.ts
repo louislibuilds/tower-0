@@ -16,8 +16,6 @@ export interface LocaleStrings {
     hint: string
     themeDark: string
     themeLight: string
-    themeInk: string
-    themePaper: string
   }
   floors: Record<
     string,
@@ -30,7 +28,12 @@ export interface LocaleStrings {
     degree: string
     institution: string
     wam: string
+    cp: string
+    hdCount: string
+    deansList: string
+    program: string
     location: string
+    experienceTitle: string
     hint: string
   }
   warehouse: {
@@ -39,6 +42,8 @@ export interface LocaleStrings {
     hd: string
     d: string
     avg: string
+    selectSemester: string
+    allSemesters: string
   }
   lab: {
     intro: string
@@ -56,18 +61,27 @@ export interface LocaleStrings {
     intro: string
     github: string
     githubDesc: string
+    nagi: string
+    nagiDesc: string
     kata: string
     kataDesc: string
     print: string
     printDesc: string
     reposTitle: string
     openProfile: string
+    openNagi: string
     openKata: string
     printNow: string
   }
   library: {
     hero: string
     heroSub: string
+    archiveTitle: string
+    libraryTitle: string
+    archiveIntro: string
+    libraryIntro: string
+    selectRoom: string
+    experienceTitle: string
   }
   roof: {
     site: string
@@ -80,6 +94,7 @@ export interface LocaleStrings {
   >
   credentials: Record<string, { title: string; detail?: string }>
   skillGroups: Record<string, string>
+  platformApps: Record<string, { name: string; hook: string }>
 }
 
 const en: LocaleStrings = {
@@ -95,10 +110,8 @@ const en: LocaleStrings = {
     fallback: '2D plan view',
     floors: 'FLOORS',
     hint: 'Select a room on the model',
-    themeDark: 'Dark',
-    themeLight: 'Light',
-    themeInk: 'INK',
-    themePaper: 'PAPER',
+    themeDark: 'Night',
+    themeLight: 'Day',
   },
   floors: {
     B10: {
@@ -147,14 +160,27 @@ const en: LocaleStrings = {
   lobby: {
     welcome: 'Welcome to',
     thesis: 'Software is not written. It is constructed.',
-    bio: 'Full-stack developer · UTS MIT · Sydney. I construct software the way buildings are built: load-bearing boundaries, service risers, and rooms that each tell a story.',
+    bio: 'Full-stack developer · UTS MIT · Sydney. I construct software the way buildings are built.',
     degree: 'Degree',
     institution: 'Institution',
     wam: 'WAM',
+    cp: 'Credit Points',
+    hdCount: 'HD',
+    deansList: "Dean's List",
+    program: 'Program',
     location: 'Location',
+    experienceTitle: 'Experience',
     hint: 'Select a floor from the rail — the tower is the map.',
   },
-  warehouse: { wam: 'WAM', cp: 'Credit Points', hd: 'High Distinction', d: 'Distinction', avg: 'Avg' },
+  warehouse: {
+    wam: 'WAM',
+    cp: 'Credit Points',
+    hd: 'High Distinction',
+    d: 'Distinction',
+    avg: 'Avg',
+    selectSemester: 'Select a semester plinth on the model or rail.',
+    allSemesters: 'All semesters',
+  },
   lab: { intro: 'Five project rooms on this floor.', selectRoom: 'Select a room on the model or rail.', role: 'Role', team: 'Team', course: 'Course' },
   infra: {
     skillsTitle: 'Skills — Risers & Pipes',
@@ -165,18 +191,27 @@ const en: LocaleStrings = {
     intro: 'Underground tech centre — repos, exports, deployment.',
     github: 'GitHub',
     githubDesc: 'louislibuilds — repos, commits, open source',
+    nagi: 'bubblechickenlab',
+    nagiDesc: '3-app production platform — nagi, KATA editor, job tracker',
     kata: 'KATA Editor',
     kataDesc: 'Craft & export résumé with PDF export',
     print: 'Print Résumé',
     printDesc: 'Print identity plate or use KATA for full sheets',
     reposTitle: 'Highlighted Repos',
     openProfile: 'Open profile ↗',
+    openNagi: 'Open site ↗',
     openKata: 'Open KATA ↗',
     printNow: 'Print now',
   },
   library: {
-    hero: 'Archive & Credentials',
+    hero: 'Archive & Library',
     heroSub: 'Master of Information Technology · UTS · WAM 86.9',
+    archiveTitle: 'Archive',
+    libraryTitle: 'Library',
+    archiveIntro: 'Plan chest of credentials — degrees, dean\'s list, leadership, certificates.',
+    libraryIntro: 'Reading desk — bubblechickenlab platform, writing, and side projects.',
+    selectRoom: 'Select Archive or Library on the model or rail.',
+    experienceTitle: 'Leadership & Platform',
   },
   roof: {
     site: 'SITE · TOWER 0',
@@ -231,6 +266,11 @@ const en: LocaleStrings = {
     'Cloud & DevOps': 'Cloud & DevOps',
     'ML / AI': 'ML / AI',
   },
+  platformApps: {
+    nagi: { name: 'nagi', hook: 'Portfolio-as-architecture — trilingual CMS on bubblechickenlab.com.' },
+    'kata-editor': { name: 'KATA Editor', hook: 'Résumé variants with live preview and PDF export.' },
+    'kata-tracker': { name: 'KATA Tracker', hook: 'Local-first job application tracker.' },
+  },
 }
 
 const zhTW: LocaleStrings = {
@@ -246,10 +286,8 @@ const zhTW: LocaleStrings = {
     fallback: '2D 平面圖',
     floors: '樓層',
     hint: '在模型上選擇一個房間',
-    themeDark: '深色',
-    themeLight: '淺色',
-    themeInk: 'INK',
-    themePaper: 'PAPER',
+    themeDark: '夜間',
+    themeLight: '日間',
   },
   floors: {
     B10: {
@@ -298,14 +336,27 @@ const zhTW: LocaleStrings = {
   lobby: {
     welcome: '歡迎來到',
     thesis: '軟體不是寫出來的，是建造出來的。',
-    bio: '全端開發者 · UTS 資訊科技碩士 · 雪梨。我以建築的方式構建軟體：承重邊界、服務井道、每個房間訴說一段故事。',
+    bio: '全端開發者 · UTS 資訊科技碩士 · 雪梨。',
     degree: '學位',
     institution: '學校',
     wam: 'WAM',
+    cp: '學分',
+    hdCount: 'HD',
+    deansList: '院長榮譽榜',
+    program: '學程',
     location: '地點',
+    experienceTitle: '經歷',
     hint: '從樓層導覽選擇 — 這座塔就是你的地圖。',
   },
-  warehouse: { wam: 'WAM', cp: '學分', hd: '高級優等', d: '優等', avg: '平均' },
+  warehouse: {
+    wam: 'WAM',
+    cp: '學分',
+    hd: '高級優等',
+    d: '優等',
+    avg: '平均',
+    selectSemester: '在模型或左側面板選擇學期。',
+    allSemesters: '全部學期',
+  },
   lab: { intro: '本層五間專案房。', selectRoom: '在模型或左側面板選擇一間房。', role: '角色', team: '團隊', course: '課程' },
   infra: {
     skillsTitle: '技能 — 管線與機電',
@@ -316,18 +367,27 @@ const zhTW: LocaleStrings = {
     intro: '地下科技中心 — 程式庫、匯出、部署。',
     github: 'GitHub',
     githubDesc: 'louislibuilds — 開源專案與提交紀錄',
+    nagi: 'bubblechickenlab',
+    nagiDesc: '三應用生產平台 — nagi、KATA 編輯器、求職追蹤',
     kata: 'KATA 編輯器',
     kataDesc: '撰寫與匯出 PDF 履歷',
     print: '列印履歷',
     printDesc: '列印身份铭牌或使用 KATA 完整版',
     reposTitle: '精選 Repos',
     openProfile: '開啟 GitHub ↗',
+    openNagi: '開啟網站 ↗',
     openKata: '開啟 KATA ↗',
     printNow: '立即列印',
   },
   library: {
-    hero: '檔案室 & 證書',
+    hero: '檔案室 & 圖書館',
     heroSub: '資訊科技碩士 · UTS · WAM 86.9',
+    archiveTitle: '檔案室',
+    libraryTitle: '圖書館',
+    archiveIntro: '證書抽屜 — 學位、院長榮譽榜、領導經歷、證照。',
+    libraryIntro: '閱讀桌 — bubblechickenlab 平台、寫作與 side projects。',
+    selectRoom: '在模型或左側面板選擇檔案室或圖書館。',
+    experienceTitle: '領導 & 平台',
   },
   roof: {
     site: 'SITE · TOWER 0',
@@ -382,6 +442,11 @@ const zhTW: LocaleStrings = {
     'Cloud & DevOps': '雲端 & DevOps',
     'ML / AI': '機器學習 / AI',
   },
+  platformApps: {
+    nagi: { name: 'nagi', hook: '作品集即建築 — bubblechickenlab.com 三語 CMS。' },
+    'kata-editor': { name: 'KATA 編輯器', hook: '履歷變體即時預覽與 PDF 匯出。' },
+    'kata-tracker': { name: 'KATA 追蹤器', hook: '本地優先的求職申請追蹤。' },
+  },
 }
 
 const zhCN: LocaleStrings = {
@@ -404,10 +469,12 @@ const zhCN: LocaleStrings = {
   lobby: {
     ...zhTW.lobby,
     thesis: '软件不是写出来的，是建造出来的。',
-    bio: '全栈开发者 · UTS 信息技术硕士 · 悉尼。我以建筑的方式构建软件：承重边界、服务井道、每个房间诉说一段故事。',
+    bio: '全栈开发者 · UTS 信息技术硕士 · 悉尼。',
     hint: '从楼层导览选择 — 这座塔就是你的地图。',
+    deansList: '院长荣誉榜',
+    experienceTitle: '经历',
   },
-  warehouse: { wam: 'WAM', cp: '学分', hd: '高级优等', d: '优等', avg: '平均' },
+  warehouse: { ...zhTW.warehouse, selectSemester: '在模型或左侧面板选择学期。', allSemesters: '全部学期' },
   lab: { intro: '本层五间项目房。', selectRoom: '在模型或左侧面板选择一间房。', role: '角色', team: '团队', course: '课程' },
   infra: { skillsTitle: '技能 — 管线与机电', coursesTitle: '课程链接 → 项目', viewProject: '查看项目 ↗' },
   tech: {
@@ -416,9 +483,18 @@ const zhCN: LocaleStrings = {
     print: '打印简历',
     printDesc: '打印身份铭牌或使用 KATA 完整版',
     openProfile: '打开 GitHub ↗',
+    openNagi: '打开网站 ↗',
     printNow: '立即打印',
   },
-  library: { hero: '档案室 & 证书', heroSub: '信息技术硕士 · UTS · WAM 86.9' },
+  library: {
+    ...zhTW.library,
+    archiveTitle: '档案室',
+    libraryTitle: '图书馆',
+    archiveIntro: '证书抽屉 — 学位、院长荣誉榜、领导经历、证照。',
+    libraryIntro: '阅读桌 — bubblechickenlab 平台、写作与 side projects。',
+    selectRoom: '在模型或左侧面板选择档案室或图书馆。',
+    experienceTitle: '领导 & 平台',
+  },
   roof: { ...zhTW.roof, footer: '软件不是写出来的，是建造出来的。' },
   projects: {
     'unihack-2026': { ...zhTW.projects['unihack-2026'], hook: '48 小时 MVP：地图探索 + 7 日天气预报。', role: '队长 & 技术总监', team: '跨领域黑客松团队' },
@@ -442,6 +518,11 @@ const zhCN: LocaleStrings = {
     'Backend & Data': '后端 & 数据',
     'Cloud & DevOps': '云端 & DevOps',
     'ML / AI': '机器学习 / AI',
+  },
+  platformApps: {
+    nagi: { name: 'nagi', hook: '作品集即建筑 — bubblechickenlab.com 三语 CMS。' },
+    'kata-editor': { name: 'KATA 编辑器', hook: '简历变体即时预览与 PDF 导出。' },
+    'kata-tracker': { name: 'KATA 追踪器', hook: '本地优先的求职申请追踪。' },
   },
 }
 
