@@ -11,6 +11,8 @@
   --glass: #B8C4D4;
   --blueprint: #1E3A5F;
   --signal: #2F6BFF;
+  --chicken: #E8B84A;
+  --chicken-mute: #C49A3A;
   --grid: #D0CEC8;
   --shade: #565A5F;
   --line: color-mix(in srgb, var(--graphite) 18%, transparent);
@@ -40,6 +42,8 @@
   --glass: #33404E;
   --blueprint: #5B82BC;
   --signal: #2F6BFF;
+  --chicken: #E8B84A;
+  --chicken-mute: #B8922E;
   --grid: #2A2C2E;
   --shade: #08090A;
   --line: color-mix(in srgb, var(--graphite) 22%, transparent);
@@ -885,4 +889,95 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 @media print {
   .site-canvas, .site-rail, .site-chrome, .site-anno { display: none; }
   .exhibit-overlay { position: static; width: 100%; margin: 0; border: 1px solid #ccc; }
+}
+
+/* ── Dev: Phase A primitive gallery ── */
+.typology-gallery {
+  min-height: 100dvh;
+  background: var(--paper);
+  color: var(--graphite);
+  display: flex;
+  flex-direction: column;
+}
+.typology-gallery__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem 1.25rem 0.75rem;
+  border-bottom: 1px solid var(--line);
+  flex-shrink: 0;
+}
+.typology-gallery__eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  color: var(--signal);
+  margin: 0 0 0.25rem;
+}
+.typology-gallery__title {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 400;
+  margin: 0;
+}
+.typology-gallery__sub {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--graphite-mute);
+  margin: 0.35rem 0 0;
+}
+.typology-gallery__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+.typology-gallery__toggle {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+}
+.typology-gallery__link {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--graphite);
+  border-bottom: 1px solid var(--line);
+}
+.typology-gallery__link:hover { color: var(--signal); border-color: var(--signal); }
+.typology-gallery__canvas {
+  flex: 1;
+  min-height: 55dvh;
+  position: relative;
+}
+.typology-gallery__canvas canvas {
+  width: 100% !important;
+  height: 100% !important;
+  cursor: crosshair;
+}
+.typology-gallery__legend {
+  list-style: none;
+  margin: 0;
+  padding: 0.75rem 1.25rem 1.25rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  gap: 0.5rem 1rem;
+  border-top: 1px solid var(--line);
+  flex-shrink: 0;
+}
+.typology-gallery__legend li {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.04em;
+}
+.typology-gallery__legend strong {
+  display: block;
+  color: var(--graphite);
+  margin-bottom: 0.15rem;
+}
+.typology-gallery__legend span {
+  color: var(--graphite-mute);
 }

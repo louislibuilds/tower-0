@@ -11,6 +11,8 @@ export interface ScenePalette {
   glass: string
   blueprint: string
   signal: string
+  chicken: string
+  chickenMute: string
   grid: string
   shade: string
 }
@@ -27,6 +29,8 @@ export const PAPER_PRINT: ScenePalette = {
   glass: '#B8C4D4',
   blueprint: '#1E3A5F',
   signal: '#2F6BFF',
+  chicken: '#E8B84A',
+  chickenMute: '#C49A3A',
   grid: '#D0CEC8',
   shade: '#565A5F',
 }
@@ -43,6 +47,8 @@ export const INK_PRINT: ScenePalette = {
   glass: '#33404E',
   blueprint: '#5B82BC',
   signal: '#2F6BFF',
+  chicken: '#E8B84A',
+  chickenMute: '#B8922E',
   grid: '#2A2C2E',
   shade: '#08090A',
 }
