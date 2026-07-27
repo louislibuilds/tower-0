@@ -22,7 +22,7 @@ import {
 import { getScenePalette } from './palette'
 import { CircuitBase } from './exhibits/CircuitBase'
 import { TowerMass } from './mass/TowerMass'
-import { EdgeInkContext, FloorPickTarget, GroundGrid, StationCallout, WindowMatrix } from './primitives'
+import { EdgeInkContext, FloorPickTarget, GroundGrid, LobbyAutoDoors, StationCallout, WindowMatrix } from './primitives'
 import { FloorRoom } from './rooms'
 import { IdentityPlate } from './typologies/IdentityPlate'
 
@@ -333,16 +333,25 @@ function ProgramFloorBand({
       {
         !hideFacade && !shellFade && (
         <group position={[0, 0, d / 2 + 0.01]}>
-          <WindowMatrix
-            width={w * 0.88}
-            height={h * 0.72}
-            cols={zone === 'basement' ? 4 : 5}
-            rows={zone === 'roof' ? 2 : 4}
-            pattern={windowPattern}
-            night={isNight}
-            active={hovered}
-            accentRatio={0.12}
-          />
+          {program.id === 'G' ? (
+            <LobbyAutoDoors
+              bandWidth={w}
+              bandHeight={h}
+              night={isNight}
+              active={hovered}
+            />
+          ) : (
+            <WindowMatrix
+              width={w * 0.88}
+              height={h * 0.72}
+              cols={zone === 'basement' ? 4 : 5}
+              rows={zone === 'roof' ? 2 : 4}
+              pattern={windowPattern}
+              night={isNight}
+              active={hovered}
+              accentRatio={0.12}
+            />
+          )}
         </group>
         )
       }

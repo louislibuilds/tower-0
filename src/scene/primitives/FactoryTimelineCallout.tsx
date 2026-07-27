@@ -9,6 +9,8 @@ export interface FactoryTimelineCalloutProps {
   /** e.g. 2024 SPR — ruled on the timeline datum */
   semester: string
   active?: boolean
+  /** Ghost sibling when another stop is focused */
+  dimmed?: boolean
   hidden?: boolean
   /** Crate stack top — leader anchor (local Y) */
   anchorY?: number
@@ -26,6 +28,7 @@ export function FactoryTimelineCallout({
   area,
   semester,
   active = false,
+  dimmed = false,
   hidden = false,
   anchorY = 0.12,
   timelineY = 0.38,
@@ -40,8 +43,9 @@ export function FactoryTimelineCallout({
     () => [
       new THREE.Vector3(0, anchorY, 0),
       new THREE.Vector3(0, timelineY, 0),
+      new THREE.Vector3(0, labelY, labelZ * 0.35),
     ],
-    [anchorY, timelineY],
+    [anchorY, timelineY, labelY, labelZ],
   )
 
   if (hidden) return null
@@ -50,6 +54,7 @@ export function FactoryTimelineCallout({
     'site-caption',
     'site-caption--above',
     active ? 'site-caption--note' : '',
+    dimmed ? 'site-caption--dim' : '',
   ]
     .filter(Boolean)
     .join(' ')
@@ -61,7 +66,7 @@ export function FactoryTimelineCallout({
         color={lineColor}
         lineWidth={1}
         transparent
-        opacity={active ? 0.92 : 0.68}
+        opacity={active ? 0.92 : dimmed ? 0.42 : 0.68}
         dashed
         dashSize={0.014}
         gapSize={0.01}

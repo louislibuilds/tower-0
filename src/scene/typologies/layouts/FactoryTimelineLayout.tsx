@@ -2,7 +2,6 @@ import { Line } from '@react-three/drei'
 import gsap from 'gsap'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
-import type { ViewMode } from '../../../building/viewMode'
 import {
   areaLabel,
   FACTORY_BLUEPRINT,
@@ -258,7 +257,6 @@ function FactoryStation({
   accent,
   entered,
   factoryStop,
-  viewMode,
   floorOverview,
   onSelectStop,
   onHoverStop,
@@ -270,7 +268,6 @@ function FactoryStation({
   accent: string
   entered: boolean
   factoryStop: number | null
-  viewMode: ViewMode
   floorOverview: boolean
   onSelectStop?: (index: number) => void
   onHoverStop?: (index: number | null) => void
@@ -278,21 +275,21 @@ function FactoryStation({
 }) {
   const active = factoryStop === stopIndex
   const thin = factoryStop !== null && !active
-  const zoomed = active && (viewMode === 'room' || viewMode === 'focus')
   const settle = entered && active
   const stackHeight = stackTop(crates)
   const anchor = bpPoint(sx + 0.75, 1.5, 0, ROOM_W, ROOM_D)
   const [hovered, setHovered] = useState(false)
 
-  const pick = !thin && !!onSelectStop
+  const pick = !!onSelectStop
 
   return (
     <group position={anchor}>
-      {floorOverview && !thin && !zoomed && (
+      {floorOverview && (
         <FactoryTimelineCallout
           area={areaLabel(stopIndex)}
           semester={semesterTimelineLabel(stopIndex)}
           active={active || hovered}
+          dimmed={thin}
           anchorY={Math.max(stackHeight, BELT_TOP) + 0.02}
           timelineY={TIMELINE_Y - anchor[1]}
           labelOffset={FACTORY_TIMELINE_LABEL_OFFSET[stopIndex] ?? FACTORY_TIMELINE_LABEL_OFFSET[0]}
@@ -359,22 +356,18 @@ export function FactoryTimelineLayout({
   accent,
   entered,
   factoryStop = null,
-  viewMode = 'floor',
   floorOverview = false,
   onSelectStop,
   onHoverStop,
 }: TypologyProps & {
   factoryStop?: number | null
-  viewMode?: ViewMode
   floorOverview?: boolean
   onSelectStop?: (index: number) => void
   onHoverStop?: (index: number | null) => void
 }) {
   const m = typologyMat(theme, accent, entered)
   const scale = factoryPlateScale()
-  const zoomed =
-    factoryStop !== null && (viewMode === 'room' || viewMode === 'focus')
-  const showTimeline = floorOverview && !zoomed
+  const showTimeline = floorOverview
 
   const conveyorRollers = useMemo(
     () => Array.from({ length: 11 }, (_, i) => bpBox(i, 1.5, 0, 1, 1, 0.22, ROOM_W, ROOM_D)),
@@ -421,7 +414,6 @@ export function FactoryTimelineLayout({
           accent={accent}
           entered={entered}
           factoryStop={factoryStop}
-          viewMode={viewMode}
           floorOverview={floorOverview}
           onSelectStop={onSelectStop}
           onHoverStop={onHoverStop}

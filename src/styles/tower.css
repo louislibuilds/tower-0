@@ -1102,6 +1102,10 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   transform-origin: bottom left;
 }
 
+.site-caption--dim {
+  opacity: 0.52;
+}
+
 [data-theme='dark'] .site-caption,
 [data-theme='dark'] .site-caption--note {
   background: color-mix(in srgb, var(--paper) 82%, var(--graphite) 18%);

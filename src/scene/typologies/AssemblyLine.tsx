@@ -19,7 +19,7 @@ export function AssemblyLine({
   accent,
   entered,
   factoryStop,
-  viewMode = 'floor',
+  viewMode: _viewMode = 'floor',
   floorOverview = false,
   onSelectStop,
   onHoverStop,
@@ -34,7 +34,6 @@ export function AssemblyLine({
         accent={accent}
         entered={entered}
         factoryStop={factoryStop}
-        viewMode={viewMode}
         floorOverview={floorOverview}
         onSelectStop={onSelectStop}
         onHoverStop={onHoverStop}

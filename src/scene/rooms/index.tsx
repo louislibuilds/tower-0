@@ -87,7 +87,7 @@ export function FloorRoom({
         factoryStop={factoryStop}
         viewMode={viewMode}
         roomFocus={roomFocus && factoryStop !== null}
-        floorOverview={viewMode === 'floor' && factoryStop === null}
+        floorOverview={viewMode === 'floor' || viewMode === 'room'}
         onSelectStop={onFactoryStop}
         onHoverStop={onFactoryStopHover}
       />

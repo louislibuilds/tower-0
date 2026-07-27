@@ -150,9 +150,9 @@ function factoryTimelinePreset(factoryStop: number | null): AuthoredPreset {
   }
 }
 
-/** G · threshold hall */
-const G_FLOOR: AuthoredPreset = { lookAt: [0, 0, 0], eye: [0.35, 0.55, 2.8], zoom: 82 }
-const G_ROOM: AuthoredPreset = { lookAt: [0, -0.02, 0.08], eye: [-0.55, 0.38, 1.05], zoom: 128 }
+/** G · threshold hall — +Z facade (same axis as tower windows & 52F), look toward −Z back */
+const G_FLOOR: AuthoredPreset = { lookAt: [0, 0.1, -0.12], eye: [0.42, 0.72, 2.05], zoom: 76 }
+const G_ROOM: AuthoredPreset = { lookAt: [0, 0.08, -0.08], eye: [0.15, 0.48, 1.28], zoom: 112 }
 
 /** B10 · rack hall */
 const B10_FLOOR: AuthoredPreset = { lookAt: [0, 0.06, 0.02], eye: [0.42, 0.22, 0.68], zoom: 268 }
