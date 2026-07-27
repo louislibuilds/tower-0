@@ -18,9 +18,9 @@ export const PROGRAM_FLOORS: ProgramFloor[] = [
   { id: 'B10', floorNumber: -10, bandHeight: 1.3, width: 2.0, depth: 1.5, accent: '#2F6BFF' },
   { id: 'B2', floorNumber: -2, bandHeight: 1.1, width: 1.9, depth: 1.4, accent: '#2F6BFF' },
   { id: 'G', floorNumber: 0, bandHeight: 1.5, width: 1.8, depth: 1.4, accent: '#2F6BFF' },
-  { id: '23', floorNumber: 23, bandHeight: 1.1, width: 1.6, depth: 1.25, accent: '#2F6BFF' },
-  { id: '52', floorNumber: 52, bandHeight: 1.1, width: 1.4, depth: 1.15, accent: '#2F6BFF' },
-  { id: '99', floorNumber: 99, bandHeight: 1.1, width: 1.2, depth: 1.05, accent: '#2F6BFF' },
+  { id: '23', floorNumber: 23, bandHeight: 1.2, width: 1.85, depth: 1.45, accent: '#2F6BFF' },
+  { id: '52', floorNumber: 52, bandHeight: 1.35, width: 2.2, depth: 1.75, accent: '#2F6BFF' },
+  { id: '99', floorNumber: 99, bandHeight: 1.25, width: 2.0, depth: 1.55, accent: '#2F6BFF' },
   { id: 'roof', floorNumber: 101, bandHeight: 0.9, width: 1.0, depth: 1.0, accent: '#2F6BFF' },
 ]
 

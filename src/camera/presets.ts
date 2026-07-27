@@ -5,6 +5,16 @@ import type { LibraryRoomSlug } from '../data/libraryRooms'
 import { getProgramFloor, programCenterY, programBaseY, towerTotalHeight } from '../scene/towerGeometry'
 import { FACTORY_STOPS } from '../scene/factoryStops'
 import { labStation, LAB_FLOOR_OVERVIEW_ZOOM } from '../scene/typologies/labCamera'
+import { chunkPosition, vaultChunk } from '../scene/typologies/floorChunks'
+
+/** Camera zoom ladder — L0 tower → L1 lobby → L2 floor → L3 room → L4 part */
+export const ZOOM = {
+  L0_TOWER: 24,
+  L1_LOBBY: 78,
+  L2_FLOOR: 168,
+  L3_ROOM: 320,
+  L4_PART: 460,
+} as const
 
 export interface CameraPreset {
   position: [number, number, number]
@@ -58,7 +68,21 @@ function interiorEntry(
   }
 }
 
-/** Extreme close framing — camera almost inside the station typology */
+/** L3 room entry — oblique framing of whole chunk shell */
+function labStationRoomEntry(
+  floorY: number,
+  target: [number, number, number],
+  from: 'left' | 'right',
+  zoom: number,
+): CameraPreset {
+  const sign = from === 'left' ? -1 : 1
+  return {
+    position: [target[0] + sign * 1.0, floorY + 0.22, target[2] + 2.2],
+    lookAt: [target[0], target[1], target[2]],
+    zoom,
+  }
+}
+/** L4 extreme close — camera almost inside the station typology */
 function labStationCloseEntry(
   target: [number, number, number],
   from: 'left' | 'right',
@@ -142,11 +166,15 @@ export function cameraPreset(
 
   if (floorId === '52') {
     const station = opts.labRoomSlug ? labStation(opts.labRoomSlug) : null
-    if (station && (viewMode === 'room' || viewMode === 'focus')) {
+    if (station && viewMode === 'focus' && opts.focusTarget === 'lab') {
       const target: [number, number, number] = [station.pos[0], y + station.lookAtY, station.pos[2]]
-      return labStationCloseEntry(target, station.cameraSide, station.zoom)
+      return labStationCloseEntry(target, station.cameraSide, station.partZoom)
     }
-    return labStationCloseEntry([0, y + 0.1, 0], 'right', LAB_FLOOR_OVERVIEW_ZOOM)
+    if (station && viewMode === 'room') {
+      const target: [number, number, number] = [station.pos[0], y + station.lookAtY, station.pos[2]]
+      return labStationRoomEntry(y, target, station.cameraSide, station.roomZoom)
+    }
+    return closeStation(y, [0, y + 0.02, 0], 'front', LAB_FLOOR_OVERVIEW_ZOOM, 0.38)
   }
 
   if (floorId === '99') {
@@ -160,12 +188,18 @@ export function cameraPreset(
       return interiorEntry(y, [0, y + 0.04, -0.08], 'right', 210)
     }
     if (archive && viewMode === 'room') {
-      return labStationCloseEntry([0.34, y + 0.12, -0.05], 'right', 320)
+      const chunk = vaultChunk('archive')
+      const [cx, , cz] = chunkPosition(chunk)
+      const target: [number, number, number] = [cx, y + 0.12, cz]
+      return labStationRoomEntry(y, target, chunk.cameraSide, chunk.roomZoom ?? ZOOM.L3_ROOM)
     }
     if (library && viewMode === 'room') {
-      return labStationCloseEntry([-0.34, y + 0.12, -0.05], 'left', 330)
+      const chunk = vaultChunk('library')
+      const [cx, , cz] = chunkPosition(chunk)
+      const target: [number, number, number] = [cx, y + 0.12, cz]
+      return labStationRoomEntry(y, target, chunk.cameraSide, chunk.roomZoom ?? ZOOM.L3_ROOM)
     }
-    return closeStation(y, [0, y + 0.02, 0], 'front', 118, 0.42)
+    return closeStation(y, [0, y + 0.02, 0], 'front', 140, 0.42)
   }
 
   return closeStation(y, [0, y, 0], 'front', 72, 0.55)

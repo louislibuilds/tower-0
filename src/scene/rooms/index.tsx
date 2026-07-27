@@ -27,6 +27,7 @@ interface FloorRoomProps extends RoomProps {
   selectedBookSlug?: string | null
   selectedCredentialSlug?: string | null
   onLabRoomClick?: (slug: string) => void
+  onLabTypologyClick?: (slug: string) => void
   onLabRoomHover?: (slug: string | null) => void
   onLibraryRoomClick?: (slug: LibraryRoomSlug) => void
   onLibraryRoomHover?: (slug: LibraryRoomSlug | null) => void
@@ -49,6 +50,7 @@ export function FloorRoom({
   selectedBookSlug = null,
   selectedCredentialSlug = null,
   onLabRoomClick = () => {},
+  onLabTypologyClick = () => {},
   onLabRoomHover = () => {},
   onLibraryRoomClick = () => {},
   onLibraryRoomHover = () => {},
@@ -69,6 +71,7 @@ export function FloorRoom({
         roomFocus={roomFocus && !!labRoomSlug}
         floorOverview={viewMode === 'floor' && !labRoomSlug}
         onLabRoomClick={onLabRoomClick}
+        onLabTypologyClick={onLabTypologyClick}
         onLabRoomHover={onLabRoomHover}
       />
     )
