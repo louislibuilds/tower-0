@@ -1,7 +1,7 @@
 /** Site narrative phase — drives boot, lobby, exit choreography */
 export type SitePhase =
   | 'boot'
-  | 'survey'
+  | 'scan'
   | 'lobby'
   | 'tower'
   | 'floor'
@@ -11,11 +11,11 @@ export type SitePhase =
   | 'void'
 
 export function isInteractionLocked(phase: SitePhase): boolean {
-  return phase === 'boot' || phase === 'survey' || phase === 'exit' || phase === 'void'
+  return phase === 'boot' || phase === 'scan' || phase === 'exit' || phase === 'void'
 }
 
 export function isBootSequence(phase: SitePhase): boolean {
-  return phase === 'boot' || phase === 'survey'
+  return phase === 'boot' || phase === 'scan'
 }
 
 /** Map global extrude [0–1] to per-band progress for staggered rise */

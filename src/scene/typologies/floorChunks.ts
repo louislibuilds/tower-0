@@ -1,7 +1,7 @@
 import type { FloorId } from '../../building/program'
 import type { LibraryRoomSlug } from '../../data/libraryRooms'
 import { getProgramFloor } from '../towerGeometry'
-import { bandInterior } from './interiorScale'
+import { bandInterior, LAB_BLUEPRINT_DIMS } from './interiorScale'
 
 export interface ExhibitChunk {
   id: string
@@ -113,12 +113,13 @@ export function vaultChunk(slug: LibraryRoomSlug): ExhibitChunk {
 }
 
 /** Back-wall anchor when a 52F lab suite expands (99F vault pattern) */
-export function labCellAnchor(slug: string, _interior: { w: number; d: number }, scale: number) {
+export function labCellAnchor(slug: string, interior: { w: number; d: number }, scale: number) {
   const chunk = labChunk(slug)
   if (!chunk) return [0, 0.04, 0] as const
-  const [cx, , cz] = chunkPosition(chunk)
-  const halfD = (chunk.size.d * scale * 0.55) / 2
-  const z = cz - chunk.size.d / 2 + halfD + 0.03
+  const [cx] = chunkPosition(chunk)
+  const [, gridD] = LAB_BLUEPRINT_DIMS[slug] ?? [5, 5]
+  const halfD = ((gridD * 0.1 * scale) / 2) * 0.96
+  const z = -interior.d / 2 + halfD + 0.04
   return [cx, 0.04, z] as const
 }
 

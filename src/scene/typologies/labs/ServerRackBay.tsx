@@ -31,7 +31,7 @@ function BpMesh({
 export function ServerRackBay({ theme, accent, entered, active }: TypologyProps) {
   const m = typologyMat(theme, accent, entered)
   const lit = entered || active
-  const roomW = 6
+  const roomW = 5
   const roomD = 5
 
   const rack = bpBox(0.2, 0.2, 0, 0.85, 0.7, 3.0, roomW, roomD)

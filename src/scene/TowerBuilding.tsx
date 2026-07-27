@@ -4,7 +4,7 @@ import gsap from 'gsap'
 import { useEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 import { FLOORS, type FloorId } from '../building/program'
-import { DUR, EASE_INK, EASE_SITE, TOWER } from './motion'
+import { DUR, EASE_INK, EASE_TOWER, TOWER } from './motion'
 import { palette } from './palette'
 
 interface TowerBuildingProps {
@@ -103,7 +103,7 @@ export function TowerBuilding({ activeFloorId, extrude, ink, reducedMotion }: To
     const tween = gsap.to(car.position, {
       y: targetY,
       duration: DUR.civic,
-      ease: EASE_SITE,
+      ease: EASE_TOWER,
       onUpdate: () => invalidate(),
     })
     return () => {
@@ -319,7 +319,7 @@ export function BootController({
     }).to(state, {
       extrude: 1,
       duration: DUR.extrude,
-      ease: EASE_SITE,
+      ease: EASE_TOWER,
       onUpdate: () => {
         onExtrude(state.extrude)
         invalidate()

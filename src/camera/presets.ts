@@ -8,13 +8,13 @@ export type { CameraPreset } from './stationPresets'
 
 export { roofPlateY, stationCameraPreset }
 
-/** Camera zoom ladder — L0 tower → L1 lobby → L2 floor → L3 room → L4 focus */
+/** Camera zoom ladder — tower → lobby → floor → room → focus */
 export const ZOOM = {
-  L0_TOWER: 24,
-  L1_LOBBY: 78,
-  L2_FLOOR: 168,
-  L3_ROOM: 380,
-  L4_FOCUS: 240,
+  TOWER: 24,
+  LOBBY: 78,
+  FLOOR: 168,
+  ROOM: 380,
+  FOCUS: 240,
 } as const
 
 export function cameraPreset(

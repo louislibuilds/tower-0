@@ -8,7 +8,7 @@ import type { SitePhase } from '../building/sitePhase'
 import type { ViewMode } from '../building/viewMode'
 import type { LibraryRoomSlug } from '../data/libraryRooms'
 import { cameraPreset } from './presets'
-import { DUR, EASE_INK, EASE_SITE } from '../scene/motion'
+import { DUR, EASE_INK, EASE_TOWER } from '../scene/motion'
 import { towerTotalHeight } from '../scene/towerGeometry'
 
 interface OrthoRigProps {
@@ -92,7 +92,13 @@ export function OrthoRig({
     const vaultStationSwitch =
       floorId === '99' && viewMode === 'room' && !!libraryRoomSlug && inRoom && prevKey.current !== key
 
-    const stationSwitch = labStationSwitch || vaultStationSwitch
+    const factoryStationSwitch =
+      floorId === '23' &&
+      viewMode === 'floor' &&
+      prevKey.current.includes(`${floorId}-floor-`) &&
+      prevKey.current !== key
+
+    const stationSwitch = labStationSwitch || vaultStationSwitch || factoryStationSwitch
     const panOnly = sameFloor && prevKey.current !== key && viewMode !== 'tower' && !stationSwitch
 
     orbitActive.current = false
@@ -122,7 +128,7 @@ export function OrthoRig({
     }
 
     const isRoofClose = floorId === 'roof' && (viewMode === 'room' || viewMode === 'focus' || viewMode === 'floor')
-    const isBoot = phase === 'boot' || phase === 'survey'
+    const isBoot = phase === 'boot' || phase === 'scan'
     const duration = stationSwitch
       ? DUR.stationPan
       : panOnly
@@ -139,7 +145,7 @@ export function OrthoRig({
                   ? DUR.room
                   : DUR.civic
 
-    const ease = stationSwitch ? EASE_INK : EASE_SITE
+    const ease = stationSwitch ? EASE_INK : EASE_TOWER
 
     const tween = gsap.to(from, {
       x: target.position[0],

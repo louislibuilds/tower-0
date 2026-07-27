@@ -1,6 +1,6 @@
 import { Html } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import type { Group } from 'three'
 import type { ViewMode } from '../../building/viewMode'
 import { FloorPlate } from '../primitives/FloorPlate'
@@ -40,7 +40,7 @@ const POD_SCALE_RATIO = 0.4
 const POD_FIT_MARGIN = 0.48
 const FOCUS_FIT_MARGIN = 0.78
 
-/** 52 · Laboratory — back-wall gallery with zoom morph (99F pattern) */
+/** 52 · Laboratory — five suites with zoom morph (mirrors ArchiveLibraryFloor 99F) */
 export function BenchRow({
   theme,
   accent,
@@ -65,7 +65,7 @@ export function BenchRow({
         const podScale = blueprintFitScale(gridW, gridD, podZone, POD_FIT_MARGIN) * POD_SCALE_RATIO
         const focusScale = blueprintFitScale(gridW, gridD, plate, FOCUS_FIT_MARGIN)
         const [cx, , cz] = chunkPosition(chunk)
-        const [tx, , tz] = labCellAnchor(slug, plate, focusScale)
+        const [tx, , tz] = labCellAnchor(slug, plate, FOCUS_FIT_MARGIN)
 
         return (
           <LabMorphZone
@@ -126,10 +126,12 @@ function LabMorphZone({
   onHover: (slug: string | null) => void
 }) {
   const { w, d, h } = chunk.size
-  const label = labShortTitle(slug)
   const code = chunk.code ?? ''
+  const label = labLabel(code, slug)
   const progress = useZoomMorph(zoomed)
   const groupRef = useRef<Group>(null)
+  const [showShell, setShowShell] = useState(false)
+  const shellRef = useRef(false)
   const footprintW = w * 0.86
   const footprintD = d * 0.86
 
@@ -142,6 +144,12 @@ function LabMorphZone({
       lerpZoom(fromPos[2], toPos[2], p),
     )
     groupRef.current?.scale.setScalar(scale)
+
+    const nextShell = p > 0.58
+    if (nextShell !== shellRef.current) {
+      shellRef.current = nextShell
+      setShowShell(nextShell)
+    }
   })
 
   const roomLocked = zoomed && viewMode === 'room'
@@ -180,16 +188,21 @@ function LabMorphZone({
             />
           )}
 
-          <group position={[0, 0.012, 0]}>
-            <LabTypology slug={slug} theme={theme} accent={accent} entered={entered} active={active || zoomed} />
-          </group>
+          <LabTypology
+            slug={slug}
+            theme={theme}
+            accent={accent}
+            entered={entered}
+            active={active || showShell}
+            showShell={showShell}
+          />
 
           {!thin && (
-            <Html center position={[0, (h * 0.5 + 0.08) / Math.max(focusScale, 0.01), 0]} style={{ pointerEvents: 'none' }}>
+            <Html center position={[0, (h * 0.5 + 0.08) / focusScale, 0]} style={{ pointerEvents: 'none' }}>
               <div
                 className={`scene-label scene-label--lab ${active ? 'scene-label--active' : ''} ${zoomed ? 'scene-label--hidden' : ''}`}
               >
-                Lab · {code} {label}
+                {label}
               </div>
             </Html>
           )}

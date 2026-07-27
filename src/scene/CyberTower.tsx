@@ -22,7 +22,7 @@ import {
 import { getScenePalette } from './palette'
 import { CircuitBase } from './exhibits/CircuitBase'
 import { TowerMass } from './mass/TowerMass'
-import { EdgeInkContext, WindowMatrix } from './primitives'
+import { EdgeInkContext, GroundGrid, WindowMatrix } from './primitives'
 import { FloorRoom } from './rooms'
 import { IdentityPlate } from './typologies/IdentityPlate'
 
@@ -205,8 +205,12 @@ function ProgramFloorBand({
   const zone = getFloor(program.id).zone
   const windowPattern = zone === 'basement' ? 'basement' as const : zone === 'roof' ? 'tower' as const : 'grid' as const
 
+  const hideBandShell =
+    entered && program.id === '23' && (viewMode === 'floor' || viewMode === 'room' || viewMode === 'focus')
+
   const fillOpacity = (() => {
     if (shellFade) return 0.12
+    if (hideBandShell) return 0
     if (entered && (viewMode === 'room' || viewMode === 'focus')) {
       if (program.id === '52' && labRoomSlug) return isNight ? 0.1 : 0.05
       if (program.id === '99' && libraryRoomSlug) return isNight ? 0.1 : 0.05
@@ -215,7 +219,7 @@ function ProgramFloorBand({
       return isNight ? 0.14 : 0.08
     }
     if (entered && viewMode === 'floor') {
-      if (program.id === 'B2' || program.id === 'B10') return 0.1
+      if (program.id === 'B2' || program.id === 'B10' || program.id === '23') return 0.1
     }
     if (entered && viewMode !== 'tower') {
       return viewMode === 'floor' ? 0.28 : 0.22
@@ -228,7 +232,7 @@ function ProgramFloorBand({
     (viewMode === 'room' || viewMode === 'focus' || viewMode === 'floor') &&
     ((program.id === '52' && !!labRoomSlug) ||
       (program.id === '99' && !!libraryRoomSlug) ||
-      (program.id === '23' && factoryStop !== null) ||
+      (program.id === '23' && (viewMode === 'floor' || viewMode === 'room' || factoryStop !== null)) ||
       program.id === 'B2' ||
       program.id === 'B10')
 
@@ -257,7 +261,7 @@ function ProgramFloorBand({
         <meshBasicMaterial transparent opacity={0} />
       </mesh>
 
-      <mesh>
+      <mesh visible={!hideBandShell}>
         <boxGeometry args={[w, h, d]} />
         <meshStandardMaterial
           color={isNight ? pal.bpFace : lit ? pal.concrete : pal.resin}
@@ -269,6 +273,7 @@ function ProgramFloorBand({
         />
       </mesh>
 
+      {!hideBandShell && (
       <lineSegments geometry={edges}>
         <lineBasicMaterial
           color={lit ? pal.signal : pal.graphite}
@@ -276,6 +281,7 @@ function ProgramFloorBand({
           opacity={shellFade ? 0.7 : lit ? 1 : 0.65}
         />
       </lineSegments>
+      )}
 
       {
         !hideFacade && (
@@ -332,10 +338,12 @@ function ProgramFloorBand({
         </Html>
       )}
 
+      {!hideBandShell && (
       <mesh position={[0, h / 2 + 0.012, 0]}>
         <boxGeometry args={[w + 0.04, 0.025, d + 0.04]} />
         <meshStandardMaterial color={pal.graphite} transparent opacity={shellFade ? 0.45 : 0.8} />
       </mesh>
+      )}
     </group>
   )
 }
@@ -435,7 +443,7 @@ export function CyberTower({
   const spireBase = programBaseY(roofProgram) + roofProgram.bandHeight
   const f99 = getProgramFloor('99')
   const identityPlateY = programBaseY(f99) + f99.bandHeight
-  const identityPlateX = -f99.width / 2 + 0.24
+  const identityPlateX = -f99.width / 2 + f99.width * 0.27
   const identityPlateZ = f99.depth / 2 + 0.015
   const showIdentityPlate = extrude > 0.55
 
@@ -444,11 +452,8 @@ export function CyberTower({
     <group>
       <fog attach="fog" args={[pal.paper, 30, 70]} />
 
-      {!hideGround && (
-        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.02, 0]}>
-          <planeGeometry args={[60, 60]} />
-          <meshStandardMaterial color={pal.paper} roughness={1} />
-        </mesh>
+      {!hideGround && extrude > 0.05 && (
+        <GroundGrid extent={12} step={0.75} opacity={0.24} />
       )}
 
       {!hideGround && (
@@ -461,6 +466,8 @@ export function CyberTower({
         theme={theme}
         footprintW={footprintW}
         footprintD={footprintD}
+        hideSolidGround
+        showGroundGrid={false}
       />
 
       {extrude > 0.1 && (

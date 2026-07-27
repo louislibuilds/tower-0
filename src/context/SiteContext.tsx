@@ -543,6 +543,14 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
 
 
+  /** Hash / sidebar floor changes should enter floor view (not stay in tower overview) */
+  useEffect(() => {
+    if (!bootDone || phase === 'boot' || phase === 'scan') return
+    setViewMode(nav.floorId === 'roof' ? 'room' : 'floor')
+  }, [nav.floorId, bootDone, phase])
+
+
+
   const strings = STRINGS[locale]
 
 

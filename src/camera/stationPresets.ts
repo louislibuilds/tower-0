@@ -10,7 +10,8 @@ import type { ViewMode } from '../building/viewMode'
 import type { LibraryRoomSlug } from '../data/libraryRooms'
 import { getProgramFloor, programCenterY, programBaseY, towerTotalHeight } from '../scene/towerGeometry'
 import { floorPlateSize } from '../scene/typologies/interiorScale'
-import { chunkBaseLookAt, labCellAnchor, labChunk, vaultCornerAnchor } from '../scene/typologies/floorChunks'
+import { labCellAnchor, labChunk, vaultCornerAnchor } from '../scene/typologies/floorChunks'
+import { FACTORY_LINE_X } from '../scene/factoryStops'
 
 export interface AuthoredPreset {
   lookAt: [number, number, number]
@@ -41,9 +42,14 @@ function labFocusPreset(slug: string): AuthoredPreset | null {
   const chunk = labChunk(slug)
   if (!chunk) return null
   const plate = floorPlateSize('52')
-  const [tx, , tz] = labCellAnchor(slug, plate, 0.72)
-  const eyeX = chunk.cameraSide === 'left' ? -0.44 : 0.44
-  return { lookAt: [tx, chunkBaseLookAt(chunk), tz], eye: [eyeX, 0.12, 0.46], zoom: 462 }
+  const focusScale = 0.78
+  const [tx, baseY, tz] = labCellAnchor(slug, plate, focusScale)
+  const eyeX = chunk.cameraSide === 'left' ? -0.42 : 0.42
+  return {
+    lookAt: [tx, baseY, tz],
+    eye: [eyeX, 0.1, 0.42],
+    zoom: 478,
+  }
 }
 
 /** 52F · five lab suites — back-wall gallery (99F pattern) */
@@ -105,11 +111,17 @@ const VAULT_BOOK_FOCUS = vaultFocusPreset('library', [0, 0.04, 0.08], [0.42, 0.1
 
 const VAULT_CREDENTIAL_FOCUS = vaultFocusPreset('archive', [0, 0.04, 0.08], [-0.42, 0.1, 0.42], 478)
 
-/** 23F · side timeline — fixed side view, all lines in frame */
-const FACTORY_TIMELINE_VIEW: AuthoredPreset = {
-  lookAt: [0, 0.04, 0],
-  eye: [1.55, 0.32, 0.08],
-  zoom: 178,
+/** 23F · front elevation — closer, higher frame on stack midline */
+function factoryTimelinePreset(factoryStop: number | null): AuthoredPreset {
+  const band = getProgramFloor('23')
+  const plateY = -band.bandHeight / 2 + 0.34
+  const focusX = factoryStop !== null ? (FACTORY_LINE_X[factoryStop] ?? 0) : 0
+  const focused = factoryStop !== null
+  return {
+    lookAt: [focusX, plateY, 0],
+    eye: [0, 0.12, focused ? 0.52 : 0.58],
+    zoom: focused ? 478 : 448,
+  }
 }
 
 /** G · threshold hall */
@@ -132,7 +144,7 @@ function roofPresets(): { floor: AuthoredPreset; room: AuthoredPreset } {
   const centerY = programCenterY(roof)
   const lift = plateY - centerY
   const zPlate = f99.depth / 2 + 0.02
-  const xPlate = -f99.width / 2 + 0.24
+  const xPlate = -f99.width / 2 + f99.width * 0.27
   return {
     floor: { lookAt: [xPlate, lift, zPlate], eye: [0.62, 0.42, 2.35], zoom: 76 },
     room: { lookAt: [xPlate, lift + 0.02, zPlate], eye: [0.24, 0.08, 1.05], zoom: 248 },
@@ -159,7 +171,7 @@ export function stationCameraPreset(
   const y = programCenterY(pf)
   const midY = towerTotalHeight() / 2 - 1
 
-  if (opts.phase === 'boot' || opts.phase === 'survey') {
+  if (opts.phase === 'boot' || opts.phase === 'scan') {
     return { position: [10, midY + 2.5, 20], lookAt: [0, 0.4, 0], zoom: 28 }
   }
 
@@ -195,7 +207,7 @@ export function stationCameraPreset(
   }
 
   if (floorId === '23') {
-    return compose(y, FACTORY_TIMELINE_VIEW)
+    return compose(y, factoryTimelinePreset(opts.factoryStop))
   }
 
   if (floorId === '52') {

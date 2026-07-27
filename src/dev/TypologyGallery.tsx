@@ -9,7 +9,7 @@ const STATIONS = [
   { id: 'ground', label: 'GroundWash + BlobShadow', hint: 'Authored grounding' },
   { id: 'plinth', label: 'Plinth', hint: 'Hover boundary · crosshair' },
   { id: 'flow', label: 'FlowTrace', hint: 'Hover rear lane · signal trace' },
-  { id: 'grid', label: 'SurveyGrid', hint: 'Boot blueprint grid (background)' },
+  { id: 'grid', label: 'GroundGrid', hint: 'Boot blueprint grid (background)' },
 ]
 
 /** Dev sandbox — Phase A primitive gallery. Route: #/dev/typologies */

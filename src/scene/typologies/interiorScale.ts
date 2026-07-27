@@ -57,8 +57,8 @@ export const STATION_OVERVIEW = { w: 0.22, d: 0.18, h: 0.16 } as const
 
 /** Blueprint grid size per lab slug */
 export const LAB_BLUEPRINT_DIMS: Record<string, [number, number]> = {
-  'unihack-2026': [8, 5],
-  'cloud-computing': [6, 5],
+  'unihack-2026': [5, 5],
+  'cloud-computing': [5, 5],
   nlp: [5, 5],
   dl: [5, 5],
   kata: [5, 5],

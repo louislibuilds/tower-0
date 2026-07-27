@@ -3,14 +3,14 @@ import { useMemo } from 'react'
 import * as THREE from 'three'
 import { usePalette } from './InkEdges'
 
-interface SurveyGridProps {
+interface GroundGridProps {
   extent?: number
   step?: number
   opacity?: number
 }
 
-/** Blueprint survey grid — fades at edges, used during boot. */
-export function SurveyGrid({ extent = 10, step = 1, opacity = 0.35 }: SurveyGridProps) {
+/** Blueprint ground grid — fades at edges, used during boot. */
+export function GroundGrid({ extent = 10, step = 1, opacity = 0.35 }: GroundGridProps) {
   const pal = usePalette()
   const lines = useMemo(() => {
     const pts: THREE.Vector3[][] = []

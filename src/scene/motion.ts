@@ -17,7 +17,7 @@ export const DUR = {
   teardownVoid: 0.3,
 } as const
 
-export const EASE_SITE = 'power2.inOut'
+export const EASE_TOWER = 'power2.inOut'
 export const EASE_INK = 'power1.inOut'
 
 /** Tower dimensions (meters) */

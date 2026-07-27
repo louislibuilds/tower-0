@@ -3,6 +3,7 @@ import { useFrame } from '@react-three/fiber'
 import { useRef, useState } from 'react'
 import type { Group } from 'three'
 import type { ViewMode } from '../../building/viewMode'
+import { useSite } from '../../context/SiteContext'
 import { credentials } from '../../data/credentials'
 import { libraryBooks } from '../../data/libraryBooks'
 import type { LibraryRoomSlug } from '../../data/libraryRooms'
@@ -16,7 +17,7 @@ import { ThinnedStation } from './ThinnedStation'
 import { typologyMat, type TypologyProps } from './types'
 import { lerpZoom, useZoomMorph } from './useZoomMorph'
 
-interface StackVaultProps extends TypologyProps {
+interface ArchiveLibraryFloorProps extends TypologyProps {
   viewMode: ViewMode
   libraryRoomSlug: LibraryRoomSlug | null
   roomFocus: boolean
@@ -31,8 +32,8 @@ interface StackVaultProps extends TypologyProps {
 const POD_SCALE_RATIO = 0.4
 const POD_FIT_MARGIN = 0.48
 
-/** 99 · Stack Room + Vault Wall — corner suites with zoom morph */
-export function StackVaultFloor(props: StackVaultProps) {
+/** 99 · Library + Archive pods — corner suites with zoom morph */
+export function ArchiveLibraryFloor(props: ArchiveLibraryFloorProps) {
   const {
     theme,
     accent,
@@ -125,8 +126,10 @@ function VaultMorphZone({
   onBookClick: (slug: string) => void
   onCredentialClick: (slug: string) => void
 }) {
+  const { strings } = useSite()
   const { w, d, h } = chunk.size
-  const label = slug === 'library' ? 'Stack Room' : 'Vault Wall'
+  const label =
+    slug === 'library' ? strings.library.libraryTitle : strings.library.archiveTitle
   const progress = useZoomMorph(zoomed)
   const groupRef = useRef<Group>(null)
   const [showShell, setShowShell] = useState(false)
@@ -280,5 +283,3 @@ function VaultMorphZone({
     </ThinnedStation>
   )
 }
-
-export { StackVaultFloor as StackVault }

@@ -11,17 +11,17 @@ import type { Locale } from '../../i18n/strings'
 import { getFloor } from '../../building/program'
 
 /** Top-right — lang + Day/Night toggle */
-export function SiteChrome() {
+export function TowerToolbar() {
   const { strings, theme, toggleTheme, locale, setLocale, localeLabels, bootDone, startExit, phase } = useSite()
 
   return (
-    <div className="site-chrome">
+    <div className="tower-toolbar">
       {bootDone && phase !== 'exit' && phase !== 'void' && (
-        <button type="button" className="site-chrome-exit" onClick={startExit}>
+        <button type="button" className="tower-toolbar-exit" onClick={startExit}>
           {strings.site.rollDrawing}
         </button>
       )}
-      <div className="site-chrome-langs" role="group" aria-label="Language">
+      <div className="tower-toolbar-langs" role="group" aria-label="Language">
         {(Object.keys(localeLabels) as Locale[]).map((l) => (
           <button
             key={l}
@@ -35,7 +35,7 @@ export function SiteChrome() {
       </div>
       <button
         type="button"
-        className="site-chrome-theme"
+        className="tower-toolbar-theme"
         onClick={toggleTheme}
         aria-label={theme === 'dark' ? strings.site.themeLight : strings.site.themeDark}
       >
@@ -45,16 +45,16 @@ export function SiteChrome() {
   )
 }
 
-/** Top-left title block */
-export function SiteTitleblock() {
+/** Top-left author block */
+export function TowerCredits() {
   const { strings } = useSite()
 
   return (
-    <div className="site-titleblock">
-      <p className="site-titleblock-zone">{strings.site.zoneName}</p>
-      <p className="site-titleblock-name">{strings.site.architectName}</p>
-      <p className="site-titleblock-role">{strings.site.architectRole}</p>
-      <div className="site-titleblock-links">
+    <div className="tower-credits">
+      <p className="tower-credits-zone">{strings.site.zoneName}</p>
+      <p className="tower-credits-name">{strings.site.architectName}</p>
+      <p className="tower-credits-role">{strings.site.architectRole}</p>
+      <div className="tower-credits-links">
         <a href={profile.links.github} target="_blank" rel="noopener noreferrer">GitHub</a>
         <a href={profile.links.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
         <a href={profile.links.nagi} target="_blank" rel="noopener noreferrer">nagi</a>
@@ -64,7 +64,7 @@ export function SiteTitleblock() {
 }
 
 /** Left rail — brand card + floor list + sub-rooms */
-export function SiteRail() {
+export function TowerRail() {
   const {
     floorId,
     labRoomSlug,
@@ -80,26 +80,26 @@ export function SiteRail() {
   } = useSite()
 
   return (
-    <aside className="site-rail">
-      <button type="button" className="site-rail-brand" onClick={() => toggleFloor('G')}>
-        <span className="site-rail-title">{strings.site.siteTitle}</span>
-        <span className="site-rail-code">{strings.site.siteCode}</span>
+    <aside className="tower-rail">
+      <button type="button" className="tower-rail-brand" onClick={() => toggleFloor('G')}>
+        <span className="tower-rail-title">{strings.site.siteTitle}</span>
+        <span className="tower-rail-code">{strings.site.siteCode}</span>
       </button>
 
       <nav aria-label="Floor navigation">
-        <ul className="site-rail-floors">
+        <ul className="tower-rail-floors">
           {[...FLOORS].reverse().map((floor) => {
             const active = floor.id === floorId
             const loc = strings.floors[floor.id]
             return (
               <li key={floor.id} className={active ? 'is-active' : undefined}>
                 <button type="button" onClick={() => toggleFloor(floor.id)}>
-                  <span className="site-rail-id">{floor.label}</span>
+                  <span className="tower-rail-id">{floor.label}</span>
                   <span>{loc?.title ?? floor.title}</span>
                 </button>
 
                 {floor.id === '23' && active && (
-                  <ul className="site-rail-rooms">
+                  <ul className="tower-rail-rooms">
                     {FACTORY_AREAS.map((sem, i) => (
                       <li key={sem.id}>
                         <button
@@ -115,7 +115,7 @@ export function SiteRail() {
                 )}
 
                 {floor.id === '52' && active && (
-                  <ul className="site-rail-rooms">
+                  <ul className="tower-rail-rooms">
                     {labProjects.map((p, i) => {
                       const code = String(i + 1).padStart(3, '0')
                       return (
@@ -134,7 +134,7 @@ export function SiteRail() {
                 )}
 
                 {floor.id === '99' && active && (
-                  <ul className="site-rail-rooms">
+                  <ul className="tower-rail-rooms">
                     {LIBRARY_ROOMS.map((room) => (
                       <li key={room.slug}>
                         <button
@@ -172,13 +172,13 @@ export function SiteRail() {
         </ul>
       </nav>
 
-      <p className="site-rail-hint">{strings.site.hint}</p>
+      <p className="tower-rail-hint">{strings.site.hint}</p>
     </aside>
   )
 }
 
-/** Bottom-center annotation */
-export function SiteAnnotation() {
+/** Bottom-center status line */
+export function TowerStatus() {
   const { hoveredFloorId, hoveredLabSlug, floorId, labRoomSlug, libraryRoomSlug, factoryStop, strings } =
     useSite()
 
@@ -186,7 +186,7 @@ export function SiteAnnotation() {
     const project = labProjects.find((p) => p.slug === hoveredLabSlug)
     const loc = project ? strings.projects[project.slug] : null
     return (
-      <div className="site-anno" aria-live="polite">
+      <div className="tower-status" aria-live="polite">
         52 · Lab · {loc?.title ?? project?.title}
       </div>
     )
@@ -196,7 +196,7 @@ export function SiteAnnotation() {
     const f = getFloor(hoveredFloorId)
     const loc = strings.floors[hoveredFloorId]
     return (
-      <div className="site-anno" aria-live="polite">
+      <div className="tower-status" aria-live="polite">
         {f.label} · F{f.floorNumber} · {loc?.title ?? f.title}
       </div>
     )
@@ -210,7 +210,7 @@ export function SiteAnnotation() {
       const project = labProjects.find((p) => p.slug === labRoomSlug)
       const locP = project ? strings.projects[project.slug] : null
       return (
-        <div className="site-anno site-anno--muted">
+        <div className="tower-status tower-status--muted">
           {f.label} · {locP?.title ?? project?.title}
         </div>
       )
@@ -220,7 +220,7 @@ export function SiteAnnotation() {
       const roomLabel =
         libraryRoomSlug === 'archive' ? strings.library.archiveTitle : strings.library.libraryTitle
       return (
-        <div className="site-anno site-anno--muted">
+        <div className="tower-status tower-status--muted">
           {f.label} · {roomLabel}
         </div>
       )
@@ -229,21 +229,21 @@ export function SiteAnnotation() {
     if (floorId === '23') {
       const sem = factoryStop !== null ? FACTORY_AREAS[factoryStop] : null
       return (
-        <div className="site-anno site-anno--muted">
+        <div className="tower-status tower-status--muted">
           {f.label} · {sem ? `${areaLabel(factoryStop!)} · ${sem.label}` : loc?.title}
         </div>
       )
     }
 
     return (
-      <div className="site-anno site-anno--muted">
+      <div className="tower-status tower-status--muted">
         {f.label} · {loc?.title ?? f.title}
       </div>
     )
   }
 
   return (
-    <div className="site-anno site-anno--muted">
+    <div className="tower-status tower-status--muted">
       {strings.site.hint}
     </div>
   )
