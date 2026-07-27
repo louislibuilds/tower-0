@@ -10,6 +10,7 @@ import { OrthoRig, SiteLights } from '../camera/OrthoRig'
 import { BootController } from './controllers/BootController'
 import { TeardownController } from './controllers/TeardownController'
 import { getScenePalette } from './palette'
+import { resetSceneCursor } from './sceneCursor'
 import { PaletteProvider } from './primitives'
 import { CyberTower } from './CyberTower'
 
@@ -132,6 +133,10 @@ export function TowerScene(props: TowerSceneProps) {
   const sceneProps = { ...props, extrude, ink, teardownFill, teardownBlueprint }
   const runningBoot = !bootDone && phase !== 'exit' && phase !== 'void'
   const runningTeardown = phase === 'exit'
+
+  useEffect(() => {
+    resetSceneCursor()
+  }, [props.theme])
 
   return (
     <div className={`tower-canvas ${booted ? 'tower-canvas--ready' : 'tower-canvas--booting'}`}>

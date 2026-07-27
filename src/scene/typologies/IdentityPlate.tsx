@@ -79,27 +79,42 @@ function useIdentityPlateMap(theme: Theme) {
 }
 
 /** Identity plate mesh — mounted on 99F top front edge (R signage) */
-export function IdentityPlate({ theme, entered }: { theme: Theme; entered: boolean }) {
-  const m = typologyMat(theme, '#2F6BFF', entered)
+export function IdentityPlate({
+  theme,
+  focus = false,
+  muted = false,
+}: {
+  theme: Theme
+  /** Roof selected — full prominence */
+  focus?: boolean
+  /** 99F selected — fade so vault floor reads first */
+  muted?: boolean
+}) {
+  const m = typologyMat(theme, '#2F6BFF', focus)
   const plateMap = useIdentityPlateMap(theme)
   const frameEdges = useMemo(() => new THREE.EdgesGeometry(new THREE.BoxGeometry(0.38, 0.48, 0.018)), [])
+  const plateOpacity = muted ? (theme === 'dark' ? 0.16 : 0.1) : 1
+  const frameColor = focus ? m.pal.signal : m.pal.graphite
+  const frameOpacity = muted ? 0.08 : focus ? 0.95 : 0.72
+  const ghosted = muted && !focus
 
   return (
     <group>
-      <mesh position={[0, 0.24, 0.01]}>
+      <mesh position={[0, 0.24, 0.01]} raycast={() => null}>
         <boxGeometry args={[0.38, 0.48, 0.018]} />
-        <meshStandardMaterial map={plateMap} roughness={0.85} />
+        <meshStandardMaterial
+          map={plateMap}
+          roughness={0.85}
+          transparent={ghosted || plateOpacity < 1}
+          opacity={plateOpacity}
+          depthWrite={!ghosted}
+        />
       </mesh>
 
-      <lineSegments geometry={frameEdges} position={[0, 0.24, 0.02]}>
-        <lineBasicMaterial color={entered ? m.pal.signal : m.pal.graphite} />
-      </lineSegments>
-
-      {entered && (
-        <mesh position={[0, 0.3, 0.03]}>
-          <boxGeometry args={[0.06, 0.02, 0.01]} />
-          <meshStandardMaterial color={m.warm} emissive={m.warm} emissiveIntensity={0.5} />
-        </mesh>
+      {!ghosted && (
+        <lineSegments geometry={frameEdges} position={[0, 0.24, 0.02]} raycast={() => null}>
+          <lineBasicMaterial color={frameColor} transparent opacity={frameOpacity} />
+        </lineSegments>
       )}
     </group>
   )

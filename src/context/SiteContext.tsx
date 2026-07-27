@@ -112,6 +112,9 @@ interface SiteContextValue {
 
   reopenSite: () => void
 
+  /** Zoom out one navigation level (focus → room → floor → tower) */
+  navigateBack: () => void
+
 }
 
 
@@ -349,6 +352,9 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
   const toggleLabRoom = useCallback((slug: string) => {
     if (isInteractionLocked(phase)) return
+    if (labRoomSlug === slug && (viewMode === 'room' || viewMode === 'focus')) {
+      return
+    }
     if (labRoomSlug === slug) {
       setLabRoomSlugState(null)
       setViewMode('floor')
@@ -358,7 +364,7 @@ export function SiteProvider({ children }: { children: ReactNode }) {
     setSelectedBookSlugState(null)
     setSelectedCredentialSlugState(null)
     setViewMode('room')
-  }, [labRoomSlug, phase])
+  }, [labRoomSlug, viewMode, phase])
 
 
 
@@ -366,6 +372,10 @@ export function SiteProvider({ children }: { children: ReactNode }) {
     if (isInteractionLocked(phase)) return
 
     setLibraryRoomSlugState((prev) => {
+
+      if (prev === slug && (viewMode === 'room' || viewMode === 'focus')) {
+        return prev
+      }
 
       if (prev === slug) {
 
@@ -389,7 +399,7 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
     })
 
-  }, [phase])
+  }, [phase, viewMode])
 
 
 
@@ -397,6 +407,10 @@ export function SiteProvider({ children }: { children: ReactNode }) {
     if (isInteractionLocked(phase)) return
 
     setFactoryStopState((prev) => {
+
+      if (prev === stop && viewMode === 'room') {
+        return prev
+      }
 
       if (prev === stop) {
 
@@ -412,7 +426,62 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
     })
 
-  }, [phase])
+  }, [phase, viewMode])
+
+
+
+  const navigateBack = useCallback(() => {
+    if (isInteractionLocked(phase)) return
+
+    if (viewMode === 'focus') {
+      if (selectedBookSlug) {
+        setSelectedBookSlugState(null)
+        setViewMode('room')
+        return
+      }
+      if (selectedCredentialSlug) {
+        setSelectedCredentialSlugState(null)
+        setViewMode('room')
+        return
+      }
+    }
+
+    if (viewMode === 'room' || viewMode === 'focus') {
+      if (labRoomSlug) {
+        setLabRoomSlugState(null)
+        setViewMode('floor')
+        return
+      }
+      if (libraryRoomSlug) {
+        setLibraryRoomSlugState(null)
+        setSelectedBookSlugState(null)
+        setSelectedCredentialSlugState(null)
+        setViewMode('floor')
+        return
+      }
+      if (factoryStop !== null) {
+        setFactoryStopState(null)
+        setViewMode('floor')
+        return
+      }
+      setViewMode('floor')
+      return
+    }
+
+    if (viewMode === 'floor') {
+      setViewMode('tower')
+      clearSubs()
+    }
+  }, [
+    phase,
+    viewMode,
+    labRoomSlug,
+    libraryRoomSlug,
+    factoryStop,
+    selectedBookSlug,
+    selectedCredentialSlug,
+    clearSubs,
+  ])
 
 
 
@@ -645,6 +714,8 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
       reopenSite,
 
+      navigateBack,
+
     }),
 
     [
@@ -714,6 +785,8 @@ export function SiteProvider({ children }: { children: ReactNode }) {
       setHoveredFloorSafe,
 
       setHoveredLabSlugSafe,
+
+      navigateBack,
 
     ],
 

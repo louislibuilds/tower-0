@@ -23,7 +23,7 @@ export function StationFootprint({
 }) {
   const pal = getScenePalette(theme)
   const edge = thin ? pal.graphite : active ? accent : pal.graphite
-  const fill = thin ? 0.02 : active ? 0.12 : 0.07
+  const fill = thin ? 0.015 : active ? 0.12 : 0.07
   const y = 0.008
 
   const boundary = useMemo(() => {
@@ -46,14 +46,19 @@ export function StationFootprint({
         color={edge}
         fillOpacity={fill}
         fillColor={pal.resin}
+        passive
+        lineOpacity={thin ? 0.06 : active ? 0.95 : 0.7}
       />
+      {!thin && (
       <Line
         points={boundary}
         color={edge}
-        lineWidth={active && !thin ? 2 : 1}
+        lineWidth={active ? 2 : 1}
         transparent
-        opacity={thin ? 0.45 : active ? 0.95 : 0.7}
+        opacity={active ? 0.95 : 0.7}
+        raycast={() => null}
       />
+      )}
     </group>
   )
 }

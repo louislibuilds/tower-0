@@ -1,4 +1,4 @@
-import { Html, Line } from '@react-three/drei'
+import { Line } from '@react-three/drei'
 import { useThree } from '@react-three/fiber'
 import { useEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
@@ -22,7 +22,7 @@ import {
 import { getScenePalette } from './palette'
 import { CircuitBase } from './exhibits/CircuitBase'
 import { TowerMass } from './mass/TowerMass'
-import { EdgeInkContext, GroundGrid, WindowMatrix } from './primitives'
+import { EdgeInkContext, FloorPickTarget, GroundGrid, StationCallout, WindowMatrix } from './primitives'
 import { FloorRoom } from './rooms'
 import { IdentityPlate } from './typologies/IdentityPlate'
 
@@ -94,7 +94,7 @@ function ShaftSection({
 
   return (
     <group position={[0, y, 0]}>
-      <mesh>
+      <mesh raycast={() => null}>
         <boxGeometry args={[w, h, d]} />
         <meshStandardMaterial
           color={shaftFill}
@@ -105,7 +105,7 @@ function ShaftSection({
           depthWrite={!shellFade && !isNight}
         />
       </mesh>
-      <lineSegments geometry={edges}>
+      <lineSegments geometry={edges} raycast={() => null}>
         <lineBasicMaterial
           color={isNight ? pal.neon : pal.graphite}
           transparent
@@ -115,7 +115,7 @@ function ShaftSection({
       {Array.from({ length: 5 }).map((_, i) => {
         const x = -w / 2 + 0.12 + i * ((w - 0.24) / 4)
         return (
-          <mesh key={i} position={[x, 0, d / 2 + 0.006]}>
+          <mesh key={i} position={[x, 0, d / 2 + 0.006]} raycast={() => null}>
             <planeGeometry args={[0.04, h * 0.96]} />
             <meshStandardMaterial
               color={isNight ? pal.neon : pal.shade}
@@ -139,9 +139,43 @@ function ShaftSection({
   )
 }
 
+/** Dollhouse cutaway — drop +Z front & +X right faces (camera side), decorative only */
+function BandCutawayShell({
+  w,
+  h,
+  d,
+  color,
+  opacity,
+}: {
+  w: number
+  h: number
+  d: number
+  color: string
+  opacity: number
+}) {
+  const t = 0.035
+  const skip = () => null
+
+  return (
+    <group>
+      <mesh position={[0, 0, -d / 2 + t / 2]} raycast={skip}>
+        <boxGeometry args={[w, h, t]} />
+        <meshStandardMaterial color={color} transparent opacity={opacity} depthWrite={false} />
+      </mesh>
+      <mesh position={[-w / 2 + t / 2, 0, 0]} raycast={skip}>
+        <boxGeometry args={[t, h, d]} />
+        <meshStandardMaterial color={color} transparent opacity={opacity} depthWrite={false} />
+      </mesh>
+      <mesh position={[0, -h / 2 + t / 2, 0]} raycast={skip}>
+        <boxGeometry args={[w, t, d]} />
+        <meshStandardMaterial color={color} transparent opacity={opacity * 0.85} depthWrite={false} />
+      </mesh>
+    </group>
+  )
+}
+
 function ProgramFloorBand({
   program,
-  active,
   hovered,
   entered,
   globalExtrude,
@@ -167,7 +201,6 @@ function ProgramFloorBand({
   onCredentialClick,
 }: {
   program: ProgramFloor
-  active: boolean
   hovered: boolean
   entered: boolean
   globalExtrude: number
@@ -199,18 +232,28 @@ function ProgramFloorBand({
   const h = program.bandHeight * bandProgress
   const w = program.width
   const d = program.depth
-  const lit = active || hovered
   const edges = useMemo(() => new THREE.EdgesGeometry(new THREE.BoxGeometry(w, h, d)), [w, h, d])
   const isNight = theme === 'dark'
   const zone = getFloor(program.id).zone
   const windowPattern = zone === 'basement' ? 'basement' as const : zone === 'roof' ? 'tower' as const : 'grid' as const
 
+  /** Site-rail floor zoom — peel camera-facing band faces, keep back/side shell */
+  const floorCutaway =
+    entered &&
+    viewMode === 'floor' &&
+    !labRoomSlug &&
+    !libraryRoomSlug &&
+    (program.id === '52' || program.id === '99')
+
   const hideBandShell =
     entered && program.id === '23' && (viewMode === 'floor' || viewMode === 'room' || viewMode === 'focus')
+
+  const shellColor = isNight ? pal.bpFace : entered ? pal.concrete : pal.resin
 
   const fillOpacity = (() => {
     if (shellFade) return 0.12
     if (hideBandShell) return 0
+    if (floorCutaway) return isNight ? 0.22 : 0.18
     if (entered && (viewMode === 'room' || viewMode === 'focus')) {
       if (program.id === '52' && labRoomSlug) return isNight ? 0.1 : 0.05
       if (program.id === '99' && libraryRoomSlug) return isNight ? 0.1 : 0.05
@@ -229,62 +272,63 @@ function ProgramFloorBand({
 
   const hideFacade =
     entered &&
-    (viewMode === 'room' || viewMode === 'focus' || viewMode === 'floor') &&
-    ((program.id === '52' && !!labRoomSlug) ||
-      (program.id === '99' && !!libraryRoomSlug) ||
+    (viewMode === 'room' || viewMode === 'focus' || floorCutaway) &&
+    ((program.id === '52' && (floorCutaway || !!labRoomSlug)) ||
+      (program.id === '99' && (floorCutaway || !!libraryRoomSlug)) ||
       (program.id === '23' && (viewMode === 'floor' || viewMode === 'room' || factoryStop !== null)) ||
       program.id === 'B2' ||
       program.id === 'B10')
+
+  /** Floors with clickable interior pods on floor overview */
+  const hasInteriorPods = program.id === '52' || program.id === '99' || program.id === '23'
+
+  /** Band pick off when interior stations need the pointer (overview or room focus) */
+  const disableFloorPick =
+    (entered &&
+      viewMode === 'floor' &&
+      hasInteriorPods) ||
+    (entered &&
+      (viewMode === 'room' || viewMode === 'focus') &&
+      ((program.id === '52' && !!labRoomSlug) ||
+        (program.id === '99' && !!libraryRoomSlug) ||
+        (program.id === '23' && factoryStop !== null) ||
+        program.id === 'B2' ||
+        program.id === 'B10'))
 
   if (bandProgress < 0.01) return null
 
   return (
     <group position={[0, y, 0]}>
-      <mesh
-        visible={false}
-        onPointerOver={(e) => {
-          e.stopPropagation()
-          onFloorHover(program.id)
-          document.body.style.cursor = 'pointer'
-        }}
-        onPointerOut={(e) => {
-          e.stopPropagation()
-          onFloorHover(null)
-          document.body.style.cursor = 'crosshair'
-        }}
-        onClick={(e) => {
-          e.stopPropagation()
-          onFloorClick(program.id)
-        }}
-      >
-        <boxGeometry args={[w + 0.3, h + 0.1, d + 0.5]} />
-        <meshBasicMaterial transparent opacity={0} />
-      </mesh>
+      {floorCutaway ? (
+        <BandCutawayShell w={w} h={h} d={d} color={shellColor} opacity={fillOpacity * teardownFill} />
+      ) : (
+        !hideBandShell && (
+          <mesh raycast={() => null}>
+            <boxGeometry args={[w, h, d]} />
+            <meshStandardMaterial
+              color={shellColor}
+              roughness={isNight ? 0.35 : 0.85}
+              metalness={isNight ? 0.2 : 0.05}
+              transparent
+              opacity={fillOpacity * (isNight && entered ? 0.85 : 1)}
+              depthWrite={fillOpacity > 0.25}
+            />
+          </mesh>
+        )
+      )}
 
-      <mesh visible={!hideBandShell}>
-        <boxGeometry args={[w, h, d]} />
-        <meshStandardMaterial
-          color={isNight ? pal.bpFace : lit ? pal.concrete : pal.resin}
-          roughness={isNight ? 0.35 : 0.85}
-          metalness={isNight ? 0.2 : 0.05}
-          transparent
-          opacity={fillOpacity * (isNight && entered ? 0.85 : 1)}
-          depthWrite={fillOpacity > 0.25}
-        />
-      </mesh>
-
-      {!hideBandShell && (
-      <lineSegments geometry={edges}>
+      {!hideBandShell && !floorCutaway && (
+      <lineSegments geometry={edges} raycast={() => null}>
         <lineBasicMaterial
-          color={lit ? pal.signal : pal.graphite}
+          color={pal.graphite}
           transparent
-          opacity={shellFade ? 0.7 : lit ? 1 : 0.65}
+          opacity={shellFade ? 0.2 : entered ? 0.72 : 0.58}
         />
       </lineSegments>
       )}
 
       {
-        !hideFacade && (
+        !hideFacade && !shellFade && (
         <group position={[0, 0, d / 2 + 0.01]}>
           <WindowMatrix
             width={w * 0.88}
@@ -293,14 +337,14 @@ function ProgramFloorBand({
             rows={zone === 'roof' ? 2 : 4}
             pattern={windowPattern}
             night={isNight}
-            active={lit}
+            active={hovered}
             accentRatio={0.12}
           />
         </group>
         )
       }
 
-      {isNight && entered && (
+      {isNight && entered && !hideBandShell && !floorCutaway && (
         <pointLight position={[0, 0.35, 0]} intensity={0.85} distance={4.5} color={pal.neonBright} decay={2} />
       )}
 
@@ -331,19 +375,30 @@ function ProgramFloorBand({
       )}
 
       {hovered && (
-        <Html center position={[0, h / 2 + 0.35, d / 2 + 0.15]} style={{ pointerEvents: 'none' }}>
-          <div className="scene-label">
-            {program.id} · F{program.floorNumber}
-          </div>
-        </Html>
+        <StationCallout
+          code={getFloor(program.id).label}
+          title={getFloor(program.id).title}
+          edge
+          anchorY={h * 0.5}
+          offset={[0, 0.22, d * 0.5 + 0.2]}
+        />
       )}
 
-      {!hideBandShell && (
-      <mesh position={[0, h / 2 + 0.012, 0]}>
+      {!hideBandShell && !floorCutaway && (
+      <mesh position={[0, h / 2 + 0.012, 0]} raycast={() => null}>
         <boxGeometry args={[w + 0.04, 0.025, d + 0.04]} />
-        <meshStandardMaterial color={pal.graphite} transparent opacity={shellFade ? 0.45 : 0.8} />
+        <meshStandardMaterial color={pal.graphite} transparent opacity={shellFade ? 0.16 : 0.8} />
       </mesh>
       )}
+
+      <FloorPickTarget
+        size={[w, h, d]}
+        accent={pal.signal}
+        hovered={hovered}
+        enabled={!disableFloorPick}
+        onClick={() => onFloorClick(program.id)}
+        onHover={(over) => onFloorHover(over ? program.id : null)}
+      />
     </group>
   )
 }
@@ -492,7 +547,6 @@ export function CyberTower({
               <ProgramFloorBand
                 key={program.id}
                 program={program}
-                active={entered}
                 hovered={hovered}
                 entered={entered}
                 globalExtrude={extrude}
@@ -532,7 +586,11 @@ export function CyberTower({
 
           {showIdentityPlate && (
             <group position={[identityPlateX, identityPlateY, identityPlateZ]}>
-              <IdentityPlate theme={theme} entered={activeFloorId === 'roof' || activeFloorId === '99'} />
+              <IdentityPlate
+                theme={theme}
+                focus={activeFloorId === 'roof'}
+                muted={activeFloorId === '99'}
+              />
             </group>
           )}
         </>

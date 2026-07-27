@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { useSite } from '../context/SiteContext'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import { useWebGL } from '../hooks/useWebGL'
@@ -8,6 +8,7 @@ import { FocusOverlay } from './hud/FocusOverlay'
 import { SceneBootSplash } from './SceneBootSplash'
 import { TowerCredits, TowerRail, TowerStatus, TowerToolbar } from './hud/TowerHud'
 import { TowerSilhouette } from './TowerSilhouette'
+import { resetSceneCursor } from '../scene/sceneCursor'
 
 const TowerScene = lazy(() =>
   import('../scene/TowerScene').then((m) => ({ default: m.TowerScene })),
@@ -37,10 +38,25 @@ export function TowerShell() {
     bootDone,
     interactionLocked,
     reopenSite,
+    navigateBack,
   } = useSite()
   const reducedMotion = useReducedMotion()
   const webgl = useWebGL()
   const use3D = webgl && !reducedMotion
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape' || interactionLocked) return
+      e.preventDefault()
+      navigateBack()
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [interactionLocked, navigateBack])
+
+  useEffect(() => {
+    resetSceneCursor()
+  }, [theme])
 
   return (
     <div className="tower-root" data-experience="tower0">

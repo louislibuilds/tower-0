@@ -1,7 +1,9 @@
 import { Line } from '@react-three/drei'
 import { useMemo } from 'react'
 import * as THREE from 'three'
-import { bpBox, bpLine } from '../blueprintLayout'
+import { bpBox, bpFloorBox, bpLine } from '../blueprintLayout'
+import { ghostLit } from '../ghostStyle'
+import { TypologyBpMesh } from '../TypologyBpMesh'
 import { typologyMat, type TypologyProps } from '../types'
 
 const CABINETS: [number, number][] = [
@@ -22,19 +24,18 @@ const ROOM_D = 5
 function BpMesh({
   box,
   color,
+  thin = false,
   emissive,
   emissiveIntensity = 0,
 }: {
   box: ReturnType<typeof bpBox>
   color: string
+  thin?: boolean
   emissive?: string
   emissiveIntensity?: number
 }) {
   return (
-    <mesh position={box.position}>
-      <boxGeometry args={box.size} />
-      <meshStandardMaterial color={color} emissive={emissive ?? '#000'} emissiveIntensity={emissiveIntensity} />
-    </mesh>
+    <TypologyBpMesh box={box} color={color} thin={thin} emissive={emissive} emissiveIntensity={emissiveIntensity} />
   )
 }
 
@@ -44,10 +45,11 @@ export function ArchiveVaultLayout({
   accent,
   entered,
   active,
+  thin,
   scale = 1,
 }: TypologyProps & { active?: boolean; scale?: number }) {
   const m = typologyMat(theme, accent, entered)
-  const lit = entered || active
+  const lit = ghostLit(thin, entered, active)
 
   const drawerLines = useMemo(
     () =>
@@ -67,25 +69,29 @@ export function ArchiveVaultLayout({
 
   return (
     <group scale={scale}>
+      <BpMesh box={bpFloorBox(ROOM_W, ROOM_D)} color={m.body} thin={thin} />
       {CABINETS.map(([x, y], i) => {
         const cab = bpBox(x, y, 0, 0.85, 0.55, 1.85, ROOM_W, ROOM_D)
-        return <BpMesh key={i} box={cab} color={m.alt} />
+        return <BpMesh key={i} box={cab} color={m.alt} thin={thin} />
       })}
-      {drawerLines.map(({ key, seg }) => (
-        <Line
-          key={key}
-          points={[new THREE.Vector3(...seg[0]), new THREE.Vector3(...seg[1])]}
-          color={lit ? accent : m.pal.graphite}
-          lineWidth={1}
-          transparent
-          opacity={0.55}
-        />
-      ))}
-      <BpMesh box={table} color={m.body} />
+      {!thin &&
+        drawerLines.map(({ key, seg }) => (
+          <Line
+            key={key}
+            points={[new THREE.Vector3(...seg[0]), new THREE.Vector3(...seg[1])]}
+            color={lit ? accent : m.pal.graphite}
+            lineWidth={1}
+            transparent
+            opacity={0.55}
+            raycast={() => null}
+          />
+        ))}
+      <BpMesh box={table} color={m.body} thin={thin} />
       {folders.map((folder, i) => (
         <BpMesh
           key={i}
           box={folder}
+          thin={thin}
           color={lit ? m.warm : '#d8d4cc'}
           emissive={lit ? m.warm : undefined}
           emissiveIntensity={0.1}
@@ -93,12 +99,14 @@ export function ArchiveVaultLayout({
       ))}
       <BpMesh
         box={stackA}
+        thin={thin}
         color={lit ? m.warm : m.pal.concrete}
         emissive={lit ? m.warm : undefined}
         emissiveIntensity={0.08}
       />
       <BpMesh
         box={stackB}
+        thin={thin}
         color={lit ? m.warm : m.pal.concrete}
         emissive={lit ? m.warm : undefined}
         emissiveIntensity={0.08}

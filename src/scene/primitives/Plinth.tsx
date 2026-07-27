@@ -46,11 +46,9 @@ export function Plinth({
       }}
       onPointerOver={(e) => {
         e.stopPropagation()
-        document.body.style.cursor = 'crosshair'
         onHover?.(true)
       }}
       onPointerOut={() => {
-        document.body.style.cursor = ''
         onHover?.(false)
       }}
     >

@@ -1,6 +1,8 @@
 import { Fragment } from 'react'
 import type { Theme } from '../../../context/SiteContext'
-import { bpBox } from '../blueprintLayout'
+import { bpBox, bpFloorBox } from '../blueprintLayout'
+import { ghostLit } from '../ghostStyle'
+import { TypologyBpMesh } from '../TypologyBpMesh'
 import { typologyMat, type TypologyProps } from '../types'
 
 const ROOM_W = 6
@@ -18,19 +20,18 @@ const BOOK_SPINES = [
 function BpMesh({
   box,
   color,
+  thin = false,
   emissive,
   emissiveIntensity = 0,
 }: {
   box: ReturnType<typeof bpBox>
   color: string
+  thin?: boolean
   emissive?: string
   emissiveIntensity?: number
 }) {
   return (
-    <mesh position={box.position}>
-      <boxGeometry args={box.size} />
-      <meshStandardMaterial color={color} emissive={emissive ?? '#000'} emissiveIntensity={emissiveIntensity} />
-    </mesh>
+    <TypologyBpMesh box={box} color={color} thin={thin} emissive={emissive} emissiveIntensity={emissiveIntensity} />
   )
 }
 
@@ -74,12 +75,13 @@ export function LibraryStackLayout({
   accent,
   entered,
   active,
+  thin,
   scale = 1,
   showShell = true,
 }: TypologyProps & { active?: boolean; scale?: number; showShell?: boolean }) {
   const m = typologyMat(theme, accent, entered)
-  const lit = !!(entered || active)
-  const dark = theme === 'dark'
+  const lit = ghostLit(thin, entered, active)
+  const dark = theme === 'dark' && !thin
   const table = bpBox(1.8, 1.8, 0, 2.2, 1.3, 0.62, ROOM_W, ROOM_D)
   const chairs: [number, number][] = [
     [2.0, 3.3],
@@ -91,8 +93,9 @@ export function LibraryStackLayout({
     <group scale={scale}>
       {showShell && (
         <>
-          <BpMesh box={bpBox(0, 0, 0, ROOM_W, 0.12, 2.8, ROOM_W, ROOM_D)} color={shellFill} emissive={dark ? m.pal.neon : undefined} emissiveIntensity={dark ? 0.08 : 0} />
-          <BpMesh box={bpBox(0, 0, 0, 0.12, ROOM_D, 2.8, ROOM_W, ROOM_D)} color={shellFill} emissive={dark ? m.pal.neon : undefined} emissiveIntensity={dark ? 0.06 : 0} />
+          <BpMesh box={bpFloorBox(ROOM_W, ROOM_D)} color={m.body} thin={thin} />
+          <BpMesh box={bpBox(0, 0, 0, ROOM_W, 0.12, 2.8, ROOM_W, ROOM_D)} color={shellFill} thin={thin} emissive={dark ? m.pal.neon : undefined} emissiveIntensity={dark ? 0.08 : 0} />
+          <BpMesh box={bpBox(0, 0, 0, 0.12, ROOM_D, 2.8, ROOM_W, ROOM_D)} color={shellFill} thin={thin} emissive={dark ? m.pal.neon : undefined} emissiveIntensity={dark ? 0.06 : 0} />
         </>
       )}
 
@@ -103,6 +106,7 @@ export function LibraryStackLayout({
             color={dark ? '#143040' : m.alt}
             emissive={dark ? m.pal.neon : undefined}
             emissiveIntensity={dark ? 0.1 : 0}
+            thin={thin}
           />
           {SHELF_ROWS.map((z, j) => (
             <Fragment key={j}>
@@ -111,6 +115,7 @@ export function LibraryStackLayout({
                 color={dark ? '#0a2838' : m.pal.concrete}
                 emissive={dark ? m.pal.neon : undefined}
                 emissiveIntensity={dark ? 0.06 : 0}
+                thin={thin}
               />
               {BOOK_SPINES.map((book, bi) => {
                 const style = spineStyle(book.tone, lit, theme, m)
@@ -121,6 +126,7 @@ export function LibraryStackLayout({
                     color={style.color}
                     emissive={style.emissive}
                     emissiveIntensity={style.emissiveIntensity}
+                    thin={thin}
                   />
                 )
               })}
@@ -129,9 +135,10 @@ export function LibraryStackLayout({
         </Fragment>
       ))}
 
-      <BpMesh box={table} color={dark ? '#143040' : m.body} emissive={dark ? m.pal.neon : undefined} emissiveIntensity={dark ? 0.08 : 0} />
+      <BpMesh box={table} color={dark ? '#143040' : m.body} thin={thin} emissive={dark ? m.pal.neon : undefined} emissiveIntensity={dark ? 0.08 : 0} />
       <BpMesh
         box={bpBox(2.2, 2.0, 0.62, 0.85, 0.92, 0.06, ROOM_W, ROOM_D)}
+        thin={thin}
         color={lit ? (dark ? '#ffc848' : m.warm) : '#d8d4cc'}
         emissive={lit ? (dark ? '#ffc848' : m.warm) : undefined}
         emissiveIntensity={dark && lit ? 0.5 : 0.1}
@@ -139,14 +146,15 @@ export function LibraryStackLayout({
 
       {chairs.map(([x, y], i) => (
         <Fragment key={i}>
-          <BpMesh box={bpBox(x, y, 0, 0.75, 0.75, 0.42, ROOM_W, ROOM_D)} color={dark ? '#1a3848' : m.alt} />
-          <BpMesh box={bpBox(x, y + 0.72, 0.42, 0.75, 0.1, 0.52, ROOM_W, ROOM_D)} color={m.pal.resin} />
+          <BpMesh box={bpBox(x, y, 0, 0.75, 0.75, 0.42, ROOM_W, ROOM_D)} color={dark ? '#1a3848' : m.alt} thin={thin} />
+          <BpMesh box={bpBox(x, y + 0.72, 0.42, 0.75, 0.1, 0.52, ROOM_W, ROOM_D)} color={m.pal.resin} thin={thin} />
         </Fragment>
       ))}
 
-      <BpMesh box={bpBox(5.25, 3.9, 0, 0.1, 0.1, 1.95, ROOM_W, ROOM_D)} color={m.pal.alum} />
+      <BpMesh box={bpBox(5.25, 3.9, 0, 0.1, 0.1, 1.95, ROOM_W, ROOM_D)} color={m.pal.alum} thin={thin} />
       <BpMesh
         box={bpBox(4.95, 3.78, 1.95, 0.55, 0.28, 0.07, ROOM_W, ROOM_D)}
+        thin={thin}
         color={lit ? accent : m.pal.graphite}
         emissive={lit ? accent : undefined}
         emissiveIntensity={0.2}

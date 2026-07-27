@@ -7,6 +7,9 @@ import { getProgramFloor } from '../towerGeometry'
  */
 export const STATION_FLOOR_RATIO = 1 / 5.5
 export const BLUEPRINT_FIT_MARGIN = 0.58
+/** Overview: typology fills chunk zone (~1/5.5 floor width cap) */
+export const POD_FIT_MARGIN = 0.92
+export const FOCUS_FIT_MARGIN = 0.78
 
 /** Interior working area (legacy layouts) */
 export function bandInterior(bandW: number, bandD: number, bandH: number) {
@@ -52,13 +55,35 @@ export function stationBlueprintScale(
   return Math.min(fit, maxW / bw)
 }
 
+/** Overview pod — one station reads as ~1/5–1/6 of the floor plate (5–12 rooms/floor) */
+export function overviewPodScale(
+  roomW: number,
+  roomD: number,
+  chunk: { w: number; d: number },
+  floorPlateW: number,
+) {
+  const zone = { w: chunk.w * 0.94, d: chunk.d * 0.94 }
+  const fit = blueprintFitScale(roomW, roomD, zone, POD_FIT_MARGIN)
+  const archCap = (floorPlateW * STATION_FLOOR_RATIO) / (roomW * BP_UNIT)
+  return Math.min(fit, archCap)
+}
+
+/** Room / focus zoom — typology expands toward full floor plate */
+export function focusPodScale(
+  roomW: number,
+  roomD: number,
+  plate: { w: number; d: number },
+) {
+  return blueprintFitScale(roomW, roomD, plate, FOCUS_FIT_MARGIN)
+}
+
 /** Single lab station footprint inside a chunk shell */
 export const STATION_OVERVIEW = { w: 0.22, d: 0.18, h: 0.16 } as const
 
 /** Blueprint grid size per lab slug */
 export const LAB_BLUEPRINT_DIMS: Record<string, [number, number]> = {
-  'unihack-2026': [5, 5],
-  'cloud-computing': [5, 5],
+  'unihack-2026': [8, 5],
+  'cloud-computing': [6, 5],
   nlp: [5, 5],
   dl: [5, 5],
   kata: [5, 5],

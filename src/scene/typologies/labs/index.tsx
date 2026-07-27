@@ -44,7 +44,7 @@ export function LabTypology({
     <Suspense fallback={null}>
       <group position={[0, 0.012, 0]}>
         <LabRoomShell showShell={showShell} roomW={roomW} roomD={roomD} {...props} />
-        <Comp {...props} />
+        <Comp {...props} showShell={showShell} />
       </group>
     </Suspense>
   )

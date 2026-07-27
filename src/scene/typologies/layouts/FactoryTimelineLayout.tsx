@@ -167,15 +167,6 @@ function TimelineStation({
           {onSelectStop && (
             <mesh
               position={[0, top * 0.5 + CRATE_HOVER_UP * 0.5, 0.02]}
-              visible={false}
-              onPointerOver={(e) => {
-                if (thin) return
-                e.stopPropagation()
-                document.body.style.cursor = 'pointer'
-              }}
-              onPointerOut={() => {
-                document.body.style.cursor = 'crosshair'
-              }}
               onClick={(e) => {
                 if (thin) return
                 e.stopPropagation()
@@ -183,7 +174,7 @@ function TimelineStation({
               }}
             >
               <boxGeometry args={[0.22, top + CRATE_HOVER_UP + 0.14, 0.14]} />
-              <meshBasicMaterial transparent opacity={0} />
+              <meshBasicMaterial transparent opacity={0} depthWrite={false} />
             </mesh>
           )}
         </group>

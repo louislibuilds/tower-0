@@ -1,11 +1,12 @@
-import { Html } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
 import { useRef, useState } from 'react'
 import type { Group } from 'three'
 import type { ViewMode } from '../../building/viewMode'
+import { useSite } from '../../context/SiteContext'
 import { FloorPlate } from '../primitives/FloorPlate'
-import { LAB_CHUNKS, chunkPosition, labCellAnchor, type ExhibitChunk } from './floorChunks'
-import { LAB_BLUEPRINT_DIMS, blueprintFitScale, floorPlateSize } from './interiorScale'
+import { StationCallout } from '../primitives/StationCallout'
+import { LAB_CHUNKS, chunkPosition, labCellAnchor, STATION_FOOTPRINT_INSET, STATION_HIT_MARGIN, type ExhibitChunk } from './floorChunks'
+import { focusPodScale, floorPlateSize, LAB_BLUEPRINT_DIMS, overviewPodScale } from './interiorScale'
 import { LabTypology } from './labs'
 import { StationFootprint } from './StationFootprint'
 import { ThinnedStation } from './ThinnedStation'
@@ -36,10 +37,6 @@ interface BenchRowProps extends TypologyProps {
   onLabRoomHover: (slug: string | null) => void
 }
 
-const POD_SCALE_RATIO = 0.4
-const POD_FIT_MARGIN = 0.48
-const FOCUS_FIT_MARGIN = 0.78
-
 /** 52 · Laboratory — five suites with zoom morph (mirrors ArchiveLibraryFloor 99F) */
 export function BenchRow({
   theme,
@@ -47,6 +44,7 @@ export function BenchRow({
   entered,
   labRoomSlug,
   viewMode = 'floor',
+  floorOverview = false,
   onLabRoomClick,
   onLabRoomHover,
 }: BenchRowProps) {
@@ -61,11 +59,10 @@ export function BenchRow({
         const thin = !!labRoomSlug && !active
         const zoomed = active && (viewMode === 'room' || viewMode === 'focus')
         const [gridW, gridD] = LAB_BLUEPRINT_DIMS[slug] ?? [5, 5]
-        const podZone = { w: chunk.size.w * 0.92, d: chunk.size.d * 0.92 }
-        const podScale = blueprintFitScale(gridW, gridD, podZone, POD_FIT_MARGIN) * POD_SCALE_RATIO
-        const focusScale = blueprintFitScale(gridW, gridD, plate, FOCUS_FIT_MARGIN)
+        const podScale = overviewPodScale(gridW, gridD, chunk.size, plate.w)
+        const focusScale = focusPodScale(gridW, gridD, plate)
         const [cx, , cz] = chunkPosition(chunk)
-        const [tx, , tz] = labCellAnchor(slug, plate, FOCUS_FIT_MARGIN)
+        const [tx, , tz] = labCellAnchor(slug, plate, focusScale)
 
         return (
           <LabMorphZone
@@ -83,6 +80,7 @@ export function BenchRow({
             accent={accent}
             entered={entered}
             viewMode={viewMode}
+            floorOverview={floorOverview}
             onClick={() => onLabRoomClick(slug)}
             onHover={onLabRoomHover}
           />
@@ -106,6 +104,7 @@ function LabMorphZone({
   accent,
   entered,
   viewMode,
+  floorOverview,
   onClick,
   onHover,
 }: {
@@ -122,18 +121,23 @@ function LabMorphZone({
   accent: string
   entered: boolean
   viewMode: ViewMode
+  floorOverview: boolean
   onClick: () => void
   onHover: (slug: string | null) => void
 }) {
+  const { navigateBack } = useSite()
   const { w, d, h } = chunk.size
   const code = chunk.code ?? ''
-  const label = labLabel(code, slug)
+  const title = labShortTitle(slug)
   const progress = useZoomMorph(zoomed)
   const groupRef = useRef<Group>(null)
   const [showShell, setShowShell] = useState(false)
   const shellRef = useRef(false)
-  const footprintW = w * 0.86
-  const footprintD = d * 0.86
+  const footprintW = w * STATION_FOOTPRINT_INSET
+  const footprintD = d * STATION_FOOTPRINT_INSET
+  const hitW = footprintW + STATION_HIT_MARGIN.w
+  const hitH = h + STATION_HIT_MARGIN.h
+  const hitD = footprintD + STATION_HIT_MARGIN.d
 
   useFrame(() => {
     const p = progress.current
@@ -145,7 +149,7 @@ function LabMorphZone({
     )
     groupRef.current?.scale.setScalar(scale)
 
-    const nextShell = p > 0.58
+    const nextShell = zoomed && p > 0.58
     if (nextShell !== shellRef.current) {
       shellRef.current = nextShell
       setShowShell(nextShell)
@@ -156,6 +160,18 @@ function LabMorphZone({
 
   return (
     <ThinnedStation thin={thin}>
+      {floorOverview && !thin && !zoomed && (
+        <group position={fromPos}>
+          <StationCallout
+            code={code}
+            title={title}
+            active={active}
+            overview
+            anchorY={h * podScale * 0.5}
+            offset={chunk.calloutOffset ?? [0, 0.32, 0.18]}
+          />
+        </group>
+      )}
       <group ref={groupRef}>
         <group
           onPointerOver={(e) => {
@@ -166,46 +182,41 @@ function LabMorphZone({
           onPointerOut={() => onHover(null)}
         >
           <mesh
-            visible={false}
+            raycast={roomLocked ? () => null : undefined}
             onClick={(e) => {
               if (thin || roomLocked) return
               e.stopPropagation()
               onClick()
             }}
+            onDoubleClick={(e) => {
+              e.stopPropagation()
+              if (viewMode === 'room' || viewMode === 'focus') {
+                navigateBack()
+              }
+            }}
           >
-            <boxGeometry args={[footprintW + 0.06, h + 0.06, footprintD + 0.06]} />
-            <meshBasicMaterial transparent opacity={0} />
+            <boxGeometry args={[hitW, hitH, hitD]} />
+            <meshBasicMaterial transparent opacity={0} depthWrite={false} />
           </mesh>
 
-          {!zoomed && (
-            <StationFootprint
-              width={footprintW}
-              depth={footprintD}
-              theme={theme}
-              accent={accent}
-              active={active}
-              thin={thin}
-            />
-          )}
+          <StationFootprint
+            width={footprintW}
+            depth={footprintD}
+            theme={theme}
+            accent={accent}
+            active={active || zoomed}
+            thin={thin}
+          />
 
           <LabTypology
             slug={slug}
             theme={theme}
             accent={accent}
             entered={entered}
-            active={active || showShell}
+            active={active || (showShell && zoomed)}
+            thin={thin}
             showShell={showShell}
           />
-
-          {!thin && (
-            <Html center position={[0, (h * 0.5 + 0.08) / focusScale, 0]} style={{ pointerEvents: 'none' }}>
-              <div
-                className={`scene-label scene-label--lab ${active ? 'scene-label--active' : ''} ${zoomed ? 'scene-label--hidden' : ''}`}
-              >
-                {label}
-              </div>
-            </Html>
-          )}
         </group>
       </group>
     </ThinnedStation>
