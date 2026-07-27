@@ -86,8 +86,8 @@ export function InfraRackLayout({
       />
       <BpMesh
         box={bpBox(4.0, 3.5, 0, 1.5, 0.65, 0.22, ROOM_W, ROOM_D)}
-        color={lit ? m.pal.chicken : m.pal.resin}
-        emissive={lit ? m.pal.chicken : undefined}
+        color={lit ? m.warm : m.pal.resin}
+        emissive={lit ? m.warm : undefined}
         emissiveIntensity={0.1}
       />
 

@@ -2,6 +2,7 @@ import { Line } from '@react-three/drei'
 import { useMemo } from 'react'
 import * as THREE from 'three'
 import type { Theme } from '../../context/SiteContext'
+import { getProgramFloor, programBaseY } from '../towerGeometry'
 import { getScenePalette } from '../palette'
 
 interface CircuitBaseProps {
@@ -10,10 +11,12 @@ interface CircuitBaseProps {
   active: boolean
 }
 
-export function CircuitBase({ extrude, theme, active }: CircuitBaseProps) {
+export function CircuitBase({ theme, active }: CircuitBaseProps) {
   const pal = getScenePalette(theme)
-  const accent = active ? pal.signal : pal.grid
-  const boardColor = pal.shade
+  const dark = theme === 'dark'
+  const accent = active ? (dark ? pal.neonBright : pal.signal) : dark ? pal.neon : pal.grid
+  const boardColor = dark ? pal.bpFace : pal.shade
+  const b10Base = programBaseY(getProgramFloor('B10'))
 
   const traces = useMemo(() => {
     const runs: THREE.Vector3[][] = []
@@ -39,14 +42,20 @@ export function CircuitBase({ extrude, theme, active }: CircuitBaseProps) {
   )
 
   return (
-    <group position={[0, -0.5 * extrude, 0]}>
+    <group position={[0, b10Base - 0.08, 0]}>
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
         <planeGeometry args={[8, 6]} />
-        <meshStandardMaterial color={boardColor} roughness={0.85} metalness={0.15} />
+        <meshStandardMaterial
+          color={boardColor}
+          roughness={0.85}
+          metalness={dark ? 0.2 : 0.15}
+          transparent={dark}
+          opacity={dark ? 0.35 : 1}
+        />
       </mesh>
 
       {traces.map((pts, i) => (
-        <Line key={i} points={pts} color={accent} lineWidth={0.8} transparent opacity={0.55} />
+        <Line key={i} points={pts} color={accent} lineWidth={0.8} transparent opacity={dark ? 0.45 : 0.55} />
       ))}
 
       {chips.map(([x, z], i) => (

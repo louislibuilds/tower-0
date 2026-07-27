@@ -23,7 +23,7 @@ function BpMesh({
   )
 }
 
-/** 001 · Launch Pad — arena runway + observer pod + signal tower */
+/** 001 · Launch Pad ??arena runway + observer pod + signal tower */
 export function LaunchPadStation({ theme, accent, entered, active }: TypologyProps) {
   const m = typologyMat(theme, accent, entered)
   const lit = entered || active

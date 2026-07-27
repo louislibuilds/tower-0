@@ -20,7 +20,7 @@ function BpMesh({
   )
 }
 
-/** 005 · Document Foundry — paper stack + printer + filing */
+/** 005 · Document Foundry ??paper stack + printer + filing */
 export function DocumentFoundryStation({ theme, accent, entered, active }: TypologyProps) {
   const m = typologyMat(theme, accent, entered)
   const lit = entered || active
@@ -44,7 +44,7 @@ export function DocumentFoundryStation({ theme, accent, entered, active }: Typol
             key={i}
             box={sheet}
             color={warm ? '#e8e4dc' : '#d8d4cc'}
-            emissive={warm && lit ? m.pal.chicken : undefined}
+            emissive={warm && lit ? m.warm : undefined}
             emissiveIntensity={warm && lit ? 0.08 : 0}
           />
         )
@@ -72,7 +72,7 @@ export function DocumentFoundryStation({ theme, accent, entered, active }: Typol
             key={i}
             box={stack}
             color="#e8e4dc"
-            emissive={lit ? m.pal.chicken : undefined}
+            emissive={lit ? m.warm : undefined}
             emissiveIntensity={0.06}
           />
         )
@@ -80,8 +80,8 @@ export function DocumentFoundryStation({ theme, accent, entered, active }: Typol
       <mesh position={[0, 0.03, 0.05]}>
         <boxGeometry args={[0.07, 0.018, 0.04]} />
         <meshStandardMaterial
-          color={lit ? m.pal.chicken : m.pal.concrete}
-          emissive={lit ? m.pal.chicken : '#000'}
+          color={lit ? m.warm : m.pal.concrete}
+          emissive={lit ? m.warm : '#000'}
           emissiveIntensity={lit ? 0.45 : 0}
         />
       </mesh>

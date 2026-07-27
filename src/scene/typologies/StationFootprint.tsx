@@ -5,7 +5,7 @@ import type { Theme } from '../../context/SiteContext'
 import { getScenePalette } from '../palette'
 import { WireBox } from '../primitives/WireBox'
 
-/** Visible station footprint — resin slab + ink boundary for range recognition */
+/** Visible station footprint ??resin slab + ink boundary for range recognition */
 export function StationFootprint({
   width,
   depth,

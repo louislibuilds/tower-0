@@ -115,12 +115,12 @@ const G_FLOOR: AuthoredPreset = { lookAt: [0, 0, 0], eye: [0.35, 0.55, 2.8], zoo
 const G_ROOM: AuthoredPreset = { lookAt: [0, -0.02, 0.08], eye: [-0.55, 0.38, 1.05], zoom: 128 }
 
 /** B10 · rack hall */
-const B10_FLOOR: AuthoredPreset = { lookAt: [0, 0.02, 0.05], eye: [0.62, 0.34, 0.95], zoom: 168 }
-const B10_FOCUS: AuthoredPreset = { lookAt: [0, 0.02, 0.05], eye: [0.58, 0.3, 0.88], zoom: 178 }
+const B10_FLOOR: AuthoredPreset = { lookAt: [0, 0.06, 0.02], eye: [0.42, 0.22, 0.68], zoom: 268 }
+const B10_FOCUS: AuthoredPreset = { lookAt: [0, 0.06, 0.02], eye: [0.38, 0.2, 0.62], zoom: 288 }
 
 /** B2 · riser core */
-const B2_FLOOR: AuthoredPreset = { lookAt: [0, 0.02, 0.05], eye: [-0.62, 0.34, 0.95], zoom: 168 }
-const B2_FOCUS: AuthoredPreset = { lookAt: [0, 0.02, 0.05], eye: [-0.58, 0.3, 0.88], zoom: 178 }
+const B2_FLOOR: AuthoredPreset = { lookAt: [0, 0.06, 0.02], eye: [-0.42, 0.22, 0.68], zoom: 268 }
+const B2_FOCUS: AuthoredPreset = { lookAt: [0, 0.06, 0.02], eye: [-0.38, 0.2, 0.62], zoom: 288 }
 
 /** Roof · plate deck */
 function roofPresets(): { floor: AuthoredPreset; room: AuthoredPreset } {

@@ -1,5 +1,4 @@
 import { Html } from '@react-three/drei'
-import { Fragment } from 'react'
 import { credentials } from '../../data/credentials'
 import { libraryBooks } from '../../data/libraryBooks'
 import type { LibraryRoomSlug } from '../../data/libraryRooms'
@@ -26,7 +25,7 @@ interface StackVaultProps extends TypologyProps {
   onCredentialClick: (slug: string) => void
 }
 
-/** 99 · Stack Room + Vault Wall — one floor shell, two station blocks */
+/** 99 · Stack Room + Vault Wall ??one floor shell, two station blocks */
 export function StackVaultFloor(props: StackVaultProps) {
   const {
     theme,
@@ -236,7 +235,7 @@ function StackRoomInterior({
   theme,
   accent,
   entered,
-  selectedBookSlug,
+  selectedBookSlug: _selectedBookSlug,
   onBookClick,
 }: {
   theme: TypologyProps['theme']
@@ -253,56 +252,34 @@ function StackRoomInterior({
     <group>
       <LibraryStackLayout theme={theme} accent={accent} entered={entered} active scale={scale} />
 
-      {Array.from({ length: 4 }).flatMap((_, row) =>
-        Array.from({ length: 6 }).map((__, col) => {
-          const bookIdx = row * 2 + (col < 2 ? col : -1)
-          const book = col < 2 && bookIdx < libraryBooks.length ? libraryBooks[bookIdx] : null
-          const x = (-0.25 + col * 0.1) * scale
-          const y = (0.05 + row * 0.14) * scale
-          const colors = ['#2F6BFF', '#3a7a4a', '#8a4a4a', '#6a5a8a', '#8a7a3a', '#4a6a8a', '#7a5a4a']
-          const tint = colors[(row * 6 + col) % colors.length]
-          const active = book && selectedBookSlug === book.slug
-          const z = -id / 2 + 0.2 * scale
+      {libraryBooks.map((book, i) => {
+        const row = Math.floor(i / 2)
+        const col = i % 2
+        const x = (-0.12 + col * 0.08) * scale
+        const y = (0.1 + row * 0.14) * scale
+        const z = -id / 2 + 0.16 * scale
 
-          if (book) {
-            return (
-              <Fragment key={`${row}-${col}`}>
-                <mesh
-                  position={[x, y, z]}
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    onBookClick(book.slug)
-                  }}
-                  onPointerOver={() => {
-                    document.body.style.cursor = 'pointer'
-                  }}
-                  onPointerOut={() => {
-                    document.body.style.cursor = 'crosshair'
-                  }}
-                >
-                  <boxGeometry args={[0.07 * scale, 0.16 * scale, 0.07 * scale]} />
-                  <meshStandardMaterial
-                    color={active ? accent : tint}
-                    emissive={active ? accent : '#000'}
-                    emissiveIntensity={active ? 0.2 : 0}
-                  />
-                </mesh>
-                <mesh position={[x, y + 0.09 * scale, z]}>
-                  <boxGeometry args={[0.05 * scale, 0.02 * scale, 0.05 * scale]} />
-                  <meshStandardMaterial color="#e8e4dc" />
-                </mesh>
-              </Fragment>
-            )
-          }
-
-          return (
-            <mesh key={`${row}-${col}`} position={[x, y, z]}>
-              <boxGeometry args={[0.06 * scale, (0.14 + (col % 3) * 0.02) * scale, 0.06 * scale]} />
-              <meshStandardMaterial color={tint} />
-            </mesh>
-          )
-        }),
-      )}
+        return (
+          <mesh
+            key={book.slug}
+            position={[x, y, z]}
+            visible={false}
+            onClick={(e) => {
+              e.stopPropagation()
+              onBookClick(book.slug)
+            }}
+            onPointerOver={() => {
+              document.body.style.cursor = 'pointer'
+            }}
+            onPointerOut={() => {
+              document.body.style.cursor = 'crosshair'
+            }}
+          >
+            <boxGeometry args={[0.08 * scale, 0.18 * scale, 0.08 * scale]} />
+            <meshBasicMaterial transparent opacity={0} />
+          </mesh>
+        )
+      })}
     </group>
   )
 }
@@ -311,7 +288,7 @@ function VaultWallInterior({
   theme,
   accent,
   entered,
-  selectedCredentialSlug,
+  selectedCredentialSlug: _selectedCredentialSlug,
   onCredentialClick,
 }: {
   theme: TypologyProps['theme']
@@ -320,7 +297,6 @@ function VaultWallInterior({
   selectedCredentialSlug: string | null
   onCredentialClick: (slug: string) => void
 }) {
-  const m = typologyMat(theme, accent, entered)
   const zone = vaultZoneInterior()
   const scale = blueprintFitScale(6, 5, zone)
   const id = zone.d
@@ -335,41 +311,29 @@ function VaultWallInterior({
       {show.map((cred, i) => {
         const row = Math.floor(i / 3)
         const col = i % 3
-        const active = selectedCredentialSlug === cred.slug
         const x = (-0.22 + col * 0.22) * scale
         const y = (0.08 + row * 0.2) * scale
         const z = -id / 2 + 0.12 * scale
+
         return (
-          <group key={cred.slug} position={[x, y, z]}>
-            <mesh position={[0, 0, 0]}>
-              <boxGeometry args={[0.17 * scale, 0.2 * scale, 0.02 * scale]} />
-              <meshStandardMaterial color={m.pal.graphite} />
-            </mesh>
-            <mesh
-              position={[0, 0, 0.015 * scale]}
-              onClick={(e) => {
-                e.stopPropagation()
-                onCredentialClick(cred.slug)
-              }}
-              onPointerOver={() => {
-                document.body.style.cursor = 'pointer'
-              }}
-              onPointerOut={() => {
-                document.body.style.cursor = 'crosshair'
-              }}
-            >
-              <boxGeometry args={[0.14 * scale, 0.17 * scale, 0.02 * scale]} />
-              <meshStandardMaterial
-                color={active ? accent : '#d8d4cc'}
-                emissive={active ? accent : '#000'}
-                emissiveIntensity={active ? 0.15 : 0}
-              />
-            </mesh>
-            <mesh position={[0, 0.06 * scale, 0.028 * scale]}>
-              <circleGeometry args={[0.018 * scale, 12]} />
-              <meshStandardMaterial color={m.pal.chicken} metalness={0.6} />
-            </mesh>
-          </group>
+          <mesh
+            key={cred.slug}
+            position={[x, y, z]}
+            visible={false}
+            onClick={(e) => {
+              e.stopPropagation()
+              onCredentialClick(cred.slug)
+            }}
+            onPointerOver={() => {
+              document.body.style.cursor = 'pointer'
+            }}
+            onPointerOut={() => {
+              document.body.style.cursor = 'crosshair'
+            }}
+          >
+            <boxGeometry args={[0.16 * scale, 0.2 * scale, 0.04 * scale]} />
+            <meshBasicMaterial transparent opacity={0} />
+          </mesh>
         )
       })}
     </group>

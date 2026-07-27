@@ -54,8 +54,8 @@ export function LibraryStackLayout({
             <BpMesh
               key={j}
               box={bpBox(x + 0.07, 0.16, z, 0.76, 0.32, 0.26, ROOM_W, ROOM_D)}
-              color={j % 2 ? m.pal.chicken : m.pal.concrete}
-              emissive={lit && j % 2 ? m.pal.chicken : undefined}
+              color={j % 2 ? m.warm : m.pal.concrete}
+              emissive={lit && j % 2 ? m.warm : undefined}
               emissiveIntensity={0.08}
             />
           ))}
@@ -65,8 +65,8 @@ export function LibraryStackLayout({
       <BpMesh box={table} color={m.body} />
       <BpMesh
         box={bpBox(2.2, 2.0, 0.62, 0.85, 0.92, 0.06, ROOM_W, ROOM_D)}
-        color={lit ? m.pal.chicken : '#d8d4cc'}
-        emissive={lit ? m.pal.chicken : undefined}
+        color={lit ? m.warm : '#d8d4cc'}
+        emissive={lit ? m.warm : undefined}
         emissiveIntensity={0.1}
       />
 

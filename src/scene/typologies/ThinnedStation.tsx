@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef, type ReactNode } from 'react'
 import * as THREE from 'three'
 
-/** Non-active sibling stations — ghost fill + ink wireframe for focus isolation */
+/** Non-active sibling stations ??ghost fill + ink wireframe for focus isolation */
 export function ThinnedStation({ thin, children }: { thin: boolean; children: ReactNode }) {
   const ref = useRef<THREE.Group>(null)
 

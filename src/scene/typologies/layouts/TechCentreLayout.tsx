@@ -98,8 +98,8 @@ export function TechCentreLayout({
 
       <BpMesh
         box={bpBox(6.8, 4.2, 0.62, 0.14, 0.02, 0.06, ROOM_W, ROOM_D)}
-        color={lit ? m.pal.chicken : m.pal.concrete}
-        emissive={lit ? m.pal.chicken : undefined}
+        color={lit ? m.warm : m.pal.concrete}
+        emissive={lit ? m.warm : undefined}
         emissiveIntensity={0.45}
       />
     </group>

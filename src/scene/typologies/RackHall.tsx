@@ -4,15 +4,15 @@ import { blueprintFitScale, techB10Interior } from './interiorScale'
 import { TechCentreLayout } from './layouts/TechCentreLayout'
 import { typologyMat, type TypologyProps } from './types'
 
-/** B10 · Rack Hall — blueprint command centre + print slot */
+/** B10 · Rack Hall ??blueprint command centre + print slot */
 export function RackHall({ theme, accent, entered, active }: TypologyProps) {
   const m = typologyMat(theme, accent, entered)
   const lit = entered || active
   const interior = techB10Interior()
-  const layoutScale = blueprintFitScale(8, 6, interior, 0.86)
+  const layoutScale = blueprintFitScale(8, 6, interior, 0.9)
 
   return (
-    <RoomShell width={interior.w} depth={interior.d} height={interior.h} color={m.pal.graphite} floorColor={m.body}>
+    <RoomShell width={interior.w} depth={interior.d} height={interior.h} color={m.pal.graphite} floorColor={m.body} openFront>
       <group position={[0, 0.02, 0]}>
         <TechCentreLayout theme={theme} accent={accent} entered={entered} active={lit} scale={layoutScale} />
       </group>

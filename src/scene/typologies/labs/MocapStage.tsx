@@ -27,7 +27,7 @@ function BpMesh({
   )
 }
 
-/** 004 · Capture Stage — green screen + ring light + tripod + monitor stack */
+/** 004 · Capture Stage ??green screen + ring light + tripod + monitor stack */
 export function MocapStage({ theme, accent, entered, active }: TypologyProps) {
   const m = typologyMat(theme, accent, entered)
   const lit = entered || active
@@ -53,8 +53,8 @@ export function MocapStage({ theme, accent, entered, active }: TypologyProps) {
       <mesh position={ring.position} rotation={[-Math.PI / 2, 0, 0]}>
         <ringGeometry args={[ring.size[0] * 0.55, ring.size[0] * 0.5, 24]} />
         <meshStandardMaterial
-          color={lit ? m.pal.chicken : m.pal.concrete}
-          emissive={lit ? m.pal.chicken : '#000'}
+          color={lit ? m.warm : m.pal.concrete}
+          emissive={lit ? m.warm : '#000'}
           emissiveIntensity={lit ? 0.45 : 0}
         />
       </mesh>

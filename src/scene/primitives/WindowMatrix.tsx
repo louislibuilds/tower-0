@@ -7,21 +7,16 @@ import { usePalette } from './InkEdges'
 export type WindowPattern = 'grid' | 'stagger' | 'tower' | 'basement'
 
 interface WindowMatrixProps {
-  /** Facade width (X) */
   width: number
-  /** Facade height (Y) */
   height: number
-  /** Depth offset from facade plane */
   z?: number
   cols?: number
   rows?: number
   pattern?: WindowPattern
-  /** Night mode — emissive window panes */
   night?: boolean
-  /** Active floor band — slightly brighter rhythm */
   active?: boolean
-  /** Fraction of lit windows that use chicken warm accent (0–1) */
-  chickenRatio?: number
+  /** Fraction of lit windows that use green cyber accent (0–1) */
+  accentRatio?: number
 }
 
 function cellOffset(pattern: WindowPattern, col: number, row: number, cols: number, rows: number) {
@@ -31,7 +26,7 @@ function cellOffset(pattern: WindowPattern, col: number, row: number, cols: numb
   return 0
 }
 
-/** Grid window panes — replaces long bar emissives with blueprint-style matrix. */
+/** Grid window panes — blueprint by day, cyber glow by night */
 export function WindowMatrix({
   width: w,
   height: h,
@@ -41,7 +36,7 @@ export function WindowMatrix({
   pattern = 'grid',
   night = false,
   active = false,
-  chickenRatio = 0.08,
+  accentRatio = 0.12,
 }: WindowMatrixProps) {
   const pal = usePalette()
   const cellW = (w - 0.12) / cols
@@ -50,29 +45,22 @@ export function WindowMatrix({
   const y0 = -h / 2 + 0.05
 
   const panes = useMemo(() => {
-    const out: {
-      x: number
-      y: number
-      pw: number
-      ph: number
-      lit: boolean
-      warm: boolean
-    }[] = []
+    const out: { x: number; y: number; pw: number; ph: number; lit: boolean; accent: boolean }[] = []
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < cols; col++) {
         const stagger = cellOffset(pattern, col, row, cols, rows)
         const x = x0 + col * cellW + cellW / 2 + stagger * cellW * 0.2
         const y = y0 + row * cellH + cellH / 2
         const hash = gridHash(col, row, 7)
-        const lit = night && hash > 0.35
-        const warm = lit && hash < chickenRatio
-        const pw = cellW * (0.55 + (hash * 0.15))
+        const lit = night && hash > 0.28
+        const accent = lit && hash < accentRatio
+        const pw = cellW * (0.55 + hash * 0.15)
         const ph = cellH * (0.5 + ((hash * 1.7) % 0.2))
-        out.push({ x, y, pw, ph, lit, warm })
+        out.push({ x, y, pw, ph, lit, accent })
       }
     }
     return out
-  }, [cols, rows, pattern, night, chickenRatio, cellW, cellH, x0, y0])
+  }, [cols, rows, pattern, night, accentRatio, cellW, cellH, x0, y0])
 
   const frame = useMemo(() => {
     const hw = w / 2
@@ -86,25 +74,31 @@ export function WindowMatrix({
     ]
   }, [w, h, z])
 
+  const frameColor = night ? pal.neon : active ? pal.bpEdge : pal.graphite
+
   return (
     <group>
       <Line
         points={frame}
-        color={active ? pal.signal : pal.graphite}
+        color={frameColor}
         lineWidth={active ? 1.5 : 1}
         transparent
-        opacity={active ? 0.85 : 0.5}
+        opacity={night ? 0.65 : active ? 0.85 : 0.5}
       />
       {panes.map((p, i) => {
         const fill = p.lit
-          ? p.warm
-            ? pal.chicken
+          ? p.accent
+            ? pal.neonGreen
             : active
-              ? pal.signal
-              : pal.glass
-          : pal.resin
-        const emissive = p.lit ? (p.warm ? pal.chicken : pal.signal) : '#000000'
-        const ei = p.lit ? (p.warm ? 0.55 : active ? 0.45 : 0.25) : 0
+              ? pal.neonBright
+              : pal.neon
+          : night
+            ? pal.bpFace
+            : pal.resin
+
+        const emissive = p.lit ? (p.accent ? pal.neonGreen : pal.neonBright) : '#000000'
+        const ei = p.lit ? (p.accent ? 0.5 : active ? 0.42 : 0.3) : 0
+
         return (
           <mesh key={i} position={[p.x, p.y, z]}>
             <planeGeometry args={[p.pw, p.ph]} />
@@ -113,7 +107,7 @@ export function WindowMatrix({
               emissive={emissive}
               emissiveIntensity={ei}
               transparent
-              opacity={night ? 0.9 : p.lit ? 0.75 : 0.35}
+              opacity={night ? (p.lit ? 0.55 : 0.12) : p.lit ? 0.7 : 0.35}
             />
           </mesh>
         )

@@ -27,7 +27,7 @@ function BpMesh({
   )
 }
 
-/** 002 · Container Bay — vertical rack + conveyor desk + parcels */
+/** 002 · Container Bay ??vertical rack + conveyor desk + parcels */
 export function ServerRackBay({ theme, accent, entered, active }: TypologyProps) {
   const m = typologyMat(theme, accent, entered)
   const lit = entered || active
@@ -64,8 +64,8 @@ export function ServerRackBay({ theme, accent, entered, active }: TypologyProps)
       <BpMesh box={kiosk} color={m.pal.resin} />
       <BpMesh
         box={parcel}
-        color={lit ? m.pal.chicken : m.pal.concrete}
-        emissive={lit ? m.pal.chicken : undefined}
+        color={lit ? m.warm : m.pal.concrete}
+        emissive={lit ? m.warm : undefined}
         emissiveIntensity={0.25}
       />
       <BpMesh box={parcelLid} color={m.pal.ink} metalness={0.5} />
@@ -75,8 +75,8 @@ export function ServerRackBay({ theme, accent, entered, active }: TypologyProps)
           <BpMesh
             key={i}
             box={cube}
-            color={lit ? m.pal.chicken : '#d8d4cc'}
-            emissive={lit ? m.pal.chicken : undefined}
+            color={lit ? m.warm : '#d8d4cc'}
+            emissive={lit ? m.warm : undefined}
             emissiveIntensity={0.1}
           />
         )
