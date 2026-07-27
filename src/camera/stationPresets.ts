@@ -38,17 +38,25 @@ function compose(floorY: number, preset: AuthoredPreset): CameraPreset {
   }
 }
 
+/** Shared room-view framing — oblique, pulled back from front face */
+const SUITE_ROOM_EYE_Y = 0.28
+const SUITE_ROOM_EYE_Z = 0.72
+const SUITE_ROOM_EYE_X = 0.3
+const SUITE_ROOM_ZOOM = 348
+const SUITE_ROOM_LOOK_Y = 0.06
+const SUITE_ROOM_LOOK_Z = 0.08
+
 function labFocusPreset(slug: string): AuthoredPreset | null {
   const chunk = labChunk(slug)
   if (!chunk) return null
   const plate = floorPlateSize('52')
   const focusScale = 0.78
   const [tx, baseY, tz] = labCellAnchor(slug, plate, focusScale)
-  const eyeX = chunk.cameraSide === 'left' ? -0.42 : 0.42
+  const eyeX = chunk.cameraSide === 'left' ? -SUITE_ROOM_EYE_X : SUITE_ROOM_EYE_X
   return {
-    lookAt: [tx, baseY, tz],
-    eye: [eyeX, 0.1, 0.42],
-    zoom: 478,
+    lookAt: [tx, baseY + SUITE_ROOM_LOOK_Y, tz + SUITE_ROOM_LOOK_Z],
+    eye: [eyeX, SUITE_ROOM_EYE_Y, SUITE_ROOM_EYE_Z],
+    zoom: SUITE_ROOM_ZOOM,
   }
 }
 
@@ -62,9 +70,9 @@ const LAB_STATIONS: Record<string, AuthoredPreset> = {
 }
 
 const LAB_FLOOR_OVERVIEW: AuthoredPreset = {
-  lookAt: [0, 0.04, -0.1],
-  eye: [0.38, 0.28, 1.78],
-  zoom: 170,
+  lookAt: [0, 0.06, -0.18],
+  eye: [0.55, 0.48, 2.15],
+  zoom: 142,
 }
 
 function vaultFocusPreset(
@@ -90,26 +98,44 @@ const VAULT_ARC_ANCHOR = vaultCornerAnchor('archive', VAULT_PLATE, VAULT_FOCUS_S
 
 const VAULT_STATIONS: Record<LibraryRoomSlug, AuthoredPreset> = {
   library: {
-    lookAt: [VAULT_LIB_ANCHOR[0], VAULT_LIB_ANCHOR[1], VAULT_LIB_ANCHOR[2]],
-    eye: [0.42, 0.1, 0.42],
-    zoom: 478,
+    lookAt: [
+      VAULT_LIB_ANCHOR[0],
+      VAULT_LIB_ANCHOR[1] + SUITE_ROOM_LOOK_Y,
+      VAULT_LIB_ANCHOR[2] + SUITE_ROOM_LOOK_Z,
+    ],
+    eye: [SUITE_ROOM_EYE_X, SUITE_ROOM_EYE_Y, SUITE_ROOM_EYE_Z],
+    zoom: SUITE_ROOM_ZOOM,
   },
   archive: {
-    lookAt: [VAULT_ARC_ANCHOR[0], VAULT_ARC_ANCHOR[1], VAULT_ARC_ANCHOR[2]],
-    eye: [-0.42, 0.1, 0.42],
-    zoom: 478,
+    lookAt: [
+      VAULT_ARC_ANCHOR[0],
+      VAULT_ARC_ANCHOR[1] + SUITE_ROOM_LOOK_Y,
+      VAULT_ARC_ANCHOR[2] + SUITE_ROOM_LOOK_Z,
+    ],
+    eye: [-SUITE_ROOM_EYE_X, SUITE_ROOM_EYE_Y, SUITE_ROOM_EYE_Z],
+    zoom: SUITE_ROOM_ZOOM,
   },
 }
 
 const VAULT_FLOOR_OVERVIEW: AuthoredPreset = {
-  lookAt: [0, 0.04, -0.08],
-  eye: [0.38, 0.28, 1.75],
-  zoom: 172,
+  lookAt: [0, 0.06, -0.16],
+  eye: [0.55, 0.48, 2.12],
+  zoom: 144,
 }
 
-const VAULT_BOOK_FOCUS = vaultFocusPreset('library', [0, 0.04, 0.08], [0.42, 0.1, 0.42], 478)
+const VAULT_BOOK_FOCUS = vaultFocusPreset(
+  'library',
+  [0, SUITE_ROOM_LOOK_Y, SUITE_ROOM_LOOK_Z],
+  [SUITE_ROOM_EYE_X, SUITE_ROOM_EYE_Y, SUITE_ROOM_EYE_Z],
+  SUITE_ROOM_ZOOM,
+)
 
-const VAULT_CREDENTIAL_FOCUS = vaultFocusPreset('archive', [0, 0.04, 0.08], [-0.42, 0.1, 0.42], 478)
+const VAULT_CREDENTIAL_FOCUS = vaultFocusPreset(
+  'archive',
+  [0, SUITE_ROOM_LOOK_Y, SUITE_ROOM_LOOK_Z],
+  [-SUITE_ROOM_EYE_X, SUITE_ROOM_EYE_Y, SUITE_ROOM_EYE_Z],
+  SUITE_ROOM_ZOOM,
+)
 
 /** 23F · front elevation — closer, higher frame on stack midline */
 function factoryTimelinePreset(factoryStop: number | null): AuthoredPreset {

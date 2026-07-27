@@ -75,6 +75,7 @@ export function WindowMatrix({
   }, [w, h, z])
 
   const frameColor = night ? pal.neon : active ? pal.bpEdge : pal.graphite
+  const skipRay = () => null
 
   return (
     <group>
@@ -84,6 +85,7 @@ export function WindowMatrix({
         lineWidth={active ? 1.5 : 1}
         transparent
         opacity={night ? 0.65 : active ? 0.85 : 0.5}
+        raycast={skipRay}
       />
       {panes.map((p, i) => {
         const fill = p.lit
@@ -100,7 +102,7 @@ export function WindowMatrix({
         const ei = p.lit ? (p.accent ? 0.5 : active ? 0.42 : 0.3) : 0
 
         return (
-          <mesh key={i} position={[p.x, p.y, z]}>
+          <mesh key={i} position={[p.x, p.y, z]} raycast={skipRay}>
             <planeGeometry args={[p.pw, p.ph]} />
             <meshStandardMaterial
               color={fill}

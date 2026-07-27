@@ -1,30 +1,13 @@
-import { bpBox } from '../blueprintLayout'
+import { bpBox, bpFloorBox } from '../blueprintLayout'
+import { TypologyBpMesh } from '../TypologyBpMesh'
 import { typologyMat, type TypologyProps } from '../types'
-
-function BpMesh({
-  box,
-  color,
-  emissive,
-  emissiveIntensity = 0,
-}: {
-  box: ReturnType<typeof bpBox>
-  color: string
-  emissive?: string
-  emissiveIntensity?: number
-}) {
-  return (
-    <mesh position={box.position}>
-      <boxGeometry args={box.size} />
-      <meshStandardMaterial color={color} emissive={emissive ?? '#000'} emissiveIntensity={emissiveIntensity} />
-    </mesh>
-  )
-}
 
 /** Back + side walls revealed on zoom morph (mirrors LibraryStackLayout showShell) */
 export function LabRoomShell({
   theme,
   accent,
   entered,
+  thin,
   showShell = false,
   roomW = 5,
   roomD = 5,
@@ -37,17 +20,20 @@ export function LabRoomShell({
 
   return (
     <>
-      <BpMesh
+      <TypologyBpMesh box={bpFloorBox(roomW, roomD)} color={m.body} thin={thin} />
+      <TypologyBpMesh
         box={bpBox(0, 0, 0, roomW, 0.12, 2.8, roomW, roomD)}
         color={shellFill}
-        emissive={dark ? m.pal.neon : undefined}
-        emissiveIntensity={dark ? 0.08 : 0}
+        thin={thin}
+        emissive={dark && !thin ? m.pal.neon : undefined}
+        emissiveIntensity={dark && !thin ? 0.08 : 0}
       />
-      <BpMesh
+      <TypologyBpMesh
         box={bpBox(0, 0, 0, 0.12, roomD, 2.8, roomW, roomD)}
         color={shellFill}
-        emissive={dark ? m.pal.neon : undefined}
-        emissiveIntensity={dark ? 0.06 : 0}
+        thin={thin}
+        emissive={dark && !thin ? m.pal.neon : undefined}
+        emissiveIntensity={dark && !thin ? 0.06 : 0}
       />
     </>
   )

@@ -7,6 +7,17 @@ export interface BpBox {
   size: [number, number, number]
 }
 
+/** Horizontal floor slab on blueprint grid (x × y footprint, thin z height) */
+export function bpFloorBox(roomW = 5, roomD = 5, thickness = 0.12): BpBox {
+  return bpBox(0, 0, 0, roomW, roomD, thickness, roomW, roomD)
+}
+
+/** Grid point → station space (for spheres / props) */
+export function bpPoint(x: number, y: number, z: number, roomW = 5, roomD = 5): [number, number, number] {
+  const u = BP_UNIT
+  return [(x - roomW / 2) * u, z * u, (y - roomD / 2) * u]
+}
+
 /** Grid floor cell (x,y) + height z → centered Three.js box */
 export function bpBox(
   x: number,

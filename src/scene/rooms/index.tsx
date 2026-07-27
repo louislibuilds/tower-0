@@ -100,6 +100,7 @@ export function FloorRoom({
         viewMode={viewMode}
         libraryRoomSlug={libraryRoomSlug}
         roomFocus={roomFocus && !!libraryRoomSlug}
+        floorOverview={viewMode === 'floor' && !libraryRoomSlug}
         selectedBookSlug={selectedBookSlug}
         selectedCredentialSlug={selectedCredentialSlug}
         onLibraryRoomClick={onLibraryRoomClick}

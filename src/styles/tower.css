@@ -29,6 +29,7 @@
   --hd: #1a6b3a;
   --d: #2F6BFF;
   --cr: #8a6a00;
+  --scene-cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M12 5v14M5 12h14' stroke='%230E0F10' stroke-width='1.25' fill='none'/%3E%3C/svg%3E") 12 12, crosshair;
 }
 
 [data-theme='dark'] {
@@ -52,6 +53,7 @@
   --text-dim: var(--graphite-mute);
   --surface-elevated: #1A1B1D;
   --graphite-line: color-mix(in srgb, var(--graphite) 28%, transparent);
+  --scene-cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M12 5v14M5 12h14' stroke='%23F2F1ED' stroke-width='1.25' fill='none'/%3E%3C/svg%3E") 12 12, crosshair;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -89,7 +91,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   width: 100% !important;
   height: 100% !important;
   background: var(--paper);
-  cursor: crosshair;
+  cursor: var(--scene-cursor);
 }
 .tower-canvas--booting .tower-canvas__gl { opacity: 0.55; }
 .tower-canvas--ready .tower-canvas__gl { opacity: 1; transition: opacity 0.5s var(--ease-tower); }
@@ -706,6 +708,80 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 .scene-label--active {
   color: var(--signal);
   border-color: color-mix(in srgb, var(--signal) 40%, transparent);
+}
+
+/* ── Station callouts (architectural drawing labels) ── */
+.station-callout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.06rem;
+  min-width: 3.4rem;
+  max-width: 9rem;
+  padding: 0.22rem 0.42rem;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--paper) 94%, transparent);
+  font-family: var(--font-mono);
+  text-align: center;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--graphite) 8%, transparent);
+  pointer-events: none;
+  transition: border-color 0.25s var(--ease-tower), color 0.25s var(--ease-tower);
+}
+
+.station-callout--active {
+  border-color: color-mix(in srgb, var(--signal) 55%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--signal) 12%, transparent);
+}
+
+.station-callout__code {
+  font-size: 0.48rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--graphite-mute);
+  line-height: 1.2;
+}
+
+.station-callout--active .station-callout__code {
+  color: var(--signal);
+}
+
+.station-callout__title {
+  font-size: 0.54rem;
+  letter-spacing: 0.04em;
+  color: var(--graphite);
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.station-callout--active .station-callout__title {
+  color: var(--graphite);
+}
+
+.station-callout--edge .station-callout__title {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.52rem;
+}
+
+.station-callout--overview {
+  min-width: 3.8rem;
+  padding: 0.26rem 0.48rem;
+}
+
+.station-callout--overview .station-callout__code {
+  font-size: 0.52rem;
+}
+
+.station-callout--overview .station-callout__title {
+  font-size: 0.62rem;
+  max-width: 7.5rem;
+  white-space: normal;
+  line-height: 1.2;
+}
+
+[data-theme='dark'] .station-callout {
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
 }
 
 .tower-exhibit-card__hint {
