@@ -10,7 +10,7 @@ import type { ViewMode } from '../building/viewMode'
 import type { LibraryRoomSlug } from '../data/libraryRooms'
 import { getProgramFloor, programCenterY, programBaseY, towerTotalHeight } from '../scene/towerGeometry'
 import { FACTORY_STOPS } from '../scene/factoryStops'
-import { chunkLookAtY, chunkPosition, labChunk, vaultChunk } from '../scene/typologies/floorChunks'
+import { chunkBaseLookAt, chunkPosition, labChunk, vaultChunk } from '../scene/typologies/floorChunks'
 
 export interface AuthoredPreset {
   lookAt: [number, number, number]
@@ -41,16 +41,16 @@ function labPresetFromChunk(slug: string, eye: [number, number, number], zoom: n
   const chunk = labChunk(slug)
   if (!chunk) return null
   const [cx, , cz] = chunkPosition(chunk)
-  return { lookAt: [cx, chunkLookAtY(chunk), cz], eye, zoom }
+  return { lookAt: [cx, chunkBaseLookAt(chunk), cz], eye, zoom }
 }
 
-/** 52F · five lab stations — close eye, high zoom, minimal band occlusion */
+/** 52F · five lab stations — lookAt at footprint base, low eye offset */
 const LAB_STATIONS: Record<string, AuthoredPreset> = {
-  'unihack-2026': labPresetFromChunk('unihack-2026', [0.52, 0.28, 0.62], 485)!,
-  'cloud-computing': labPresetFromChunk('cloud-computing', [-0.52, 0.26, 0.62], 465)!,
-  nlp: labPresetFromChunk('nlp', [0.62, 0.32, 0.6], 480)!,
-  dl: labPresetFromChunk('dl', [-0.62, 0.32, 0.6], 505)!,
-  kata: labPresetFromChunk('kata', [0.02, 0.26, 0.68], 475)!,
+  'unihack-2026': labPresetFromChunk('unihack-2026', [0.52, 0.14, 0.58], 485)!,
+  'cloud-computing': labPresetFromChunk('cloud-computing', [-0.52, 0.14, 0.58], 465)!,
+  nlp: labPresetFromChunk('nlp', [0.62, 0.14, 0.56], 480)!,
+  dl: labPresetFromChunk('dl', [-0.62, 0.14, 0.56], 505)!,
+  kata: labPresetFromChunk('kata', [0.02, 0.14, 0.64], 475)!,
 }
 
 const LAB_FLOOR_OVERVIEW: AuthoredPreset = {
@@ -59,16 +59,32 @@ const LAB_FLOOR_OVERVIEW: AuthoredPreset = {
   zoom: 188,
 }
 
-/** 99F · stack + vault blocks */
+/** 99F · stack + vault blocks at scatter anchors */
 function vaultPreset(slug: LibraryRoomSlug, eye: [number, number, number], zoom: number): AuthoredPreset {
   const chunk = vaultChunk(slug)
   const [cx, , cz] = chunkPosition(chunk)
-  return { lookAt: [cx, chunkLookAtY(chunk), cz], eye, zoom }
+  return { lookAt: [cx, chunkBaseLookAt(chunk), cz], eye, zoom }
+}
+
+function vaultFocusPreset(
+  slug: LibraryRoomSlug,
+  localLookAt: [number, number, number],
+  eye: [number, number, number],
+  zoom: number,
+): AuthoredPreset {
+  const chunk = vaultChunk(slug)
+  const [cx, , cz] = chunkPosition(chunk)
+  const baseY = chunkBaseLookAt(chunk)
+  return {
+    lookAt: [cx + localLookAt[0], baseY + localLookAt[1], cz + localLookAt[2]],
+    eye,
+    zoom,
+  }
 }
 
 const VAULT_STATIONS: Record<LibraryRoomSlug, AuthoredPreset> = {
-  library: vaultPreset('library', [0.48, 0.3, 0.62], 420),
-  archive: vaultPreset('archive', [-0.48, 0.32, 0.62], 435),
+  library: vaultPreset('library', [0.48, 0.14, 0.58], 420),
+  archive: vaultPreset('archive', [-0.48, 0.14, 0.58], 435),
 }
 
 const VAULT_FLOOR_OVERVIEW: AuthoredPreset = {
@@ -77,17 +93,9 @@ const VAULT_FLOOR_OVERVIEW: AuthoredPreset = {
   zoom: 168,
 }
 
-const VAULT_BOOK_FOCUS: AuthoredPreset = {
-  lookAt: [0, 0.06, -0.06],
-  eye: [0.55, 0.28, 0.85],
-  zoom: 240,
-}
+const VAULT_BOOK_FOCUS = vaultFocusPreset('library', [0, 0.02, -0.04], [0.48, 0.14, 0.58], 420)
 
-const VAULT_CREDENTIAL_FOCUS: AuthoredPreset = {
-  lookAt: [0, 0.06, -0.06],
-  eye: [-0.55, 0.28, 0.85],
-  zoom: 240,
-}
+const VAULT_CREDENTIAL_FOCUS = vaultFocusPreset('archive', [0, 0.02, -0.04], [-0.48, 0.14, 0.58], 435)
 
 /** 23F · four semester areas */
 const FACTORY_STATIONS: AuthoredPreset[] = FACTORY_STOPS.map((sx, i) => ({

@@ -1,6 +1,6 @@
 import { Html } from '@react-three/drei'
 import { RoomShell } from '../primitives/RoomShell'
-import { LAB_CHUNKS, chunkPosition, RAISED_TIER_LIFT, type ExhibitChunk } from './floorChunks'
+import { LAB_CHUNKS, chunkPosition, type ExhibitChunk } from './floorChunks'
 import { lab52Interior } from './interiorScale'
 import { LabTypology } from './labs'
 import { StationFootprint } from './StationFootprint'
@@ -30,7 +30,7 @@ interface BenchRowProps extends TypologyProps {
   onLabRoomHover: (slug: string | null) => void
 }
 
-/** 52 · Laboratory — one floor shell, five scattered station blocks */
+/** 52 · Laboratory — one flat floor shell, five scattered station blocks */
 export function BenchRow({
   theme,
   accent,
@@ -52,11 +52,6 @@ export function BenchRow({
       color={m.pal.graphite}
       floorColor={m.body}
     >
-      <mesh position={[0, RAISED_TIER_LIFT / 2, -0.08]}>
-        <boxGeometry args={[interior.w * 0.88, RAISED_TIER_LIFT, interior.d * 0.42]} />
-        <meshStandardMaterial color={m.pal.resin} transparent opacity={0.35} />
-      </mesh>
-
       {LAB_CHUNKS.map((chunk) => {
         const slug = chunk.slug
         const active = labRoomSlug === slug
@@ -146,7 +141,7 @@ function LabStationBlock({
       </group>
 
       {!thin && (
-        <Html center position={[0, h + 0.18, 0]} style={{ pointerEvents: 'none' }}>
+        <Html center position={[0, h + 0.22, 0]} style={{ pointerEvents: 'none' }}>
           <div className={`scene-label scene-label--lab ${lit ? 'scene-label--active' : ''}`}>
             {labLabel(code, slug)}
           </div>

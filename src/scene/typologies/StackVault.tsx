@@ -6,8 +6,6 @@ import type { LibraryRoomSlug } from '../../data/libraryRooms'
 import { BackWallPanel, RoomShell } from '../primitives/RoomShell'
 import {
   chunkPosition,
-  RAISED_TIER_LIFT,
-  tierLift,
   vaultChunk,
   VAULT_CHUNKS,
 } from './floorChunks'
@@ -44,33 +42,8 @@ export function StackVaultFloor(props: StackVaultProps) {
     onCredentialClick,
   } = props
 
-  if (roomFocus && libraryRoomSlug === 'library') {
-    return (
-      <StackRoomInterior
-        theme={theme}
-        accent={accent}
-        entered={entered}
-        selectedBookSlug={selectedBookSlug}
-        onBookClick={onBookClick}
-      />
-    )
-  }
-
-  if (roomFocus && libraryRoomSlug === 'archive') {
-    return (
-      <VaultWallInterior
-        theme={theme}
-        accent={accent}
-        entered={entered}
-        selectedCredentialSlug={selectedCredentialSlug}
-        onCredentialClick={onCredentialClick}
-      />
-    )
-  }
-
   const m = typologyMat(theme, accent, entered)
   const interior = vault99Interior()
-  const enteringZone = !!libraryRoomSlug
 
   return (
     <RoomShell
@@ -85,45 +58,66 @@ export function StackVaultFloor(props: StackVaultProps) {
         <meshStandardMaterial color={m.pal.concrete} transparent opacity={0.5} />
       </mesh>
 
-      <mesh position={[0.46, tierLift('raised') / 2, -0.12]}>
-        <boxGeometry args={[0.76, RAISED_TIER_LIFT, 0.58]} />
-        <meshStandardMaterial color={m.pal.resin} transparent opacity={0.35} />
-      </mesh>
-
       {(['library', 'archive'] as const).map((slug) => {
         const chunk = VAULT_CHUNKS[slug]
         const [cx, cy, cz] = chunkPosition(chunk)
         const active = libraryRoomSlug === slug
-        const thin = enteringZone && !active
+        const expanded = roomFocus && active
+
+        if (roomFocus && libraryRoomSlug && !active) {
+          return null
+        }
+
+        const thin = !!libraryRoomSlug && !active
 
         return (
           <group key={slug} position={[cx, cy, cz]}>
-            <ThinnedStation thin={thin}>
-              {slug === 'library' ? (
-                <StackRoomPod
-                  active={active}
-                  thin={thin}
-                  chunk={chunk}
+            {expanded ? (
+              slug === 'library' ? (
+                <StackRoomInterior
                   theme={theme}
-                  onClick={() => onLibraryRoomClick('library')}
-                  onHover={onLibraryRoomHover}
-                  body={m.body}
                   accent={accent}
-                  pal={m.pal}
+                  entered={entered}
+                  selectedBookSlug={selectedBookSlug}
+                  onBookClick={onBookClick}
                 />
               ) : (
-                <VaultWallPod
-                  active={active}
-                  thin={thin}
-                  chunk={chunk}
+                <VaultWallInterior
                   theme={theme}
-                  entered={entered}
-                  onClick={() => onLibraryRoomClick('archive')}
-                  onHover={onLibraryRoomHover}
                   accent={accent}
+                  entered={entered}
+                  selectedCredentialSlug={selectedCredentialSlug}
+                  onCredentialClick={onCredentialClick}
                 />
-              )}
-            </ThinnedStation>
+              )
+            ) : (
+              <ThinnedStation thin={thin}>
+                {slug === 'library' ? (
+                  <StackRoomPod
+                    active={active}
+                    thin={thin}
+                    chunk={chunk}
+                    theme={theme}
+                    onClick={() => onLibraryRoomClick('library')}
+                    onHover={onLibraryRoomHover}
+                    body={m.body}
+                    accent={accent}
+                    pal={m.pal}
+                  />
+                ) : (
+                  <VaultWallPod
+                    active={active}
+                    thin={thin}
+                    chunk={chunk}
+                    theme={theme}
+                    entered={entered}
+                    onClick={() => onLibraryRoomClick('archive')}
+                    onHover={onLibraryRoomHover}
+                    accent={accent}
+                  />
+                )}
+              </ThinnedStation>
+            )}
           </group>
         )
       })}
