@@ -1,7 +1,7 @@
 import { Html } from '@react-three/drei'
 import { RoomShell } from '../primitives/RoomShell'
 import { LAB_CHUNKS, chunkPosition, type ExhibitChunk } from './floorChunks'
-import { lab52Interior } from './interiorScale'
+import { LAB_BLUEPRINT_DIMS, lab52Interior, stationBlueprintScale } from './interiorScale'
 import { LabTypology } from './labs'
 import { StationFootprint } from './StationFootprint'
 import { ThinnedStation } from './ThinnedStation'
@@ -109,6 +109,8 @@ function LabStationBlock({
   onHover: (slug: string | null) => void
 }) {
   const { w, d, h } = chunk.size
+  const [gridW, gridD] = LAB_BLUEPRINT_DIMS[slug] ?? [5, 5]
+  const typologyScale = stationBlueprintScale(gridW, gridD, { w: w * 0.88, d: d * 0.88 })
 
   return (
     <group>
@@ -136,13 +138,15 @@ function LabStationBlock({
       </mesh>
 
       <StationFootprint width={w} depth={d} theme={theme} accent={accent} active={lit} thin={thin} />
-      <group position={[0, 0.04, 0]}>
+      <group position={[0, 0.04, 0]} scale={typologyScale}>
         <LabTypology slug={slug} theme={theme} accent={accent} entered={entered} active={lit} />
       </group>
 
       {!thin && (
-        <Html center position={[0, h + 0.22, 0]} style={{ pointerEvents: 'none' }}>
-          <div className={`scene-label scene-label--lab ${lit ? 'scene-label--active' : ''}`}>
+        <Html center position={[0, h + 0.18, 0]} style={{ pointerEvents: 'none' }}>
+          <div
+            className={`scene-label scene-label--lab ${lit ? 'scene-label--active' : ''} ${roomFocus ? 'scene-label--hidden' : ''}`}
+          >
             {labLabel(code, slug)}
           </div>
         </Html>

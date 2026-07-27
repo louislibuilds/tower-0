@@ -209,6 +209,7 @@ function ProgramFloorBand({
     if (entered && (viewMode === 'room' || viewMode === 'focus')) {
       if (program.id === '52' && labRoomSlug) return 0.05
       if (program.id === '99' && libraryRoomSlug) return 0.05
+      if (program.id === '23' && factoryStop !== null) return 0.05
       if (program.id === 'B2' || program.id === 'B10') return 0.06
       return 0.08
     }
@@ -226,6 +227,7 @@ function ProgramFloorBand({
     (viewMode === 'room' || viewMode === 'focus' || viewMode === 'floor') &&
     ((program.id === '52' && !!labRoomSlug) ||
       (program.id === '99' && !!libraryRoomSlug) ||
+      (program.id === '23' && factoryStop !== null) ||
       program.id === 'B2' ||
       program.id === 'B10')
 
@@ -305,19 +307,19 @@ function ProgramFloorBand({
                 : 0.95
               : viewMode === 'room' || viewMode === 'focus'
                 ? program.id === '52' && labRoomSlug
-                  ? 1.0
+                  ? 0.82
                   : program.id === '99'
-                    ? 0.98
-                    : 0.92
+                    ? 0.78
+                    : 0.72
                 : viewMode === 'floor' && program.id === '52'
-                  ? 0.92
+                  ? 0.72
                   : viewMode === 'floor' && program.id === '99'
-                    ? 0.9
+                    ? 0.7
                     : viewMode === 'floor' && (program.id === 'B2' || program.id === 'B10')
-                      ? 0.96
-                    : viewMode === 'floor' && (labRoomSlug || libraryRoomSlug || factoryStop !== null)
                       ? 0.82
-                      : 0.72
+                    : viewMode === 'floor' && (labRoomSlug || libraryRoomSlug || factoryStop !== null)
+                      ? 0.68
+                      : 0.56
           }
         >
           <FloorRoom

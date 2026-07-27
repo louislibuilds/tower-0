@@ -3,6 +3,7 @@ import { Html, Line } from '@react-three/drei'
 import { useMemo } from 'react'
 import * as THREE from 'three'
 import { bpBox, bpLine } from '../blueprintLayout'
+import { ThinnedStation } from '../ThinnedStation'
 import { typologyMat, type TypologyProps } from '../types'
 
 const ROOM_W = 11
@@ -38,6 +39,7 @@ export function FactoryLineLayout({
   factoryStop = null,
   onSelectStop,
   showLabels = false,
+  roomFocus = false,
   areaLabels = [],
 }: TypologyProps & {
   active?: boolean
@@ -45,10 +47,12 @@ export function FactoryLineLayout({
   factoryStop?: number | null
   onSelectStop?: (index: number) => void
   showLabels?: boolean
+  roomFocus?: boolean
   areaLabels?: { label: string; detail: string }[]
 }) {
   const m = typologyMat(theme, accent, entered)
   const lit = entered || active
+  const entering = factoryStop !== null
 
   const beltPosts = useMemo(
     () =>
@@ -87,24 +91,27 @@ export function FactoryLineLayout({
 
       {STATIONS.map((sx, si) => {
         const station = bpBox(sx, 0.2, 0, 1.5, 1, 0.62, ROOM_W, ROOM_D)
-        const lit = factoryStop === si
+        const activeStop = factoryStop === si
+        const thin = entering && !activeStop
+        const stopLit = activeStop
         const meta = areaLabels[si]
         return (
-        <Fragment key={si}>
+        <ThinnedStation key={si} thin={thin}>
+        <Fragment>
           <BpMesh box={station} color={m.alt} />
           <BpMesh
             box={bpBox(sx + 0.25, 0.25, 0.62, 1.0, 0.09, 0.82, ROOM_W, ROOM_D)}
             color={m.pal.glass}
-            emissive={lit ? accent : undefined}
-            emissiveIntensity={lit ? 0.18 : 0.1}
+            emissive={stopLit ? accent : undefined}
+            emissiveIntensity={stopLit ? 0.18 : 0.1}
           />
           <BpMesh box={bpBox(sx + 0.65, 0.5, 0.62, 0.1, 0.1, 1.1, ROOM_W, ROOM_D)} color={m.pal.alum} />
           <BpMesh box={bpBox(sx + 0.28, 0.45, 1.72, 0.82, 0.14, 0.1, ROOM_W, ROOM_D)} color={m.pal.alum} />
           <BpMesh box={bpBox(sx + 0.26, 0.36, 1.62, 0.14, 0.14, 0.22, ROOM_W, ROOM_D)} color={m.pal.graphite} />
           <BpMesh
             box={bpBox(sx, 2.72, 0, 1.5, 0.35, 0.18, ROOM_W, ROOM_D)}
-            color={lit ? m.warm : m.pal.resin}
-            emissive={lit ? m.warm : undefined}
+            color={stopLit ? m.warm : m.pal.resin}
+            emissive={stopLit ? m.warm : undefined}
             emissiveIntensity={0.08}
           />
           {onSelectStop && (
@@ -112,6 +119,7 @@ export function FactoryLineLayout({
               position={station.position}
               visible={false}
               onPointerOver={(e) => {
+                if (thin) return
                 e.stopPropagation()
                 document.body.style.cursor = 'pointer'
               }}
@@ -119,6 +127,7 @@ export function FactoryLineLayout({
                 document.body.style.cursor = 'crosshair'
               }}
               onClick={(e) => {
+                if (thin || (roomFocus && activeStop)) return
                 e.stopPropagation()
                 onSelectStop(si)
               }}
@@ -130,14 +139,19 @@ export function FactoryLineLayout({
           {showLabels && meta && (
             <Html center position={[station.position[0], station.position[1] + station.size[1] * 1.1, station.position[2] + 0.08]} style={{ pointerEvents: 'none' }}>
               <div>
-                <div className={`scene-label scene-label--lab ${lit ? 'scene-label--active' : ''}`}>{meta.label}</div>
-                {entered && lit && (
+                <div
+                  className={`scene-label scene-label--lab ${stopLit ? 'scene-label--active' : ''} ${roomFocus && activeStop ? 'scene-label--hidden' : ''}`}
+                >
+                  {meta.label}
+                </div>
+                {entered && stopLit && !roomFocus && (
                   <div className="scene-label scene-label--tiny">{meta.detail}</div>
                 )}
               </div>
             </Html>
           )}
         </Fragment>
+        </ThinnedStation>
         )
       })}
 

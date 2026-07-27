@@ -7,6 +7,13 @@ const ROOM_D = 5
 const SHELVES = [0.2, 1.4, 2.6, 3.8] as const
 const SHELF_ROWS = [0.48, 0.98, 1.52, 1.98] as const
 
+/** Three book spines per shelf row — center spine gets warm highlight per design bible */
+const BOOK_SPINES = [
+  { xOff: 0.02, w: 0.2, h: 0.22, tone: 'edge' as const },
+  { xOff: 0.28, w: 0.24, h: 0.28, tone: 'highlight' as const },
+  { xOff: 0.56, w: 0.18, h: 0.24, tone: 'edge' as const },
+]
+
 function BpMesh({
   box,
   color,
@@ -26,6 +33,13 @@ function BpMesh({
   )
 }
 
+function spineColor(tone: 'edge' | 'highlight', lit: boolean, m: ReturnType<typeof typologyMat>) {
+  if (tone === 'highlight') {
+    return lit ? '#fce4a8' : '#e8dcc8'
+  }
+  return lit ? m.pal.resin : m.pal.concrete
+}
+
 /** 99F library · shelf stacks + reading table + ladder */
 export function LibraryStackLayout({
   theme,
@@ -36,7 +50,7 @@ export function LibraryStackLayout({
   showShell = true,
 }: TypologyProps & { active?: boolean; scale?: number; showShell?: boolean }) {
   const m = typologyMat(theme, accent, entered)
-  const lit = entered || active
+  const lit = !!(entered || active)
   const table = bpBox(1.8, 1.8, 0, 2.2, 1.3, 0.62, ROOM_W, ROOM_D)
   const chairs: [number, number][] = [
     [2.0, 3.3],
@@ -56,13 +70,21 @@ export function LibraryStackLayout({
         <Fragment key={x}>
           <BpMesh box={bpBox(x, 0.15, 0, 0.9, 0.4, 2.4, ROOM_W, ROOM_D)} color={m.alt} />
           {SHELF_ROWS.map((z, j) => (
-            <BpMesh
-              key={j}
-              box={bpBox(x + 0.07, 0.16, z, 0.76, 0.32, 0.26, ROOM_W, ROOM_D)}
-              color={j % 2 ? m.warm : m.pal.concrete}
-              emissive={lit && j % 2 ? m.warm : undefined}
-              emissiveIntensity={0.08}
-            />
+            <Fragment key={j}>
+              {BOOK_SPINES.map((book, bi) => {
+                const highlight = book.tone === 'highlight'
+                const color = spineColor(book.tone, lit, m)
+                return (
+                  <BpMesh
+                    key={bi}
+                    box={bpBox(x + book.xOff, 0.16, z, book.w, 0.32, book.h, ROOM_W, ROOM_D)}
+                    color={color}
+                    emissive={highlight && lit ? m.warm : undefined}
+                    emissiveIntensity={highlight ? (lit ? 0.18 : 0.06) : 0.03}
+                  />
+                )
+              })}
+            </Fragment>
           ))}
         </Fragment>
       ))}

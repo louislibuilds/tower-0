@@ -19,7 +19,7 @@ export function floorInterior(floorId: FloorId) {
   return bandInterior(band.width, band.depth, band.bandHeight)
 }
 
-export const MIN_CHUNK = { w: 0.42, d: 0.38, h: 0.48 } as const
+export const MIN_CHUNK = { w: 0.28, d: 0.26, h: 0.32 } as const
 
 /** 52F — five station anchors on a single flat floor slab */
 export const LAB_CHUNKS: ExhibitChunk[] = [
@@ -27,40 +27,40 @@ export const LAB_CHUNKS: ExhibitChunk[] = [
     id: 'lab-001',
     slug: 'unihack-2026',
     code: '001',
-    pos: [0, 0, 0.38],
-    size: { w: 0.52, d: 0.48, h: 0.55 },
+    pos: [0, 0, 0.32],
+    size: { w: 0.34, d: 0.3, h: 0.36 },
     cameraSide: 'right',
   },
   {
     id: 'lab-002',
     slug: 'cloud-computing',
     code: '002',
-    pos: [0.48, 0, 0.06],
-    size: { w: 0.46, d: 0.44, h: 0.52 },
+    pos: [0.38, 0, 0.05],
+    size: { w: 0.3, d: 0.28, h: 0.34 },
     cameraSide: 'left',
   },
   {
     id: 'lab-003',
     slug: 'nlp',
     code: '003',
-    pos: [-0.58, 0, -0.24],
-    size: { w: 0.5, d: 0.46, h: 0.58 },
+    pos: [-0.46, 0, -0.2],
+    size: { w: 0.32, d: 0.3, h: 0.38 },
     cameraSide: 'right',
   },
   {
     id: 'lab-004',
     slug: 'dl',
     code: '004',
-    pos: [0.55, 0, -0.2],
-    size: { w: 0.52, d: 0.48, h: 0.56 },
+    pos: [0.44, 0, -0.16],
+    size: { w: 0.34, d: 0.3, h: 0.36 },
     cameraSide: 'left',
   },
   {
     id: 'lab-005',
     slug: 'kata',
     code: '005',
-    pos: [-0.22, 0, -0.02],
-    size: { w: 0.44, d: 0.4, h: 0.5 },
+    pos: [-0.18, 0, -0.02],
+    size: { w: 0.28, d: 0.26, h: 0.32 },
     cameraSide: 'right',
   },
 ]
@@ -69,15 +69,15 @@ export const VAULT_CHUNKS: Record<LibraryRoomSlug, ExhibitChunk> = {
   library: {
     id: 'vault-lib',
     slug: 'library',
-    pos: [-0.42, 0, 0.14],
-    size: { w: 0.74, d: 0.56, h: 0.62 },
+    pos: [-0.34, 0, 0.12],
+    size: { w: 0.48, d: 0.38, h: 0.42 },
     cameraSide: 'left',
   },
   archive: {
     id: 'vault-arc',
     slug: 'archive',
-    pos: [0.46, 0, -0.12],
-    size: { w: 0.7, d: 0.52, h: 0.58 },
+    pos: [0.38, 0, -0.1],
+    size: { w: 0.46, d: 0.36, h: 0.4 },
     cameraSide: 'right',
   },
 }

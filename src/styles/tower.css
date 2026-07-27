@@ -697,6 +697,11 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   white-space: nowrap;
   pointer-events: none;
   backdrop-filter: blur(4px);
+  opacity: 1;
+  transition: opacity 0.45s var(--ease-site);
+}
+.scene-label--hidden {
+  opacity: 0;
 }
 .scene-label--active {
   color: var(--signal);

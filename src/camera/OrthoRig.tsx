@@ -24,6 +24,8 @@ interface OrthoRigProps {
   reducedMotion: boolean
 }
 
+const ORBIT_SPEED = 0.09
+
 export function OrthoRig({
   floorId,
   viewMode,
@@ -39,6 +41,9 @@ export function OrthoRig({
   const camRef = useRef<THREE.OrthographicCamera>(null)
   const look = useRef(new THREE.Vector3(0, 4, 0))
   const prevKey = useRef('')
+  const orbitAngle = useRef(0)
+  const orbitOffset = useRef(new THREE.Vector3())
+  const orbitActive = useRef(false)
   const invalidate = useThree((s) => s.invalidate)
 
   const focusTarget = selectedBookSlug
@@ -48,6 +53,21 @@ export function OrthoRig({
       : labRoomSlug && viewMode === 'focus'
         ? 'lab'
         : null
+
+  const stationOrbit =
+    viewMode === 'room' &&
+    !focusTarget &&
+    !!(labRoomSlug || libraryRoomSlug || factoryStop !== null)
+
+  function syncOrbitBase(position: [number, number, number], lookAt: [number, number, number]) {
+    orbitOffset.current.set(
+      position[0] - lookAt[0],
+      position[1] - lookAt[1],
+      position[2] - lookAt[2],
+    )
+    orbitAngle.current = 0
+    orbitActive.current = stationOrbit && !reducedMotion
+  }
 
   useEffect(() => {
     const cam = camRef.current
@@ -78,6 +98,7 @@ export function OrthoRig({
       look.current.set(...target.lookAt)
       cam.lookAt(look.current)
       cam.updateProjectionMatrix()
+      syncOrbitBase(target.position, target.lookAt)
       invalidate()
       prevKey.current = key
       return
@@ -129,6 +150,9 @@ export function OrthoRig({
         cam.updateProjectionMatrix()
         invalidate()
       },
+      onComplete: () => {
+        syncOrbitBase(target.position, target.lookAt)
+      },
     })
 
     prevKey.current = key
@@ -145,11 +169,22 @@ export function OrthoRig({
     labRoomSlug,
     focusTarget,
     reducedMotion,
+    stationOrbit,
     invalidate,
   ])
 
-  useFrame(() => {
-    camRef.current?.lookAt(look.current)
+  useFrame((_, delta) => {
+    const cam = camRef.current
+    if (!cam) return
+    cam.lookAt(look.current)
+
+    if (!orbitActive.current) return
+
+    orbitAngle.current += delta * ORBIT_SPEED
+    const offset = orbitOffset.current.clone()
+    offset.applyAxisAngle(new THREE.Vector3(0, 1, 0), orbitAngle.current)
+    cam.position.copy(look.current).add(offset)
+    invalidate()
   })
 
   const midY = towerTotalHeight() / 2 - 1
