@@ -83,8 +83,8 @@ function vaultFocusPreset(
 }
 
 const VAULT_STATIONS: Record<LibraryRoomSlug, AuthoredPreset> = {
-  library: vaultPreset('library', [0.48, 0.14, 0.58], 420),
-  archive: vaultPreset('archive', [-0.48, 0.14, 0.58], 435),
+  library: vaultPreset('library', [0.48, 0.16, 0.62], 295),
+  archive: vaultPreset('archive', [-0.48, 0.16, 0.62], 305),
 }
 
 const VAULT_FLOOR_OVERVIEW: AuthoredPreset = {
@@ -93,9 +93,9 @@ const VAULT_FLOOR_OVERVIEW: AuthoredPreset = {
   zoom: 168,
 }
 
-const VAULT_BOOK_FOCUS = vaultFocusPreset('library', [0, 0.02, -0.04], [0.48, 0.14, 0.58], 420)
+const VAULT_BOOK_FOCUS = vaultFocusPreset('library', [0, 0.06, -0.04], [0.48, 0.16, 0.62], 295)
 
-const VAULT_CREDENTIAL_FOCUS = vaultFocusPreset('archive', [0, 0.02, -0.04], [-0.48, 0.14, 0.58], 435)
+const VAULT_CREDENTIAL_FOCUS = vaultFocusPreset('archive', [0, 0.06, -0.04], [-0.48, 0.16, 0.62], 305)
 
 /** 23F · four semester areas */
 const FACTORY_STATIONS: AuthoredPreset[] = FACTORY_STOPS.map((sx, i) => ({

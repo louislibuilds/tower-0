@@ -31,6 +31,10 @@ export function floorToY(n: number): number {
 }
 
 export function programBaseY(p: ProgramFloor): number {
+  if (p.id === 'roof') {
+    const f99 = getProgramFloor('99')
+    return programBaseY(f99) + f99.bandHeight + 0.06
+  }
   return floorToY(p.floorNumber)
 }
 

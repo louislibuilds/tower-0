@@ -3,23 +3,31 @@ import { useMemo, useState } from 'react'
 import * as THREE from 'three'
 import { CORE_RISERS, RISER_GAUGE, type CoreRiserDef } from '../../data/coreRisers'
 import { RoomShell } from '../primitives/RoomShell'
+import { blueprintFitScale, infraB2Interior } from './interiorScale'
+import { InfraRackLayout } from './layouts/InfraRackLayout'
 import { typologyMat, type TypologyProps } from './types'
 
 const riserX = (i: number) => -0.42 + i * 0.21
 
-/** B2 · Riser Core — skills as building services; each pipe serves a 52F lab */
+/** B2 · Riser Core — blueprint rack hall + skills as building services */
 export function RiserCore({ theme, accent, entered, active = false }: TypologyProps) {
   const m = typologyMat(theme, accent, entered)
   const lit = entered || active
   const [hovered, setHovered] = useState<number | null>(null)
   const activeRiser = hovered !== null ? CORE_RISERS[hovered] : null
+  const interior = infraB2Interior()
+  const layoutScale = blueprintFitScale(6, 5, interior, 0.82)
   const aiUplink = useMemo(
     () => [new THREE.Vector3(riserX(1), 0.38, 0), new THREE.Vector3(riserX(1), 0.55, 0.05)],
     [],
   )
 
   return (
-    <RoomShell width={1.05} depth={0.72} height={0.48} color={m.pal.graphite} floorColor={m.body}>
+    <RoomShell width={interior.w} depth={interior.d} height={interior.h} color={m.pal.graphite} floorColor={m.body}>
+      <group position={[0, 0.02, 0]}>
+        <InfraRackLayout theme={theme} accent={accent} entered={entered} active={lit} scale={layoutScale} />
+      </group>
+
       {CORE_RISERS.map((riser, i) => (
         <RiserColumn
           key={riser.id}

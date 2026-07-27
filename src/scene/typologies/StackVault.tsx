@@ -3,14 +3,14 @@ import { Fragment } from 'react'
 import { credentials } from '../../data/credentials'
 import { libraryBooks } from '../../data/libraryBooks'
 import type { LibraryRoomSlug } from '../../data/libraryRooms'
-import { BackWallPanel, RoomShell } from '../primitives/RoomShell'
+import { RoomShell } from '../primitives/RoomShell'
 import {
   chunkPosition,
-  vaultChunk,
   VAULT_CHUNKS,
 } from './floorChunks'
 import { ArchiveVaultLayout, ArchiveVaultPod } from './layouts/ArchiveVaultLayout'
-import { vault99Interior } from './interiorScale'
+import { LibraryStackLayout, LibraryStackPod } from './layouts/LibraryStackLayout'
+import { blueprintFitScale, vault99Interior, vaultZoneInterior } from './interiorScale'
 import { StationFootprint } from './StationFootprint'
 import { ThinnedStation } from './ThinnedStation'
 import { typologyMat, type TypologyProps } from './types'
@@ -98,11 +98,10 @@ export function StackVaultFloor(props: StackVaultProps) {
                     thin={thin}
                     chunk={chunk}
                     theme={theme}
+                    entered={entered}
                     onClick={() => onLibraryRoomClick('library')}
                     onHover={onLibraryRoomHover}
-                    body={m.body}
                     accent={accent}
-                    pal={m.pal}
                   />
                 ) : (
                   <VaultWallPod
@@ -132,9 +131,8 @@ function StackRoomPod({
   theme,
   onClick,
   onHover,
-  body,
   accent,
-  pal,
+  entered,
 }: {
   active: boolean
   thin: boolean
@@ -142,9 +140,8 @@ function StackRoomPod({
   theme: TypologyProps['theme']
   onClick: () => void
   onHover: (slug: LibraryRoomSlug | null) => void
-  body: string
   accent: string
-  pal: ReturnType<typeof typologyMat>['pal']
+  entered: boolean
 }) {
   const { w, d, h } = chunk.size
 
@@ -169,47 +166,9 @@ function StackRoomPod({
         <meshBasicMaterial transparent opacity={0} />
       </mesh>
       <StationFootprint width={w} depth={d} theme={theme} accent={accent} active={active} thin={thin} />
-      <BackWallPanel
-          width={w * 0.82}
-          height={h * 0.72}
-          depth={0.1}
-          roomDepth={d}
-          color={pal.graphite}
-          accent={accent}
-          active={active}
-        />
-        {[-0.14, -0.04, 0.06, 0.16].map((y, row) =>
-          Array.from({ length: 4 }).map((_, col) => {
-            const x = -0.12 + col * 0.08
-            const colors = ['#2F6BFF', '#5a8a5a', '#8a5a5a', '#6a5a8a']
-            return (
-              <Fragment key={`${row}-${col}`}>
-                <mesh position={[x, y + 0.1, -d / 2 + 0.12]}>
-                  <boxGeometry args={[0.05, 0.1 + (col % 2) * 0.02, 0.05]} />
-                  <meshStandardMaterial color={colors[(row + col) % colors.length]} />
-                </mesh>
-                {[0, 1, 2].map((j) => (
-                  <mesh key={j} position={[x, y + 0.04 + j * 0.04, -d / 2 + 0.15]}>
-                    <boxGeometry args={[0.038, 0.022, 0.032]} />
-                    <meshStandardMaterial color={j % 2 ? pal.chicken : '#d8d4cc'} />
-                  </mesh>
-                ))}
-              </Fragment>
-            )
-          }),
-        )}
-      <mesh position={[0.08, 0.04, 0.06]}>
-        <boxGeometry args={[0.14, 0.04, 0.1]} />
-        <meshStandardMaterial color={body} transparent opacity={0.9} />
-      </mesh>
-      <mesh position={[0.1, 0.07, 0.06]}>
-        <boxGeometry args={[0.06, 0.008, 0.08]} />
-        <meshStandardMaterial color={pal.chicken} emissive={active ? pal.chicken : '#000'} emissiveIntensity={0.12} />
-      </mesh>
-      <mesh position={[0.2, 0.12, 0.1]}>
-        <boxGeometry args={[0.012, 0.14, 0.012]} />
-        <meshStandardMaterial color={accent} />
-      </mesh>
+      <group position={[0, 0.02, -0.02]}>
+        <LibraryStackPod theme={theme} accent={accent} entered={entered} active={active} />
+      </group>
       {!thin && (
         <Html center position={[0, h / 2 + 0.12, 0]} style={{ pointerEvents: 'none' }}>
           <div className={`scene-label scene-label--lab ${active ? 'scene-label--active' : ''}`}>Stack Room</div>
@@ -286,38 +245,30 @@ function StackRoomInterior({
   selectedBookSlug: string | null
   onBookClick: (slug: string) => void
 }) {
-  const m = typologyMat(theme, accent, entered)
-  const chunk = vaultChunk('library')
-  const { w, d, h } = chunk.size
-  const iw = w * 1.08
-  const id = d * 1.06
-  const ih = h * 0.92
+  const zone = vaultZoneInterior()
+  const scale = blueprintFitScale(6, 5, zone)
+  const id = zone.d
 
   return (
-    <RoomShell width={iw} depth={id} height={ih} color={m.pal.graphite} floorColor={m.body}>
-      <BackWallPanel width={iw * 0.88} height={ih * 0.82} depth={0.12} roomDepth={id} color={m.pal.concrete} accent={accent} />
-      {[-0.2, -0.06, 0.08, 0.22].map((y) => (
-        <mesh key={y} position={[0, y + 0.08, -id / 2 + 0.14]}>
-          <boxGeometry args={[iw * 0.82, 0.03, 0.1]} />
-          <meshStandardMaterial color={m.pal.resin} />
-        </mesh>
-      ))}
+    <group>
+      <LibraryStackLayout theme={theme} accent={accent} entered={entered} active scale={scale} />
 
       {Array.from({ length: 4 }).flatMap((_, row) =>
         Array.from({ length: 6 }).map((__, col) => {
           const bookIdx = row * 2 + (col < 2 ? col : -1)
           const book = col < 2 && bookIdx < libraryBooks.length ? libraryBooks[bookIdx] : null
-          const x = -0.25 + col * 0.1
-          const y = 0.05 + row * 0.14
+          const x = (-0.25 + col * 0.1) * scale
+          const y = (0.05 + row * 0.14) * scale
           const colors = ['#2F6BFF', '#3a7a4a', '#8a4a4a', '#6a5a8a', '#8a7a3a', '#4a6a8a', '#7a5a4a']
           const tint = colors[(row * 6 + col) % colors.length]
           const active = book && selectedBookSlug === book.slug
+          const z = -id / 2 + 0.2 * scale
 
           if (book) {
             return (
               <Fragment key={`${row}-${col}`}>
                 <mesh
-                  position={[x, y, -id / 2 + 0.2]}
+                  position={[x, y, z]}
                   onClick={(e) => {
                     e.stopPropagation()
                     onBookClick(book.slug)
@@ -329,15 +280,15 @@ function StackRoomInterior({
                     document.body.style.cursor = 'crosshair'
                   }}
                 >
-                  <boxGeometry args={[0.07, 0.16, 0.07]} />
+                  <boxGeometry args={[0.07 * scale, 0.16 * scale, 0.07 * scale]} />
                   <meshStandardMaterial
                     color={active ? accent : tint}
                     emissive={active ? accent : '#000'}
                     emissiveIntensity={active ? 0.2 : 0}
                   />
                 </mesh>
-                <mesh position={[x, y + 0.09, -id / 2 + 0.2]}>
-                  <boxGeometry args={[0.05, 0.02, 0.05]} />
+                <mesh position={[x, y + 0.09 * scale, z]}>
+                  <boxGeometry args={[0.05 * scale, 0.02 * scale, 0.05 * scale]} />
                   <meshStandardMaterial color="#e8e4dc" />
                 </mesh>
               </Fragment>
@@ -345,14 +296,14 @@ function StackRoomInterior({
           }
 
           return (
-            <mesh key={`${row}-${col}`} position={[x, y, -id / 2 + 0.2]}>
-              <boxGeometry args={[0.06, 0.14 + (col % 3) * 0.02, 0.06]} />
+            <mesh key={`${row}-${col}`} position={[x, y, z]}>
+              <boxGeometry args={[0.06 * scale, (0.14 + (col % 3) * 0.02) * scale, 0.06 * scale]} />
               <meshStandardMaterial color={tint} />
             </mesh>
           )
         }),
       )}
-    </RoomShell>
+    </group>
   )
 }
 
@@ -370,31 +321,32 @@ function VaultWallInterior({
   onCredentialClick: (slug: string) => void
 }) {
   const m = typologyMat(theme, accent, entered)
-  const chunk = vaultChunk('archive')
-  const { w, d, h } = chunk.size
-  const iw = w * 1.08
-  const id = d * 1.06
-  const ih = h * 0.92
+  const zone = vaultZoneInterior()
+  const scale = blueprintFitScale(6, 5, zone)
+  const id = zone.d
   const show = credentials.slice(0, 6)
 
   return (
-    <RoomShell width={iw} depth={id} height={ih} color={m.pal.graphite} floorColor={m.body}>
+    <group>
       <group position={[0, 0.02, 0]}>
-        <ArchiveVaultLayout theme={theme} accent={accent} entered={entered} active scale={1.05} />
+        <ArchiveVaultLayout theme={theme} accent={accent} entered={entered} active scale={scale} />
       </group>
 
       {show.map((cred, i) => {
         const row = Math.floor(i / 3)
         const col = i % 3
         const active = selectedCredentialSlug === cred.slug
+        const x = (-0.22 + col * 0.22) * scale
+        const y = (0.08 + row * 0.2) * scale
+        const z = -id / 2 + 0.12 * scale
         return (
-          <group key={cred.slug} position={[-0.22 + col * 0.22, 0.08 + row * 0.2, -id / 2 + 0.12]}>
+          <group key={cred.slug} position={[x, y, z]}>
             <mesh position={[0, 0, 0]}>
-              <boxGeometry args={[0.17, 0.2, 0.02]} />
+              <boxGeometry args={[0.17 * scale, 0.2 * scale, 0.02 * scale]} />
               <meshStandardMaterial color={m.pal.graphite} />
             </mesh>
             <mesh
-              position={[0, 0, 0.015]}
+              position={[0, 0, 0.015 * scale]}
               onClick={(e) => {
                 e.stopPropagation()
                 onCredentialClick(cred.slug)
@@ -406,21 +358,21 @@ function VaultWallInterior({
                 document.body.style.cursor = 'crosshair'
               }}
             >
-              <boxGeometry args={[0.14, 0.17, 0.02]} />
+              <boxGeometry args={[0.14 * scale, 0.17 * scale, 0.02 * scale]} />
               <meshStandardMaterial
                 color={active ? accent : '#d8d4cc'}
                 emissive={active ? accent : '#000'}
                 emissiveIntensity={active ? 0.15 : 0}
               />
             </mesh>
-            <mesh position={[0, 0.06, 0.028]}>
-              <circleGeometry args={[0.018, 12]} />
+            <mesh position={[0, 0.06 * scale, 0.028 * scale]}>
+              <circleGeometry args={[0.018 * scale, 12]} />
               <meshStandardMaterial color={m.pal.chicken} metalness={0.6} />
             </mesh>
           </group>
         )
       })}
-    </RoomShell>
+    </group>
   )
 }
 

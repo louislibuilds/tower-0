@@ -1,8 +1,10 @@
-import { Html, Line } from '@react-three/drei'
+import { Html } from '@react-three/drei'
 import { useMemo } from 'react'
 import * as THREE from 'three'
 import { areaLabel, FACTORY_AREAS, FACTORY_STOPS } from '../factoryStops'
 import { RoomShell } from '../primitives/RoomShell'
+import { blueprintFitScale, factory23Interior } from './interiorScale'
+import { FactoryLineLayout } from './layouts/FactoryLineLayout'
 import { typologyMat, type TypologyProps } from './types'
 
 interface AssemblyLineProps extends TypologyProps {
@@ -10,11 +12,7 @@ interface AssemblyLineProps extends TypologyProps {
   onSelectStop: (stop: number) => void
 }
 
-const FACT_W = 1.45
-const FACT_D = 0.62
-const FACT_H = 0.48
-
-/** 23 · Assembly Line — semester production stations with warm LED status */
+/** 23 · Assembly Line — semester production stations with blueprint conveyor */
 export function AssemblyLine({
   theme,
   accent,
@@ -23,24 +21,20 @@ export function AssemblyLine({
   onSelectStop,
 }: AssemblyLineProps) {
   const m = typologyMat(theme, accent, entered)
+  const interior = factory23Interior()
+  const layoutScale = blueprintFitScale(11, 4, interior, 0.88)
 
   return (
-    <RoomShell width={FACT_W} depth={FACT_D} height={FACT_H} color={m.pal.graphite} floorColor={m.body} openFront>
-      <mesh position={[0, 0.04, 0]}>
-        <boxGeometry args={[1.25, 0.05, 0.18]} />
-        <meshStandardMaterial color={m.pal.concrete} />
-      </mesh>
-      <Line
-        points={[new THREE.Vector3(-0.62, 0.07, 0.1), new THREE.Vector3(0.62, 0.07, 0.1)]}
-        color={m.pal.graphite}
-        lineWidth={2}
-      />
+    <RoomShell width={interior.w} depth={interior.d} height={interior.h} color={m.pal.graphite} floorColor={m.body} openFront>
+      <group position={[0, 0.02, 0]}>
+        <FactoryLineLayout theme={theme} accent={accent} entered={entered} active scale={layoutScale} />
+      </group>
 
       {FACTORY_AREAS.map((sem, i) => (
         <ProductionStation
           key={sem.id}
           index={i}
-          x={FACTORY_STOPS[i] ?? 0}
+          x={(FACTORY_STOPS[i] ?? 0) * layoutScale}
           label={areaLabel(i)}
           semesterLabel={sem.label}
           active={factoryStop === i}
@@ -124,7 +118,6 @@ function ProductionStation({
         <lineBasicMaterial color={lit ? accent : m.pal.graphite} />
       </lineSegments>
 
-      {/* Status LED strip — chicken warm yellow */}
       {Array.from({ length: 3 }).map((_, j) => (
         <mesh key={j} position={[-0.05 + j * 0.05, 0.36, 0.06]}>
           <boxGeometry args={[0.03, 0.03, 0.02]} />
