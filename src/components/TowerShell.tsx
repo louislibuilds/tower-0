@@ -28,6 +28,7 @@ export function TowerShell() {
     toggleFloor,
     setHoveredFloor,
     toggleLabRoom,
+    handleLabTypologyClick,
     setHoveredLabSlug,
     toggleLibraryRoom,
     toggleFactoryStop,
@@ -61,6 +62,7 @@ export function TowerShell() {
             onFloorHover={setHoveredFloor}
             onFloorClick={toggleFloor}
             onLabRoomClick={toggleLabRoom}
+            onLabTypologyClick={handleLabTypologyClick}
             onLabRoomHover={setHoveredLabSlug}
             onLibraryRoomClick={toggleLibraryRoom}
             onLibraryRoomHover={() => {}}

@@ -1,14 +1,13 @@
+import { Html } from '@react-three/drei'
 import { RoomShell } from '../primitives/RoomShell'
+import { WireBox } from '../primitives/WireBox'
+import { LAB_CHUNKS, chunkPosition, RAISED_TIER_LIFT } from './floorChunks'
 import { lab52Interior, STATION_OVERVIEW } from './interiorScale'
 import { LabTypology, StationPlinth } from './labs'
-import { LAB_STATIONS } from './labAnchors'
 import { ThinnedStation } from './ThinnedStation'
 import { typologyMat, type TypologyProps } from './types'
 
-export {
-  LAB_CAMERA_TARGETS,
-  LAB_STATIONS as LAB_LAYOUT,
-} from './labAnchors'
+export { LAB_CAMERA_TARGETS, LAB_STATIONS as LAB_LAYOUT } from './labAnchors'
 
 export function labShortTitle(slug: string): string {
   if (slug === 'unihack-2026') return 'Unihack 2026'
@@ -28,16 +27,19 @@ interface BenchRowProps extends TypologyProps {
   roomFocus: boolean
   floorOverview: boolean
   onLabRoomClick: (slug: string) => void
+  onLabTypologyClick: (slug: string) => void
   onLabRoomHover: (slug: string | null) => void
 }
 
-/** 52 · Laboratory — five independent stations (resume2 scatter) */
+/** 52 · Laboratory — five chunk blocks with tier scatter (resume2-style) */
 export function BenchRow({
   theme,
   accent,
   entered,
   labRoomSlug,
+  roomFocus,
   onLabRoomClick,
+  onLabTypologyClick,
   onLabRoomHover,
 }: BenchRowProps) {
   const m = typologyMat(theme, accent, entered)
@@ -45,56 +47,84 @@ export function BenchRow({
   const enteringLab = !!labRoomSlug
 
   return (
-    <RoomShell
-      width={interior.w}
-      depth={interior.d}
-      height={interior.h}
-      color={m.pal.graphite}
-      floorColor={m.body}
-    >
-      {LAB_STATIONS.map(({ slug, pos }) => {
+    <group>
+      <WireBox
+        size={[interior.w, 0.02, interior.d]}
+        position={[0, -interior.h / 2 + 0.01, 0]}
+        color={m.pal.graphite}
+        fillOpacity={0.08}
+        fillColor={m.body}
+      />
+
+      {/* Raised mezzanine strip — back row sits on this tier */}
+      <mesh position={[0, -interior.h / 2 + RAISED_TIER_LIFT / 2, -0.08]}>
+        <boxGeometry args={[interior.w * 0.88, RAISED_TIER_LIFT, interior.d * 0.42]} />
+        <meshStandardMaterial color={m.pal.resin} transparent opacity={0.35} />
+      </mesh>
+
+      {LAB_CHUNKS.map((chunk) => {
+        const slug = chunk.slug
         const active = labRoomSlug === slug
         const thin = enteringLab && !active
         const lit = active || (entered && !enteringLab)
+        const [cx, cy, cz] = chunkPosition(chunk)
+        const { w, d, h } = chunk.size
 
         return (
-          <group key={slug} position={pos}>
+          <group key={slug} position={[cx, cy, cz]}>
             <ThinnedStation thin={thin}>
-              <LabStationBlock
-                slug={slug}
-                theme={theme}
-                accent={accent}
-                entered={entered}
-                lit={lit}
-                thin={thin}
-                onClick={() => onLabRoomClick(slug)}
-                onHover={onLabRoomHover}
-              />
+              <RoomShell
+                width={w}
+                depth={d}
+                height={h}
+                color={active ? accent : m.pal.graphite}
+                floorColor={m.body}
+              >
+                <LabStationBlock
+                  slug={slug}
+                  theme={theme}
+                  accent={accent}
+                  entered={entered}
+                  lit={lit}
+                  thin={thin}
+                  roomFocus={roomFocus && active}
+                  code={chunk.code ?? ''}
+                  onRoomClick={() => onLabRoomClick(slug)}
+                  onTypologyClick={() => onLabTypologyClick(slug)}
+                  onHover={onLabRoomHover}
+                />
+              </RoomShell>
             </ThinnedStation>
           </group>
         )
       })}
-    </RoomShell>
+    </group>
   )
 }
 
 function LabStationBlock({
   slug,
+  code,
   theme,
   accent,
   entered,
   lit,
   thin,
-  onClick,
+  roomFocus,
+  onRoomClick,
+  onTypologyClick,
   onHover,
 }: {
   slug: string
+  code: string
   theme: TypologyProps['theme']
   accent: string
   entered: boolean
   lit: boolean
   thin: boolean
-  onClick: () => void
+  roomFocus: boolean
+  onRoomClick: () => void
+  onTypologyClick: () => void
   onHover: (slug: string | null) => void
 }) {
   const { w, d, h } = STATION_OVERVIEW
@@ -117,10 +147,11 @@ function LabStationBlock({
         onClick={(e) => {
           if (thin) return
           e.stopPropagation()
-          onClick()
+          if (roomFocus) onTypologyClick()
+          else onRoomClick()
         }}
       >
-        <boxGeometry args={[w + 0.1, h + 0.1, d + 0.1]} />
+        <boxGeometry args={[w + 0.12, h + 0.12, d + 0.12]} />
         <meshBasicMaterial transparent opacity={0} />
       </mesh>
 
@@ -128,6 +159,12 @@ function LabStationBlock({
       <group position={[0, 0.06, 0]}>
         <LabTypology slug={slug} theme={theme} accent={accent} entered={entered} active={lit} />
       </group>
+
+      <Html center position={[0, h + 0.18, 0]} style={{ pointerEvents: 'none' }}>
+        <div className={`scene-label scene-label--lab ${lit ? 'scene-label--active' : ''}`}>
+          {labLabel(code, slug)}
+        </div>
+      </Html>
     </group>
   )
 }

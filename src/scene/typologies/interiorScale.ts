@@ -9,10 +9,15 @@ export function bandInterior(bandW: number, bandD: number, bandH: number) {
   }
 }
 
-/** Single lab station footprint (~15% of 52F band) */
-export const STATION_OVERVIEW = { w: 0.22, d: 0.18, h: 0.2 } as const
+/** Single lab station footprint inside a chunk shell */
+export const STATION_OVERVIEW = { w: 0.3, d: 0.24, h: 0.22 } as const
 
 export function lab52Interior() {
   const band = getProgramFloor('52')
+  return bandInterior(band.width, band.depth, band.bandHeight)
+}
+
+export function vault99Interior() {
+  const band = getProgramFloor('99')
   return bandInterior(band.width, band.depth, band.bandHeight)
 }

@@ -28,6 +28,7 @@ interface TowerSceneProps {
   onFloorHover: (id: FloorId | null) => void
   onFloorClick: (id: FloorId) => void
   onLabRoomClick: (slug: string) => void
+  onLabTypologyClick: (slug: string) => void
   onLabRoomHover: (slug: string | null) => void
   onLibraryRoomClick: (slug: LibraryRoomSlug) => void
   onLibraryRoomHover: (slug: LibraryRoomSlug | null) => void
