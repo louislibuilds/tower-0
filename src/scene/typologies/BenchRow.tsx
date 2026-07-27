@@ -1,7 +1,7 @@
 import { Html } from '@react-three/drei'
 import { FloorPlate } from '../primitives/FloorPlate'
 import { LAB_CHUNKS, chunkPosition, type ExhibitChunk } from './floorChunks'
-import { LAB_BLUEPRINT_DIMS, lab52Interior, stationBlueprintScale } from './interiorScale'
+import { LAB_BLUEPRINT_DIMS, blueprintFitScale, lab52Interior } from './interiorScale'
 import { LabTypology } from './labs'
 import { StationFootprint } from './StationFootprint'
 import { ThinnedStation } from './ThinnedStation'
@@ -30,7 +30,7 @@ interface BenchRowProps extends TypologyProps {
   onLabRoomHover: (slug: string | null) => void
 }
 
-/** 52 · Laboratory ??one flat floor shell, five scattered station blocks */
+/** 52 · Laboratory — corridor floor plate with five suite cells */
 export function BenchRow({
   theme,
   accent,
@@ -46,6 +46,16 @@ export function BenchRow({
 
   return (
     <FloorPlate width={interior.w} depth={interior.d} color={m.pal.graphite} floorColor={m.body}>
+      {/* central circulation spine */}
+      <mesh position={[0, 0.006, 0]}>
+        <boxGeometry args={[0.16, 0.003, interior.d * 0.88]} />
+        <meshStandardMaterial color={m.pal.concrete} transparent opacity={0.55} />
+      </mesh>
+      <mesh position={[0, 0.006, 0]}>
+        <boxGeometry args={[interior.w * 0.72, 0.003, 0.12]} />
+        <meshStandardMaterial color={m.pal.concrete} transparent opacity={0.4} />
+      </mesh>
+
       {LAB_CHUNKS.map((chunk) => {
         const slug = chunk.slug
         const active = labRoomSlug === slug
@@ -54,7 +64,7 @@ export function BenchRow({
         const [cx, , cz] = chunkPosition(chunk)
 
         return (
-          <group key={slug} position={[cx, 0, cz]}>
+          <group key={slug} position={[cx, 0, cz]} rotation={[0, chunk.rotation ?? 0, 0]}>
             <ThinnedStation thin={thin}>
               <LabStationBlock
                 chunk={chunk}
@@ -104,7 +114,7 @@ function LabStationBlock({
 }) {
   const { w, d, h } = chunk.size
   const [gridW, gridD] = LAB_BLUEPRINT_DIMS[slug] ?? [5, 5]
-  const typologyScale = stationBlueprintScale(gridW, gridD, { w: w * 0.88, d: d * 0.88 })
+  const typologyScale = blueprintFitScale(gridW, gridD, { w: w * 0.9, d: d * 0.9 }, 0.68)
 
   return (
     <group>
@@ -127,7 +137,7 @@ function LabStationBlock({
           onRoomClick()
         }}
       >
-        <boxGeometry args={[w + 0.14, h + 0.14, d + 0.14]} />
+        <boxGeometry args={[w + 0.12, h + 0.12, d + 0.12]} />
         <meshBasicMaterial transparent opacity={0} />
       </mesh>
 
@@ -137,7 +147,7 @@ function LabStationBlock({
       </group>
 
       {!thin && (
-        <Html center position={[0, h + 0.18, 0]} style={{ pointerEvents: 'none' }}>
+        <Html center position={[0, h + 0.16, 0]} style={{ pointerEvents: 'none' }}>
           <div
             className={`scene-label scene-label--lab ${lit ? 'scene-label--active' : ''} ${roomFocus ? 'scene-label--hidden' : ''}`}
           >

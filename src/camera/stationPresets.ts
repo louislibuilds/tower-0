@@ -9,8 +9,9 @@ import type { SitePhase } from '../building/sitePhase'
 import type { ViewMode } from '../building/viewMode'
 import type { LibraryRoomSlug } from '../data/libraryRooms'
 import { getProgramFloor, programCenterY, programBaseY, towerTotalHeight } from '../scene/towerGeometry'
-import { FACTORY_STOPS } from '../scene/factoryStops'
-import { chunkBaseLookAt, chunkPosition, labChunk, vaultChunk } from '../scene/typologies/floorChunks'
+import { FACTORY_LINE_Z } from '../scene/factoryStops'
+import { vault99Interior } from '../scene/typologies/interiorScale'
+import { chunkBaseLookAt, chunkPosition, labChunk, vaultCornerAnchor } from '../scene/typologies/floorChunks'
 
 export interface AuthoredPreset {
   lookAt: [number, number, number]
@@ -37,20 +38,23 @@ function compose(floorY: number, preset: AuthoredPreset): CameraPreset {
   }
 }
 
-function labPresetFromChunk(slug: string, eye: [number, number, number], zoom: number): AuthoredPreset | null {
+function labPresetFromChunk(slug: string, zoom: number): AuthoredPreset | null {
   const chunk = labChunk(slug)
   if (!chunk) return null
   const [cx, , cz] = chunkPosition(chunk)
-  return { lookAt: [cx, chunkBaseLookAt(chunk), cz], eye, zoom }
+  const rot = chunk.rotation ?? 0
+  const eyeZ = rot === 0 ? -0.48 : 0.48
+  const eyeX = chunk.cameraSide === 'left' ? -0.44 : 0.44
+  return { lookAt: [cx, chunkBaseLookAt(chunk), cz], eye: [eyeX, 0.14, eyeZ], zoom }
 }
 
-/** 52F · five lab stations — lookAt at footprint base, low eye offset */
+/** 52F · five lab stations — lookAt at suite door toward corridor */
 const LAB_STATIONS: Record<string, AuthoredPreset> = {
-  'unihack-2026': labPresetFromChunk('unihack-2026', [0.52, 0.12, 0.58], 760)!,
-  'cloud-computing': labPresetFromChunk('cloud-computing', [-0.52, 0.12, 0.58], 735)!,
-  nlp: labPresetFromChunk('nlp', [0.62, 0.12, 0.56], 755)!,
-  dl: labPresetFromChunk('dl', [-0.62, 0.12, 0.56], 785)!,
-  kata: labPresetFromChunk('kata', [0.02, 0.12, 0.64], 748)!,
+  'unihack-2026': labPresetFromChunk('unihack-2026', 468)!,
+  'cloud-computing': labPresetFromChunk('cloud-computing', 468)!,
+  nlp: labPresetFromChunk('nlp', 468)!,
+  dl: labPresetFromChunk('dl', 468)!,
+  kata: labPresetFromChunk('kata', 468)!,
 }
 
 const LAB_FLOOR_OVERVIEW: AuthoredPreset = {
@@ -65,9 +69,9 @@ function vaultFocusPreset(
   eye: [number, number, number],
   zoom: number,
 ): AuthoredPreset {
-  const chunk = vaultChunk(slug)
-  const [cx, , cz] = chunkPosition(chunk)
-  const baseY = chunkBaseLookAt(chunk)
+  const interior = vault99Interior()
+  const scale = 0.72
+  const [cx, baseY, cz] = vaultCornerAnchor(slug, interior, scale)
   return {
     lookAt: [cx + localLookAt[0], baseY + localLookAt[1], cz + localLookAt[2]],
     eye,
@@ -75,9 +79,22 @@ function vaultFocusPreset(
   }
 }
 
+const VAULT_INTERIOR = vault99Interior()
+const VAULT_FOCUS_SCALE = 0.72
+const VAULT_LIB_ANCHOR = vaultCornerAnchor('library', VAULT_INTERIOR, VAULT_FOCUS_SCALE)
+const VAULT_ARC_ANCHOR = vaultCornerAnchor('archive', VAULT_INTERIOR, VAULT_FOCUS_SCALE)
+
 const VAULT_STATIONS: Record<LibraryRoomSlug, AuthoredPreset> = {
-  library: { lookAt: [0, 0.04, 0], eye: [0.48, 0.12, 0.62], zoom: 520 },
-  archive: { lookAt: [0, 0.04, 0], eye: [-0.48, 0.12, 0.62], zoom: 535 },
+  library: {
+    lookAt: [VAULT_LIB_ANCHOR[0], VAULT_LIB_ANCHOR[1], VAULT_LIB_ANCHOR[2]],
+    eye: [0.42, 0.14, 0.48],
+    zoom: 478,
+  },
+  archive: {
+    lookAt: [VAULT_ARC_ANCHOR[0], VAULT_ARC_ANCHOR[1], VAULT_ARC_ANCHOR[2]],
+    eye: [-0.42, 0.14, 0.48],
+    zoom: 478,
+  },
 }
 
 const VAULT_FLOOR_OVERVIEW: AuthoredPreset = {
@@ -86,15 +103,15 @@ const VAULT_FLOOR_OVERVIEW: AuthoredPreset = {
   zoom: 168,
 }
 
-const VAULT_BOOK_FOCUS = vaultFocusPreset('library', [0, 0.06, 0], [0.48, 0.12, 0.62], 520)
+const VAULT_BOOK_FOCUS = vaultFocusPreset('library', [0, 0.04, 0.08], [0.42, 0.14, 0.48], 478)
 
-const VAULT_CREDENTIAL_FOCUS = vaultFocusPreset('archive', [0, 0.06, 0], [-0.48, 0.12, 0.62], 535)
+const VAULT_CREDENTIAL_FOCUS = vaultFocusPreset('archive', [0, 0.04, 0.08], [-0.42, 0.14, 0.48], 478)
 
-/** 23F · four semester areas */
-const FACTORY_STATIONS: AuthoredPreset[] = FACTORY_STOPS.map((sx, i) => ({
-  lookAt: [sx, 0.04, 0.1],
-  eye: [i % 2 === 0 ? 0.58 : -0.58, 0.32, 0.88],
-  zoom: 368 + (i % 2) * 12,
+/** 23F · four parallel production lines */
+const FACTORY_STATIONS: AuthoredPreset[] = FACTORY_LINE_Z.map((z, i) => ({
+  lookAt: [0, 0.04, z],
+  eye: [i % 2 === 0 ? 0.52 : -0.52, 0.26, z + 0.38],
+  zoom: 332 + (i % 2) * 10,
 }))
 
 const FACTORY_FLOOR_OVERVIEW: AuthoredPreset = {
