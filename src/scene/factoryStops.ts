@@ -3,28 +3,37 @@ import { semesters } from '../data/academic'
 /** Factory areas — Area 01 = oldest semester (2024 Spring) → Area 04 = newest */
 export const FACTORY_AREAS = [...semesters].reverse()
 
-/** Four parallel production lines (Z offsets on 23F floor plate) */
-export const FACTORY_LINE_Z = [-0.4, -0.13, 0.14, 0.41] as const
+/** Four timeline stations left→right on 23F (2024 Spring at index 0) */
+export const FACTORY_LINE_X = [-0.68, -0.22, 0.22, 0.68] as const
 
-export const FACTORY_STOPS = [...FACTORY_LINE_Z]
+/** @deprecated Use FACTORY_LINE_X */
+export const FACTORY_LINE_Z = FACTORY_LINE_X
+
+export const FACTORY_STOPS = [...FACTORY_LINE_X]
 
 export function areaLabel(index: number) {
   return `Area ${String(index + 1).padStart(2, '0')}`
 }
 
-/** Per-line layout variation (crate positions along belt X, belt segment count) */
+/** Per-line layout — crate count grows with semester index */
 export interface FactoryLineVariant {
   crates: number[]
   beltSegments: number
   tools: [number, number, number][]
 }
 
-export const FACTORY_LINE_VARIANTS: FactoryLineVariant[] = [
-  { crates: [2.2, 6.8], beltSegments: 10, tools: [[7.4, 0.15, 0], [0.35, 0.15, 0]] },
-  { crates: [1.5, 4.2, 7.8], beltSegments: 9, tools: [[8.1, 0.15, 0.12], [0.55, 0.15, -0.08]] },
-  { crates: [3.1, 5.6], beltSegments: 11, tools: [[7.0, 0.15, 0.05], [0.2, 0.15, 0.1], [8.5, 0.15, -0.05]] },
-  { crates: [2.8, 4.9, 7.2], beltSegments: 10, tools: [[6.8, 0.15, 0], [0.45, 0.15, 0.08]] },
+const CRATE_SETS: number[][] = [
+  [4.5],
+  [3.2, 6.4],
+  [2.4, 5.0, 7.2],
+  [1.8, 3.8, 5.8, 7.6],
 ]
+
+export const FACTORY_LINE_VARIANTS: FactoryLineVariant[] = CRATE_SETS.map((crates, i) => ({
+  crates,
+  beltSegments: 8 + i,
+  tools: i === 0 ? [[7.4, 0.15, 0]] : i === 1 ? [[8.0, 0.15, 0.08], [0.4, 0.15, 0]] : i === 2 ? [[7.2, 0.15, 0.05], [0.25, 0.15, 0.1]] : [[6.8, 0.15, 0], [0.45, 0.15, 0.08], [8.2, 0.15, -0.05]],
+}))
 
 /** Semester highlight card — project + key takeaway (resume2 timeline style) */
 export interface FactoryHighlight {

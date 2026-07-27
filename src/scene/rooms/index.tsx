@@ -68,6 +68,7 @@ export function FloorRoom({
         labRoomSlug={labRoomSlug}
         roomFocus={roomFocus && !!labRoomSlug}
         floorOverview={viewMode === 'floor' && !labRoomSlug}
+        viewMode={viewMode}
         onLabRoomClick={onLabRoomClick}
         onLabRoomHover={onLabRoomHover}
       />

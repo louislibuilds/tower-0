@@ -2,7 +2,7 @@ import { Fragment } from 'react'
 import { Html, Line } from '@react-three/drei'
 import { useMemo } from 'react'
 import * as THREE from 'three'
-import type { FactoryLineVariant } from '../../factoryStops'
+import { FACTORY_LINE_X, type FactoryLineVariant } from '../../factoryStops'
 import { bpBox, bpLine } from '../blueprintLayout'
 import { ThinnedStation } from '../ThinnedStation'
 import { typologyMat, type TypologyProps } from '../types'
@@ -39,7 +39,6 @@ function FactoryLineSegment({
   factoryStop,
   onSelectStop,
   showLabels,
-  roomFocus,
   meta,
   variant,
 }: {
@@ -51,14 +50,13 @@ function FactoryLineSegment({
   factoryStop: number | null
   onSelectStop?: (index: number) => void
   showLabels: boolean
-  roomFocus: boolean
   meta?: { label: string; detail: string }
   variant: FactoryLineVariant
 }) {
   const m = typologyMat(theme, accent, entered)
   const activeStop = factoryStop === stopIndex
   const thin = factoryStop !== null && !activeStop
-  const stopLit = activeStop
+  const stopLit = activeStop || (lit && factoryStop === null)
 
   const beltPosts = useMemo(
     () =>
@@ -103,7 +101,7 @@ function FactoryLineSegment({
           box={bpBox(4.45, 0.18, 0.55, 1.05, 0.09, 0.72, SEG_W, SEG_D)}
           color={m.pal.glass}
           emissive={stopLit ? accent : undefined}
-          emissiveIntensity={stopLit ? 0.2 : 0.08}
+          emissiveIntensity={stopLit ? 0.22 : 0.08}
         />
         <BpMesh box={bpBox(5.05, 0.42, 0.55, 0.1, 0.1, 0.95, SEG_W, SEG_D)} color={m.pal.alum} />
         <BpMesh box={bpBox(4.5, 0.38, 1.72, 0.85, 0.12, 0.1, SEG_W, SEG_D)} color={m.pal.alum} />
@@ -144,7 +142,7 @@ function FactoryLineSegment({
               document.body.style.cursor = 'crosshair'
             }}
             onClick={(e) => {
-              if (thin || (roomFocus && activeStop)) return
+              if (thin) return
               e.stopPropagation()
               onSelectStop(stopIndex)
             }}
@@ -155,20 +153,14 @@ function FactoryLineSegment({
         )}
 
         {showLabels && meta && (
-          <Html
-            center
-            position={[station.position[0], station.position[1] + station.size[1] * 1.15, station.position[2] + 0.06]}
-            style={{ pointerEvents: 'none' }}
-          >
-            <div>
-              <div
-                className={`scene-label scene-label--lab ${stopLit ? 'scene-label--active' : ''} ${roomFocus && activeStop ? 'scene-label--hidden' : ''}`}
-              >
+          <Html center position={[5, 1.02, 0]} style={{ pointerEvents: 'none' }}>
+            <div className="scene-label-stack">
+              <div className={`scene-label scene-label--tiny ${stopLit ? 'scene-label--active' : ''}`}>
                 {meta.label}
               </div>
-              {entered && stopLit && !roomFocus && (
-                <div className="scene-label scene-label--tiny">{meta.detail}</div>
-              )}
+              <div className={`scene-label scene-label--lab ${stopLit ? 'scene-label--active' : ''}`}>
+                {meta.detail}
+              </div>
             </div>
           </Html>
         )}
@@ -177,7 +169,7 @@ function FactoryLineSegment({
   )
 }
 
-/** 23F factory · four parallel production lines */
+/** 23F factory · side timeline — four lines left→right (2024 Spring first) */
 export function FactoryLineLayout({
   theme,
   accent,
@@ -187,7 +179,6 @@ export function FactoryLineLayout({
   factoryStop = null,
   onSelectStop,
   showLabels = false,
-  roomFocus = false,
   areaLabels = [],
   lineVariants = [],
 }: TypologyProps & {
@@ -196,17 +187,15 @@ export function FactoryLineLayout({
   factoryStop?: number | null
   onSelectStop?: (index: number) => void
   showLabels?: boolean
-  roomFocus?: boolean
   areaLabels?: { label: string; detail: string }[]
   lineVariants?: FactoryLineVariant[]
 }) {
   const lit = !!(entered || active)
-  const lineZ = [-0.42, -0.14, 0.14, 0.42] as const
 
   return (
     <group scale={scale}>
-      {lineZ.map((z, si) => (
-        <group key={si} position={[0, 0, z]}>
+      {FACTORY_LINE_X.map((x, si) => (
+        <group key={si} position={[x, 0, 0]} rotation={[0, Math.PI / 2, 0]}>
           <FactoryLineSegment
             theme={theme}
             accent={accent}
@@ -216,9 +205,8 @@ export function FactoryLineLayout({
             factoryStop={factoryStop}
             onSelectStop={onSelectStop}
             showLabels={!!showLabels}
-            roomFocus={!!roomFocus}
             meta={areaLabels[si]}
-            variant={lineVariants[si] ?? lineVariants[0] ?? { crates: [2.2, 6.8], beltSegments: 10, tools: [[7.4, 0.15, 0]] }}
+            variant={lineVariants[si] ?? lineVariants[0] ?? { crates: [4.5], beltSegments: 8, tools: [[7.4, 0.15, 0]] }}
           />
         </group>
       ))}

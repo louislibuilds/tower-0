@@ -38,7 +38,7 @@ export function FactoryTimelineRail() {
   return (
     <div className="factory-timeline-rail" role="region" aria-label="Semester timeline">
       <button type="button" className="factory-timeline-arrow" onClick={goPrev} aria-label="Previous semester">
-        ↑
+        ←
       </button>
 
       <button
@@ -56,7 +56,7 @@ export function FactoryTimelineRail() {
       </button>
 
       <button type="button" className="factory-timeline-arrow" onClick={goNext} aria-label="Next semester">
-        ↓
+        →
       </button>
     </div>
   )
