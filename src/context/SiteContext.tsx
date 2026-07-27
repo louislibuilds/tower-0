@@ -16,6 +16,8 @@ import { libraryBooks } from '../data/libraryBooks'
 
 import { useFloorNavigation } from '../hooks/useFloorNavigation'
 
+import { FACTORY_STOPS } from '../scene/factoryStops'
+
 
 
 export type Theme = 'dark' | 'light'
@@ -77,6 +79,10 @@ interface SiteContextValue {
   toggleLibraryRoom: (slug: LibraryRoomSlug) => void
 
   toggleFactoryStop: (stop: number) => void
+
+  nextFactoryStop: () => void
+
+  prevFactoryStop: () => void
 
   toggleBook: (slug: string) => void
 
@@ -410,6 +416,23 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
 
 
+  const stepFactoryStop = useCallback((delta: number) => {
+    if (isInteractionLocked(phase)) return
+
+    setFactoryStopState((prev) => {
+      const current = prev ?? (delta > 0 ? -1 : FACTORY_STOPS.length)
+      const next = (current + delta + FACTORY_STOPS.length) % FACTORY_STOPS.length
+      setViewMode('room')
+      return next
+    })
+  }, [phase])
+
+  const nextFactoryStop = useCallback(() => stepFactoryStop(1), [stepFactoryStop])
+
+  const prevFactoryStop = useCallback(() => stepFactoryStop(-1), [stepFactoryStop])
+
+
+
   const toggleBook = useCallback((slug: string) => {
     if (isInteractionLocked(phase)) return
     if (selectedBookSlug === slug) {
@@ -580,6 +603,10 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
       toggleFactoryStop,
 
+      nextFactoryStop,
+
+      prevFactoryStop,
+
       toggleBook,
 
       toggleCredential,
@@ -651,6 +678,10 @@ export function SiteProvider({ children }: { children: ReactNode }) {
       toggleLibraryRoom,
 
       toggleFactoryStop,
+
+      nextFactoryStop,
+
+      prevFactoryStop,
 
       toggleBook,
 

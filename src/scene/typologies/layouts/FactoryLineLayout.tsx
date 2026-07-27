@@ -2,6 +2,7 @@ import { Fragment } from 'react'
 import { Html, Line } from '@react-three/drei'
 import { useMemo } from 'react'
 import * as THREE from 'three'
+import type { FactoryLineVariant } from '../../factoryStops'
 import { bpBox, bpLine } from '../blueprintLayout'
 import { ThinnedStation } from '../ThinnedStation'
 import { typologyMat, type TypologyProps } from '../types'
@@ -40,6 +41,7 @@ function FactoryLineSegment({
   showLabels,
   roomFocus,
   meta,
+  variant,
 }: {
   theme: TypologyProps['theme']
   accent: string
@@ -51,6 +53,7 @@ function FactoryLineSegment({
   showLabels: boolean
   roomFocus: boolean
   meta?: { label: string; detail: string }
+  variant: FactoryLineVariant
 }) {
   const m = typologyMat(theme, accent, entered)
   const activeStop = factoryStop === stopIndex
@@ -59,11 +62,11 @@ function FactoryLineSegment({
 
   const beltPosts = useMemo(
     () =>
-      Array.from({ length: 9 }, (_, i) => {
+      Array.from({ length: variant.beltSegments - 1 }, (_, i) => {
         const seg = bpLine(i + 0.5, 0.42, 0.18, i + 0.5, 0.68, 0.18, SEG_W, SEG_D)
         return { key: i, seg }
       }),
-    [],
+    [variant.beltSegments],
   )
 
   const station = bpBox(4.2, 0.12, 0, 1.6, 0.88, 0.55, SEG_W, SEG_D)
@@ -71,7 +74,7 @@ function FactoryLineSegment({
   return (
     <ThinnedStation thin={thin}>
       <Fragment>
-        {Array.from({ length: 10 }, (_, i) => (
+        {Array.from({ length: variant.beltSegments }, (_, i) => (
           <BpMesh
             key={i}
             box={bpBox(i, 0.42, 0, 1, 0.88, 0.18, SEG_W, SEG_D)}
@@ -112,16 +115,21 @@ function FactoryLineSegment({
           emissiveIntensity={0.1}
         />
 
-        {/* pallets + tooling */}
-        {[2.2, 6.8].map((px, i) => (
+        {variant.crates.map((px: number, i: number) => (
           <BpMesh
             key={i}
-            box={bpBox(px, 0.45, 0.18, 0.48, 0.72, 0.48, SEG_W, SEG_D)}
+            box={bpBox(px, 0.45, 0.12 + (i % 2) * 0.06, 0.48, 0.72, 0.48, SEG_W, SEG_D)}
             color={lit ? m.warm : '#d8d4cc'}
           />
         ))}
-        <BpMesh box={bpBox(7.4, 0.15, 0, 0.55, 0.55, 0.42, SEG_W, SEG_D)} color={m.pal.graphite} />
-        <BpMesh box={bpBox(0.35, 0.15, 0, 0.45, 0.45, 0.38, SEG_W, SEG_D)} color={m.pal.alum} />
+
+        {variant.tools.map(([px, py, pz]: [number, number, number], i: number) => (
+          <BpMesh
+            key={`tool-${i}`}
+            box={bpBox(px, py, pz, 0.45 + (i % 2) * 0.1, 0.45, 0.38 + (i % 3) * 0.04, SEG_W, SEG_D)}
+            color={i % 2 === 0 ? m.pal.graphite : m.pal.alum}
+          />
+        ))}
 
         {onSelectStop && (
           <mesh
@@ -181,6 +189,7 @@ export function FactoryLineLayout({
   showLabels = false,
   roomFocus = false,
   areaLabels = [],
+  lineVariants = [],
 }: TypologyProps & {
   active?: boolean
   scale?: number
@@ -189,6 +198,7 @@ export function FactoryLineLayout({
   showLabels?: boolean
   roomFocus?: boolean
   areaLabels?: { label: string; detail: string }[]
+  lineVariants?: FactoryLineVariant[]
 }) {
   const lit = !!(entered || active)
   const lineZ = [-0.42, -0.14, 0.14, 0.42] as const
@@ -208,6 +218,7 @@ export function FactoryLineLayout({
             showLabels={!!showLabels}
             roomFocus={!!roomFocus}
             meta={areaLabels[si]}
+            variant={lineVariants[si] ?? lineVariants[0] ?? { crates: [2.2, 6.8], beltSegments: 10, tools: [[7.4, 0.15, 0]] }}
           />
         </group>
       ))}

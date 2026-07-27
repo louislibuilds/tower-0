@@ -7,6 +7,7 @@ import { ExitOverlay, StampOverlay } from './hud/StampOverlay'
 import { FocusOverlay } from './hud/FocusOverlay'
 import { SceneBootSplash } from './SceneBootSplash'
 import { SiteAnnotation, SiteChrome, SiteRail, SiteTitleblock } from './hud/SiteChrome'
+import { FactoryTimelineRail } from './hud/FactoryTimeline'
 import { TowerSilhouette } from './TowerSilhouette'
 
 const TowerScene = lazy(() =>
@@ -82,6 +83,7 @@ export function TowerShell() {
       {!interactionLocked && <SiteRail />}
       <SiteChrome />
       {!interactionLocked && <SiteAnnotation />}
+      {!interactionLocked && <FactoryTimelineRail />}
       <StampOverlay visible={phase === 'boot' || phase === 'survey'} />
       {phase === 'void' && <ExitOverlay onReopen={reopenSite} />}
       <FocusOverlay />

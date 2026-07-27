@@ -1,5 +1,5 @@
 import type { ViewMode } from '../../building/viewMode'
-import { areaLabel, FACTORY_AREAS } from '../factoryStops'
+import { areaLabel, FACTORY_AREAS, FACTORY_LINE_VARIANTS } from '../factoryStops'
 import { FloorPlate } from '../primitives/FloorPlate'
 import { blueprintFitScale, floorPlateSize } from './interiorScale'
 import { FactoryLineLayout } from './layouts/FactoryLineLayout'
@@ -40,6 +40,7 @@ export function AssemblyLine({
           showLabels={entered && !enteringFactory}
           roomFocus={roomFocus}
           areaLabels={FACTORY_AREAS.map((sem, i) => ({ label: areaLabel(i), detail: sem.label }))}
+          lineVariants={FACTORY_LINE_VARIANTS}
         />
       </group>
     </FloorPlate>

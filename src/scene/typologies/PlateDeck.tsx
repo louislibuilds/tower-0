@@ -2,7 +2,7 @@ import { useEffect, useMemo } from 'react'
 import * as THREE from 'three'
 import { profile } from '../../data/profile'
 import type { Theme } from '../../context/SiteContext'
-import { WireBox } from '../primitives/WireBox'
+import { floorPlateSize } from './interiorScale'
 import { typologyMat } from './types'
 
 function useIdentityPlateMap(theme: Theme) {
@@ -79,7 +79,7 @@ function useIdentityPlateMap(theme: Theme) {
   return tex
 }
 
-/** R · Plate Deck — roof slab + identity plate at front edge */
+/** R · Plate Deck — roof slab + identity plate flush on front edge */
 export function PlateDeck({
   theme,
   entered,
@@ -90,7 +90,8 @@ export function PlateDeck({
 }) {
   const m = typologyMat(theme, '#2F6BFF', entered)
   const plateMap = useIdentityPlateMap(theme)
-  const frameEdges = useMemo(() => new THREE.EdgesGeometry(new THREE.BoxGeometry(0.4, 0.5, 0.02)), [])
+  const plate = floorPlateSize('roof')
+  const frameEdges = useMemo(() => new THREE.EdgesGeometry(new THREE.BoxGeometry(0.38, 0.48, 0.018)), [])
 
   return (
     <group>
@@ -100,34 +101,19 @@ export function PlateDeck({
         <meshStandardMaterial color={m.pal.concrete} side={2} transparent opacity={entered ? 0.55 : 0.28} />
       </mesh>
 
-      {/* identity plate — back-right edge, angled toward tower */}
-      <group position={[0.36, 0.02, -0.42]} rotation={[0, -0.55, 0]}>
-        <WireBox
-          size={[0.85, 0.04, 0.65]}
-          position={[0, 0, 0]}
-          color={m.pal.graphite}
-          fillOpacity={0.12}
-          fillColor={m.pal.concrete}
-        />
-
-        {[-0.14, 0.14].map((x) => (
-          <mesh key={x} position={[x, 0.14, 0.04]}>
-            <boxGeometry args={[0.025, 0.22, 0.025]} />
-            <meshStandardMaterial color={m.pal.graphite} metalness={0.7} />
-          </mesh>
-        ))}
-
-        <mesh position={[0, 0.32, 0.05]}>
+      {/* identity plate — front edge, flush, no base pad */}
+      <group position={[0, 0.02, plate.d / 2 - 0.01]}>
+        <mesh position={[0, 0.28, 0.01]}>
           <boxGeometry args={[0.38, 0.48, 0.018]} />
           <meshStandardMaterial map={plateMap} roughness={0.85} />
         </mesh>
 
-        <lineSegments geometry={frameEdges} position={[0, 0.32, 0.06]}>
+        <lineSegments geometry={frameEdges} position={[0, 0.28, 0.02]}>
           <lineBasicMaterial color={entered ? m.pal.signal : m.pal.graphite} />
         </lineSegments>
 
         {entered && (
-          <mesh position={[0, 0.38, 0.07]}>
+          <mesh position={[0, 0.34, 0.03]}>
             <boxGeometry args={[0.06, 0.02, 0.01]} />
             <meshStandardMaterial color={m.warm} emissive={m.warm} emissiveIntensity={0.5} />
           </mesh>
