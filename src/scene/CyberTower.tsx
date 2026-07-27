@@ -192,11 +192,21 @@ function ProgramFloorBand({
 
   const fillOpacity = (() => {
     if (shellFade) return 0.12
+    if (entered && (viewMode === 'room' || viewMode === 'focus')) {
+      if (program.id === '52' && labRoomSlug) return 0.05
+      if (program.id === '99' && libraryRoomSlug) return 0.05
+      return 0.08
+    }
     if (entered && viewMode !== 'tower') {
-      return viewMode === 'floor' ? 0.35 : 0.32
+      return viewMode === 'floor' ? 0.28 : 0.22
     }
     return 1
   })() * teardownFill
+
+  const hideFacade =
+    entered &&
+    (viewMode === 'room' || viewMode === 'focus') &&
+    ((program.id === '52' && !!labRoomSlug) || (program.id === '99' && !!libraryRoomSlug))
 
   if (bandProgress < 0.01) return null
 
@@ -244,6 +254,7 @@ function ProgramFloorBand({
       </lineSegments>
 
       {
+        !hideFacade && (
         <group position={[0, 0, d / 2 + 0.01]}>
           <WindowMatrix
             width={w * 0.88}
@@ -256,6 +267,7 @@ function ProgramFloorBand({
             chickenRatio={0.1}
           />
         </group>
+        )
       }
 
       {isNight && entered && (

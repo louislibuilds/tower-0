@@ -27,7 +27,7 @@ function BpMesh({
   )
 }
 
-/** 002 · Container Bay — vertical rack + conveyor desk + parcels (Figma eco) */
+/** 002 · Container Bay — vertical rack + conveyor desk + parcels */
 export function ServerRackBay({ theme, accent, entered, active }: TypologyProps) {
   const m = typologyMat(theme, accent, entered)
   const lit = entered || active

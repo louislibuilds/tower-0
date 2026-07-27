@@ -34,7 +34,7 @@ function BpMesh({
   )
 }
 
-/** 003 · Interview Booth — partition + desk + mic + waveform + seat (Figma int) */
+/** 003 · Interview Booth — partition + desk + mic + waveform + seat */
 export function InterviewBooth({ theme, accent, entered, active }: TypologyProps) {
   const m = typologyMat(theme, accent, entered)
   const lit = entered || active

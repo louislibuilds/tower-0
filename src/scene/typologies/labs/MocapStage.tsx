@@ -27,7 +27,7 @@ function BpMesh({
   )
 }
 
-/** 004 · Capture Stage — green screen + ring light + tripod + monitor stack (Figma vtu) */
+/** 004 · Capture Stage — green screen + ring light + tripod + monitor stack */
 export function MocapStage({ theme, accent, entered, active }: TypologyProps) {
   const m = typologyMat(theme, accent, entered)
   const lit = entered || active

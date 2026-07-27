@@ -20,7 +20,7 @@ function BpMesh({
   )
 }
 
-/** 005 · Document Foundry — paper stack + printer + filing (Figma res) */
+/** 005 · Document Foundry — paper stack + printer + filing */
 export function DocumentFoundryStation({ theme, accent, entered, active }: TypologyProps) {
   const m = typologyMat(theme, accent, entered)
   const lit = entered || active

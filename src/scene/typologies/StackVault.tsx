@@ -11,7 +11,10 @@ import {
   vaultChunk,
   VAULT_CHUNKS,
 } from './floorChunks'
+import { ArchiveVaultLayout, ArchiveVaultPod } from './layouts/ArchiveVaultLayout'
 import { vault99Interior } from './interiorScale'
+import { StationFootprint } from './StationFootprint'
+import { ThinnedStation } from './ThinnedStation'
 import { typologyMat, type TypologyProps } from './types'
 
 interface StackVaultProps extends TypologyProps {
@@ -67,6 +70,7 @@ export function StackVaultFloor(props: StackVaultProps) {
 
   const m = typologyMat(theme, accent, entered)
   const interior = vault99Interior()
+  const enteringZone = !!libraryRoomSlug
 
   return (
     <RoomShell
@@ -90,36 +94,36 @@ export function StackVaultFloor(props: StackVaultProps) {
         const chunk = VAULT_CHUNKS[slug]
         const [cx, cy, cz] = chunkPosition(chunk)
         const active = libraryRoomSlug === slug
+        const thin = enteringZone && !active
 
         return (
-          <group
-            key={slug}
-            position={[cx, cy, cz]}
-            onPointerOver={(e) => {
-              e.stopPropagation()
-              onLibraryRoomHover(slug)
-            }}
-            onPointerOut={() => onLibraryRoomHover(null)}
-          >
-            {slug === 'library' ? (
-              <StackRoomPod
-                active={active}
-                chunk={chunk}
-                onClick={() => onLibraryRoomClick('library')}
-                body={m.body}
-                accent={accent}
-                pal={m.pal}
-              />
-            ) : (
-              <VaultWallPod
-                active={active}
-                chunk={chunk}
-                onClick={() => onLibraryRoomClick('archive')}
-                body={m.body}
-                accent={accent}
-                pal={m.pal}
-              />
-            )}
+          <group key={slug} position={[cx, cy, cz]}>
+            <ThinnedStation thin={thin}>
+              {slug === 'library' ? (
+                <StackRoomPod
+                  active={active}
+                  thin={thin}
+                  chunk={chunk}
+                  theme={theme}
+                  onClick={() => onLibraryRoomClick('library')}
+                  onHover={onLibraryRoomHover}
+                  body={m.body}
+                  accent={accent}
+                  pal={m.pal}
+                />
+              ) : (
+                <VaultWallPod
+                  active={active}
+                  thin={thin}
+                  chunk={chunk}
+                  theme={theme}
+                  entered={entered}
+                  onClick={() => onLibraryRoomClick('archive')}
+                  onHover={onLibraryRoomHover}
+                  accent={accent}
+                />
+              )}
+            </ThinnedStation>
           </group>
         )
       })}
@@ -129,15 +133,21 @@ export function StackVaultFloor(props: StackVaultProps) {
 
 function StackRoomPod({
   active,
+  thin,
   chunk,
+  theme,
   onClick,
+  onHover,
   body,
   accent,
   pal,
 }: {
   active: boolean
+  thin: boolean
   chunk: (typeof VAULT_CHUNKS)['library']
+  theme: TypologyProps['theme']
   onClick: () => void
+  onHover: (slug: LibraryRoomSlug | null) => void
   body: string
   accent: string
   pal: ReturnType<typeof typologyMat>['pal']
@@ -145,10 +155,18 @@ function StackRoomPod({
   const { w, d, h } = chunk.size
 
   return (
-    <group>
+    <group
+      onPointerOver={(e) => {
+        if (thin) return
+        e.stopPropagation()
+        onHover('library')
+      }}
+      onPointerOut={() => onHover(null)}
+    >
       <mesh
         visible={false}
         onClick={(e) => {
+          if (thin) return
           e.stopPropagation()
           onClick()
         }}
@@ -156,10 +174,7 @@ function StackRoomPod({
         <boxGeometry args={[w + 0.08, h + 0.08, d + 0.08]} />
         <meshBasicMaterial transparent opacity={0} />
       </mesh>
-      <mesh position={[0, 0.01, 0]}>
-        <boxGeometry args={[w, 0.02, d]} />
-        <meshStandardMaterial color={active ? accent : body} transparent opacity={active ? 0.25 : 0.12} />
-      </mesh>
+      <StationFootprint width={w} depth={d} theme={theme} accent={accent} active={active} thin={thin} />
       <BackWallPanel
           width={w * 0.82}
           height={h * 0.72}
@@ -201,35 +216,49 @@ function StackRoomPod({
         <boxGeometry args={[0.012, 0.14, 0.012]} />
         <meshStandardMaterial color={accent} />
       </mesh>
-      <Html center position={[0, h / 2 + 0.12, 0]} style={{ pointerEvents: 'none' }}>
-        <div className={`scene-label scene-label--lab ${active ? 'scene-label--active' : ''}`}>Stack Room</div>
-      </Html>
+      {!thin && (
+        <Html center position={[0, h / 2 + 0.12, 0]} style={{ pointerEvents: 'none' }}>
+          <div className={`scene-label scene-label--lab ${active ? 'scene-label--active' : ''}`}>Stack Room</div>
+        </Html>
+      )}
     </group>
   )
 }
 
 function VaultWallPod({
   active,
+  thin,
   chunk,
+  theme,
+  entered,
   onClick,
-  body,
+  onHover,
   accent,
-  pal,
 }: {
   active: boolean
+  thin: boolean
   chunk: (typeof VAULT_CHUNKS)['archive']
+  theme: TypologyProps['theme']
+  entered: boolean
   onClick: () => void
-  body: string
+  onHover: (slug: LibraryRoomSlug | null) => void
   accent: string
-  pal: ReturnType<typeof typologyMat>['pal']
 }) {
   const { w, d, h } = chunk.size
 
   return (
-    <group>
+    <group
+      onPointerOver={(e) => {
+        if (thin) return
+        e.stopPropagation()
+        onHover('archive')
+      }}
+      onPointerOut={() => onHover(null)}
+    >
       <mesh
         visible={false}
         onClick={(e) => {
+          if (thin) return
           e.stopPropagation()
           onClick()
         }}
@@ -237,64 +266,15 @@ function VaultWallPod({
         <boxGeometry args={[w + 0.08, h + 0.08, d + 0.08]} />
         <meshBasicMaterial transparent opacity={0} />
       </mesh>
-      <mesh position={[0, 0.01, 0]}>
-        <boxGeometry args={[w, 0.02, d]} />
-        <meshStandardMaterial color={active ? accent : body} transparent opacity={active ? 0.25 : 0.12} />
-      </mesh>
-      <BackWallPanel
-          width={w * 0.82}
-          height={h * 0.68}
-          depth={0.06}
-          roomDepth={d}
-          color={pal.graphite}
-          accent={accent}
-          active={active}
-        />
-        {(
-          [
-            [0.2, 0.2],
-            [1.3, 0.2],
-            [2.4, 0.2],
-            [0.2, 1.5],
-            [1.3, 1.5],
-            [2.4, 1.5],
-            [3.5, 0.2],
-            [3.5, 1.5],
-            [0.2, 2.6],
-          ] as [number, number][]
-        ).map(([fx, fy], i) => {
-          const x = -0.22 + (fx / 6) * 0.44
-          const z = -d / 2 + 0.08 + (fy / 5) * 0.28
-          return (
-            <group key={i} position={[x, 0.08, z]}>
-              <mesh>
-                <boxGeometry args={[0.08, 0.14, 0.06]} />
-                <meshStandardMaterial color={pal.concrete} />
-              </mesh>
-              {[0.04, 0.07, 0.1].map((yOff, j) => (
-                <mesh key={j} position={[0, yOff, 0.032]}>
-                  <boxGeometry args={[0.075, 0.008, 0.001]} />
-                  <meshStandardMaterial color={active ? accent : pal.graphite} />
-                </mesh>
-              ))}
-            </group>
-          )
-        })}
-      <mesh position={[0, 0.04, 0.1]}>
-        <boxGeometry args={[0.12, 0.04, 0.08]} />
-        <meshStandardMaterial color={body} />
-      </mesh>
-      <mesh position={[-0.06, 0.1, 0.12]}>
-        <boxGeometry args={[0.06, 0.08, 0.04]} />
-        <meshStandardMaterial color="#d8d4cc" />
-      </mesh>
-      <mesh position={[0.06, 0.08, 0.14]}>
-        <boxGeometry args={[0.06, 0.06, 0.06]} />
-        <meshStandardMaterial color={pal.chicken} emissive={active ? pal.chicken : '#000'} emissiveIntensity={0.1} />
-      </mesh>
-      <Html center position={[0, h / 2 + 0.12, 0]} style={{ pointerEvents: 'none' }}>
-        <div className={`scene-label scene-label--lab ${active ? 'scene-label--active' : ''}`}>Vault Wall</div>
-      </Html>
+      <StationFootprint width={w} depth={d} theme={theme} accent={accent} active={active} thin={thin} />
+      <group position={[0, 0.04, -0.02]}>
+        <ArchiveVaultPod theme={theme} accent={accent} entered={entered} active={active} />
+      </group>
+      {!thin && (
+        <Html center position={[0, h / 2 + 0.12, 0]} style={{ pointerEvents: 'none' }}>
+          <div className={`scene-label scene-label--lab ${active ? 'scene-label--active' : ''}`}>Vault Wall</div>
+        </Html>
+      )}
     </group>
   )
 }
@@ -405,7 +385,9 @@ function VaultWallInterior({
 
   return (
     <RoomShell width={iw} depth={id} height={ih} color={m.pal.graphite} floorColor={m.body}>
-      <BackWallPanel width={iw * 0.9} height={ih * 0.78} depth={0.06} roomDepth={id} color={m.pal.concrete} accent={accent} />
+      <group position={[0, 0.02, 0]}>
+        <ArchiveVaultLayout theme={theme} accent={accent} entered={entered} active scale={1.05} />
+      </group>
 
       {show.map((cred, i) => {
         const row = Math.floor(i / 3)

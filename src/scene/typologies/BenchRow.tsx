@@ -1,8 +1,9 @@
 import { Html } from '@react-three/drei'
 import { RoomShell } from '../primitives/RoomShell'
-import { LAB_CHUNKS, chunkPosition, RAISED_TIER_LIFT } from './floorChunks'
-import { lab52Interior, STATION_OVERVIEW } from './interiorScale'
-import { LabTypology, StationPlinth } from './labs'
+import { LAB_CHUNKS, chunkPosition, RAISED_TIER_LIFT, type ExhibitChunk } from './floorChunks'
+import { lab52Interior } from './interiorScale'
+import { LabTypology } from './labs'
+import { StationFootprint } from './StationFootprint'
 import { ThinnedStation } from './ThinnedStation'
 import { typologyMat, type TypologyProps } from './types'
 
@@ -67,6 +68,7 @@ export function BenchRow({
           <group key={slug} position={[cx, cy, cz]}>
             <ThinnedStation thin={thin}>
               <LabStationBlock
+                chunk={chunk}
                 slug={slug}
                 theme={theme}
                 accent={accent}
@@ -87,6 +89,7 @@ export function BenchRow({
 }
 
 function LabStationBlock({
+  chunk,
   slug,
   code,
   theme,
@@ -98,6 +101,7 @@ function LabStationBlock({
   onRoomClick,
   onHover,
 }: {
+  chunk: ExhibitChunk
   slug: string
   code: string
   theme: TypologyProps['theme']
@@ -109,7 +113,7 @@ function LabStationBlock({
   onRoomClick: () => void
   onHover: (slug: string | null) => void
 }) {
-  const { w, d, h } = STATION_OVERVIEW
+  const { w, d, h } = chunk.size
 
   return (
     <group>
@@ -136,16 +140,18 @@ function LabStationBlock({
         <meshBasicMaterial transparent opacity={0} />
       </mesh>
 
-      <StationPlinth theme={theme} accent={accent} entered={entered} active={lit} width={w} depth={d} />
-      <group position={[0, 0.06, 0]}>
+      <StationFootprint width={w} depth={d} theme={theme} accent={accent} active={lit} thin={thin} />
+      <group position={[0, 0.04, 0]}>
         <LabTypology slug={slug} theme={theme} accent={accent} entered={entered} active={lit} />
       </group>
 
-      <Html center position={[0, h + 0.18, 0]} style={{ pointerEvents: 'none' }}>
-        <div className={`scene-label scene-label--lab ${lit ? 'scene-label--active' : ''}`}>
-          {labLabel(code, slug)}
-        </div>
-      </Html>
+      {!thin && (
+        <Html center position={[0, h + 0.18, 0]} style={{ pointerEvents: 'none' }}>
+          <div className={`scene-label scene-label--lab ${lit ? 'scene-label--active' : ''}`}>
+            {labLabel(code, slug)}
+          </div>
+        </Html>
+      )}
     </group>
   )
 }

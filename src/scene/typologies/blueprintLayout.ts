@@ -1,4 +1,4 @@
-/** Figma blueprint grid → Three.js station coords (see internal-docs/TYPOLOGY-SKETCHES.md) */
+/** Blueprint grid → Three.js station coords (cell units → scene space) */
 
 export const BP_UNIT = 0.1
 
@@ -7,7 +7,7 @@ export interface BpBox {
   size: [number, number, number]
 }
 
-/** Figma floor cell (x,y) + height z → centered Three.js box */
+/** Grid floor cell (x,y) + height z → centered Three.js box */
 export function bpBox(
   x: number,
   y: number,
