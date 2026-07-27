@@ -105,11 +105,11 @@ const VAULT_BOOK_FOCUS = vaultFocusPreset('library', [0, 0.04, 0.08], [0.42, 0.1
 
 const VAULT_CREDENTIAL_FOCUS = vaultFocusPreset('archive', [0, 0.04, 0.08], [-0.42, 0.1, 0.42], 478)
 
-/** 23F · side timeline — all lines visible left→right, no per-stop camera swing */
+/** 23F · side timeline — fixed side view, all lines in frame */
 const FACTORY_TIMELINE_VIEW: AuthoredPreset = {
-  lookAt: [0, 0.04, 0.02],
-  eye: [2.05, 0.34, 0.12],
-  zoom: 162,
+  lookAt: [0, 0.04, 0],
+  eye: [1.55, 0.32, 0.08],
+  zoom: 178,
 }
 
 /** G · threshold hall */
@@ -132,9 +132,10 @@ function roofPresets(): { floor: AuthoredPreset; room: AuthoredPreset } {
   const centerY = programCenterY(roof)
   const lift = plateY - centerY
   const zPlate = f99.depth / 2 + 0.02
+  const xPlate = -f99.width / 2 + 0.24
   return {
-    floor: { lookAt: [0, lift, zPlate], eye: [0.62, 0.42, 2.35], zoom: 76 },
-    room: { lookAt: [0, lift + 0.02, zPlate], eye: [0.24, 0.08, 1.05], zoom: 248 },
+    floor: { lookAt: [xPlate, lift, zPlate], eye: [0.62, 0.42, 2.35], zoom: 76 },
+    room: { lookAt: [xPlate, lift + 0.02, zPlate], eye: [0.24, 0.08, 1.05], zoom: 248 },
   }
 }
 

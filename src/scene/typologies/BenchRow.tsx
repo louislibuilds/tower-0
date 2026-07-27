@@ -38,6 +38,7 @@ interface BenchRowProps extends TypologyProps {
 
 const POD_SCALE_RATIO = 0.4
 const POD_FIT_MARGIN = 0.48
+const FOCUS_FIT_MARGIN = 0.78
 
 /** 52 · Laboratory — back-wall gallery with zoom morph (99F pattern) */
 export function BenchRow({
@@ -51,9 +52,6 @@ export function BenchRow({
 }: BenchRowProps) {
   const m = typologyMat(theme, accent, entered)
   const plate = floorPlateSize('52')
-  const zone = { w: plate.w * 0.22, d: plate.d * 0.48 }
-  const podScale = blueprintFitScale(5, 5, zone, POD_FIT_MARGIN) * POD_SCALE_RATIO
-  const focusScale = blueprintFitScale(5, 5, { w: plate.w * 0.46, d: plate.d * 0.42 }, 0.72)
 
   return (
     <FloorPlate width={plate.w} depth={plate.d} color={m.pal.graphite} floorColor={m.body}>
@@ -63,18 +61,19 @@ export function BenchRow({
         const thin = !!labRoomSlug && !active
         const zoomed = active && (viewMode === 'room' || viewMode === 'focus')
         const [gridW, gridD] = LAB_BLUEPRINT_DIMS[slug] ?? [5, 5]
-        const slugPodScale = blueprintFitScale(gridW, gridD, chunk.size, POD_FIT_MARGIN) * POD_SCALE_RATIO
-        const slugFocusScale = blueprintFitScale(gridW, gridD, chunk.size, 0.68)
+        const podZone = { w: chunk.size.w * 0.92, d: chunk.size.d * 0.92 }
+        const podScale = blueprintFitScale(gridW, gridD, podZone, POD_FIT_MARGIN) * POD_SCALE_RATIO
+        const focusScale = blueprintFitScale(gridW, gridD, plate, FOCUS_FIT_MARGIN)
         const [cx, , cz] = chunkPosition(chunk)
-        const [tx, , tz] = labCellAnchor(slug, plate, slugFocusScale)
+        const [tx, , tz] = labCellAnchor(slug, plate, focusScale)
 
         return (
           <LabMorphZone
             key={slug}
             chunk={chunk}
             slug={slug}
-            podScale={Math.min(slugPodScale, podScale)}
-            focusScale={Math.max(slugFocusScale, focusScale * 0.55)}
+            podScale={podScale}
+            focusScale={focusScale}
             fromPos={[cx, 0, cz]}
             toPos={[tx, 0, tz]}
             zoomed={zoomed}
@@ -186,7 +185,7 @@ function LabMorphZone({
           </group>
 
           {!thin && (
-            <Html center position={[0, (h * 0.5 + 0.08) / focusScale, 0]} style={{ pointerEvents: 'none' }}>
+            <Html center position={[0, (h * 0.5 + 0.08) / Math.max(focusScale, 0.01), 0]} style={{ pointerEvents: 'none' }}>
               <div
                 className={`scene-label scene-label--lab ${active ? 'scene-label--active' : ''} ${zoomed ? 'scene-label--hidden' : ''}`}
               >

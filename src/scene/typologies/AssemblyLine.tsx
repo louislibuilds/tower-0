@@ -1,8 +1,9 @@
 import type { ViewMode } from '../../building/viewMode'
 import { areaLabel, FACTORY_AREAS, FACTORY_LINE_VARIANTS } from '../factoryStops'
+import { BP_UNIT } from './blueprintLayout'
 import { FloorPlate } from '../primitives/FloorPlate'
-import { blueprintFitScale, floorPlateSize } from './interiorScale'
-import { FactoryLineLayout } from './layouts/FactoryLineLayout'
+import { floorPlateSize } from './interiorScale'
+import { FactoryLineLayout, FACTORY_BELT_SEGMENTS } from './layouts/FactoryLineLayout'
 import { typologyMat, type TypologyProps } from './types'
 
 interface AssemblyLineProps extends TypologyProps {
@@ -12,7 +13,7 @@ interface AssemblyLineProps extends TypologyProps {
   onSelectStop: (stop: number) => void
 }
 
-/** 23 · Assembly Line — four parallel production lines on full floor plate */
+/** 23 · Assembly Line — side timeline, four lines on plate (no overflow) */
 export function AssemblyLine({
   theme,
   accent,
@@ -22,16 +23,18 @@ export function AssemblyLine({
 }: AssemblyLineProps) {
   const m = typologyMat(theme, accent, entered)
   const plate = floorPlateSize('23')
-  const layoutScale = blueprintFitScale(10, 5.4, plate, 0.82)
+  const beltDepth = FACTORY_BELT_SEGMENTS * BP_UNIT
+  const lineScale = (plate.d * 0.82) / beltDepth
 
   return (
     <FloorPlate width={plate.w} depth={plate.d} color={m.pal.graphite} floorColor={m.body}>
-      <group position={[0, 0.01, 0]} scale={layoutScale}>
+      <group position={[0, 0.01, 0]}>
         <FactoryLineLayout
           theme={theme}
           accent={accent}
           entered={entered}
           active
+          lineScale={lineScale}
           factoryStop={factoryStop}
           onSelectStop={onSelectStop}
           showLabels={entered}

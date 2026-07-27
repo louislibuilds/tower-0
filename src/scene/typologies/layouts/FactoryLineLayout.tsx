@@ -7,7 +7,9 @@ import { bpBox, bpLine } from '../blueprintLayout'
 import { ThinnedStation } from '../ThinnedStation'
 import { typologyMat, type TypologyProps } from '../types'
 
-const SEG_W = 10
+/** Belt length in blueprint grid units — kept short to fit floor plate depth */
+export const FACTORY_BELT_SEGMENTS = 5
+const SEG_W = FACTORY_BELT_SEGMENTS
 const SEG_D = 1.1
 
 function BpMesh({
@@ -57,14 +59,15 @@ function FactoryLineSegment({
   const activeStop = factoryStop === stopIndex
   const thin = factoryStop !== null && !activeStop
   const stopLit = activeStop || (lit && factoryStop === null)
+  const beltLen = Math.min(variant.beltSegments, SEG_W)
 
   const beltPosts = useMemo(
     () =>
-      Array.from({ length: variant.beltSegments - 1 }, (_, i) => {
+      Array.from({ length: beltLen - 1 }, (_, i) => {
         const seg = bpLine(i + 0.5, 0.42, 0.18, i + 0.5, 0.68, 0.18, SEG_W, SEG_D)
         return { key: i, seg }
       }),
-    [variant.beltSegments],
+    [beltLen],
   )
 
   const station = bpBox(4.2, 0.12, 0, 1.6, 0.88, 0.55, SEG_W, SEG_D)
@@ -72,7 +75,7 @@ function FactoryLineSegment({
   return (
     <ThinnedStation thin={thin}>
       <Fragment>
-        {Array.from({ length: variant.beltSegments }, (_, i) => (
+        {Array.from({ length: beltLen }, (_, i) => (
           <BpMesh
             key={i}
             box={bpBox(i, 0.42, 0, 1, 0.88, 0.18, SEG_W, SEG_D)}
@@ -116,7 +119,7 @@ function FactoryLineSegment({
         {variant.crates.map((px: number, i: number) => (
           <BpMesh
             key={i}
-            box={bpBox(px, 0.45, 0.12 + (i % 2) * 0.06, 0.48, 0.72, 0.48, SEG_W, SEG_D)}
+            box={bpBox(Math.min(px, beltLen - 0.6), 0.45, 0.12 + (i % 2) * 0.06, 0.48, 0.72, 0.48, SEG_W, SEG_D)}
             color={lit ? m.warm : '#d8d4cc'}
           />
         ))}
@@ -124,7 +127,7 @@ function FactoryLineSegment({
         {variant.tools.map(([px, py, pz]: [number, number, number], i: number) => (
           <BpMesh
             key={`tool-${i}`}
-            box={bpBox(px, py, pz, 0.45 + (i % 2) * 0.1, 0.45, 0.38 + (i % 3) * 0.04, SEG_W, SEG_D)}
+            box={bpBox(Math.min(px, beltLen - 0.3), py, pz, 0.45 + (i % 2) * 0.1, 0.45, 0.38 + (i % 3) * 0.04, SEG_W, SEG_D)}
             color={i % 2 === 0 ? m.pal.graphite : m.pal.alum}
           />
         ))}
@@ -153,7 +156,7 @@ function FactoryLineSegment({
         )}
 
         {showLabels && meta && (
-          <Html center position={[5, 1.02, 0]} style={{ pointerEvents: 'none' }}>
+          <Html center position={[SEG_W * 0.05, 0.92, 0]} style={{ pointerEvents: 'none' }}>
             <div className="scene-label-stack">
               <div className={`scene-label scene-label--tiny ${stopLit ? 'scene-label--active' : ''}`}>
                 {meta.label}
@@ -175,7 +178,7 @@ export function FactoryLineLayout({
   accent,
   entered,
   active,
-  scale = 1,
+  lineScale = 1,
   factoryStop = null,
   onSelectStop,
   showLabels = false,
@@ -183,7 +186,7 @@ export function FactoryLineLayout({
   lineVariants = [],
 }: TypologyProps & {
   active?: boolean
-  scale?: number
+  lineScale?: number
   factoryStop?: number | null
   onSelectStop?: (index: number) => void
   showLabels?: boolean
@@ -193,9 +196,9 @@ export function FactoryLineLayout({
   const lit = !!(entered || active)
 
   return (
-    <group scale={scale}>
+    <group>
       {FACTORY_LINE_X.map((x, si) => (
-        <group key={si} position={[x, 0, 0]} rotation={[0, Math.PI / 2, 0]}>
+        <group key={si} position={[x, 0, 0]} rotation={[0, Math.PI / 2, 0]} scale={lineScale}>
           <FactoryLineSegment
             theme={theme}
             accent={accent}
