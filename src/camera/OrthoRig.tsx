@@ -58,7 +58,7 @@ export function OrthoRig({
   const allowOrbit =
     viewMode === 'room' &&
     !focusTarget &&
-    !!(labRoomSlug || libraryRoomSlug || factoryStop !== null)
+    !!(labRoomSlug || libraryRoomSlug)
 
   function syncOrbitBase(position: [number, number, number], lookAt: [number, number, number]) {
     orbitOffset.current.set(
@@ -89,12 +89,10 @@ export function OrthoRig({
 
     const labStationSwitch =
       floorId === '52' && viewMode === 'room' && !!labRoomSlug && inRoom && prevKey.current !== key
-    const factoryStationSwitch =
-      floorId === '23' && viewMode === 'room' && factoryStop !== null && inRoom && prevKey.current !== key
     const vaultStationSwitch =
       floorId === '99' && viewMode === 'room' && !!libraryRoomSlug && inRoom && prevKey.current !== key
 
-    const stationSwitch = labStationSwitch || factoryStationSwitch || vaultStationSwitch
+    const stationSwitch = labStationSwitch || vaultStationSwitch
     const panOnly = sameFloor && prevKey.current !== key && viewMode !== 'tower' && !stationSwitch
 
     orbitActive.current = false

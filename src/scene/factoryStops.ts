@@ -3,8 +3,8 @@ import { semesters } from '../data/academic'
 /** Factory areas — Area 01 = oldest semester (2024 Spring) → Area 04 = newest */
 export const FACTORY_AREAS = [...semesters].reverse()
 
-/** Four timeline stations left→right on 23F (2024 Spring at index 0) */
-export const FACTORY_LINE_X = [-0.68, -0.22, 0.22, 0.68] as const
+/** Four timeline stations left→right on 23F plate space (2024 Spring at index 0) */
+export const FACTORY_LINE_X = [-0.45, -0.15, 0.15, 0.45] as const
 
 /** @deprecated Use FACTORY_LINE_X */
 export const FACTORY_LINE_Z = FACTORY_LINE_X
@@ -23,10 +23,10 @@ export interface FactoryLineVariant {
 }
 
 const CRATE_SETS: number[][] = [
-  [4.5],
-  [3.2, 6.4],
-  [2.4, 5.0, 7.2],
-  [1.8, 3.8, 5.8, 7.6],
+  [2.8],
+  [1.8, 3.6],
+  [1.2, 2.8, 4.0],
+  [0.8, 2.0, 3.2, 4.2],
 ]
 
 export const FACTORY_LINE_VARIANTS: FactoryLineVariant[] = CRATE_SETS.map((crates, i) => ({

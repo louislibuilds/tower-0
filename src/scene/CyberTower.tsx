@@ -435,6 +435,7 @@ export function CyberTower({
   const spireBase = programBaseY(roofProgram) + roofProgram.bandHeight
   const f99 = getProgramFloor('99')
   const identityPlateY = programBaseY(f99) + f99.bandHeight
+  const identityPlateX = -f99.width / 2 + 0.24
   const identityPlateZ = f99.depth / 2 + 0.015
   const showIdentityPlate = extrude > 0.55
 
@@ -523,7 +524,7 @@ export function CyberTower({
           )}
 
           {showIdentityPlate && (
-            <group position={[0, identityPlateY, identityPlateZ]}>
+            <group position={[identityPlateX, identityPlateY, identityPlateZ]}>
               <IdentityPlate theme={theme} entered={activeFloorId === 'roof' || activeFloorId === '99'} />
             </group>
           )}
