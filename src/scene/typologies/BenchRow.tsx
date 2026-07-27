@@ -27,7 +27,6 @@ interface BenchRowProps extends TypologyProps {
   roomFocus: boolean
   floorOverview: boolean
   onLabRoomClick: (slug: string) => void
-  onLabTypologyClick: (slug: string) => void
   onLabRoomHover: (slug: string | null) => void
 }
 
@@ -39,7 +38,6 @@ export function BenchRow({
   labRoomSlug,
   roomFocus,
   onLabRoomClick,
-  onLabTypologyClick,
   onLabRoomHover,
 }: BenchRowProps) {
   const m = typologyMat(theme, accent, entered)
@@ -90,7 +88,6 @@ export function BenchRow({
                   roomFocus={roomFocus && active}
                   code={chunk.code ?? ''}
                   onRoomClick={() => onLabRoomClick(slug)}
-                  onTypologyClick={() => onLabTypologyClick(slug)}
                   onHover={onLabRoomHover}
                 />
               </RoomShell>
@@ -112,7 +109,6 @@ function LabStationBlock({
   thin,
   roomFocus,
   onRoomClick,
-  onTypologyClick,
   onHover,
 }: {
   slug: string
@@ -124,7 +120,6 @@ function LabStationBlock({
   thin: boolean
   roomFocus: boolean
   onRoomClick: () => void
-  onTypologyClick: () => void
   onHover: (slug: string | null) => void
 }) {
   const { w, d, h } = STATION_OVERVIEW
@@ -145,10 +140,9 @@ function LabStationBlock({
           document.body.style.cursor = 'crosshair'
         }}
         onClick={(e) => {
-          if (thin) return
+          if (thin || roomFocus) return
           e.stopPropagation()
-          if (roomFocus) onTypologyClick()
-          else onRoomClick()
+          onRoomClick()
         }}
       >
         <boxGeometry args={[w + 0.12, h + 0.12, d + 0.12]} />

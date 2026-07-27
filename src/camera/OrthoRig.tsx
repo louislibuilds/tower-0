@@ -63,8 +63,14 @@ export function OrthoRig({
     })
 
     const key = `${phase}-${floorId}-${viewMode}-${factoryStop}-${libraryRoomSlug}-${labRoomSlug}-${focusTarget}`
-    const sameFloor = prevKey.current.startsWith(`${floorId}-`)
-    const panOnly = sameFloor && prevKey.current !== key && viewMode !== 'tower'
+    const sameFloor = prevKey.current.includes(`-${floorId}-`)
+    const labStationSwitch =
+      floorId === '52' &&
+      viewMode === 'room' &&
+      !!labRoomSlug &&
+      prevKey.current.includes(`${floorId}-room-`) &&
+      prevKey.current !== key
+    const panOnly = sameFloor && prevKey.current !== key && viewMode !== 'tower' && !labStationSwitch
 
     if (reducedMotion) {
       cam.position.set(...target.position)
@@ -91,6 +97,8 @@ export function OrthoRig({
     const isBoot = phase === 'boot' || phase === 'survey'
     const duration = panOnly
       ? DUR.pan
+      : labStationSwitch
+        ? DUR.threshold
       : isBoot
         ? DUR.extrude
         : viewMode === 'focus'
@@ -100,7 +108,7 @@ export function OrthoRig({
           : viewMode === 'tower'
             ? DUR.threshold
             : viewMode === 'room'
-              ? DUR.room
+              ? DUR.threshold
               : DUR.civic
 
     const tween = gsap.to(from, {

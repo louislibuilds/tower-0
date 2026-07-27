@@ -4,12 +4,10 @@ import { useSite } from '../../context/SiteContext'
 export function FocusOverlay() {
   const {
     viewMode,
-    labRoomSlug,
     selectedBookSlug,
     selectedCredentialSlug,
     toggleBook,
     toggleCredential,
-    exitLabFocus,
     strings,
   } = useSite()
 
@@ -18,7 +16,6 @@ export function FocusOverlay() {
   const onBack = () => {
     if (selectedBookSlug) toggleBook(selectedBookSlug)
     else if (selectedCredentialSlug) toggleCredential(selectedCredentialSlug)
-    else if (labRoomSlug) exitLabFocus()
   }
 
   return (
