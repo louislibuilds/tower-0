@@ -1,6 +1,5 @@
 import { Html } from '@react-three/drei'
 import { RoomShell } from '../primitives/RoomShell'
-import { WireBox } from '../primitives/WireBox'
 import { LAB_CHUNKS, chunkPosition, RAISED_TIER_LIFT } from './floorChunks'
 import { lab52Interior, STATION_OVERVIEW } from './interiorScale'
 import { LabTypology, StationPlinth } from './labs'
@@ -30,7 +29,7 @@ interface BenchRowProps extends TypologyProps {
   onLabRoomHover: (slug: string | null) => void
 }
 
-/** 52 · Laboratory — five chunk blocks with tier scatter (resume2-style) */
+/** 52 · Laboratory — one floor shell, five scattered station blocks */
 export function BenchRow({
   theme,
   accent,
@@ -45,17 +44,14 @@ export function BenchRow({
   const enteringLab = !!labRoomSlug
 
   return (
-    <group>
-      <WireBox
-        size={[interior.w, 0.02, interior.d]}
-        position={[0, -interior.h / 2 + 0.01, 0]}
-        color={m.pal.graphite}
-        fillOpacity={0.08}
-        fillColor={m.body}
-      />
-
-      {/* Raised mezzanine strip — back row sits on this tier */}
-      <mesh position={[0, -interior.h / 2 + RAISED_TIER_LIFT / 2, -0.08]}>
+    <RoomShell
+      width={interior.w}
+      depth={interior.d}
+      height={interior.h}
+      color={m.pal.graphite}
+      floorColor={m.body}
+    >
+      <mesh position={[0, RAISED_TIER_LIFT / 2, -0.08]}>
         <boxGeometry args={[interior.w * 0.88, RAISED_TIER_LIFT, interior.d * 0.42]} />
         <meshStandardMaterial color={m.pal.resin} transparent opacity={0.35} />
       </mesh>
@@ -66,36 +62,27 @@ export function BenchRow({
         const thin = enteringLab && !active
         const lit = active || (entered && !enteringLab)
         const [cx, cy, cz] = chunkPosition(chunk)
-        const { w, d, h } = chunk.size
 
         return (
           <group key={slug} position={[cx, cy, cz]}>
             <ThinnedStation thin={thin}>
-              <RoomShell
-                width={w}
-                depth={d}
-                height={h}
-                color={active ? accent : m.pal.graphite}
-                floorColor={m.body}
-              >
-                <LabStationBlock
-                  slug={slug}
-                  theme={theme}
-                  accent={accent}
-                  entered={entered}
-                  lit={lit}
-                  thin={thin}
-                  roomFocus={roomFocus && active}
-                  code={chunk.code ?? ''}
-                  onRoomClick={() => onLabRoomClick(slug)}
-                  onHover={onLabRoomHover}
-                />
-              </RoomShell>
+              <LabStationBlock
+                slug={slug}
+                theme={theme}
+                accent={accent}
+                entered={entered}
+                lit={lit}
+                thin={thin}
+                roomFocus={roomFocus && active}
+                code={chunk.code ?? ''}
+                onRoomClick={() => onLabRoomClick(slug)}
+                onHover={onLabRoomHover}
+              />
             </ThinnedStation>
           </group>
         )
       })}
-    </group>
+    </RoomShell>
   )
 }
 
@@ -145,7 +132,7 @@ function LabStationBlock({
           onRoomClick()
         }}
       >
-        <boxGeometry args={[w + 0.12, h + 0.12, d + 0.12]} />
+        <boxGeometry args={[w + 0.14, h + 0.14, d + 0.14]} />
         <meshBasicMaterial transparent opacity={0} />
       </mesh>
 

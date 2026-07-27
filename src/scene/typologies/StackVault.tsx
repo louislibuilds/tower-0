@@ -4,7 +4,6 @@ import { credentials } from '../../data/credentials'
 import { libraryBooks } from '../../data/libraryBooks'
 import type { LibraryRoomSlug } from '../../data/libraryRooms'
 import { BackWallPanel, RoomShell } from '../primitives/RoomShell'
-import { WireBox } from '../primitives/WireBox'
 import {
   chunkPosition,
   RAISED_TIER_LIFT,
@@ -26,7 +25,7 @@ interface StackVaultProps extends TypologyProps {
   onCredentialClick: (slug: string) => void
 }
 
-/** 99 · Stack Room + Vault Wall — library and archive as offset chunks */
+/** 99 · Stack Room + Vault Wall — one floor shell, two station blocks */
 export function StackVaultFloor(props: StackVaultProps) {
   const {
     theme,
@@ -70,23 +69,19 @@ export function StackVaultFloor(props: StackVaultProps) {
   const interior = vault99Interior()
 
   return (
-    <group>
-      <WireBox
-        size={[interior.w, 0.02, interior.d]}
-        position={[0, -interior.h / 2 + 0.01, 0]}
-        color={m.pal.graphite}
-        fillOpacity={0.08}
-        fillColor={m.body}
-      />
-
-      {/* Central corridor spine */}
-      <mesh position={[0, -interior.h / 2 + 0.02, 0]}>
-        <boxGeometry args={[0.1, 0.015, interior.d * 0.92]} />
+    <RoomShell
+      width={interior.w}
+      depth={interior.d}
+      height={interior.h}
+      color={m.pal.graphite}
+      floorColor={m.body}
+    >
+      <mesh position={[0, 0.02, 0]}>
+        <boxGeometry args={[0.1, 0.015, interior.d * 0.88]} />
         <meshStandardMaterial color={m.pal.concrete} transparent opacity={0.5} />
       </mesh>
 
-      {/* Raised strip under archive chunk */}
-      <mesh position={[0.46, -interior.h / 2 + tierLift('raised') / 2, -0.12]}>
+      <mesh position={[0.46, tierLift('raised') / 2, -0.12]}>
         <boxGeometry args={[0.76, RAISED_TIER_LIFT, 0.58]} />
         <meshStandardMaterial color={m.pal.resin} transparent opacity={0.35} />
       </mesh>
@@ -128,7 +123,7 @@ export function StackVaultFloor(props: StackVaultProps) {
           </group>
         )
       })}
-    </group>
+    </RoomShell>
   )
 }
 
@@ -161,8 +156,11 @@ function StackRoomPod({
         <boxGeometry args={[w + 0.08, h + 0.08, d + 0.08]} />
         <meshBasicMaterial transparent opacity={0} />
       </mesh>
-      <RoomShell width={w} depth={d} height={h} color={active ? accent : pal.graphite} floorColor={body}>
-        <BackWallPanel
+      <mesh position={[0, 0.01, 0]}>
+        <boxGeometry args={[w, 0.02, d]} />
+        <meshStandardMaterial color={active ? accent : body} transparent opacity={active ? 0.25 : 0.12} />
+      </mesh>
+      <BackWallPanel
           width={w * 0.82}
           height={h * 0.72}
           depth={0.1}
@@ -183,7 +181,6 @@ function StackRoomPod({
             )
           }),
         )}
-      </RoomShell>
       <Html center position={[0, h / 2 + 0.12, 0]} style={{ pointerEvents: 'none' }}>
         <div className={`scene-label scene-label--lab ${active ? 'scene-label--active' : ''}`}>Stack Room</div>
       </Html>
@@ -220,8 +217,11 @@ function VaultWallPod({
         <boxGeometry args={[w + 0.08, h + 0.08, d + 0.08]} />
         <meshBasicMaterial transparent opacity={0} />
       </mesh>
-      <RoomShell width={w} depth={d} height={h} color={active ? accent : pal.graphite} floorColor={body}>
-        <BackWallPanel
+      <mesh position={[0, 0.01, 0]}>
+        <boxGeometry args={[w, 0.02, d]} />
+        <meshStandardMaterial color={active ? accent : body} transparent opacity={active ? 0.25 : 0.12} />
+      </mesh>
+      <BackWallPanel
           width={w * 0.82}
           height={h * 0.68}
           depth={0.06}
@@ -242,7 +242,6 @@ function VaultWallPod({
             </mesh>
           </group>
         ))}
-      </RoomShell>
       <Html center position={[0, h / 2 + 0.12, 0]} style={{ pointerEvents: 'none' }}>
         <div className={`scene-label scene-label--lab ${active ? 'scene-label--active' : ''}`}>Vault Wall</div>
       </Html>

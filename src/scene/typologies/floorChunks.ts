@@ -3,24 +3,20 @@ import type { LibraryRoomSlug } from '../../data/libraryRooms'
 import { getProgramFloor } from '../towerGeometry'
 import { bandInterior } from './interiorScale'
 
-/** Vertical tier within a multi-room floor — resume2 lower slab vs raised mezzanine */
+/** Vertical tier within a multi-room floor — lower slab vs raised mezzanine */
 export type ChunkTier = 'lower' | 'raised'
 
 export interface ExhibitChunk {
   id: string
   slug: string
   code?: string
-  /** Local floor-space anchor [x, yLift, z] — yLift is added to tier base */
   pos: [number, number, number]
   size: { w: number; d: number; h: number }
   tier: ChunkTier
   cameraSide: 'left' | 'right'
-  roomZoom?: number
-  partZoom?: number
   lookAtY?: number
 }
 
-/** Mezzanine lift for raised-tier chunks (resume2 mid-plate read, scaled to tower bands) */
 export const RAISED_TIER_LIFT = 0.12
 
 export function tierLift(tier: ChunkTier): number {
@@ -32,13 +28,9 @@ export function floorInterior(floorId: FloorId) {
   return bandInterior(band.width, band.depth, band.bandHeight)
 }
 
-/** Minimum chunk footprint — floor must fit ~8 of these (capacity rule, not visible grid) */
 export const MIN_CHUNK = { w: 0.42, d: 0.38, h: 0.48 } as const
 
-/**
- * 52F — five authored lab chunks (resume2 scatter, not axis-aligned grid).
- * Positions hand-tuned for enlarged band interior ~1.80 × 1.44.
- */
+/** 52F — five authored station anchors inside enlarged band (~1.80 × 1.44 interior) */
 export const LAB_CHUNKS: ExhibitChunk[] = [
   {
     id: 'lab-001',
@@ -48,7 +40,6 @@ export const LAB_CHUNKS: ExhibitChunk[] = [
     size: { w: 0.52, d: 0.48, h: 0.55 },
     tier: 'lower',
     cameraSide: 'right',
-    partZoom: 468,
   },
   {
     id: 'lab-002',
@@ -58,7 +49,6 @@ export const LAB_CHUNKS: ExhibitChunk[] = [
     size: { w: 0.46, d: 0.44, h: 0.52 },
     tier: 'lower',
     cameraSide: 'left',
-    partZoom: 452,
   },
   {
     id: 'lab-003',
@@ -68,7 +58,6 @@ export const LAB_CHUNKS: ExhibitChunk[] = [
     size: { w: 0.5, d: 0.46, h: 0.58 },
     tier: 'raised',
     cameraSide: 'right',
-    partZoom: 475,
   },
   {
     id: 'lab-004',
@@ -78,7 +67,6 @@ export const LAB_CHUNKS: ExhibitChunk[] = [
     size: { w: 0.52, d: 0.48, h: 0.56 },
     tier: 'raised',
     cameraSide: 'left',
-    partZoom: 485,
   },
   {
     id: 'lab-005',
@@ -88,11 +76,9 @@ export const LAB_CHUNKS: ExhibitChunk[] = [
     size: { w: 0.44, d: 0.4, h: 0.5 },
     tier: 'lower',
     cameraSide: 'right',
-    partZoom: 458,
   },
 ]
 
-/** 99F — library and archive as offset chunks with corridor between */
 export const VAULT_CHUNKS: Record<LibraryRoomSlug, ExhibitChunk> = {
   library: {
     id: 'vault-lib',
@@ -101,7 +87,6 @@ export const VAULT_CHUNKS: Record<LibraryRoomSlug, ExhibitChunk> = {
     size: { w: 0.74, d: 0.56, h: 0.62 },
     tier: 'lower',
     cameraSide: 'left',
-    roomZoom: 280,
   },
   archive: {
     id: 'vault-arc',
@@ -110,7 +95,6 @@ export const VAULT_CHUNKS: Record<LibraryRoomSlug, ExhibitChunk> = {
     size: { w: 0.7, d: 0.52, h: 0.58 },
     tier: 'raised',
     cameraSide: 'right',
-    roomZoom: 290,
   },
 }
 
