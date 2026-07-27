@@ -174,13 +174,33 @@ function StackRoomPod({
             const x = -0.12 + col * 0.08
             const colors = ['#2F6BFF', '#5a8a5a', '#8a5a5a', '#6a5a8a']
             return (
-              <mesh key={`${row}-${col}`} position={[x, y + 0.1, -d / 2 + 0.12]}>
-                <boxGeometry args={[0.05, 0.1 + (col % 2) * 0.02, 0.05]} />
-                <meshStandardMaterial color={colors[(row + col) % colors.length]} />
-              </mesh>
+              <Fragment key={`${row}-${col}`}>
+                <mesh position={[x, y + 0.1, -d / 2 + 0.12]}>
+                  <boxGeometry args={[0.05, 0.1 + (col % 2) * 0.02, 0.05]} />
+                  <meshStandardMaterial color={colors[(row + col) % colors.length]} />
+                </mesh>
+                {[0, 1, 2].map((j) => (
+                  <mesh key={j} position={[x, y + 0.04 + j * 0.04, -d / 2 + 0.15]}>
+                    <boxGeometry args={[0.038, 0.022, 0.032]} />
+                    <meshStandardMaterial color={j % 2 ? pal.chicken : '#d8d4cc'} />
+                  </mesh>
+                ))}
+              </Fragment>
             )
           }),
         )}
+      <mesh position={[0.08, 0.04, 0.06]}>
+        <boxGeometry args={[0.14, 0.04, 0.1]} />
+        <meshStandardMaterial color={body} transparent opacity={0.9} />
+      </mesh>
+      <mesh position={[0.1, 0.07, 0.06]}>
+        <boxGeometry args={[0.06, 0.008, 0.08]} />
+        <meshStandardMaterial color={pal.chicken} emissive={active ? pal.chicken : '#000'} emissiveIntensity={0.12} />
+      </mesh>
+      <mesh position={[0.2, 0.12, 0.1]}>
+        <boxGeometry args={[0.012, 0.14, 0.012]} />
+        <meshStandardMaterial color={accent} />
+      </mesh>
       <Html center position={[0, h / 2 + 0.12, 0]} style={{ pointerEvents: 'none' }}>
         <div className={`scene-label scene-label--lab ${active ? 'scene-label--active' : ''}`}>Stack Room</div>
       </Html>
@@ -230,18 +250,48 @@ function VaultWallPod({
           accent={accent}
           active={active}
         />
-        {[0, 1, 2].map((i) => (
-          <group key={i} position={[-0.12 + i * 0.12, 0.14, -d / 2 + 0.1]}>
-            <mesh>
-              <boxGeometry args={[0.1, 0.13, 0.02]} />
-              <meshStandardMaterial color={pal.concrete} />
-            </mesh>
-            <mesh position={[0, 0, 0.012]}>
-              <boxGeometry args={[0.08, 0.1, 0.01]} />
-              <meshStandardMaterial color="#d4d0c8" />
-            </mesh>
-          </group>
-        ))}
+        {(
+          [
+            [0.2, 0.2],
+            [1.3, 0.2],
+            [2.4, 0.2],
+            [0.2, 1.5],
+            [1.3, 1.5],
+            [2.4, 1.5],
+            [3.5, 0.2],
+            [3.5, 1.5],
+            [0.2, 2.6],
+          ] as [number, number][]
+        ).map(([fx, fy], i) => {
+          const x = -0.22 + (fx / 6) * 0.44
+          const z = -d / 2 + 0.08 + (fy / 5) * 0.28
+          return (
+            <group key={i} position={[x, 0.08, z]}>
+              <mesh>
+                <boxGeometry args={[0.08, 0.14, 0.06]} />
+                <meshStandardMaterial color={pal.concrete} />
+              </mesh>
+              {[0.04, 0.07, 0.1].map((yOff, j) => (
+                <mesh key={j} position={[0, yOff, 0.032]}>
+                  <boxGeometry args={[0.075, 0.008, 0.001]} />
+                  <meshStandardMaterial color={active ? accent : pal.graphite} />
+                </mesh>
+              ))}
+            </group>
+          )
+        })}
+      <mesh position={[0, 0.04, 0.1]}>
+        <boxGeometry args={[0.12, 0.04, 0.08]} />
+        <meshStandardMaterial color={body} />
+      </mesh>
+      <mesh position={[-0.06, 0.1, 0.12]}>
+        <boxGeometry args={[0.06, 0.08, 0.04]} />
+        <meshStandardMaterial color="#d8d4cc" />
+      </mesh>
+      <mesh position={[0.06, 0.08, 0.14]}>
+        <boxGeometry args={[0.06, 0.06, 0.06]} />
+        <meshStandardMaterial color={pal.chicken} emissive={active ? pal.chicken : '#000'} emissiveIntensity={0.1} />
+      </mesh>
       <Html center position={[0, h / 2 + 0.12, 0]} style={{ pointerEvents: 'none' }}>
         <div className={`scene-label scene-label--lab ${active ? 'scene-label--active' : ''}`}>Vault Wall</div>
       </Html>
