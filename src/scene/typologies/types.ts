@@ -26,7 +26,7 @@ export function typologyMat(theme: Theme, _accent: string, entered: boolean) {
     emissiveWarm: hi.emissiveWarm,
     emissiveCool: hi.emissiveCool,
     emissive: entered && dark ? pal.neonBright : '#000000',
-    emissiveIntensity: entered && dark ? 0.22 : 0,
+    emissiveIntensity: entered && dark ? 0.32 : 0,
     metalness: dark ? 0.55 : 0.1,
     roughness: dark ? 0.4 : 0.85,
   }

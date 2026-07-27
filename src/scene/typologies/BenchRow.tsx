@@ -1,5 +1,5 @@
 import { Html } from '@react-three/drei'
-import { RoomShell } from '../primitives/RoomShell'
+import { FloorPlate } from '../primitives/FloorPlate'
 import { LAB_CHUNKS, chunkPosition, type ExhibitChunk } from './floorChunks'
 import { LAB_BLUEPRINT_DIMS, lab52Interior, stationBlueprintScale } from './interiorScale'
 import { LabTypology } from './labs'
@@ -45,22 +45,16 @@ export function BenchRow({
   const enteringLab = !!labRoomSlug
 
   return (
-    <RoomShell
-      width={interior.w}
-      depth={interior.d}
-      height={interior.h}
-      color={m.pal.graphite}
-      floorColor={m.body}
-    >
+    <FloorPlate width={interior.w} depth={interior.d} color={m.pal.graphite} floorColor={m.body}>
       {LAB_CHUNKS.map((chunk) => {
         const slug = chunk.slug
         const active = labRoomSlug === slug
         const thin = enteringLab && !active
         const lit = active || (entered && !enteringLab)
-        const [cx, cy, cz] = chunkPosition(chunk)
+        const [cx, , cz] = chunkPosition(chunk)
 
         return (
-          <group key={slug} position={[cx, cy, cz]}>
+          <group key={slug} position={[cx, 0, cz]}>
             <ThinnedStation thin={thin}>
               <LabStationBlock
                 chunk={chunk}
@@ -79,7 +73,7 @@ export function BenchRow({
           </group>
         )
       })}
-    </RoomShell>
+    </FloorPlate>
   )
 }
 
@@ -138,7 +132,7 @@ function LabStationBlock({
       </mesh>
 
       <StationFootprint width={w} depth={d} theme={theme} accent={accent} active={lit} thin={thin} />
-      <group position={[0, 0.04, 0]} scale={typologyScale}>
+      <group position={[0, 0.01, 0]} scale={typologyScale}>
         <LabTypology slug={slug} theme={theme} accent={accent} entered={entered} active={lit} />
       </group>
 

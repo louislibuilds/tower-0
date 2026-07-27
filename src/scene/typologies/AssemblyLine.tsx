@@ -1,6 +1,6 @@
 import type { ViewMode } from '../../building/viewMode'
 import { areaLabel, FACTORY_AREAS } from '../factoryStops'
-import { RoomShell } from '../primitives/RoomShell'
+import { FloorPlate } from '../primitives/FloorPlate'
 import { blueprintFitScale, factory23Interior } from './interiorScale'
 import { FactoryLineLayout } from './layouts/FactoryLineLayout'
 import { typologyMat, type TypologyProps } from './types'
@@ -28,14 +28,13 @@ export function AssemblyLine({
   const enteringFactory = factoryStop !== null && (viewMode === 'room' || viewMode === 'focus')
 
   return (
-    <RoomShell width={interior.w} depth={interior.d} height={interior.h} color={m.pal.graphite} floorColor={m.body} openFront={enteringFactory}>
-      <group position={[0, 0.02, 0]}>
+    <FloorPlate width={interior.w} depth={interior.d} color={m.pal.graphite} floorColor={m.body}>
+      <group scale={layoutScale}>
         <FactoryLineLayout
           theme={theme}
           accent={accent}
           entered={entered}
           active
-          scale={layoutScale}
           factoryStop={factoryStop}
           onSelectStop={onSelectStop}
           showLabels={entered && !enteringFactory}
@@ -43,6 +42,6 @@ export function AssemblyLine({
           areaLabels={FACTORY_AREAS.map((sem, i) => ({ label: areaLabel(i), detail: sem.label }))}
         />
       </group>
-    </RoomShell>
+    </FloorPlate>
   )
 }

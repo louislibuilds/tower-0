@@ -212,9 +212,9 @@ export function SiteLights({ theme }: { theme: 'dark' | 'light' }) {
   }
   return (
     <>
-      <ambientLight intensity={0.35} />
-      <directionalLight position={[6, 18, 8]} intensity={0.65} color="#E6E4DF" />
-      <directionalLight position={[-5, 10, -4]} intensity={0.15} color="#6A7078" />
+      <ambientLight intensity={0.58} color="#B8DCE8" />
+      <directionalLight position={[6, 18, 8]} intensity={0.75} color="#E6F4FA" />
+      <directionalLight position={[-5, 10, -4]} intensity={0.28} color="#56DAFF" />
     </>
   )
 }
