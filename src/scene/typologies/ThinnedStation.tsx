@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef, type ReactNode } from 'react'
 import * as THREE from 'three'
 
-/** Resume2 ThinnedMass — sibling stations fade fill, edges hold */
+/** Non-active sibling stations — ghost fill + ink wireframe for focus isolation */
 export function ThinnedStation({ thin, children }: { thin: boolean; children: ReactNode }) {
   const ref = useRef<THREE.Group>(null)
 
@@ -21,7 +21,8 @@ export function ThinnedStation({ thin, children }: { thin: boolean; children: Re
         const m = mat as THREE.MeshStandardMaterial
         if (!m.isMeshStandardMaterial) return
         m.transparent = true
-        m.opacity = thin ? 0.1 : 1
+        m.opacity = thin ? 0.04 : 1
+        m.wireframe = thin
         m.depthWrite = !thin
       })
     })
