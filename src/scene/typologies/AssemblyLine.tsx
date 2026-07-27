@@ -24,7 +24,7 @@ export function AssemblyLine({
 }: AssemblyLineProps) {
   const m = typologyMat(theme, accent, entered)
   const interior = factory23Interior()
-  const layoutScale = blueprintFitScale(11, 4, interior)
+  const layoutScale = blueprintFitScale(10, 5.4, interior, 0.82)
   const enteringFactory = factoryStop !== null && (viewMode === 'room' || viewMode === 'focus')
 
   return (

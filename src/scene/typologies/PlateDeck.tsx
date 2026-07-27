@@ -79,11 +79,10 @@ function useIdentityPlateMap(theme: Theme) {
   return tex
 }
 
-/** R · Plate Deck ??roof slab + Louis Li identity plate */
+/** R · Plate Deck — roof slab + identity plate at front edge */
 export function PlateDeck({
   theme,
   entered,
-  bandHeight = 0.9,
 }: {
   theme: Theme
   entered: boolean
@@ -91,13 +90,18 @@ export function PlateDeck({
 }) {
   const m = typologyMat(theme, '#2F6BFF', entered)
   const plateMap = useIdentityPlateMap(theme)
-  const deckY = bandHeight / 2 - 0.02
-
   const frameEdges = useMemo(() => new THREE.EdgesGeometry(new THREE.BoxGeometry(0.4, 0.5, 0.02)), [])
 
   return (
     <group>
-      <group position={[0, deckY, 0.12]}>
+      {/* helipad ring on deck surface */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.016, 0]}>
+        <ringGeometry args={[0.22, 0.38, 32]} />
+        <meshStandardMaterial color={m.pal.concrete} side={2} transparent opacity={entered ? 0.55 : 0.28} />
+      </mesh>
+
+      {/* identity plate — front edge of roof, not band center */}
+      <group position={[0, 0.02, 0.32]}>
         <WireBox
           size={[0.85, 0.04, 0.65]}
           position={[0, 0, 0]}
@@ -125,19 +129,10 @@ export function PlateDeck({
         {entered && (
           <mesh position={[0, 0.38, 0.07]}>
             <boxGeometry args={[0.06, 0.02, 0.01]} />
-            <meshStandardMaterial
-              color={m.warm}
-              emissive={m.warm}
-              emissiveIntensity={0.5}
-            />
+            <meshStandardMaterial color={m.warm} emissive={m.warm} emissiveIntensity={0.5} />
           </mesh>
         )}
       </group>
-
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, bandHeight / 2 - 0.45, 0]}>
-        <ringGeometry args={[0.3, 0.5, 32]} />
-        <meshStandardMaterial color={m.pal.concrete} side={2} transparent opacity={entered ? 0.5 : 0.25} />
-      </mesh>
     </group>
   )
 }

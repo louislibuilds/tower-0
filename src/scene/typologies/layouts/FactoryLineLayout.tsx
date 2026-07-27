@@ -6,9 +6,8 @@ import { bpBox, bpLine } from '../blueprintLayout'
 import { ThinnedStation } from '../ThinnedStation'
 import { typologyMat, type TypologyProps } from '../types'
 
-const ROOM_W = 11
-const ROOM_D = 4
-const STATIONS = [0.3, 2.9, 5.5, 8.1] as const
+const SEG_W = 10
+const SEG_D = 1.1
 
 function BpMesh({
   box,
@@ -29,7 +28,148 @@ function BpMesh({
   )
 }
 
-/** 23F factory · conveyor belt + four assembly stations */
+/** One conveyor + assembly cell (single semester line) */
+function FactoryLineSegment({
+  theme,
+  accent,
+  entered,
+  lit,
+  stopIndex,
+  factoryStop,
+  onSelectStop,
+  showLabels,
+  roomFocus,
+  meta,
+}: {
+  theme: TypologyProps['theme']
+  accent: string
+  entered: boolean
+  lit: boolean
+  stopIndex: number
+  factoryStop: number | null
+  onSelectStop?: (index: number) => void
+  showLabels: boolean
+  roomFocus: boolean
+  meta?: { label: string; detail: string }
+}) {
+  const m = typologyMat(theme, accent, entered)
+  const activeStop = factoryStop === stopIndex
+  const thin = factoryStop !== null && !activeStop
+  const stopLit = activeStop
+
+  const beltPosts = useMemo(
+    () =>
+      Array.from({ length: 9 }, (_, i) => {
+        const seg = bpLine(i + 0.5, 0.42, 0.18, i + 0.5, 0.68, 0.18, SEG_W, SEG_D)
+        return { key: i, seg }
+      }),
+    [],
+  )
+
+  const station = bpBox(4.2, 0.12, 0, 1.6, 0.88, 0.55, SEG_W, SEG_D)
+
+  return (
+    <ThinnedStation thin={thin}>
+      <Fragment>
+        {Array.from({ length: 10 }, (_, i) => (
+          <BpMesh
+            key={i}
+            box={bpBox(i, 0.42, 0, 1, 0.88, 0.18, SEG_W, SEG_D)}
+            color={m.pal.concrete}
+            emissive={lit ? accent : undefined}
+            emissiveIntensity={0.05}
+          />
+        ))}
+
+        {beltPosts.map(({ key, seg }) => (
+          <Line
+            key={key}
+            points={[new THREE.Vector3(...seg[0]), new THREE.Vector3(...seg[1])]}
+            color={m.pal.graphite}
+            lineWidth={1}
+            transparent
+            opacity={0.45}
+            dashed
+            dashSize={0.04}
+            gapSize={0.03}
+          />
+        ))}
+
+        <BpMesh box={station} color={m.alt} />
+        <BpMesh
+          box={bpBox(4.45, 0.18, 0.55, 1.05, 0.09, 0.72, SEG_W, SEG_D)}
+          color={m.pal.glass}
+          emissive={stopLit ? accent : undefined}
+          emissiveIntensity={stopLit ? 0.2 : 0.08}
+        />
+        <BpMesh box={bpBox(5.05, 0.42, 0.55, 0.1, 0.1, 0.95, SEG_W, SEG_D)} color={m.pal.alum} />
+        <BpMesh box={bpBox(4.5, 0.38, 1.72, 0.85, 0.12, 0.1, SEG_W, SEG_D)} color={m.pal.alum} />
+        <BpMesh box={bpBox(4.48, 0.3, 1.62, 0.14, 0.14, 0.2, SEG_W, SEG_D)} color={m.pal.graphite} />
+        <BpMesh
+          box={bpBox(4.2, 0.02, 0.82, 1.6, 0.28, 0.14, SEG_W, SEG_D)}
+          color={stopLit ? m.warm : m.pal.resin}
+          emissive={stopLit ? m.warm : undefined}
+          emissiveIntensity={0.1}
+        />
+
+        {/* pallets + tooling */}
+        {[2.2, 6.8].map((px, i) => (
+          <BpMesh
+            key={i}
+            box={bpBox(px, 0.45, 0.18, 0.48, 0.72, 0.48, SEG_W, SEG_D)}
+            color={lit ? m.warm : '#d8d4cc'}
+          />
+        ))}
+        <BpMesh box={bpBox(7.4, 0.15, 0, 0.55, 0.55, 0.42, SEG_W, SEG_D)} color={m.pal.graphite} />
+        <BpMesh box={bpBox(0.35, 0.15, 0, 0.45, 0.45, 0.38, SEG_W, SEG_D)} color={m.pal.alum} />
+
+        {onSelectStop && (
+          <mesh
+            position={station.position}
+            visible={false}
+            onPointerOver={(e) => {
+              if (thin) return
+              e.stopPropagation()
+              document.body.style.cursor = 'pointer'
+            }}
+            onPointerOut={() => {
+              document.body.style.cursor = 'crosshair'
+            }}
+            onClick={(e) => {
+              if (thin || (roomFocus && activeStop)) return
+              e.stopPropagation()
+              onSelectStop(stopIndex)
+            }}
+          >
+            <boxGeometry args={[station.size[0] * 1.15, station.size[1] * 2.4, station.size[2] * 1.4]} />
+            <meshBasicMaterial transparent opacity={0} />
+          </mesh>
+        )}
+
+        {showLabels && meta && (
+          <Html
+            center
+            position={[station.position[0], station.position[1] + station.size[1] * 1.15, station.position[2] + 0.06]}
+            style={{ pointerEvents: 'none' }}
+          >
+            <div>
+              <div
+                className={`scene-label scene-label--lab ${stopLit ? 'scene-label--active' : ''} ${roomFocus && activeStop ? 'scene-label--hidden' : ''}`}
+              >
+                {meta.label}
+              </div>
+              {entered && stopLit && !roomFocus && (
+                <div className="scene-label scene-label--tiny">{meta.detail}</div>
+              )}
+            </div>
+          </Html>
+        )}
+      </Fragment>
+    </ThinnedStation>
+  )
+}
+
+/** 23F factory · four parallel production lines */
 export function FactoryLineLayout({
   theme,
   accent,
@@ -50,117 +190,26 @@ export function FactoryLineLayout({
   roomFocus?: boolean
   areaLabels?: { label: string; detail: string }[]
 }) {
-  const m = typologyMat(theme, accent, entered)
-  const lit = entered || active
-  const entering = factoryStop !== null
-
-  const beltPosts = useMemo(
-    () =>
-      Array.from({ length: 10 }, (_, i) => {
-        const seg = bpLine(i + 0.5, 1.5, 0.22, i + 0.5, 2.5, 0.22, ROOM_W, ROOM_D)
-        return { key: i, seg }
-      }),
-    [],
-  )
+  const lit = !!(entered || active)
+  const lineZ = [-0.42, -0.14, 0.14, 0.42] as const
 
   return (
     <group scale={scale}>
-      {Array.from({ length: 11 }, (_, i) => (
-        <BpMesh
-          key={i}
-          box={bpBox(i, 1.5, 0, 1, 1, 0.22, ROOM_W, ROOM_D)}
-          color={m.pal.concrete}
-          emissive={lit ? accent : undefined}
-          emissiveIntensity={0.04}
-        />
-      ))}
-
-      {beltPosts.map(({ key, seg }) => (
-        <Line
-          key={key}
-          points={[new THREE.Vector3(...seg[0]), new THREE.Vector3(...seg[1])]}
-          color={m.pal.graphite}
-          lineWidth={1}
-          transparent
-          opacity={0.45}
-          dashed
-          dashSize={0.04}
-          gapSize={0.03}
-        />
-      ))}
-
-      {STATIONS.map((sx, si) => {
-        const station = bpBox(sx, 0.2, 0, 1.5, 1, 0.62, ROOM_W, ROOM_D)
-        const activeStop = factoryStop === si
-        const thin = entering && !activeStop
-        const stopLit = activeStop
-        const meta = areaLabels[si]
-        return (
-        <ThinnedStation key={si} thin={thin}>
-        <Fragment>
-          <BpMesh box={station} color={m.alt} />
-          <BpMesh
-            box={bpBox(sx + 0.25, 0.25, 0.62, 1.0, 0.09, 0.82, ROOM_W, ROOM_D)}
-            color={m.pal.glass}
-            emissive={stopLit ? accent : undefined}
-            emissiveIntensity={stopLit ? 0.18 : 0.1}
+      {lineZ.map((z, si) => (
+        <group key={si} position={[0, 0, z]}>
+          <FactoryLineSegment
+            theme={theme}
+            accent={accent}
+            entered={entered}
+            lit={lit}
+            stopIndex={si}
+            factoryStop={factoryStop}
+            onSelectStop={onSelectStop}
+            showLabels={!!showLabels}
+            roomFocus={!!roomFocus}
+            meta={areaLabels[si]}
           />
-          <BpMesh box={bpBox(sx + 0.65, 0.5, 0.62, 0.1, 0.1, 1.1, ROOM_W, ROOM_D)} color={m.pal.alum} />
-          <BpMesh box={bpBox(sx + 0.28, 0.45, 1.72, 0.82, 0.14, 0.1, ROOM_W, ROOM_D)} color={m.pal.alum} />
-          <BpMesh box={bpBox(sx + 0.26, 0.36, 1.62, 0.14, 0.14, 0.22, ROOM_W, ROOM_D)} color={m.pal.graphite} />
-          <BpMesh
-            box={bpBox(sx, 2.72, 0, 1.5, 0.35, 0.18, ROOM_W, ROOM_D)}
-            color={stopLit ? m.warm : m.pal.resin}
-            emissive={stopLit ? m.warm : undefined}
-            emissiveIntensity={0.08}
-          />
-          {onSelectStop && (
-            <mesh
-              position={station.position}
-              visible={false}
-              onPointerOver={(e) => {
-                if (thin) return
-                e.stopPropagation()
-                document.body.style.cursor = 'pointer'
-              }}
-              onPointerOut={() => {
-                document.body.style.cursor = 'crosshair'
-              }}
-              onClick={(e) => {
-                if (thin || (roomFocus && activeStop)) return
-                e.stopPropagation()
-                onSelectStop(si)
-              }}
-            >
-              <boxGeometry args={[station.size[0] * 1.1, station.size[1] * 2.2, station.size[2] * 1.35]} />
-              <meshBasicMaterial transparent opacity={0} />
-            </mesh>
-          )}
-          {showLabels && meta && (
-            <Html center position={[station.position[0], station.position[1] + station.size[1] * 1.1, station.position[2] + 0.08]} style={{ pointerEvents: 'none' }}>
-              <div>
-                <div
-                  className={`scene-label scene-label--lab ${stopLit ? 'scene-label--active' : ''} ${roomFocus && activeStop ? 'scene-label--hidden' : ''}`}
-                >
-                  {meta.label}
-                </div>
-                {entered && stopLit && !roomFocus && (
-                  <div className="scene-label scene-label--tiny">{meta.detail}</div>
-                )}
-              </div>
-            </Html>
-          )}
-        </Fragment>
-        </ThinnedStation>
-        )
-      })}
-
-      {[1.8, 4.5, 7.2].map((px, i) => (
-        <BpMesh
-          key={i}
-          box={bpBox(px, 1.6, 0.22, 0.52, 0.82, 0.52, ROOM_W, ROOM_D)}
-          color={lit ? m.warm : '#d8d4cc'}
-        />
+        </group>
       ))}
     </group>
   )

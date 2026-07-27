@@ -4,7 +4,7 @@ import { credentials } from '../../data/credentials'
 import { libraryBooks } from '../../data/libraryBooks'
 import type { LibraryRoomSlug } from '../../data/libraryRooms'
 import { FloorPlate } from '../primitives/FloorPlate'
-import { chunkPosition, VAULT_CHUNKS } from './floorChunks'
+import { chunkPosition, vaultCornerAnchor, VAULT_CHUNKS } from './floorChunks'
 import { ArchiveVaultLayout } from './layouts/ArchiveVaultLayout'
 import { LibraryStackLayout } from './layouts/LibraryStackLayout'
 import { blueprintFitScale, vault99Interior, vaultZoneInterior } from './interiorScale'
@@ -24,9 +24,14 @@ interface StackVaultProps extends TypologyProps {
   onCredentialClick: (slug: string) => void
 }
 
-const POD_SCALE_RATIO = 0.5
+const POD_SCALE_RATIO = 0.52
 
-/** 99 · Stack Room + Vault Wall — flat floor plate, two station blocks */
+function cornerPosition(slug: LibraryRoomSlug, interior: { w: number; d: number }, scale: number) {
+  const [x, , z] = vaultCornerAnchor(slug, interior, scale)
+  return [x, 0, z] as [number, number, number]
+}
+
+/** 99 · Stack Room + Vault Wall — corner suites on floor plate */
 export function StackVaultFloor(props: StackVaultProps) {
   const {
     theme,
@@ -50,14 +55,13 @@ export function StackVaultFloor(props: StackVaultProps) {
   return (
     <FloorPlate width={interior.w} depth={interior.d} color={m.pal.graphite} floorColor={m.body}>
       {anyZoomed && libraryRoomSlug ? (
-        <group>
+        <group position={cornerPosition(libraryRoomSlug, interior, focusScale)}>
           {libraryRoomSlug === 'library' ? (
             <LibraryRoomInterior
               theme={theme}
               accent={accent}
               entered={entered}
               scale={focusScale}
-              roomDepth={interior.d}
               onBookClick={onBookClick}
             />
           ) : (
@@ -66,7 +70,6 @@ export function StackVaultFloor(props: StackVaultProps) {
               accent={accent}
               entered={entered}
               scale={focusScale}
-              roomDepth={interior.d}
               onCredentialClick={onCredentialClick}
             />
           )}
@@ -149,13 +152,7 @@ function VaultZonePod({
         <StationFootprint width={w} depth={d} theme={theme} accent={accent} active={active} thin={thin} />
         <group scale={scale}>
           {slug === 'library' ? (
-            <LibraryStackLayout
-              theme={theme}
-              accent={accent}
-              entered={entered}
-              active={active}
-              showShell={false}
-            />
+            <LibraryStackLayout theme={theme} accent={accent} entered={entered} active={active} showShell={false} />
           ) : (
             <ArchiveVaultLayout theme={theme} accent={accent} entered={entered} active={active} />
           )}
@@ -175,33 +172,24 @@ function LibraryRoomInterior({
   accent,
   entered,
   scale,
-  roomDepth,
   onBookClick,
 }: {
   theme: TypologyProps['theme']
   accent: string
   entered: boolean
   scale: number
-  roomDepth: number
   onBookClick: (slug: string) => void
 }) {
   return (
     <group>
-      <LibraryStackLayout
-        theme={theme}
-        accent={accent}
-        entered={entered}
-        active
-        scale={scale}
-        showShell
-      />
+      <LibraryStackLayout theme={theme} accent={accent} entered={entered} active scale={scale} showShell />
 
       {libraryBooks.map((book, i) => {
         const row = Math.floor(i / 2)
         const col = i % 2
         const x = (-0.12 + col * 0.08) * scale
         const y = (0.1 + row * 0.14) * scale
-        const z = -roomDepth / 2 + 0.22 * scale
+        const z = 0.12 * scale
 
         return (
           <mesh
@@ -233,14 +221,12 @@ function VaultWallInterior({
   accent,
   entered,
   scale,
-  roomDepth,
   onCredentialClick,
 }: {
   theme: TypologyProps['theme']
   accent: string
   entered: boolean
   scale: number
-  roomDepth: number
   onCredentialClick: (slug: string) => void
 }) {
   const show = credentials.slice(0, 6)
@@ -254,7 +240,7 @@ function VaultWallInterior({
         const col = i % 3
         const x = (-0.22 + col * 0.22) * scale
         const y = (0.08 + row * 0.2) * scale
-        const z = -roomDepth / 2 + 0.18 * scale
+        const z = 0.1 * scale
 
         return (
           <mesh
