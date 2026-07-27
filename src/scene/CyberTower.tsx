@@ -24,6 +24,7 @@ import { CircuitBase } from './exhibits/CircuitBase'
 import { TowerMass } from './mass/TowerMass'
 import { EdgeInkContext, WindowMatrix } from './primitives'
 import { FloorRoom } from './rooms'
+import { IdentityPlate } from './typologies/IdentityPlate'
 
 import type { ViewMode } from '../building/viewMode'
 import type { LibraryRoomSlug } from '../data/libraryRooms'
@@ -432,6 +433,10 @@ export function CyberTower({
 
   const roofProgram = getProgramFloor('roof')
   const spireBase = programBaseY(roofProgram) + roofProgram.bandHeight
+  const f99 = getProgramFloor('99')
+  const identityPlateY = programBaseY(f99) + f99.bandHeight
+  const identityPlateZ = f99.depth / 2 + 0.015
+  const showIdentityPlate = extrude > 0.55
 
   return (
     <EdgeInkContext.Provider value={edgeInk}>
@@ -515,6 +520,12 @@ export function CyberTower({
               active={activeFloorId === 'roof'}
               shellFade={isolate && activeFloorId !== 'roof'}
             />
+          )}
+
+          {showIdentityPlate && (
+            <group position={[0, identityPlateY, identityPlateZ]}>
+              <IdentityPlate theme={theme} entered={activeFloorId === 'roof' || activeFloorId === '99'} />
+            </group>
           )}
         </>
       )}

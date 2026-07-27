@@ -24,54 +24,49 @@ export function floorInterior(floorId: FloorId) {
 export const MIN_CHUNK = { w: 0.28, d: 0.26, h: 0.32 } as const
 
 /**
- * 52F — five labs on a double-loaded corridor (max 8 suites + circulation).
- * North row ×3 faces south; south row ×2 faces north.
+ * 52F — five lab suites in a back-wall gallery (mirrors 99F corner pods).
+ * Back row ×3, front row ×2; all face the viewer.
  */
 export const LAB_CHUNKS: ExhibitChunk[] = [
   {
     id: 'lab-001',
     slug: 'unihack-2026',
     code: '001',
-    pos: [-0.66, 0, 0.52],
-    size: { w: 0.38, d: 0.32, h: 0.34 },
+    pos: [-0.72, 0, -0.58],
+    size: { w: 0.48, d: 0.42, h: 0.38 },
     cameraSide: 'right',
-    rotation: Math.PI,
   },
   {
     id: 'lab-002',
     slug: 'cloud-computing',
     code: '002',
-    pos: [0, 0, 0.52],
-    size: { w: 0.38, d: 0.32, h: 0.34 },
+    pos: [0, 0, -0.58],
+    size: { w: 0.48, d: 0.42, h: 0.38 },
     cameraSide: 'right',
-    rotation: Math.PI,
   },
   {
     id: 'lab-003',
     slug: 'nlp',
     code: '003',
-    pos: [0.66, 0, 0.52],
-    size: { w: 0.38, d: 0.32, h: 0.34 },
+    pos: [0.72, 0, -0.58],
+    size: { w: 0.48, d: 0.42, h: 0.38 },
     cameraSide: 'left',
-    rotation: Math.PI,
   },
   {
     id: 'lab-004',
     slug: 'dl',
     code: '004',
-    pos: [-0.52, 0, -0.5],
-    size: { w: 0.38, d: 0.32, h: 0.34 },
+    pos: [-0.36, 0, -0.18],
+    size: { w: 0.48, d: 0.42, h: 0.38 },
     cameraSide: 'right',
-    rotation: 0,
   },
   {
     id: 'lab-005',
     slug: 'kata',
     code: '005',
-    pos: [0.52, 0, -0.5],
-    size: { w: 0.38, d: 0.32, h: 0.34 },
+    pos: [0.36, 0, -0.18],
+    size: { w: 0.48, d: 0.42, h: 0.38 },
     cameraSide: 'left',
-    rotation: 0,
   },
 ]
 
@@ -115,6 +110,16 @@ export function labChunk(slug: string): ExhibitChunk | undefined {
 
 export function vaultChunk(slug: LibraryRoomSlug): ExhibitChunk {
   return VAULT_CHUNKS[slug]
+}
+
+/** Back-wall anchor when a 52F lab suite expands (99F vault pattern) */
+export function labCellAnchor(slug: string, _interior: { w: number; d: number }, scale: number) {
+  const chunk = labChunk(slug)
+  if (!chunk) return [0, 0.04, 0] as const
+  const [cx, , cz] = chunkPosition(chunk)
+  const halfD = (chunk.size.d * scale * 0.55) / 2
+  const z = cz - chunk.size.d / 2 + halfD + 0.03
+  return [cx, 0.04, z] as const
 }
 
 /** Corner anchor for vault room focus (library = back-left, archive = back-right) */

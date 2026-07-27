@@ -18,14 +18,11 @@ export function AssemblyLine({
   accent,
   entered,
   factoryStop,
-  viewMode = 'floor',
-  roomFocus = false,
   onSelectStop,
 }: AssemblyLineProps) {
   const m = typologyMat(theme, accent, entered)
   const plate = floorPlateSize('23')
-  const layoutScale = blueprintFitScale(10, 5.4, plate, 0.88)
-  const enteringFactory = factoryStop !== null && (viewMode === 'room' || viewMode === 'focus')
+  const layoutScale = blueprintFitScale(10, 5.4, plate, 0.82)
 
   return (
     <FloorPlate width={plate.w} depth={plate.d} color={m.pal.graphite} floorColor={m.body}>
@@ -37,8 +34,7 @@ export function AssemblyLine({
           active
           factoryStop={factoryStop}
           onSelectStop={onSelectStop}
-          showLabels={entered && !enteringFactory}
-          roomFocus={roomFocus}
+          showLabels={entered}
           areaLabels={FACTORY_AREAS.map((sem, i) => ({ label: areaLabel(i), detail: sem.label }))}
           lineVariants={FACTORY_LINE_VARIANTS}
         />

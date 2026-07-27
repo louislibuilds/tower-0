@@ -9,9 +9,8 @@ import type { SitePhase } from '../building/sitePhase'
 import type { ViewMode } from '../building/viewMode'
 import type { LibraryRoomSlug } from '../data/libraryRooms'
 import { getProgramFloor, programCenterY, programBaseY, towerTotalHeight } from '../scene/towerGeometry'
-import { FACTORY_LINE_Z } from '../scene/factoryStops'
 import { floorPlateSize } from '../scene/typologies/interiorScale'
-import { chunkBaseLookAt, chunkPosition, labChunk, vaultCornerAnchor } from '../scene/typologies/floorChunks'
+import { chunkBaseLookAt, labCellAnchor, labChunk, vaultCornerAnchor } from '../scene/typologies/floorChunks'
 
 export interface AuthoredPreset {
   lookAt: [number, number, number]
@@ -38,29 +37,28 @@ function compose(floorY: number, preset: AuthoredPreset): CameraPreset {
   }
 }
 
-function labPresetFromChunk(slug: string, zoom: number): AuthoredPreset | null {
+function labFocusPreset(slug: string): AuthoredPreset | null {
   const chunk = labChunk(slug)
   if (!chunk) return null
-  const [cx, , cz] = chunkPosition(chunk)
-  const rot = chunk.rotation ?? 0
-  const eyeZ = rot === 0 ? -0.48 : 0.48
+  const plate = floorPlateSize('52')
+  const [tx, , tz] = labCellAnchor(slug, plate, 0.72)
   const eyeX = chunk.cameraSide === 'left' ? -0.44 : 0.44
-  return { lookAt: [cx, chunkBaseLookAt(chunk), cz], eye: [eyeX, 0.14, eyeZ], zoom }
+  return { lookAt: [tx, chunkBaseLookAt(chunk), tz], eye: [eyeX, 0.12, 0.46], zoom: 462 }
 }
 
-/** 52F · five lab stations — lookAt at suite door toward corridor */
+/** 52F · five lab suites — back-wall gallery (99F pattern) */
 const LAB_STATIONS: Record<string, AuthoredPreset> = {
-  'unihack-2026': labPresetFromChunk('unihack-2026', 468)!,
-  'cloud-computing': labPresetFromChunk('cloud-computing', 468)!,
-  nlp: labPresetFromChunk('nlp', 468)!,
-  dl: labPresetFromChunk('dl', 468)!,
-  kata: labPresetFromChunk('kata', 468)!,
+  'unihack-2026': labFocusPreset('unihack-2026')!,
+  'cloud-computing': labFocusPreset('cloud-computing')!,
+  nlp: labFocusPreset('nlp')!,
+  dl: labFocusPreset('dl')!,
+  kata: labFocusPreset('kata')!,
 }
 
 const LAB_FLOOR_OVERVIEW: AuthoredPreset = {
-  lookAt: [0, 0.04, 0],
-  eye: [0.42, 0.48, 2.05],
-  zoom: 188,
+  lookAt: [0, 0.04, -0.1],
+  eye: [0.38, 0.28, 1.78],
+  zoom: 170,
 }
 
 function vaultFocusPreset(
@@ -107,17 +105,11 @@ const VAULT_BOOK_FOCUS = vaultFocusPreset('library', [0, 0.04, 0.08], [0.42, 0.1
 
 const VAULT_CREDENTIAL_FOCUS = vaultFocusPreset('archive', [0, 0.04, 0.08], [-0.42, 0.1, 0.42], 478)
 
-/** 23F · four parallel production lines */
-const FACTORY_STATIONS: AuthoredPreset[] = FACTORY_LINE_Z.map((z, i) => ({
-  lookAt: [0, 0.04, z],
-  eye: [i % 2 === 0 ? 0.52 : -0.52, 0.26, z + 0.38],
-  zoom: 332 + (i % 2) * 10,
-}))
-
-const FACTORY_FLOOR_OVERVIEW: AuthoredPreset = {
-  lookAt: [0, 0.03, 0.06],
-  eye: [0.35, 0.42, 1.85],
-  zoom: 178,
+/** 23F · side timeline — all lines visible left→right, no per-stop camera swing */
+const FACTORY_TIMELINE_VIEW: AuthoredPreset = {
+  lookAt: [0, 0.04, 0.02],
+  eye: [2.05, 0.34, 0.12],
+  zoom: 162,
 }
 
 /** G · threshold hall */
@@ -132,15 +124,17 @@ const B10_FOCUS: AuthoredPreset = { lookAt: [0, 0.06, 0.02], eye: [0.38, 0.2, 0.
 const B2_FLOOR: AuthoredPreset = { lookAt: [0, 0.06, 0.02], eye: [-0.42, 0.22, 0.68], zoom: 268 }
 const B2_FOCUS: AuthoredPreset = { lookAt: [0, 0.06, 0.02], eye: [-0.38, 0.2, 0.62], zoom: 288 }
 
-/** Roof · plate deck */
+/** Roof · plate deck — look at identity plate on 99F top front edge */
 function roofPresets(): { floor: AuthoredPreset; room: AuthoredPreset } {
   const roof = getProgramFloor('roof')
-  const plateY = programBaseY(roof) + roof.bandHeight * 0.55
+  const f99 = getProgramFloor('99')
+  const plateY = programBaseY(f99) + f99.bandHeight + 0.24
   const centerY = programCenterY(roof)
   const lift = plateY - centerY
+  const zPlate = f99.depth / 2 + 0.02
   return {
-    floor: { lookAt: [0, lift, 0.1], eye: [0.72, 0.55, 2.4], zoom: 78 },
-    room: { lookAt: [0, lift + 0.08, 0.18], eye: [0.28, 0.18, 0.95], zoom: 255 },
+    floor: { lookAt: [0, lift, zPlate], eye: [0.62, 0.42, 2.35], zoom: 76 },
+    room: { lookAt: [0, lift + 0.02, zPlate], eye: [0.24, 0.08, 1.05], zoom: 248 },
   }
 }
 
@@ -200,11 +194,7 @@ export function stationCameraPreset(
   }
 
   if (floorId === '23') {
-    if (opts.factoryStop !== null && (viewMode === 'room' || viewMode === 'focus')) {
-      const preset = FACTORY_STATIONS[opts.factoryStop] ?? FACTORY_STATIONS[0]
-      return compose(y, preset)
-    }
-    return compose(y, FACTORY_FLOOR_OVERVIEW)
+    return compose(y, FACTORY_TIMELINE_VIEW)
   }
 
   if (floorId === '52') {
