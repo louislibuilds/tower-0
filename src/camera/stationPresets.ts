@@ -46,11 +46,11 @@ function labPresetFromChunk(slug: string, eye: [number, number, number], zoom: n
 
 /** 52F · five lab stations — lookAt at footprint base, low eye offset */
 const LAB_STATIONS: Record<string, AuthoredPreset> = {
-  'unihack-2026': labPresetFromChunk('unihack-2026', [0.52, 0.14, 0.58], 485)!,
-  'cloud-computing': labPresetFromChunk('cloud-computing', [-0.52, 0.14, 0.58], 465)!,
-  nlp: labPresetFromChunk('nlp', [0.62, 0.14, 0.56], 480)!,
-  dl: labPresetFromChunk('dl', [-0.62, 0.14, 0.56], 505)!,
-  kata: labPresetFromChunk('kata', [0.02, 0.14, 0.64], 475)!,
+  'unihack-2026': labPresetFromChunk('unihack-2026', [0.52, 0.14, 0.58], 545)!,
+  'cloud-computing': labPresetFromChunk('cloud-computing', [-0.52, 0.14, 0.58], 525)!,
+  nlp: labPresetFromChunk('nlp', [0.62, 0.14, 0.56], 540)!,
+  dl: labPresetFromChunk('dl', [-0.62, 0.14, 0.56], 565)!,
+  kata: labPresetFromChunk('kata', [0.02, 0.14, 0.64], 535)!,
 }
 
 const LAB_FLOOR_OVERVIEW: AuthoredPreset = {
@@ -83,8 +83,8 @@ function vaultFocusPreset(
 }
 
 const VAULT_STATIONS: Record<LibraryRoomSlug, AuthoredPreset> = {
-  library: vaultPreset('library', [0.48, 0.16, 0.62], 295),
-  archive: vaultPreset('archive', [-0.48, 0.16, 0.62], 305),
+  library: vaultPreset('library', [0.48, 0.16, 0.62], 335),
+  archive: vaultPreset('archive', [-0.48, 0.16, 0.62], 345),
 }
 
 const VAULT_FLOOR_OVERVIEW: AuthoredPreset = {
@@ -101,7 +101,7 @@ const VAULT_CREDENTIAL_FOCUS = vaultFocusPreset('archive', [0, 0.06, -0.04], [-0
 const FACTORY_STATIONS: AuthoredPreset[] = FACTORY_STOPS.map((sx, i) => ({
   lookAt: [sx, 0.04, 0.1],
   eye: [i % 2 === 0 ? 0.58 : -0.58, 0.32, 0.88],
-  zoom: 220 + (i % 2) * 12,
+  zoom: 248 + (i % 2) * 12,
 }))
 
 const FACTORY_FLOOR_OVERVIEW: AuthoredPreset = {

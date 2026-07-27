@@ -9,7 +9,7 @@ export function RackHall({ theme, accent, entered, active }: TypologyProps) {
   const m = typologyMat(theme, accent, entered)
   const lit = entered || active
   const interior = techB10Interior()
-  const layoutScale = blueprintFitScale(8, 6, interior, 0.9)
+  const layoutScale = blueprintFitScale(8, 6, interior)
 
   return (
     <RoomShell width={interior.w} depth={interior.d} height={interior.h} color={m.pal.graphite} floorColor={m.body} openFront>

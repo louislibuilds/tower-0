@@ -82,6 +82,8 @@ export function FloorRoom({
         entered={entered}
         hover={hover}
         factoryStop={factoryStop}
+        viewMode={viewMode}
+        roomFocus={roomFocus && factoryStop !== null}
         onSelectStop={onFactoryStop}
       />
     )

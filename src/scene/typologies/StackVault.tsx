@@ -109,6 +109,7 @@ export function StackVaultFloor(props: StackVaultProps) {
                 entered={entered}
                 active={libraryRoomSlug === slug}
                 thin={thin}
+                roomFocus={roomFocus && libraryRoomSlug === slug}
                 onClick={() => onLibraryRoomClick(slug)}
                 onHover={onLibraryRoomHover}
               />
@@ -129,6 +130,7 @@ function VaultZonePod({
   entered,
   active,
   thin,
+  roomFocus = false,
   onClick,
   onHover,
 }: {
@@ -140,6 +142,7 @@ function VaultZonePod({
   entered: boolean
   active: boolean
   thin: boolean
+  roomFocus?: boolean
   onClick: () => void
   onHover: (slug: LibraryRoomSlug | null) => void
 }) {
@@ -183,8 +186,12 @@ function VaultZonePod({
           )}
         </group>
         {!thin && (
-          <Html center position={[0, h / 2 + 0.12, 0]} style={{ pointerEvents: 'none' }}>
-            <div className={`scene-label scene-label--lab ${active ? 'scene-label--active' : ''}`}>{label}</div>
+          <Html center position={[0, h / 2 + 0.1, 0]} style={{ pointerEvents: 'none' }}>
+            <div
+              className={`scene-label scene-label--lab ${active ? 'scene-label--active' : ''} ${roomFocus ? 'scene-label--hidden' : ''}`}
+            >
+              {label}
+            </div>
           </Html>
         )}
       </group>

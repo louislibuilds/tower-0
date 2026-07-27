@@ -8,5 +8,7 @@ export { AssemblyLine as WarehouseRoom } from '../typologies/AssemblyLine'
 
 export type FactoryRoomProps = RoomProps & {
   factoryStop: number | null
+  viewMode?: import('../../building/viewMode').ViewMode
+  roomFocus?: boolean
   onSelectStop: (stop: number) => void
 }

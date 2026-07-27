@@ -8,7 +8,7 @@ export function RiserCore({ theme, accent, entered, active = false }: TypologyPr
   const m = typologyMat(theme, accent, entered)
   const lit = entered || active
   const interior = infraB2Interior()
-  const layoutScale = blueprintFitScale(6, 5, interior, 0.88)
+  const layoutScale = blueprintFitScale(6, 5, interior)
 
   return (
     <RoomShell width={interior.w} depth={interior.d} height={interior.h} color={m.pal.graphite} floorColor={m.body} openFront>
