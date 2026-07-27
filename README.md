@@ -54,7 +54,7 @@ src/
   camera/OrthoRig.tsx        Per-floor orthographic camera
 ```
 
-Inspired by [salieri009/resume2](https://github.com/salieri009/resume2) · cyberpunk reference art.
+Orthographic tower portfolio · INK/PAPER siteline · cyberpunk reference art.
 
 ## License
 

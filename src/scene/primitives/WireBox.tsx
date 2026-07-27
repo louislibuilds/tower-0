@@ -9,7 +9,7 @@ interface WireBoxProps {
   fillColor?: string
 }
 
-/** Line-edged box — resume2-style wireframe solid */
+/** Line-edged box — wireframe solid with ink edge lines */
 export function WireBox({ size, position = [0, 0, 0], color, fillOpacity = 0.06, fillColor }: WireBoxProps) {
   const [w, h, d] = size
   const edges = useMemo(() => new THREE.EdgesGeometry(new THREE.BoxGeometry(w, h, d)), [w, h, d])
