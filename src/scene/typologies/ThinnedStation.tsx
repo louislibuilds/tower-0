@@ -1,6 +1,7 @@
 import { useFrame } from '@react-three/fiber'
 import { useLayoutEffect, useRef, type ReactNode } from 'react'
 import * as THREE from 'three'
+import { isTowerPick } from '../primitives/pickVolume'
 
 function nativeRaycast(o: THREE.Object3D): THREE.Object3D['raycast'] {
   const mesh = o as THREE.Mesh
@@ -12,10 +13,12 @@ function nativeRaycast(o: THREE.Object3D): THREE.Object3D['raycast'] {
   return () => {}
 }
 
-/** Disable picks on ghost pods — visuals come from declarative `thin` props */
+/** Disable picks on ghost pods — never touch towerPick volumes */
 function applyThinRaycast(root: THREE.Object3D | null, thin: boolean) {
   if (!root) return
   root.traverse((o) => {
+    if (isTowerPick(o)) return
+
     if (thin) {
       if (!o.userData.thinRaycastDisabled) {
         o.userData.prevRaycast = o.raycast

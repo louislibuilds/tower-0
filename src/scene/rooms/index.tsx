@@ -31,6 +31,7 @@ interface FloorRoomProps extends RoomProps {
   onLibraryRoomClick?: (slug: LibraryRoomSlug) => void
   onLibraryRoomHover?: (slug: LibraryRoomSlug | null) => void
   onFactoryStop?: (stop: number) => void
+  onFactoryStopHover?: (stop: number | null) => void
   onBookClick?: (slug: string) => void
   onCredentialClick?: (slug: string) => void
 }
@@ -53,6 +54,7 @@ export function FloorRoom({
   onLibraryRoomClick = () => {},
   onLibraryRoomHover = () => {},
   onFactoryStop = () => {},
+  onFactoryStopHover = () => {},
   onBookClick = () => {},
   onCredentialClick = () => {},
 }: FloorRoomProps) {
@@ -85,7 +87,9 @@ export function FloorRoom({
         factoryStop={factoryStop}
         viewMode={viewMode}
         roomFocus={roomFocus && factoryStop !== null}
+        floorOverview={viewMode === 'floor' && factoryStop === null}
         onSelectStop={onFactoryStop}
+        onHoverStop={onFactoryStopHover}
       />
     )
   }

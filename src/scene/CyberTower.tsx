@@ -50,6 +50,7 @@ interface CyberTowerProps {
   onLibraryRoomClick: (slug: LibraryRoomSlug) => void
   onLibraryRoomHover: (slug: LibraryRoomSlug | null) => void
   onFactoryStop: (stop: number) => void
+  onFactoryStopHover: (stop: number | null) => void
   onBookClick: (slug: string) => void
   onCredentialClick: (slug: string) => void
 }
@@ -197,6 +198,7 @@ function ProgramFloorBand({
   onLibraryRoomClick,
   onLibraryRoomHover,
   onFactoryStop,
+  onFactoryStopHover,
   onBookClick,
   onCredentialClick,
 }: {
@@ -222,6 +224,7 @@ function ProgramFloorBand({
   onLibraryRoomClick: (slug: LibraryRoomSlug) => void
   onLibraryRoomHover: (slug: LibraryRoomSlug | null) => void
   onFactoryStop: (stop: number) => void
+  onFactoryStopHover: (stop: number | null) => void
   onBookClick: (slug: string) => void
   onCredentialClick: (slug: string) => void
 }) {
@@ -368,6 +371,7 @@ function ProgramFloorBand({
             onLibraryRoomClick={onLibraryRoomClick}
             onLibraryRoomHover={onLibraryRoomHover}
             onFactoryStop={onFactoryStop}
+            onFactoryStopHover={onFactoryStopHover}
             onBookClick={onBookClick}
             onCredentialClick={onCredentialClick}
           />
@@ -468,6 +472,7 @@ export function CyberTower({
   onLibraryRoomClick,
   onLibraryRoomHover,
   onFactoryStop,
+  onFactoryStopHover,
   onBookClick,
   onCredentialClick,
 }: CyberTowerProps) {
@@ -478,7 +483,6 @@ export function CyberTower({
   const shaftSegments = useMemo(() => getShaftSegments(), [])
   const glowRef = useRef<THREE.PointLight>(null)
   const isolate = viewMode !== 'tower' && activeFloorId !== 'G'
-  const hideGround = activeFloorId === 'B2' || activeFloorId === 'B10'
   const isNight = theme === 'dark'
 
   useEffect(() => {
@@ -507,13 +511,9 @@ export function CyberTower({
     <group>
       <fog attach="fog" args={[pal.paper, 30, 70]} />
 
-      {!hideGround && extrude > 0.05 && (
-        <GroundGrid extent={12} step={0.75} opacity={0.24} />
-      )}
+      {extrude > 0.05 && <GroundGrid extent={12} step={0.75} opacity={0.24} />}
 
-      {!hideGround && (
-        <Line points={[[-8, 0.03, 0], [8, 0.03, 0]]} color={pal.graphite} lineWidth={1} transparent opacity={0.35} />
-      )}
+      <Line points={[[-8, 0.03, 0], [8, 0.03, 0]]} color={pal.graphite} lineWidth={1} transparent opacity={0.35} />
 
       <TowerMass
         ink={ink}
@@ -521,7 +521,6 @@ export function CyberTower({
         theme={theme}
         footprintW={footprintW}
         footprintD={footprintD}
-        hideSolidGround
         showGroundGrid={false}
       />
 
@@ -568,6 +567,7 @@ export function CyberTower({
                 onLibraryRoomClick={onLibraryRoomClick}
                 onLibraryRoomHover={onLibraryRoomHover}
                 onFactoryStop={onFactoryStop}
+                onFactoryStopHover={onFactoryStopHover}
                 onBookClick={onBookClick}
                 onCredentialClick={onCredentialClick}
               />

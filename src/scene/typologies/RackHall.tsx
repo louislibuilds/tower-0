@@ -19,7 +19,7 @@ export function RackHall({ theme, accent, entered, active }: TypologyProps) {
   const cellScale = blueprintFitScale(8, 6, { w: plate.w * 0.46, d: plate.d * 0.46 }, 0.88)
 
   return (
-    <FloorPlate width={plate.w} depth={plate.d} color={m.pal.graphite} floorColor={m.body}>
+    <FloorPlate width={plate.w} depth={plate.d} color={m.pal.graphite} floorColor={m.body} variant="grid">
       {QUAD_OFFSETS.map(([x, z], i) => (
         <group key={i} position={[x, 0.01, z]} scale={cellScale}>
           <TechCentreLayout theme={theme} accent={accent} entered={entered} active={lit} />

@@ -33,6 +33,7 @@ interface TowerSceneProps {
   onLibraryRoomClick: (slug: LibraryRoomSlug) => void
   onLibraryRoomHover: (slug: LibraryRoomSlug | null) => void
   onFactoryStop: (stop: number) => void
+  onFactoryStopHover: (stop: number | null) => void
   onBookClick: (slug: string) => void
   onCredentialClick: (slug: string) => void
 }

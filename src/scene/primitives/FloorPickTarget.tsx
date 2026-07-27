@@ -1,6 +1,8 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import type { ThreeEvent } from '@react-three/fiber'
+import type { Mesh } from 'three'
 import { WireBox } from './WireBox'
+import { markTowerPick } from './pickVolume'
 
 /** Slightly larger than band shell — easier tower-view picks on upper floors */
 const HIT_PAD = 1.14
@@ -14,7 +16,7 @@ interface FloorPickTargetProps {
   onHover: (over: boolean) => void
 }
 
-/** Whole-band pick volume + hover WireBox guide (matches vault/library PickTarget) */
+/** Whole-band pick volume + hover-only WireBox guide */
 export function FloorPickTarget({
   size,
   accent,
@@ -31,6 +33,10 @@ export function FloorPickTarget({
     size[2] * HIT_PAD,
   ]
 
+  const bindPick = useCallback((mesh: Mesh | null) => {
+    markTowerPick(mesh)
+  }, [])
+
   const enter = (e: ThreeEvent<PointerEvent>) => {
     if (!enabled) return
     e.stopPropagation()
@@ -45,11 +51,9 @@ export function FloorPickTarget({
     onHover(false)
   }
 
-  const showGuide = lit
-
   return (
     <group>
-      {showGuide && (
+      {lit && (
         <WireBox
           size={size}
           color={accent}
@@ -61,6 +65,7 @@ export function FloorPickTarget({
         />
       )}
       <mesh
+        ref={bindPick}
         raycast={enabled ? undefined : () => null}
         onClick={(e) => {
           if (!enabled) return
@@ -68,7 +73,6 @@ export function FloorPickTarget({
           onClick()
         }}
         onPointerOver={enter}
-        onPointerMove={enter}
         onPointerOut={leave}
       >
         <boxGeometry args={hitSize} />

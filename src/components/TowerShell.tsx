@@ -30,6 +30,8 @@ export function TowerShell() {
     setHoveredFloor,
     toggleLabRoom,
     setHoveredLabSlug,
+    setHoveredLibraryRoomSlug,
+    setHoveredFactoryStop,
     toggleLibraryRoom,
     toggleFactoryStop,
     handleBookClick,
@@ -79,7 +81,8 @@ export function TowerShell() {
             onLabRoomClick={toggleLabRoom}
             onLabRoomHover={setHoveredLabSlug}
             onLibraryRoomClick={toggleLibraryRoom}
-            onLibraryRoomHover={() => {}}
+            onLibraryRoomHover={setHoveredLibraryRoomSlug}
+            onFactoryStopHover={setHoveredFactoryStop}
             onFactoryStop={toggleFactoryStop}
             onBookClick={handleBookClick}
             onCredentialClick={toggleCredential}

@@ -4,6 +4,7 @@ import type { Group } from 'three'
 import type { ViewMode } from '../../building/viewMode'
 import { useSite } from '../../context/SiteContext'
 import { FloorPlate } from '../primitives/FloorPlate'
+import { markTowerPick } from '../primitives/pickVolume'
 import { StationCallout } from '../primitives/StationCallout'
 import { LAB_CHUNKS, chunkPosition, labCellAnchor, STATION_FOOTPRINT_INSET, STATION_HIT_MARGIN, type ExhibitChunk } from './floorChunks'
 import { focusPodScale, floorPlateSize, LAB_BLUEPRINT_DIMS, overviewPodScale } from './interiorScale'
@@ -182,6 +183,7 @@ function LabMorphZone({
           onPointerOut={() => onHover(null)}
         >
           <mesh
+            ref={(m) => markTowerPick(m)}
             raycast={roomLocked ? () => null : undefined}
             onClick={(e) => {
               if (thin || roomLocked) return
