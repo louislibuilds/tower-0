@@ -106,12 +106,3 @@ export function ArchiveVaultLayout({
     </group>
   )
 }
-
-/** Pod-scale archive preview (fits ~0.7 ? 0.52 chunk) */
-export function ArchiveVaultPod(props: TypologyProps & { active?: boolean }) {
-  return (
-    <group position={[0, 0.02, 0]}>
-      <ArchiveVaultLayout {...props} scale={0.92} />
-    </group>
-  )
-}

@@ -33,7 +33,8 @@ export function LibraryStackLayout({
   entered,
   active,
   scale = 1,
-}: TypologyProps & { active?: boolean; scale?: number }) {
+  showShell = true,
+}: TypologyProps & { active?: boolean; scale?: number; showShell?: boolean }) {
   const m = typologyMat(theme, accent, entered)
   const lit = entered || active
   const table = bpBox(1.8, 1.8, 0, 2.2, 1.3, 0.62, ROOM_W, ROOM_D)
@@ -44,8 +45,12 @@ export function LibraryStackLayout({
 
   return (
     <group scale={scale}>
-      <BpMesh box={bpBox(0, 0, 0, ROOM_W, 0.12, 2.8, ROOM_W, ROOM_D)} color={m.pal.graphite} />
-      <BpMesh box={bpBox(0, 0, 0, 0.12, ROOM_D, 2.8, ROOM_W, ROOM_D)} color={m.pal.graphite} />
+      {showShell && (
+        <>
+          <BpMesh box={bpBox(0, 0, 0, ROOM_W, 0.12, 2.8, ROOM_W, ROOM_D)} color={m.pal.graphite} />
+          <BpMesh box={bpBox(0, 0, 0, 0.12, ROOM_D, 2.8, ROOM_W, ROOM_D)} color={m.pal.graphite} />
+        </>
+      )}
 
       {SHELVES.map((x) => (
         <Fragment key={x}>
@@ -84,15 +89,6 @@ export function LibraryStackLayout({
         emissive={lit ? accent : undefined}
         emissiveIntensity={0.12}
       />
-    </group>
-  )
-}
-
-/** Pod-scale library preview */
-export function LibraryStackPod(props: TypologyProps & { active?: boolean }) {
-  return (
-    <group position={[0, 0.02, 0]}>
-      <LibraryStackLayout {...props} scale={0.58} />
     </group>
   )
 }
