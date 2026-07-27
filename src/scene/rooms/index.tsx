@@ -94,6 +94,7 @@ export function FloorRoom({
         accent={accent}
         entered={entered}
         hover={hover}
+        viewMode={viewMode}
         libraryRoomSlug={libraryRoomSlug}
         roomFocus={roomFocus && !!libraryRoomSlug}
         selectedBookSlug={selectedBookSlug}
