@@ -1,7 +1,7 @@
 import { useThree } from '@react-three/fiber'
 import gsap from 'gsap'
 import { useEffect, useRef } from 'react'
-import { DUR, EASE_INK, EASE_SITE } from '../motion'
+import { DUR, EASE_INK, EASE_TOWER } from '../motion'
 
 interface TeardownControllerProps {
   reducedMotion: boolean
@@ -59,7 +59,7 @@ export function TeardownController({
     tl.to(state, {
       fill: 0.06,
       duration: DUR.teardownFill,
-      ease: EASE_SITE,
+      ease: EASE_TOWER,
       onUpdate: () => {
         onFill?.(state.fill)
         invalidate()
@@ -68,7 +68,7 @@ export function TeardownController({
       .to(state, {
         blueprint: 1,
         duration: DUR.teardownBlueprint,
-        ease: EASE_SITE,
+        ease: EASE_TOWER,
         onUpdate: () => {
           onBlueprint?.(state.blueprint)
           invalidate()
@@ -77,7 +77,7 @@ export function TeardownController({
       .to(state, {
         extrude: 0,
         duration: DUR.teardownCollapse,
-        ease: EASE_SITE,
+        ease: EASE_TOWER,
         onUpdate: () => {
           onExtrude(state.extrude)
           invalidate()

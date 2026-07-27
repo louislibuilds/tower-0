@@ -27,7 +27,7 @@ URL: `#/G`, `#/23`, `#/52`, `#/B2`, `#/B10`, `#/99`, `#/roof`
 - **Boot sequence** — footprint ink → tower extrude
 - **Themes** — Dark (neon cyberpunk) / Light (ink drawing)
 - **i18n** — English · 繁體中文 · 简体中文
-- **2D fallback** — SVG plan when WebGL unavailable or reduced motion
+- **2D fallback** — SVG elevation when WebGL unavailable or reduced motion
 
 ## Development
 
@@ -48,13 +48,13 @@ Connect repo to [Vercel](https://vercel.com) — framework preset **Vite**, outp
 src/
   scene/CyberTower.tsx       Tiered tower + spire + circuit base
   scene/exhibits/            Floor holograms, circuit board
-  components/hud/            SiteChrome, ExhibitOverlay, FloorRail
+  components/hud/            TowerHud, ExhibitOverlay, BootPlateOverlay
   context/SiteContext.tsx    Theme + locale + navigation
   i18n/strings.ts            EN / zh-TW / zh-CN
   camera/OrthoRig.tsx        Per-floor orthographic camera
 ```
 
-Orthographic tower portfolio · INK/PAPER siteline · cyberpunk reference art.
+Orthographic tower portfolio · INK/PAPER Tower 0 · cyberpunk reference art.
 
 ## License
 

@@ -19,9 +19,9 @@ export function FocusOverlay() {
   }
 
   return (
-    <div className="focus-hint" role="status" aria-live="polite">
-      <span className="focus-hint__label">{strings.focus.panelHint}</span>
-      <button type="button" className="focus-hint__back" onClick={onBack}>
+    <div className="tower-focus-hint" role="status" aria-live="polite">
+      <span className="tower-focus-hint__label">{strings.focus.panelHint}</span>
+      <button type="button" className="tower-focus-hint__back" onClick={onBack}>
         {strings.focus.back}
       </button>
     </div>

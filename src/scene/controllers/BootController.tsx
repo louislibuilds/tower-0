@@ -1,12 +1,12 @@
 import { useThree } from '@react-three/fiber'
 import gsap from 'gsap'
 import { useEffect, useRef } from 'react'
-import { DUR, EASE_INK, EASE_SITE } from '../motion'
+import { DUR, EASE_INK, EASE_TOWER } from '../motion'
 
 interface BootControllerProps {
   reducedMotion: boolean
   onComplete: () => void
-  onSurveyStart?: () => void
+  onScanStart?: () => void
   onExtrude: (v: number) => void
   onInk: (v: number) => void
   children: React.ReactNode
@@ -16,7 +16,7 @@ interface BootControllerProps {
 export function BootController({
   reducedMotion,
   onComplete,
-  onSurveyStart,
+  onScanStart,
   onExtrude,
   onInk,
   children,
@@ -24,11 +24,11 @@ export function BootController({
   const done = useRef(false)
   const invalidate = useThree((s) => s.invalidate)
   const onCompleteRef = useRef(onComplete)
-  const onSurveyRef = useRef(onSurveyStart)
+  const onScanRef = useRef(onScanStart)
   const onExtrudeRef = useRef(onExtrude)
   const onInkRef = useRef(onInk)
   onCompleteRef.current = onComplete
-  onSurveyRef.current = onSurveyStart
+  onScanRef.current = onScanStart
   onExtrudeRef.current = onExtrude
   onInkRef.current = onInk
 
@@ -38,7 +38,7 @@ export function BootController({
       done.current = true
       onInkRef.current(1)
       onExtrudeRef.current(1)
-      onSurveyRef.current?.()
+      onScanRef.current?.()
       onCompleteRef.current()
       invalidate()
       return
@@ -63,11 +63,11 @@ export function BootController({
         invalidate()
       },
     })
-      .call(() => onSurveyRef.current?.())
+      .call(() => onScanRef.current?.())
       .to(state, {
         extrude: 1,
         duration: DUR.extrude,
-        ease: EASE_SITE,
+        ease: EASE_TOWER,
         onUpdate: () => {
           onExtrudeRef.current(state.extrude)
           invalidate()

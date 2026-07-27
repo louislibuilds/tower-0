@@ -134,8 +134,8 @@ export function TowerScene(props: TowerSceneProps) {
   const runningTeardown = phase === 'exit'
 
   return (
-    <div className={`site-canvas ${booted ? 'site-canvas--ready' : 'site-canvas--booting'}`}>
-      <Canvas orthographic frameloop="always" dpr={[1, 2]} gl={{ antialias: true, alpha: false }} className="site-canvas__gl">
+    <div className={`tower-canvas ${booted ? 'tower-canvas--ready' : 'tower-canvas--booting'}`}>
+      <Canvas orthographic frameloop="always" dpr={[1, 2]} gl={{ antialias: true, alpha: false }} className="tower-canvas__gl">
         <Suspense fallback={null}>
           <PaletteProvider palette={pal}>
             {runningTeardown ? (
@@ -155,7 +155,7 @@ export function TowerScene(props: TowerSceneProps) {
                 key={bootKey}
                 reducedMotion={props.reducedMotion}
                 onComplete={handleBootComplete}
-                onSurveyStart={() => setPhase('survey')}
+                onScanStart={() => setPhase('scan')}
                 onExtrude={setExtrude}
                 onInk={setInk}
               >
@@ -168,7 +168,7 @@ export function TowerScene(props: TowerSceneProps) {
         </Suspense>
       </Canvas>
       {isBootSequence(phase) && !booted && !props.reducedMotion && (
-        <div className="site-canvas__boot" aria-hidden="true">{props.bootLabel}</div>
+        <div className="tower-canvas__boot" aria-hidden="true">{props.bootLabel}</div>
       )}
     </div>
   )

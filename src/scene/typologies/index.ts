@@ -8,6 +8,6 @@ export {
   StationPlinth,
   type LabTypologySlug,
 } from './labs/index'
-export { StackVaultFloor } from './StackVault'
+export { ArchiveLibraryFloor } from './ArchiveLibraryFloor'
 export { PlateDeck, RoofPlate } from './PlateDeck'
 export type { TypologyProps } from './types'

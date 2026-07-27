@@ -1,5 +1,7 @@
 import { lazy, Suspense, type ComponentType } from 'react'
+import { LAB_BLUEPRINT_DIMS } from '../interiorScale'
 import { typologyMat, type TypologyProps } from '../types'
+import { LabRoomShell } from './LabRoomShell'
 
 export type LabTypologySlug =
   | 'unihack-2026'
@@ -30,12 +32,20 @@ const LAB_TYPOLOGY: Record<LabTypologySlug, ComponentType<TypologyProps>> = {
   kata: DocumentFoundryStation,
 }
 
-export function LabTypology({ slug, ...props }: TypologyProps & { slug: string }) {
+export function LabTypology({
+  slug,
+  showShell,
+  ...props
+}: TypologyProps & { slug: string; showShell?: boolean }) {
   const Comp = LAB_TYPOLOGY[slug as LabTypologySlug]
   if (!Comp) return null
+  const [roomW, roomD] = LAB_BLUEPRINT_DIMS[slug] ?? [5, 5]
   return (
     <Suspense fallback={null}>
-      <Comp {...props} />
+      <group position={[0, 0.012, 0]}>
+        <LabRoomShell showShell={showShell} roomW={roomW} roomD={roomD} {...props} />
+        <Comp {...props} />
+      </group>
     </Suspense>
   )
 }

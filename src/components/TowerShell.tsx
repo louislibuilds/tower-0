@@ -3,11 +3,10 @@ import { useSite } from '../context/SiteContext'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import { useWebGL } from '../hooks/useWebGL'
 import { DelayedExhibitOverlay } from './DelayedExhibitOverlay'
-import { ExitOverlay, StampOverlay } from './hud/StampOverlay'
+import { ExitOverlay, BootPlateOverlay } from './hud/BootPlateOverlay'
 import { FocusOverlay } from './hud/FocusOverlay'
 import { SceneBootSplash } from './SceneBootSplash'
-import { SiteAnnotation, SiteChrome, SiteRail, SiteTitleblock } from './hud/SiteChrome'
-import { FactoryTimelineRail } from './hud/FactoryTimeline'
+import { TowerCredits, TowerRail, TowerStatus, TowerToolbar } from './hud/TowerHud'
 import { TowerSilhouette } from './TowerSilhouette'
 
 const TowerScene = lazy(() =>
@@ -44,7 +43,7 @@ export function TowerShell() {
   const use3D = webgl && !reducedMotion
 
   return (
-    <div className="site-root" data-experience="siteline">
+    <div className="tower-root" data-experience="tower0">
       {use3D ? (
         <Suspense fallback={<SceneBootSplash label={strings.site.constructing} />}>
           <TowerScene
@@ -71,25 +70,24 @@ export function TowerShell() {
           />
         </Suspense>
       ) : (
-        <div className="site-fallback-bg">
-          <TowerSilhouette activeId={floorId} />
-          <p className="site-fallback-note">
-            {strings.site.fallback}{!webgl ? ' · WebGL' : ''}{reducedMotion ? ' · reduced motion' : ''}
+        <div className="tower-fallback-bg">
+          <TowerSilhouette activeId={floorId} theme={theme} />
+          <p className="tower-fallback-note">
+            {strings.site.fallback}{reducedMotion ? ' · reduced motion' : ''}
           </p>
         </div>
       )}
 
-      <SiteTitleblock />
-      {!interactionLocked && <SiteRail />}
-      <SiteChrome />
-      {!interactionLocked && <SiteAnnotation />}
-      {!interactionLocked && <FactoryTimelineRail />}
-      <StampOverlay visible={phase === 'boot' || phase === 'survey'} />
+      <TowerCredits />
+      {!interactionLocked && <TowerRail />}
+      <TowerToolbar />
+      {!interactionLocked && <TowerStatus />}
+      <BootPlateOverlay visible={phase === 'boot' || phase === 'scan'} />
       {phase === 'void' && <ExitOverlay onReopen={reopenSite} />}
       <FocusOverlay />
       {bootDone && phase !== 'void' && phase !== 'exit' && viewMode !== 'tower' && <DelayedExhibitOverlay />}
       {phase === 'exit' && (
-        <div className="site-exit-progress" aria-hidden="true">
+        <div className="tower-exit-progress" aria-hidden="true">
           {strings.site.rollingDrawing}
         </div>
       )}

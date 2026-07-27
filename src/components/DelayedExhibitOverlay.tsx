@@ -51,7 +51,7 @@ export function DelayedExhibitOverlay() {
   if (viewMode === 'tower' || !visible || !bootDone || isBootSequence(phase) || phase === 'exit' || phase === 'void') return null
 
   return (
-    <div className="exhibit-overlay-wrap exhibit-overlay-wrap--enter">
+    <div className="tower-exhibit-wrap tower-exhibit-wrap--enter">
       <ExhibitOverlay />
     </div>
   )

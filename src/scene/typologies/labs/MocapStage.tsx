@@ -35,7 +35,6 @@ export function MocapStage({ theme, accent, entered, active }: TypologyProps) {
 
   const floorTint = bpBox(0, 0, 0, 5, 0.12, 3.2, 5, 5)
   const backdrop = bpBox(0.3, 0.15, 0.25, 3.6, 0.07, 2.4)
-  const ring = bpBox(1.6, 1.6, 1.1, 0.9, 0.09, 0.9)
   const tripod = bpBox(2.1, 2.6, 0, 0.12, 0.12, 1.5)
   const lampHead = bpBox(1.82, 2.5, 1.5, 0.72, 0.4, 0.34)
   const camBar = bpBox(2.52, 2.55, 1.55, 0.2, 0.27, 0.25)
@@ -50,14 +49,6 @@ export function MocapStage({ theme, accent, entered, active }: TypologyProps) {
     <group>
       <BpMesh box={floorTint} color={green} emissive={lit ? accent : undefined} emissiveIntensity={0.06} />
       <BpMesh box={backdrop} color={green} emissive={lit ? accent : undefined} emissiveIntensity={0.15} />
-      <mesh position={ring.position} rotation={[-Math.PI / 2, 0, 0]}>
-        <ringGeometry args={[ring.size[0] * 0.55, ring.size[0] * 0.5, 24]} />
-        <meshStandardMaterial
-          color={lit ? m.warm : m.pal.concrete}
-          emissive={lit ? m.warm : '#000'}
-          emissiveIntensity={lit ? 0.45 : 0}
-        />
-      </mesh>
       <BpMesh box={tripod} color={m.edge} metalness={0.85} />
       <BpMesh box={lampHead} color={m.body} />
       <BpMesh box={camBar} color={lit ? accent : m.alt} emissive={lit ? accent : undefined} emissiveIntensity={0.2} />
@@ -67,10 +58,6 @@ export function MocapStage({ theme, accent, entered, active }: TypologyProps) {
       <BpMesh box={desk} color={m.body} />
       <BpMesh box={chair} color={m.pal.concrete} />
       <BpMesh box={chairBack} color={m.pal.resin} />
-      <mesh position={[0, 0.1, 0]}>
-        <capsuleGeometry args={[0.022, 0.08, 4, 8]} />
-        <meshStandardMaterial color={m.pal.glass} wireframe />
-      </mesh>
     </group>
   )
 }

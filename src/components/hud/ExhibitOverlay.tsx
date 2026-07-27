@@ -25,42 +25,42 @@ function LobbyExhibit() {
   const s = strings.lobby
   return (
     <>
-      <p className="exhibit-card__eyebrow">{s.welcome}</p>
-      <blockquote className="exhibit-card__thesis">{s.thesis}</blockquote>
-      <p className="exhibit-card__body">{s.bio}</p>
+      <p className="tower-exhibit-card__eyebrow">{s.welcome}</p>
+      <blockquote className="tower-exhibit-card__thesis">{s.thesis}</blockquote>
+      <p className="tower-exhibit-card__body">{s.bio}</p>
 
-      <div className="exhibit-stats exhibit-stats--hero">
-        <div className="exhibit-stat exhibit-stat--hero">
+      <div className="tower-exhibit-stats tower-exhibit-stats--hero">
+        <div className="tower-exhibit-stat tower-exhibit-stat--hero">
           <span>{profile.gpa}/{profile.gpaScale}</span>
           <label>{s.gpa}</label>
         </div>
-        <div className="exhibit-stat exhibit-stat--hero">
+        <div className="tower-exhibit-stat tower-exhibit-stat--hero">
           <span>{profile.wam}</span>
           <label>{s.wam}</label>
         </div>
-        <div className="exhibit-stat exhibit-stat--hero">
+        <div className="tower-exhibit-stat tower-exhibit-stat--hero">
           <span>{gradeSummary.HD}</span>
           <label>{s.hdCount}</label>
         </div>
         {profile.deansList && (
-          <div className="exhibit-stat exhibit-stat--hero">
+          <div className="tower-exhibit-stat tower-exhibit-stat--hero">
             <span>✦</span>
             <label>{s.deansList}</label>
           </div>
         )}
       </div>
 
-      <dl className="exhibit-card__meta">
+      <dl className="tower-exhibit-card__meta">
         <div><dt>{s.degree}</dt><dd>{profile.degree}</dd></div>
         <div><dt>{s.institution}</dt><dd>{profile.institution}</dd></div>
         <div><dt>{s.program}</dt><dd>{profile.programCode} · {profile.programStart} – {profile.programEnd}</dd></div>
         <div><dt>{s.location}</dt><dd>{profile.location}</dd></div>
       </dl>
 
-      <h4 className="exhibit-section-title">{s.experienceTitle}</h4>
-      <div className="exhibit-experience">
+      <h4 className="tower-exhibit-section-title">{s.experienceTitle}</h4>
+      <div className="tower-exhibit-experience">
         {experiences.slice(0, 2).map((exp) => (
-          <article key={exp.slug} className="exhibit-experience__item">
+          <article key={exp.slug} className="tower-exhibit-experience__item">
             <strong>{exp.title}</strong>
             <span>{exp.company} · {exp.start} – {exp.end}</span>
             <p>{exp.bullets[0]}</p>
@@ -77,24 +77,24 @@ function FactoryOverview() {
   const s = strings.lobby
   return (
     <>
-      <div className="exhibit-stats exhibit-stats--hero">
-        <div className="exhibit-stat exhibit-stat--hero"><span>{profile.wam}</span><label>{w.wam}</label></div>
-        <div className="exhibit-stat exhibit-stat--hero"><span>{gradeSummary.HD}</span><label>{w.hd}</label></div>
-        <div className="exhibit-stat exhibit-stat--hero"><span>{gradeSummary.D}</span><label>{w.d}</label></div>
+      <div className="tower-exhibit-stats tower-exhibit-stats--hero">
+        <div className="tower-exhibit-stat tower-exhibit-stat--hero"><span>{profile.wam}</span><label>{w.wam}</label></div>
+        <div className="tower-exhibit-stat tower-exhibit-stat--hero"><span>{gradeSummary.HD}</span><label>{w.hd}</label></div>
+        <div className="tower-exhibit-stat tower-exhibit-stat--hero"><span>{gradeSummary.D}</span><label>{w.d}</label></div>
         {profile.deansList && (
-          <div className="exhibit-stat exhibit-stat--hero"><span>✦</span><label>{s.deansList}</label></div>
+          <div className="tower-exhibit-stat tower-exhibit-stat--hero"><span>✦</span><label>{s.deansList}</label></div>
         )}
       </div>
-      <p className="exhibit-card__hint">{w.selectArea}</p>
-      <div className="exhibit-timeline">
+      <p className="tower-exhibit-card__hint">{w.selectArea}</p>
+      <div className="tower-exhibit-timeline">
         {FACTORY_AREAS.map((sem, i) => (
-          <div key={sem.id} className="exhibit-timeline__sem">
-            <div className="exhibit-timeline__head">
+          <div key={sem.id} className="tower-exhibit-timeline__sem">
+            <div className="tower-exhibit-timeline__head">
               <strong>{areaLabel(i)} · {sem.label}</strong>
               {sem.avgMark !== null && <span>{w.avg} {sem.avgMark}</span>}
             </div>
             {sem.subjects.map((sub) => (
-              <div key={sub.code} className="exhibit-timeline__row">
+              <div key={sub.code} className="tower-exhibit-timeline__row">
                 <span>{sub.code} {sub.title}</span>
                 <span className={gradeClass(sub.grade)}>{sub.mark ?? '—'} {sub.grade}</span>
               </div>
@@ -114,18 +114,18 @@ function FactoryExhibit({ factoryStop }: { factoryStop: number }) {
 
   return (
     <>
-      <div className="exhibit-stats exhibit-stats--hero">
-        <div className="exhibit-stat exhibit-stat--hero"><span>{profile.wam}</span><label>{w.wam}</label></div>
-        <div className="exhibit-stat exhibit-stat--hero"><span>{gradeSummary.HD}</span><label>{w.hd}</label></div>
-        <div className="exhibit-stat exhibit-stat--hero"><span>{gradeSummary.D}</span><label>{w.d}</label></div>
+      <div className="tower-exhibit-stats tower-exhibit-stats--hero">
+        <div className="tower-exhibit-stat tower-exhibit-stat--hero"><span>{profile.wam}</span><label>{w.wam}</label></div>
+        <div className="tower-exhibit-stat tower-exhibit-stat--hero"><span>{gradeSummary.HD}</span><label>{w.hd}</label></div>
+        <div className="tower-exhibit-stat tower-exhibit-stat--hero"><span>{gradeSummary.D}</span><label>{w.d}</label></div>
         {profile.deansList && (
-          <div className="exhibit-stat exhibit-stat--hero"><span>✦</span><label>{s.deansList}</label></div>
+          <div className="tower-exhibit-stat tower-exhibit-stat--hero"><span>✦</span><label>{s.deansList}</label></div>
         )}
       </div>
 
-      <p className="exhibit-card__hint">{w.selectArea}</p>
+      <p className="tower-exhibit-card__hint">{w.selectArea}</p>
 
-      <div className="exhibit-semester-tabs">
+      <div className="tower-exhibit-semester-tabs">
         {FACTORY_AREAS.map((sem, i) => (
           <button
             key={sem.id}
@@ -139,14 +139,14 @@ function FactoryExhibit({ factoryStop }: { factoryStop: number }) {
       </div>
 
       {activeSem && (
-        <div className="exhibit-timeline exhibit-timeline--focus">
-          <div className="exhibit-timeline__sem">
-            <div className="exhibit-timeline__head">
+        <div className="tower-exhibit-timeline tower-exhibit-timeline--focus">
+          <div className="tower-exhibit-timeline__sem">
+            <div className="tower-exhibit-timeline__head">
               <strong>{areaLabel(factoryStop)} · {activeSem.label}</strong>
               {activeSem.avgMark !== null && <span>{w.avg} {activeSem.avgMark}</span>}
             </div>
             {activeSem.subjects.map((sub) => (
-              <div key={sub.code} className="exhibit-timeline__row">
+              <div key={sub.code} className="tower-exhibit-timeline__row">
                 <span>{sub.code} {sub.title}</span>
                 <span className={gradeClass(sub.grade)}>{sub.mark ?? '—'} {sub.grade}</span>
               </div>
@@ -155,17 +155,17 @@ function FactoryExhibit({ factoryStop }: { factoryStop: number }) {
         </div>
       )}
 
-      <details className="exhibit-details">
+      <details className="tower-exhibit-details">
         <summary>{w.allAreas}</summary>
-        <div className="exhibit-timeline">
+        <div className="tower-exhibit-timeline">
           {FACTORY_AREAS.map((sem, i) => (
-            <div key={sem.id} className="exhibit-timeline__sem">
-              <div className="exhibit-timeline__head">
+            <div key={sem.id} className="tower-exhibit-timeline__sem">
+              <div className="tower-exhibit-timeline__head">
                 <strong>{areaLabel(i)} · {sem.label}</strong>
                 {sem.avgMark !== null && <span>{w.avg} {sem.avgMark}</span>}
               </div>
               {sem.subjects.map((sub) => (
-                <div key={sub.code} className="exhibit-timeline__row">
+                <div key={sub.code} className="tower-exhibit-timeline__row">
                   <span>{sub.code} {sub.title}</span>
                   <span className={gradeClass(sub.grade)}>{sub.mark ?? '—'} {sub.grade}</span>
                 </div>
@@ -187,18 +187,18 @@ function LabExhibit({ labRoomSlug }: { labRoomSlug: string | null }) {
     if (!p) return null
     const loc = strings.projects[p.slug]
     return (
-      <article className="exhibit-project exhibit-project--solo">
+      <article className="tower-exhibit-project tower-exhibit-project--solo">
         <h4>{loc?.title ?? p.title}</h4>
         <p>{loc?.hook ?? p.hook}</p>
-        <div className="exhibit-project__meta">
+        <div className="tower-exhibit-project__meta">
           <span>{l.role}: {loc?.role ?? p.role}</span>
           {(loc?.course ?? p.course) && <span>{l.course}: {loc?.course ?? p.course}</span>}
           {p.grade && <span>{p.mark} {p.grade}</span>}
         </div>
         {p.stack.length > 0 && (
-          <p className="exhibit-project__stack">{p.stack.join(' · ')}</p>
+          <p className="tower-exhibit-project__stack">{p.stack.join(' · ')}</p>
         )}
-        <div className="exhibit-project__links">
+        <div className="tower-exhibit-project__links">
           {p.links.map((link) => (
             <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer">{link.label} ↗</a>
           ))}
@@ -209,13 +209,13 @@ function LabExhibit({ labRoomSlug }: { labRoomSlug: string | null }) {
 
   return (
     <>
-      <p className="exhibit-card__body">{l.intro}</p>
-      <p className="exhibit-card__hint">{l.selectRoom}</p>
-      <div className="exhibit-projects">
+      <p className="tower-exhibit-card__body">{l.intro}</p>
+      <p className="tower-exhibit-card__hint">{l.selectRoom}</p>
+      <div className="tower-exhibit-projects">
         {labProjects.map((p) => {
           const loc = strings.projects[p.slug]
           return (
-            <article key={p.slug} className="exhibit-project">
+            <article key={p.slug} className="tower-exhibit-project">
               <h4>{loc?.title ?? p.title}</h4>
               <p>{loc?.hook ?? p.hook}</p>
             </article>
@@ -231,8 +231,8 @@ function InfraExhibit() {
   const i = strings.infra
   return (
     <>
-      <h4 className="exhibit-section-title">{i.skillsTitle}</h4>
-      <div className="exhibit-skills">
+      <h4 className="tower-exhibit-section-title">{i.skillsTitle}</h4>
+      <div className="tower-exhibit-skills">
         {skillGroups.map((g) => (
           <div key={g.category}>
             <strong>{strings.skillGroups[g.category as keyof typeof strings.skillGroups] ?? g.category}</strong>
@@ -240,10 +240,10 @@ function InfraExhibit() {
           </div>
         ))}
       </div>
-      <h4 className="exhibit-section-title">{i.coursesTitle}</h4>
-      <div className="exhibit-courses">
+      <h4 className="tower-exhibit-section-title">{i.coursesTitle}</h4>
+      <div className="tower-exhibit-courses">
         {courseLinks.map((c) => (
-          <div key={c.code} className="exhibit-course">
+          <div key={c.code} className="tower-exhibit-course">
             <span>{c.code}</span>
             <span>{c.title}</span>
             <span className={`grade-${c.grade.toLowerCase()}`}>{c.mark ?? '—'} {c.grade}</span>
@@ -262,19 +262,19 @@ function TechExhibit() {
   const t = strings.tech
   return (
     <>
-      <p className="exhibit-card__body">{t.intro}</p>
-      <p className="exhibit-card__body">{platformSummary}</p>
-      <div className="exhibit-actions">
-        <a className="exhibit-action" href={profile.links.github} target="_blank" rel="noopener noreferrer">
+      <p className="tower-exhibit-card__body">{t.intro}</p>
+      <p className="tower-exhibit-card__body">{platformSummary}</p>
+      <div className="tower-exhibit-actions">
+        <a className="tower-exhibit-action" href={profile.links.github} target="_blank" rel="noopener noreferrer">
           <strong>{t.github}</strong><span>{t.githubDesc}</span><em>{t.openProfile}</em>
         </a>
-        <a className="exhibit-action" href={profile.links.nagi} target="_blank" rel="noopener noreferrer">
+        <a className="tower-exhibit-action" href={profile.links.nagi} target="_blank" rel="noopener noreferrer">
           <strong>{t.nagi}</strong><span>{t.nagiDesc}</span><em>{t.openNagi}</em>
         </a>
-        <a className="exhibit-action" href={profile.links.kata} target="_blank" rel="noopener noreferrer">
+        <a className="tower-exhibit-action" href={profile.links.kata} target="_blank" rel="noopener noreferrer">
           <strong>{t.kata}</strong><span>{t.kataDesc}</span><em>{t.openKata}</em>
         </a>
-        <button type="button" className="exhibit-action" onClick={() => window.print()}>
+        <button type="button" className="tower-exhibit-action" onClick={() => window.print()}>
           <strong>{t.print}</strong><span>{t.printDesc}</span><em>{t.printNow}</em>
         </button>
       </div>
@@ -287,12 +287,12 @@ function ArchiveExhibit() {
   const l = strings.library
   return (
     <>
-      <p className="exhibit-card__body">{l.archiveIntro}</p>
-      <div className="exhibit-credentials">
+      <p className="tower-exhibit-card__body">{l.archiveIntro}</p>
+      <div className="tower-exhibit-credentials">
         {credentials.map((cred) => {
           const loc = strings.credentials[cred.slug as keyof typeof strings.credentials]
           return (
-            <article key={cred.slug} className="exhibit-credential">
+            <article key={cred.slug} className="tower-exhibit-credential">
               <time>{cred.year}</time>
               <h4>{loc?.title ?? cred.title}</h4>
               <p>{loc?.detail ?? cred.detail}</p>
@@ -309,26 +309,26 @@ function LibraryPlatformExhibit() {
   const l = strings.library
   return (
     <>
-      <p className="exhibit-card__body">{l.libraryIntro}</p>
-      <div className="exhibit-projects">
+      <p className="tower-exhibit-card__body">{l.libraryIntro}</p>
+      <div className="tower-exhibit-projects">
         {platformApps.map((app) => {
           const loc = strings.platformApps?.[app.slug]
           return (
-            <article key={app.slug} className="exhibit-project">
+            <article key={app.slug} className="tower-exhibit-project">
               <h4>{loc?.name ?? app.name}</h4>
               <p>{loc?.hook ?? app.hook}</p>
-              <p className="exhibit-project__stack">{app.stack.join(' · ')}</p>
-              <div className="exhibit-project__links">
+              <p className="tower-exhibit-project__stack">{app.stack.join(' · ')}</p>
+              <div className="tower-exhibit-project__links">
                 <a href={app.url} target="_blank" rel="noopener noreferrer">{app.path} ↗</a>
               </div>
             </article>
           )
         })}
       </div>
-      <h4 className="exhibit-section-title">{l.experienceTitle}</h4>
-      <div className="exhibit-experience">
+      <h4 className="tower-exhibit-section-title">{l.experienceTitle}</h4>
+      <div className="tower-exhibit-experience">
         {experiences.map((exp) => (
-          <article key={exp.slug} className="exhibit-experience__item">
+          <article key={exp.slug} className="tower-exhibit-experience__item">
             <strong>{exp.title}</strong>
             <span>{exp.company} · {exp.start} – {exp.end}</span>
             <ul>
@@ -352,11 +352,11 @@ function Floor99Exhibit({ libraryRoomSlug }: { libraryRoomSlug: LibraryRoomSlug 
 
   return (
     <>
-      <p className="exhibit-card__body">{l.heroSub}</p>
-      <p className="exhibit-card__hint">{l.selectRoom}</p>
-      <div className="exhibit-room-cards">
+      <p className="tower-exhibit-card__body">{l.heroSub}</p>
+      <p className="tower-exhibit-card__hint">{l.selectRoom}</p>
+      <div className="tower-exhibit-room-cards">
         {LIBRARY_ROOMS.map((room) => (
-          <article key={room.slug} className="exhibit-project">
+          <article key={room.slug} className="tower-exhibit-project">
             <h4>{room.slug === 'archive' ? l.archiveTitle : l.libraryTitle}</h4>
             <p>{room.slug === 'archive' ? l.archiveIntro : l.libraryIntro}</p>
           </article>
@@ -378,10 +378,10 @@ function RoofExhibit() {
   ]
   return (
     <>
-      <p className="exhibit-card__eyebrow">{r.site}</p>
-      <h3 className="exhibit-card__name">{profile.displayName}</h3>
-      <p className="exhibit-card__legal">{profile.legalName} · {profile.location}</p>
-      <div className="exhibit-contacts">
+      <p className="tower-exhibit-card__eyebrow">{r.site}</p>
+      <h3 className="tower-exhibit-card__name">{profile.displayName}</h3>
+      <p className="tower-exhibit-card__legal">{profile.legalName} · {profile.location}</p>
+      <div className="tower-exhibit-contacts">
         {links.map((link) => (
           <a
             key={link.label}
@@ -393,7 +393,7 @@ function RoofExhibit() {
           </a>
         ))}
       </div>
-      <p className="exhibit-card__footer">{r.footer}</p>
+      <p className="tower-exhibit-card__footer">{r.footer}</p>
     </>
   )
 }
@@ -407,16 +407,16 @@ function FocusExhibit() {
     if (!book) return null
     return (
       <>
-        <p className="exhibit-card__eyebrow">{strings.library.libraryTitle}</p>
-        <h3 className="exhibit-card__name">{book.title}</h3>
-        <p className="exhibit-card__body">
+        <p className="tower-exhibit-card__eyebrow">{strings.library.libraryTitle}</p>
+        <h3 className="tower-exhibit-card__name">{book.title}</h3>
+        <p className="tower-exhibit-card__body">
           {book.slug === 'nagi'
             ? strings.platformApps.nagi.hook
             : book.slug === 'kata'
               ? strings.platformApps['kata-editor'].hook
               : book.url}
         </p>
-        <button type="button" className="exhibit-card__action" onClick={() => handleBookClick(book.slug)}>
+        <button type="button" className="tower-exhibit-card__action" onClick={() => handleBookClick(book.slug)}>
           {f.bookOpen}
         </button>
       </>
@@ -429,11 +429,11 @@ function FocusExhibit() {
     if (!cred) return null
     return (
       <>
-        <p className="exhibit-card__eyebrow">{f.credentialEyebrow}</p>
-        <time className="exhibit-card__meta">{cred.year}</time>
-        <h3 className="exhibit-card__name">{loc?.title ?? cred.title}</h3>
-        <p className="exhibit-card__issuer">{cred.issuer}</p>
-        <p className="exhibit-card__body">{loc?.detail ?? cred.detail}</p>
+        <p className="tower-exhibit-card__eyebrow">{f.credentialEyebrow}</p>
+        <time className="tower-exhibit-card__meta">{cred.year}</time>
+        <h3 className="tower-exhibit-card__name">{loc?.title ?? cred.title}</h3>
+        <p className="tower-exhibit-card__issuer">{cred.issuer}</p>
+        <p className="tower-exhibit-card__body">{loc?.detail ?? cred.detail}</p>
       </>
     )
   }
@@ -493,7 +493,7 @@ export function ExhibitOverlay() {
     <AnimatePresence mode="wait" custom={direction}>
       <motion.aside
         key={overlayKey}
-        className="exhibit-overlay"
+        className="tower-exhibit"
         custom={direction}
         initial={{ opacity: 0, x: 40, filter: 'blur(6px)' }}
         animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
@@ -501,14 +501,14 @@ export function ExhibitOverlay() {
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
         aria-label={floorStrings?.exhibitTitle}
       >
-        <header className="exhibit-card__header">
-          <span className="exhibit-card__badge" data-zone={floor.zone}>{floor.label}</span>
+        <header className="tower-exhibit-card__header">
+          <span className="tower-exhibit-card__badge" data-zone={floor.zone}>{floor.label}</span>
           <div>
             <h2>{floorStrings?.exhibitTitle ?? floor.title}</h2>
             <p>{floorStrings?.exhibitHook ?? floor.subtitle}</p>
           </div>
         </header>
-        <div className="exhibit-card__scroll">
+        <div className="tower-exhibit-card__scroll">
           {viewMode === 'focus' ? (
             <FocusExhibit />
           ) : (

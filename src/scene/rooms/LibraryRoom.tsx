@@ -1,2 +1,5 @@
-/** 99 · Archive + Library — delegates to StackVault typology */
-export { StackVaultFloor as ArchiveLibraryRoom, StackVaultFloor as LibraryRoom } from '../typologies/StackVault'
+/** 99 · Archive + Library — delegates to ArchiveLibraryFloor typology */
+export {
+  ArchiveLibraryFloor as ArchiveLibraryRoom,
+  ArchiveLibraryFloor as LibraryRoom,
+} from '../typologies/ArchiveLibraryFloor'

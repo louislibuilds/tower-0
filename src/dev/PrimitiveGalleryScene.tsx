@@ -14,7 +14,7 @@ import {
   PaletteProvider,
   partialPolyline,
   Plinth,
-  SurveyGrid,
+  GroundGrid,
   usePalette,
   WindowMatrix,
 } from '../scene/primitives'
@@ -112,7 +112,7 @@ function GalleryContent({ night }: { night: boolean }) {
   return (
     <>
       <OrthographicCamera ref={camRef} makeDefault position={[0, 8, 14]} zoom={52} near={0.1} far={200} />
-      <SurveyGrid extent={8} step={1} opacity={0.2} />
+      <GroundGrid extent={8} step={1} opacity={0.2} />
 
       <group position={[-5, 0, 0]}>
         <InkFootprintDemo />
