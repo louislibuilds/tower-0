@@ -85,24 +85,31 @@ function ShaftSection({
     return lines
   }, [h, w, d, segment.floorCount])
 
+  const isNight = theme === 'dark'
+  const shaftFill = isNight ? pal.bpFace : pal.resin
+  const shaftOpacity = shellFade ? 0.06 : isNight ? 0.18 : 1
+
   if (shaftExtrude < 0.01) return null
 
   return (
     <group position={[0, y, 0]}>
-      {!shellFade && (
-        <mesh>
-          <boxGeometry args={[w, h, d]} />
-          <meshStandardMaterial color={pal.resin} roughness={0.85} metalness={0.05} />
-        </mesh>
-      )}
-      {shellFade && (
-        <mesh>
-          <boxGeometry args={[w, h, d]} />
-          <meshStandardMaterial color={pal.resin} transparent opacity={0.08} depthWrite={false} />
-        </mesh>
-      )}
+      <mesh>
+        <boxGeometry args={[w, h, d]} />
+        <meshStandardMaterial
+          color={shaftFill}
+          roughness={0.85}
+          metalness={isNight ? 0.15 : 0.05}
+          transparent={shellFade || isNight}
+          opacity={shaftOpacity}
+          depthWrite={!shellFade && !isNight}
+        />
+      </mesh>
       <lineSegments geometry={edges}>
-        <lineBasicMaterial color={pal.graphite} transparent opacity={shellFade ? 0.5 : 0.55} />
+        <lineBasicMaterial
+          color={isNight ? pal.neon : pal.graphite}
+          transparent
+          opacity={shellFade ? 0.45 : isNight ? 0.7 : 0.55}
+        />
       </lineSegments>
       {Array.from({ length: 5 }).map((_, i) => {
         const x = -w / 2 + 0.12 + i * ((w - 0.24) / 4)
@@ -110,15 +117,22 @@ function ShaftSection({
           <mesh key={i} position={[x, 0, d / 2 + 0.006]}>
             <planeGeometry args={[0.04, h * 0.96]} />
             <meshStandardMaterial
-              color={pal.shade}
+              color={isNight ? pal.neon : pal.shade}
               transparent
-              opacity={shellFade ? 0.12 : 0.4}
+              opacity={shellFade ? 0.1 : isNight ? 0.22 : 0.4}
             />
           </mesh>
         )
       })}
       {floorLines.map((pts, i) => (
-        <Line key={i} points={pts} color={pal.grid} lineWidth={0.5} transparent opacity={0.4} />
+        <Line
+          key={i}
+          points={pts}
+          color={isNight ? pal.neonBright : pal.grid}
+          lineWidth={0.5}
+          transparent
+          opacity={isNight ? 0.55 : 0.4}
+        />
       ))}
     </group>
   )
@@ -195,7 +209,11 @@ function ProgramFloorBand({
     if (entered && (viewMode === 'room' || viewMode === 'focus')) {
       if (program.id === '52' && labRoomSlug) return 0.05
       if (program.id === '99' && libraryRoomSlug) return 0.05
+      if (program.id === 'B2' || program.id === 'B10') return 0.06
       return 0.08
+    }
+    if (entered && viewMode === 'floor') {
+      if (program.id === 'B2' || program.id === 'B10') return 0.1
     }
     if (entered && viewMode !== 'tower') {
       return viewMode === 'floor' ? 0.28 : 0.22
@@ -205,8 +223,11 @@ function ProgramFloorBand({
 
   const hideFacade =
     entered &&
-    (viewMode === 'room' || viewMode === 'focus') &&
-    ((program.id === '52' && !!labRoomSlug) || (program.id === '99' && !!libraryRoomSlug))
+    (viewMode === 'room' || viewMode === 'focus' || viewMode === 'floor') &&
+    ((program.id === '52' && !!labRoomSlug) ||
+      (program.id === '99' && !!libraryRoomSlug) ||
+      program.id === 'B2' ||
+      program.id === 'B10')
 
   if (bandProgress < 0.01) return null
 
@@ -236,11 +257,11 @@ function ProgramFloorBand({
       <mesh>
         <boxGeometry args={[w, h, d]} />
         <meshStandardMaterial
-          color={lit ? pal.concrete : pal.resin}
-          roughness={0.85}
-          metalness={0.05}
+          color={isNight ? pal.bpFace : lit ? pal.concrete : pal.resin}
+          roughness={isNight ? 0.35 : 0.85}
+          metalness={isNight ? 0.2 : 0.05}
           transparent
-          opacity={fillOpacity}
+          opacity={fillOpacity * (isNight && entered ? 0.85 : 1)}
           depthWrite={fillOpacity > 0.25}
         />
       </mesh>
@@ -264,7 +285,7 @@ function ProgramFloorBand({
             pattern={windowPattern}
             night={isNight}
             active={lit}
-            chickenRatio={0.1}
+            accentRatio={0.12}
           />
         </group>
         )
@@ -292,6 +313,8 @@ function ProgramFloorBand({
                   ? 0.92
                   : viewMode === 'floor' && program.id === '99'
                     ? 0.9
+                    : viewMode === 'floor' && (program.id === 'B2' || program.id === 'B10')
+                      ? 0.96
                     : viewMode === 'floor' && (labRoomSlug || libraryRoomSlug || factoryStop !== null)
                       ? 0.82
                       : 0.72
@@ -412,8 +435,7 @@ export function CyberTower({
   const shaftSegments = useMemo(() => getShaftSegments(), [])
   const glowRef = useRef<THREE.PointLight>(null)
   const isolate = viewMode !== 'tower' && activeFloorId !== 'G'
-  const hideGround =
-    viewMode !== 'tower' || activeFloorId === 'B2' || activeFloorId === 'B10'
+  const hideGround = activeFloorId === 'B2' || activeFloorId === 'B10'
   const isNight = theme === 'dark'
 
   useEffect(() => {

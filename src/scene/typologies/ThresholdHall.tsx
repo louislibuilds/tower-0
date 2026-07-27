@@ -1,6 +1,6 @@
 import { typologyMat, type TypologyProps } from './types'
 
-/** G · Threshold Hall — thesis wall grooves, columns, glass curtain (no Html overlay) */
+/** G · Threshold Hall ??thesis wall grooves, columns, glass curtain (no Html overlay) */
 export function ThresholdHall({ theme, accent, entered }: TypologyProps) {
   const m = typologyMat(theme, accent, entered)
 

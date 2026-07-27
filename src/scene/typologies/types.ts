@@ -1,5 +1,5 @@
 import type { Theme } from '../../context/SiteContext'
-import { getScenePalette } from '../palette'
+import { getScenePalette, typologyHighlight } from '../palette'
 
 export interface TypologyProps {
   theme: Theme
@@ -10,17 +10,24 @@ export interface TypologyProps {
   hover?: boolean
 }
 
-export function typologyMat(theme: Theme, accent: string, entered: boolean) {
+export function typologyMat(theme: Theme, _accent: string, entered: boolean) {
   const pal = getScenePalette(theme)
   const dark = theme === 'dark'
+  const lit = entered
+  const hi = typologyHighlight(theme, lit)
+
   return {
     body: pal.resin,
     alt: pal.concrete,
     edge: pal.graphite,
     pal,
-    emissive: entered && dark ? accent : '#000000',
-    emissiveIntensity: entered && dark ? 0.3 : 0,
-    metalness: dark ? 0.5 : 0.1,
-    roughness: dark ? 0.45 : 0.85,
+    warm: hi.warm,
+    cool: hi.cool,
+    emissiveWarm: hi.emissiveWarm,
+    emissiveCool: hi.emissiveCool,
+    emissive: entered && dark ? pal.neonBright : '#000000',
+    emissiveIntensity: entered && dark ? 0.22 : 0,
+    metalness: dark ? 0.55 : 0.1,
+    roughness: dark ? 0.4 : 0.85,
   }
 }

@@ -3,6 +3,9 @@ import type { FloorId } from '../building/program'
 /** One numbered floor = 0.1 m in scene space → tower ~11 units tall (B10→101) */
 export const FLOOR_UNIT = 0.1
 
+/** Vertical space per empty numbered floor in basement shaft */
+export const SHAFT_UNIT = 0.11
+
 export interface ProgramFloor {
   id: FloorId
   /** Real floor number: B10=-10, G=0, 23, 52, 99, roof=101 */
@@ -26,15 +29,37 @@ export const PROGRAM_FLOORS: ProgramFloor[] = [
 
 export const SPIRE_HEIGHT = 1.8
 
+const SORTED_FLOORS = [...PROGRAM_FLOORS].sort((a, b) => a.floorNumber - b.floorNumber)
+
 export function floorToY(n: number): number {
   return n * FLOOR_UNIT
 }
 
+/** Shaft height between two consecutive program floors */
+export function shaftGapFloors(lower: ProgramFloor, upper: ProgramFloor): number {
+  const emptyFloors = upper.floorNumber - lower.floorNumber - 1
+  if (emptyFloors <= 0) return 0.05
+  return emptyFloors * SHAFT_UNIT
+}
+
 export function programBaseY(p: ProgramFloor): number {
+  if (p.id === 'G') return 0
+
+  if (p.id === 'B2') {
+    const g = getProgramFloor('G')
+    return -(shaftGapFloors(p, g) + p.bandHeight)
+  }
+
+  if (p.id === 'B10') {
+    const b2 = getProgramFloor('B2')
+    return programBaseY(b2) - shaftGapFloors(p, b2) - p.bandHeight
+  }
+
   if (p.id === 'roof') {
     const f99 = getProgramFloor('99')
     return programBaseY(f99) + f99.bandHeight + 0.06
   }
+
   return floorToY(p.floorNumber)
 }
 
@@ -43,7 +68,7 @@ export function programCenterY(p: ProgramFloor): number {
 }
 
 export function getProgramFloor(id: FloorId): ProgramFloor {
-  return PROGRAM_FLOORS.find((p) => p.id === id) ?? PROGRAM_FLOORS[2]
+  return PROGRAM_FLOORS.find((f) => f.id === id) ?? PROGRAM_FLOORS[2]
 }
 
 export interface ShaftSegment {
@@ -57,12 +82,11 @@ export interface ShaftSegment {
 
 /** Shaft between consecutive program floors — the "empty" numbered floors */
 export function getShaftSegments(): ShaftSegment[] {
-  const sorted = [...PROGRAM_FLOORS].sort((a, b) => a.floorNumber - b.floorNumber)
   const segments: ShaftSegment[] = []
 
-  for (let i = 0; i < sorted.length - 1; i++) {
-    const lower = sorted[i]
-    const upper = sorted[i + 1]
+  for (let i = 0; i < SORTED_FLOORS.length - 1; i++) {
+    const lower = SORTED_FLOORS[i]
+    const upper = SORTED_FLOORS[i + 1]
     const yBottom = programBaseY(lower) + lower.bandHeight
     const yTop = programBaseY(upper)
     const height = yTop - yBottom
@@ -79,15 +103,14 @@ export function getShaftSegments(): ShaftSegment[] {
 }
 
 export function towerTotalHeight(): number {
-  const roof = PROGRAM_FLOORS.find((p) => p.id === 'roof')!
+  const roof = PROGRAM_FLOORS.find((f) => f.id === 'roof')!
   return programBaseY(roof) + roof.bandHeight + SPIRE_HEIGHT
 }
 
 export function widthAtY(y: number): number {
-  const sorted = [...PROGRAM_FLOORS].sort((a, b) => a.floorNumber - b.floorNumber)
-  for (let i = 0; i < sorted.length - 1; i++) {
-    const a = sorted[i]
-    const b = sorted[i + 1]
+  for (let i = 0; i < SORTED_FLOORS.length - 1; i++) {
+    const a = SORTED_FLOORS[i]
+    const b = SORTED_FLOORS[i + 1]
     const ya = programCenterY(a)
     const yb = programCenterY(b)
     if (y >= ya && y <= yb) {
@@ -95,5 +118,5 @@ export function widthAtY(y: number): number {
       return a.width + (b.width - a.width) * t
     }
   }
-  return sorted[sorted.length - 1].width
+  return SORTED_FLOORS[SORTED_FLOORS.length - 1].width
 }

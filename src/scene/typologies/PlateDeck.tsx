@@ -79,7 +79,7 @@ function useIdentityPlateMap(theme: Theme) {
   return tex
 }
 
-/** R · Plate Deck — roof slab + Louis Li identity plate */
+/** R · Plate Deck ??roof slab + Louis Li identity plate */
 export function PlateDeck({
   theme,
   entered,
@@ -126,8 +126,8 @@ export function PlateDeck({
           <mesh position={[0, 0.38, 0.07]}>
             <boxGeometry args={[0.06, 0.02, 0.01]} />
             <meshStandardMaterial
-              color={m.pal.chicken}
-              emissive={m.pal.chicken}
+              color={m.warm}
+              emissive={m.warm}
               emissiveIntensity={0.5}
             />
           </mesh>

@@ -30,7 +30,7 @@ interface BenchRowProps extends TypologyProps {
   onLabRoomHover: (slug: string | null) => void
 }
 
-/** 52 · Laboratory — one flat floor shell, five scattered station blocks */
+/** 52 · Laboratory ??one flat floor shell, five scattered station blocks */
 export function BenchRow({
   theme,
   accent,

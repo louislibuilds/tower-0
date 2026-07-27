@@ -86,28 +86,28 @@ export function ArchiveVaultLayout({
         <BpMesh
           key={i}
           box={folder}
-          color={lit ? m.pal.chicken : '#d8d4cc'}
-          emissive={lit ? m.pal.chicken : undefined}
+          color={lit ? m.warm : '#d8d4cc'}
+          emissive={lit ? m.warm : undefined}
           emissiveIntensity={0.1}
         />
       ))}
       <BpMesh
         box={stackA}
-        color={lit ? m.pal.chicken : m.pal.concrete}
-        emissive={lit ? m.pal.chicken : undefined}
+        color={lit ? m.warm : m.pal.concrete}
+        emissive={lit ? m.warm : undefined}
         emissiveIntensity={0.08}
       />
       <BpMesh
         box={stackB}
-        color={lit ? m.pal.chicken : m.pal.concrete}
-        emissive={lit ? m.pal.chicken : undefined}
+        color={lit ? m.warm : m.pal.concrete}
+        emissive={lit ? m.warm : undefined}
         emissiveIntensity={0.08}
       />
     </group>
   )
 }
 
-/** Pod-scale archive preview (fits ~0.7 × 0.52 chunk) */
+/** Pod-scale archive preview (fits ~0.7 ? 0.52 chunk) */
 export function ArchiveVaultPod(props: TypologyProps & { active?: boolean }) {
   return (
     <group position={[0, 0.02, 0]}>
