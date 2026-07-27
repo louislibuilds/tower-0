@@ -8,7 +8,7 @@ import type { SitePhase } from '../building/sitePhase'
 import type { ViewMode } from '../building/viewMode'
 import type { LibraryRoomSlug } from '../data/libraryRooms'
 import { cameraPreset } from './presets'
-import { DUR, EASE_SITE } from '../scene/motion'
+import { DUR, EASE_INK, EASE_SITE } from '../scene/motion'
 import { towerTotalHeight } from '../scene/towerGeometry'
 
 interface OrthoRigProps {
@@ -24,7 +24,7 @@ interface OrthoRigProps {
   reducedMotion: boolean
 }
 
-const ORBIT_SPEED = 0.09
+const ORBIT_SPEED = 0.07
 
 export function OrthoRig({
   floorId,
@@ -44,6 +44,7 @@ export function OrthoRig({
   const orbitAngle = useRef(0)
   const orbitOffset = useRef(new THREE.Vector3())
   const orbitActive = useRef(false)
+  const tweening = useRef(false)
   const invalidate = useThree((s) => s.invalidate)
 
   const focusTarget = selectedBookSlug
@@ -54,7 +55,7 @@ export function OrthoRig({
         ? 'lab'
         : null
 
-  const stationOrbit =
+  const allowOrbit =
     viewMode === 'room' &&
     !focusTarget &&
     !!(labRoomSlug || libraryRoomSlug || factoryStop !== null)
@@ -66,7 +67,7 @@ export function OrthoRig({
       position[2] - lookAt[2],
     )
     orbitAngle.current = 0
-    orbitActive.current = stationOrbit && !reducedMotion
+    orbitActive.current = allowOrbit && !reducedMotion
   }
 
   useEffect(() => {
@@ -84,13 +85,20 @@ export function OrthoRig({
 
     const key = `${phase}-${floorId}-${viewMode}-${factoryStop}-${libraryRoomSlug}-${labRoomSlug}-${focusTarget}`
     const sameFloor = prevKey.current.includes(`-${floorId}-`)
+    const inRoom = viewMode === 'room' && prevKey.current.includes(`${floorId}-room-`)
+
     const labStationSwitch =
-      floorId === '52' &&
-      viewMode === 'room' &&
-      !!labRoomSlug &&
-      prevKey.current.includes(`${floorId}-room-`) &&
-      prevKey.current !== key
-    const panOnly = sameFloor && prevKey.current !== key && viewMode !== 'tower' && !labStationSwitch
+      floorId === '52' && viewMode === 'room' && !!labRoomSlug && inRoom && prevKey.current !== key
+    const factoryStationSwitch =
+      floorId === '23' && viewMode === 'room' && factoryStop !== null && inRoom && prevKey.current !== key
+    const vaultStationSwitch =
+      floorId === '99' && viewMode === 'room' && !!libraryRoomSlug && inRoom && prevKey.current !== key
+
+    const stationSwitch = labStationSwitch || factoryStationSwitch || vaultStationSwitch
+    const panOnly = sameFloor && prevKey.current !== key && viewMode !== 'tower' && !stationSwitch
+
+    orbitActive.current = false
+    tweening.current = true
 
     if (reducedMotion) {
       cam.position.set(...target.position)
@@ -99,6 +107,7 @@ export function OrthoRig({
       cam.lookAt(look.current)
       cam.updateProjectionMatrix()
       syncOrbitBase(target.position, target.lookAt)
+      tweening.current = false
       invalidate()
       prevKey.current = key
       return
@@ -116,21 +125,23 @@ export function OrthoRig({
 
     const isRoofClose = floorId === 'roof' && (viewMode === 'room' || viewMode === 'focus' || viewMode === 'floor')
     const isBoot = phase === 'boot' || phase === 'survey'
-    const duration = panOnly
-      ? DUR.pan
-      : labStationSwitch
-        ? DUR.threshold
-      : isBoot
-        ? DUR.extrude
-        : viewMode === 'focus'
-        ? DUR.focus
-        : isRoofClose
-          ? DUR.roofAscent
-          : viewMode === 'tower'
-            ? DUR.threshold
-            : viewMode === 'room'
-              ? DUR.threshold
-              : DUR.civic
+    const duration = stationSwitch
+      ? DUR.stationPan
+      : panOnly
+        ? DUR.pan
+        : isBoot
+          ? DUR.extrude
+          : viewMode === 'focus'
+            ? DUR.focus
+            : isRoofClose
+              ? DUR.roofAscent
+              : viewMode === 'tower'
+                ? DUR.threshold
+                : viewMode === 'room'
+                  ? DUR.room
+                  : DUR.civic
+
+    const ease = stationSwitch ? EASE_INK : EASE_SITE
 
     const tween = gsap.to(from, {
       x: target.position[0],
@@ -141,7 +152,7 @@ export function OrthoRig({
       ly: target.lookAt[1],
       lz: target.lookAt[2],
       duration,
-      ease: EASE_SITE,
+      ease,
       onUpdate: () => {
         cam.position.set(from.x, from.y, from.z)
         cam.zoom = from.zoom
@@ -152,12 +163,14 @@ export function OrthoRig({
       },
       onComplete: () => {
         syncOrbitBase(target.position, target.lookAt)
+        tweening.current = false
       },
     })
 
     prevKey.current = key
     return () => {
       tween.kill()
+      tweening.current = false
     }
   }, [
     floorId,
@@ -169,7 +182,7 @@ export function OrthoRig({
     labRoomSlug,
     focusTarget,
     reducedMotion,
-    stationOrbit,
+    allowOrbit,
     invalidate,
   ])
 
@@ -178,7 +191,7 @@ export function OrthoRig({
     if (!cam) return
     cam.lookAt(look.current)
 
-    if (!orbitActive.current) return
+    if (tweening.current || !orbitActive.current) return
 
     orbitAngle.current += delta * ORBIT_SPEED
     const offset = orbitOffset.current.clone()

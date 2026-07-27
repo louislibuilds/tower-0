@@ -7,6 +7,7 @@ export const DUR = {
   roofAscent: 1.65,
   assemble: 0.55,
   pan: 0.75,
+  stationPan: 0.88,
   room: 1.05,
   focus: 0.85,
   teardownFill: 0.8,

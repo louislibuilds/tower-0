@@ -8,13 +8,23 @@ import { getProgramFloor } from '../towerGeometry'
 export const STATION_FLOOR_RATIO = 1 / 5.5
 export const BLUEPRINT_FIT_MARGIN = 0.58
 
-/** Interior must stay inside the exhibit band shell */
+/** Interior working area (legacy layouts) */
 export function bandInterior(bandW: number, bandD: number, bandH: number) {
   return {
     w: bandW * 0.78,
     d: bandD * 0.78,
     h: bandH * 0.62,
   }
+}
+
+/** Floor plate flush with exhibit band bottom face */
+export function bandPlateSize(bandW: number, bandD: number) {
+  return { w: bandW * 0.96, d: bandD * 0.96 }
+}
+
+export function floorPlateSize(floorId: import('../../building/program').FloorId) {
+  const band = getProgramFloor(floorId)
+  return bandPlateSize(band.width, band.depth)
 }
 
 /** Scale blueprint room grid to fit a target footprint */

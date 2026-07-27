@@ -10,7 +10,7 @@ import type { ViewMode } from '../building/viewMode'
 import type { LibraryRoomSlug } from '../data/libraryRooms'
 import { getProgramFloor, programCenterY, programBaseY, towerTotalHeight } from '../scene/towerGeometry'
 import { FACTORY_LINE_Z } from '../scene/factoryStops'
-import { vault99Interior } from '../scene/typologies/interiorScale'
+import { floorPlateSize } from '../scene/typologies/interiorScale'
 import { chunkBaseLookAt, chunkPosition, labChunk, vaultCornerAnchor } from '../scene/typologies/floorChunks'
 
 export interface AuthoredPreset {
@@ -69,9 +69,9 @@ function vaultFocusPreset(
   eye: [number, number, number],
   zoom: number,
 ): AuthoredPreset {
-  const interior = vault99Interior()
-  const scale = 0.72
-  const [cx, baseY, cz] = vaultCornerAnchor(slug, interior, scale)
+  const plate = floorPlateSize('99')
+  const scale = 0.78
+  const [cx, baseY, cz] = vaultCornerAnchor(slug, plate, scale)
   return {
     lookAt: [cx + localLookAt[0], baseY + localLookAt[1], cz + localLookAt[2]],
     eye,
@@ -79,33 +79,33 @@ function vaultFocusPreset(
   }
 }
 
-const VAULT_INTERIOR = vault99Interior()
-const VAULT_FOCUS_SCALE = 0.72
-const VAULT_LIB_ANCHOR = vaultCornerAnchor('library', VAULT_INTERIOR, VAULT_FOCUS_SCALE)
-const VAULT_ARC_ANCHOR = vaultCornerAnchor('archive', VAULT_INTERIOR, VAULT_FOCUS_SCALE)
+const VAULT_PLATE = floorPlateSize('99')
+const VAULT_FOCUS_SCALE = 0.78
+const VAULT_LIB_ANCHOR = vaultCornerAnchor('library', VAULT_PLATE, VAULT_FOCUS_SCALE)
+const VAULT_ARC_ANCHOR = vaultCornerAnchor('archive', VAULT_PLATE, VAULT_FOCUS_SCALE)
 
 const VAULT_STATIONS: Record<LibraryRoomSlug, AuthoredPreset> = {
   library: {
     lookAt: [VAULT_LIB_ANCHOR[0], VAULT_LIB_ANCHOR[1], VAULT_LIB_ANCHOR[2]],
-    eye: [0.42, 0.14, 0.48],
+    eye: [0.42, 0.1, 0.42],
     zoom: 478,
   },
   archive: {
     lookAt: [VAULT_ARC_ANCHOR[0], VAULT_ARC_ANCHOR[1], VAULT_ARC_ANCHOR[2]],
-    eye: [-0.42, 0.14, 0.48],
+    eye: [-0.42, 0.1, 0.42],
     zoom: 478,
   },
 }
 
 const VAULT_FLOOR_OVERVIEW: AuthoredPreset = {
-  lookAt: [0, 0.04, 0],
-  eye: [0.38, 0.45, 1.95],
-  zoom: 168,
+  lookAt: [0, 0.04, -0.08],
+  eye: [0.38, 0.28, 1.75],
+  zoom: 172,
 }
 
-const VAULT_BOOK_FOCUS = vaultFocusPreset('library', [0, 0.04, 0.08], [0.42, 0.14, 0.48], 478)
+const VAULT_BOOK_FOCUS = vaultFocusPreset('library', [0, 0.04, 0.08], [0.42, 0.1, 0.42], 478)
 
-const VAULT_CREDENTIAL_FOCUS = vaultFocusPreset('archive', [0, 0.04, 0.08], [-0.42, 0.14, 0.48], 478)
+const VAULT_CREDENTIAL_FOCUS = vaultFocusPreset('archive', [0, 0.04, 0.08], [-0.42, 0.1, 0.42], 478)
 
 /** 23F · four parallel production lines */
 const FACTORY_STATIONS: AuthoredPreset[] = FACTORY_LINE_Z.map((z, i) => ({

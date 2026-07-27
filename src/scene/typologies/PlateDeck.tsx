@@ -100,8 +100,8 @@ export function PlateDeck({
         <meshStandardMaterial color={m.pal.concrete} side={2} transparent opacity={entered ? 0.55 : 0.28} />
       </mesh>
 
-      {/* identity plate — front edge of roof, not band center */}
-      <group position={[0, 0.02, 0.32]}>
+      {/* identity plate — back-right edge, angled toward tower */}
+      <group position={[0.36, 0.02, -0.42]} rotation={[0, -0.55, 0]}>
         <WireBox
           size={[0.85, 0.04, 0.65]}
           position={[0, 0, 0]}

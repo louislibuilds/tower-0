@@ -1,7 +1,7 @@
 import { Html } from '@react-three/drei'
 import { FloorPlate } from '../primitives/FloorPlate'
 import { LAB_CHUNKS, chunkPosition, type ExhibitChunk } from './floorChunks'
-import { LAB_BLUEPRINT_DIMS, blueprintFitScale, lab52Interior } from './interiorScale'
+import { LAB_BLUEPRINT_DIMS, blueprintFitScale, floorPlateSize } from './interiorScale'
 import { LabTypology } from './labs'
 import { StationFootprint } from './StationFootprint'
 import { ThinnedStation } from './ThinnedStation'
@@ -41,18 +41,17 @@ export function BenchRow({
   onLabRoomHover,
 }: BenchRowProps) {
   const m = typologyMat(theme, accent, entered)
-  const interior = lab52Interior()
+  const plate = floorPlateSize('52')
   const enteringLab = !!labRoomSlug
 
   return (
-    <FloorPlate width={interior.w} depth={interior.d} color={m.pal.graphite} floorColor={m.body}>
-      {/* central circulation spine */}
-      <mesh position={[0, 0.006, 0]}>
-        <boxGeometry args={[0.16, 0.003, interior.d * 0.88]} />
+    <FloorPlate width={plate.w} depth={plate.d} color={m.pal.graphite} floorColor={m.body}>
+      <mesh position={[0, 0.002, 0]}>
+        <boxGeometry args={[0.16, 0.002, plate.d * 0.9]} />
         <meshStandardMaterial color={m.pal.concrete} transparent opacity={0.55} />
       </mesh>
-      <mesh position={[0, 0.006, 0]}>
-        <boxGeometry args={[interior.w * 0.72, 0.003, 0.12]} />
+      <mesh position={[0, 0.002, 0]}>
+        <boxGeometry args={[plate.w * 0.72, 0.002, 0.12]} />
         <meshStandardMaterial color={m.pal.concrete} transparent opacity={0.4} />
       </mesh>
 
@@ -114,7 +113,7 @@ function LabStationBlock({
 }) {
   const { w, d, h } = chunk.size
   const [gridW, gridD] = LAB_BLUEPRINT_DIMS[slug] ?? [5, 5]
-  const typologyScale = blueprintFitScale(gridW, gridD, { w: w * 0.9, d: d * 0.9 }, 0.68)
+  const typologyScale = blueprintFitScale(gridW, gridD, { w: w * 0.92, d: d * 0.92 }, 0.72)
 
   return (
     <group>
@@ -142,7 +141,7 @@ function LabStationBlock({
       </mesh>
 
       <StationFootprint width={w} depth={d} theme={theme} accent={accent} active={lit} thin={thin} />
-      <group position={[0, 0.01, 0]} scale={typologyScale}>
+      <group position={[0, 0.012, 0]} scale={typologyScale}>
         <LabTypology slug={slug} theme={theme} accent={accent} entered={entered} active={lit} />
       </group>
 

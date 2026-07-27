@@ -298,30 +298,7 @@ function ProgramFloorBand({
       )}
 
       {entered && bandProgress > 0.6 && (
-        <group
-          position={[0, -h / 2 + 0.02, 0]}
-          scale={
-            program.id === 'roof'
-              ? viewMode === 'room' || viewMode === 'focus'
-                ? 1.2
-                : 0.95
-              : viewMode === 'room' || viewMode === 'focus'
-                ? program.id === '52' && labRoomSlug
-                  ? 0.92
-                  : program.id === '99'
-                    ? 0.95
-                    : 0.88
-                : viewMode === 'floor' && program.id === '52'
-                  ? 0.78
-                  : viewMode === 'floor' && program.id === '99'
-                    ? 0.76
-                    : viewMode === 'floor' && (program.id === 'B2' || program.id === 'B10')
-                      ? 0.88
-                    : viewMode === 'floor' && (labRoomSlug || libraryRoomSlug || factoryStop !== null)
-                      ? 0.74
-                      : 0.64
-          }
-        >
+        <group position={[0, -h / 2, 0]}>
           <FloorRoom
             floorId={program.id}
             bandHeight={program.bandHeight}
