@@ -1,7 +1,7 @@
 import type { ViewMode } from '../../building/viewMode'
 import { areaLabel, FACTORY_AREAS } from '../factoryStops'
 import { FloorPlate } from '../primitives/FloorPlate'
-import { blueprintFitScale, factory23Interior } from './interiorScale'
+import { blueprintFitScale, floorPlateSize } from './interiorScale'
 import { FactoryLineLayout } from './layouts/FactoryLineLayout'
 import { typologyMat, type TypologyProps } from './types'
 
@@ -12,7 +12,7 @@ interface AssemblyLineProps extends TypologyProps {
   onSelectStop: (stop: number) => void
 }
 
-/** 23 · Assembly Line — blueprint conveyor with semester stop targets */
+/** 23 · Assembly Line — four parallel production lines on full floor plate */
 export function AssemblyLine({
   theme,
   accent,
@@ -23,13 +23,13 @@ export function AssemblyLine({
   onSelectStop,
 }: AssemblyLineProps) {
   const m = typologyMat(theme, accent, entered)
-  const interior = factory23Interior()
-  const layoutScale = blueprintFitScale(10, 5.4, interior, 0.82)
+  const plate = floorPlateSize('23')
+  const layoutScale = blueprintFitScale(10, 5.4, plate, 0.88)
   const enteringFactory = factoryStop !== null && (viewMode === 'room' || viewMode === 'focus')
 
   return (
-    <FloorPlate width={interior.w} depth={interior.d} color={m.pal.graphite} floorColor={m.body}>
-      <group scale={layoutScale}>
+    <FloorPlate width={plate.w} depth={plate.d} color={m.pal.graphite} floorColor={m.body}>
+      <group position={[0, 0.01, 0]} scale={layoutScale}>
         <FactoryLineLayout
           theme={theme}
           accent={accent}

@@ -7,7 +7,7 @@ import { FloorPlate } from '../primitives/FloorPlate'
 import { chunkPosition, vaultCornerAnchor, VAULT_CHUNKS } from './floorChunks'
 import { ArchiveVaultLayout } from './layouts/ArchiveVaultLayout'
 import { LibraryStackLayout } from './layouts/LibraryStackLayout'
-import { blueprintFitScale, vault99Interior, vaultZoneInterior } from './interiorScale'
+import { blueprintFitScale, floorPlateSize } from './interiorScale'
 import { StationFootprint } from './StationFootprint'
 import { ThinnedStation } from './ThinnedStation'
 import { typologyMat, type TypologyProps } from './types'
@@ -26,8 +26,8 @@ interface StackVaultProps extends TypologyProps {
 
 const POD_SCALE_RATIO = 0.52
 
-function cornerPosition(slug: LibraryRoomSlug, interior: { w: number; d: number }, scale: number) {
-  const [x, , z] = vaultCornerAnchor(slug, interior, scale)
+function cornerPosition(slug: LibraryRoomSlug, plate: { w: number; d: number }, scale: number) {
+  const [x, , z] = vaultCornerAnchor(slug, plate, scale)
   return [x, 0, z] as [number, number, number]
 }
 
@@ -46,16 +46,16 @@ export function StackVaultFloor(props: StackVaultProps) {
   } = props
 
   const m = typologyMat(theme, accent, entered)
-  const interior = vault99Interior()
-  const zone = vaultZoneInterior()
+  const plate = floorPlateSize('99')
+  const zone = { w: plate.w * 0.48, d: plate.d * 0.88 }
   const podScale = blueprintFitScale(6, 5, zone) * POD_SCALE_RATIO
-  const focusScale = blueprintFitScale(6, 5, interior, 0.72)
+  const focusScale = blueprintFitScale(6, 5, plate, 0.78)
   const anyZoomed = !!libraryRoomSlug && (viewMode === 'room' || viewMode === 'focus')
 
   return (
-    <FloorPlate width={interior.w} depth={interior.d} color={m.pal.graphite} floorColor={m.body}>
+    <FloorPlate width={plate.w} depth={plate.d} color={m.pal.graphite} floorColor={m.body}>
       {anyZoomed && libraryRoomSlug ? (
-        <group position={cornerPosition(libraryRoomSlug, interior, focusScale)}>
+        <group position={cornerPosition(libraryRoomSlug, plate, focusScale)}>
           {libraryRoomSlug === 'library' ? (
             <LibraryRoomInterior
               theme={theme}

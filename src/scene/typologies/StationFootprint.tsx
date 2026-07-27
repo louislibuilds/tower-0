@@ -24,7 +24,7 @@ export function StationFootprint({
   const pal = getScenePalette(theme)
   const edge = thin ? pal.graphite : active ? accent : pal.graphite
   const fill = thin ? 0.02 : active ? 0.12 : 0.07
-  const y = 0.014
+  const y = 0.008
 
   const boundary = useMemo(() => {
     const hw = width / 2
