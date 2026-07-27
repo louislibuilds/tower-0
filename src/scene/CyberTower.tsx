@@ -207,11 +207,11 @@ function ProgramFloorBand({
   const fillOpacity = (() => {
     if (shellFade) return 0.12
     if (entered && (viewMode === 'room' || viewMode === 'focus')) {
-      if (program.id === '52' && labRoomSlug) return 0.05
-      if (program.id === '99' && libraryRoomSlug) return 0.05
-      if (program.id === '23' && factoryStop !== null) return 0.05
-      if (program.id === 'B2' || program.id === 'B10') return 0.06
-      return 0.08
+      if (program.id === '52' && labRoomSlug) return isNight ? 0.1 : 0.05
+      if (program.id === '99' && libraryRoomSlug) return isNight ? 0.1 : 0.05
+      if (program.id === '23' && factoryStop !== null) return isNight ? 0.1 : 0.05
+      if (program.id === 'B2' || program.id === 'B10') return isNight ? 0.12 : 0.06
+      return isNight ? 0.14 : 0.08
     }
     if (entered && viewMode === 'floor') {
       if (program.id === 'B2' || program.id === 'B10') return 0.1
@@ -294,12 +294,12 @@ function ProgramFloorBand({
       }
 
       {isNight && entered && (
-        <pointLight position={[0, 0.15, d / 2 + 0.3]} intensity={0.35} distance={2.5} color={pal.signal} decay={2} />
+        <pointLight position={[0, 0.35, 0]} intensity={0.85} distance={4.5} color={pal.neonBright} decay={2} />
       )}
 
       {entered && bandProgress > 0.6 && (
         <group
-          position={[0, -h * 0.06, 0]}
+          position={[0, -h / 2 + 0.02, 0]}
           scale={
             program.id === 'roof'
               ? viewMode === 'room' || viewMode === 'focus'
@@ -307,19 +307,19 @@ function ProgramFloorBand({
                 : 0.95
               : viewMode === 'room' || viewMode === 'focus'
                 ? program.id === '52' && labRoomSlug
-                  ? 0.82
+                  ? 0.92
                   : program.id === '99'
-                    ? 0.78
-                    : 0.72
+                    ? 0.95
+                    : 0.88
                 : viewMode === 'floor' && program.id === '52'
-                  ? 0.72
+                  ? 0.78
                   : viewMode === 'floor' && program.id === '99'
-                    ? 0.7
+                    ? 0.76
                     : viewMode === 'floor' && (program.id === 'B2' || program.id === 'B10')
-                      ? 0.82
+                      ? 0.88
                     : viewMode === 'floor' && (labRoomSlug || libraryRoomSlug || factoryStop !== null)
-                      ? 0.68
-                      : 0.56
+                      ? 0.74
+                      : 0.64
           }
         >
           <FloorRoom

@@ -1,5 +1,5 @@
 import { Html } from '@react-three/drei'
-import { RoomShell } from '../primitives/RoomShell'
+import { FloorPlate } from '../primitives/FloorPlate'
 import { blueprintFitScale, techB10Interior } from './interiorScale'
 import { TechCentreLayout } from './layouts/TechCentreLayout'
 import { typologyMat, type TypologyProps } from './types'
@@ -12,14 +12,14 @@ export function RackHall({ theme, accent, entered, active }: TypologyProps) {
   const layoutScale = blueprintFitScale(8, 6, interior)
 
   return (
-    <RoomShell width={interior.w} depth={interior.d} height={interior.h} color={m.pal.graphite} floorColor={m.body} openFront>
-      <group position={[0, 0.02, 0]}>
-        <TechCentreLayout theme={theme} accent={accent} entered={entered} active={lit} scale={layoutScale} />
+    <FloorPlate width={interior.w} depth={interior.d} color={m.pal.graphite} floorColor={m.body}>
+      <group scale={layoutScale}>
+        <TechCentreLayout theme={theme} accent={accent} entered={entered} active={lit} />
       </group>
 
       <Html center position={[0.38, 0.28, 0.16]} style={{ pointerEvents: 'none' }}>
         <div className={`scene-label scene-label--tiny ${lit ? 'scene-label--active' : ''}`}>PRINT</div>
       </Html>
-    </RoomShell>
+    </FloorPlate>
   )
 }

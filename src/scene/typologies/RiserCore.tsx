@@ -1,4 +1,4 @@
-import { RoomShell } from '../primitives/RoomShell'
+import { FloorPlate } from '../primitives/FloorPlate'
 import { blueprintFitScale, infraB2Interior } from './interiorScale'
 import { InfraRackLayout } from './layouts/InfraRackLayout'
 import { typologyMat, type TypologyProps } from './types'
@@ -11,10 +11,10 @@ export function RiserCore({ theme, accent, entered, active = false }: TypologyPr
   const layoutScale = blueprintFitScale(6, 5, interior)
 
   return (
-    <RoomShell width={interior.w} depth={interior.d} height={interior.h} color={m.pal.graphite} floorColor={m.body} openFront>
-      <group position={[0, 0.02, 0]}>
-        <InfraRackLayout theme={theme} accent={accent} entered={entered} active={lit} scale={layoutScale} />
+    <FloorPlate width={interior.w} depth={interior.d} color={m.pal.graphite} floorColor={m.body}>
+      <group scale={layoutScale}>
+        <InfraRackLayout theme={theme} accent={accent} entered={entered} active={lit} />
       </group>
-    </RoomShell>
+    </FloorPlate>
   )
 }

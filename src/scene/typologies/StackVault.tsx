@@ -3,7 +3,7 @@ import type { ViewMode } from '../../building/viewMode'
 import { credentials } from '../../data/credentials'
 import { libraryBooks } from '../../data/libraryBooks'
 import type { LibraryRoomSlug } from '../../data/libraryRooms'
-import { RoomShell } from '../primitives/RoomShell'
+import { FloorPlate } from '../primitives/FloorPlate'
 import { chunkPosition, VAULT_CHUNKS } from './floorChunks'
 import { ArchiveVaultLayout } from './layouts/ArchiveVaultLayout'
 import { LibraryStackLayout } from './layouts/LibraryStackLayout'
@@ -24,13 +24,9 @@ interface StackVaultProps extends TypologyProps {
   onCredentialClick: (slug: string) => void
 }
 
-const POD_SCALE_RATIO = 0.44
+const POD_SCALE_RATIO = 0.5
 
-function isVaultZoomed(slug: LibraryRoomSlug, libraryRoomSlug: LibraryRoomSlug | null, viewMode: ViewMode) {
-  return libraryRoomSlug === slug && (viewMode === 'room' || viewMode === 'focus')
-}
-
-/** 99 · Stack Room + Vault Wall — one floor shell, two station blocks */
+/** 99 · Stack Room + Vault Wall — flat floor plate, two station blocks */
 export function StackVaultFloor(props: StackVaultProps) {
   const {
     theme,
@@ -38,7 +34,6 @@ export function StackVaultFloor(props: StackVaultProps) {
     entered,
     viewMode,
     libraryRoomSlug,
-    roomFocus,
     onLibraryRoomClick,
     onLibraryRoomHover,
     onBookClick,
@@ -48,58 +43,42 @@ export function StackVaultFloor(props: StackVaultProps) {
   const m = typologyMat(theme, accent, entered)
   const interior = vault99Interior()
   const zone = vaultZoneInterior()
-  const roomScale = blueprintFitScale(6, 5, zone)
-  const podScale = roomScale * POD_SCALE_RATIO
+  const podScale = blueprintFitScale(6, 5, zone) * POD_SCALE_RATIO
+  const focusScale = blueprintFitScale(6, 5, interior, 0.72)
   const anyZoomed = !!libraryRoomSlug && (viewMode === 'room' || viewMode === 'focus')
 
   return (
-    <RoomShell
-      width={interior.w}
-      depth={interior.d}
-      height={interior.h}
-      color={m.pal.graphite}
-      floorColor={m.body}
-      openFront={anyZoomed}
-    >
-      {!anyZoomed && (
-        <mesh position={[0, 0.02, 0]}>
-          <boxGeometry args={[0.1, 0.015, interior.d * 0.88]} />
-          <meshStandardMaterial color={m.pal.concrete} transparent opacity={0.5} />
-        </mesh>
-      )}
+    <FloorPlate width={interior.w} depth={interior.d} color={m.pal.graphite} floorColor={m.body}>
+      {anyZoomed && libraryRoomSlug ? (
+        <group>
+          {libraryRoomSlug === 'library' ? (
+            <LibraryRoomInterior
+              theme={theme}
+              accent={accent}
+              entered={entered}
+              scale={focusScale}
+              roomDepth={interior.d}
+              onBookClick={onBookClick}
+            />
+          ) : (
+            <VaultWallInterior
+              theme={theme}
+              accent={accent}
+              entered={entered}
+              scale={focusScale}
+              roomDepth={interior.d}
+              onCredentialClick={onCredentialClick}
+            />
+          )}
+        </group>
+      ) : (
+        (['library', 'archive'] as const).map((slug) => {
+          const chunk = VAULT_CHUNKS[slug]
+          const [cx, , cz] = chunkPosition(chunk)
+          const thin = !!libraryRoomSlug && libraryRoomSlug !== slug
 
-      {(['library', 'archive'] as const).map((slug) => {
-        const chunk = VAULT_CHUNKS[slug]
-        const [cx, cy, cz] = chunkPosition(chunk)
-        const zoomed = isVaultZoomed(slug, libraryRoomSlug, viewMode)
-
-        if (roomFocus && libraryRoomSlug && libraryRoomSlug !== slug) {
-          return null
-        }
-
-        const thin = !!libraryRoomSlug && libraryRoomSlug !== slug
-
-        return (
-          <group key={slug} position={[cx, cy, cz]}>
-            {zoomed ? (
-              slug === 'library' ? (
-                <LibraryRoomInterior
-                  theme={theme}
-                  accent={accent}
-                  entered={entered}
-                  scale={roomScale}
-                  onBookClick={onBookClick}
-                />
-              ) : (
-                <VaultWallInterior
-                  theme={theme}
-                  accent={accent}
-                  entered={entered}
-                  scale={roomScale}
-                  onCredentialClick={onCredentialClick}
-                />
-              )
-            ) : (
+          return (
+            <group key={slug} position={[cx, 0, cz]}>
               <VaultZonePod
                 slug={slug}
                 chunk={chunk}
@@ -109,15 +88,14 @@ export function StackVaultFloor(props: StackVaultProps) {
                 entered={entered}
                 active={libraryRoomSlug === slug}
                 thin={thin}
-                roomFocus={roomFocus && libraryRoomSlug === slug}
                 onClick={() => onLibraryRoomClick(slug)}
                 onHover={onLibraryRoomHover}
               />
-            )}
-          </group>
-        )
-      })}
-    </RoomShell>
+            </group>
+          )
+        })
+      )}
+    </FloorPlate>
   )
 }
 
@@ -130,7 +108,6 @@ function VaultZonePod({
   entered,
   active,
   thin,
-  roomFocus = false,
   onClick,
   onHover,
 }: {
@@ -142,7 +119,6 @@ function VaultZonePod({
   entered: boolean
   active: boolean
   thin: boolean
-  roomFocus?: boolean
   onClick: () => void
   onHover: (slug: LibraryRoomSlug | null) => void
 }) {
@@ -171,27 +147,22 @@ function VaultZonePod({
           <meshBasicMaterial transparent opacity={0} />
         </mesh>
         <StationFootprint width={w} depth={d} theme={theme} accent={accent} active={active} thin={thin} />
-        <group position={[0, 0.02, -0.02]}>
+        <group scale={scale}>
           {slug === 'library' ? (
             <LibraryStackLayout
               theme={theme}
               accent={accent}
               entered={entered}
               active={active}
-              scale={scale}
-              showShell
+              showShell={false}
             />
           ) : (
-            <ArchiveVaultLayout theme={theme} accent={accent} entered={entered} active={active} scale={scale} />
+            <ArchiveVaultLayout theme={theme} accent={accent} entered={entered} active={active} />
           )}
         </group>
         {!thin && (
-          <Html center position={[0, h / 2 + 0.1, 0]} style={{ pointerEvents: 'none' }}>
-            <div
-              className={`scene-label scene-label--lab ${active ? 'scene-label--active' : ''} ${roomFocus ? 'scene-label--hidden' : ''}`}
-            >
-              {label}
-            </div>
+          <Html center position={[0, h + 0.1, 0]} style={{ pointerEvents: 'none' }}>
+            <div className={`scene-label scene-label--lab ${active ? 'scene-label--active' : ''}`}>{label}</div>
           </Html>
         )}
       </group>
@@ -204,17 +175,16 @@ function LibraryRoomInterior({
   accent,
   entered,
   scale,
+  roomDepth,
   onBookClick,
 }: {
   theme: TypologyProps['theme']
   accent: string
   entered: boolean
   scale: number
+  roomDepth: number
   onBookClick: (slug: string) => void
 }) {
-  const zone = vaultZoneInterior()
-  const id = zone.d
-
   return (
     <group>
       <LibraryStackLayout
@@ -223,7 +193,7 @@ function LibraryRoomInterior({
         entered={entered}
         active
         scale={scale}
-        showShell={false}
+        showShell
       />
 
       {libraryBooks.map((book, i) => {
@@ -231,7 +201,7 @@ function LibraryRoomInterior({
         const col = i % 2
         const x = (-0.12 + col * 0.08) * scale
         const y = (0.1 + row * 0.14) * scale
-        const z = -id / 2 + 0.16 * scale
+        const z = -roomDepth / 2 + 0.22 * scale
 
         return (
           <mesh
@@ -263,30 +233,28 @@ function VaultWallInterior({
   accent,
   entered,
   scale,
+  roomDepth,
   onCredentialClick,
 }: {
   theme: TypologyProps['theme']
   accent: string
   entered: boolean
   scale: number
+  roomDepth: number
   onCredentialClick: (slug: string) => void
 }) {
-  const zone = vaultZoneInterior()
-  const id = zone.d
   const show = credentials.slice(0, 6)
 
   return (
     <group>
-      <group position={[0, 0.02, 0]}>
-        <ArchiveVaultLayout theme={theme} accent={accent} entered={entered} active scale={scale} />
-      </group>
+      <ArchiveVaultLayout theme={theme} accent={accent} entered={entered} active scale={scale} />
 
       {show.map((cred, i) => {
         const row = Math.floor(i / 3)
         const col = i % 3
         const x = (-0.22 + col * 0.22) * scale
         const y = (0.08 + row * 0.2) * scale
-        const z = -id / 2 + 0.12 * scale
+        const z = -roomDepth / 2 + 0.18 * scale
 
         return (
           <mesh

@@ -52,24 +52,24 @@ export const PAPER_PRINT: ScenePalette = {
 
 export const INK_PRINT: ScenePalette = {
   print: 'ink',
-  paper: '#0A0B0C',
-  concrete: '#2E3238',
-  resin: '#121418',
-  graphite: '#8EC4DC',
-  mute: '#6A8A9A',
-  ink: '#E8F4FA',
-  alum: '#4A6070',
-  glass: '#1A3848',
+  paper: '#0C1218',
+  concrete: '#1A3848',
+  resin: '#142028',
+  graphite: '#88D4F0',
+  mute: '#5A8AA0',
+  ink: '#E8F8FF',
+  alum: '#3A5870',
+  glass: '#143848',
   blueprint: '#5B82BC',
   signal: '#3A8AFF',
   chicken: '#E8B84A',
   chickenMute: '#B8922E',
-  grid: '#1A3040',
-  shade: '#06080A',
+  grid: '#1A4058',
+  shade: '#080C10',
   neon: '#00AAD0',
   neonBright: '#56DAFF',
   neonGreen: '#36FEA0',
-  bpFace: '#0E2838',
+  bpFace: '#143848',
   bpEdge: '#00AAD0',
 }
 
@@ -82,10 +82,10 @@ export function typologyHighlight(theme: 'light' | 'dark', lit: boolean): { warm
   const pal = getScenePalette(theme)
   if (theme === 'dark') {
     return {
-      warm: pal.neonGreen,
+      warm: pal.chicken,
       cool: pal.neonBright,
-      emissiveWarm: lit ? 0.35 : 0.08,
-      emissiveCool: lit ? 0.28 : 0.06,
+      emissiveWarm: lit ? 0.55 : 0.18,
+      emissiveCool: lit ? 0.42 : 0.14,
     }
   }
   return {
