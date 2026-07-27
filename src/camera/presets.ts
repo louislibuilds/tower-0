@@ -4,7 +4,7 @@ import type { ViewMode } from '../building/viewMode'
 import type { LibraryRoomSlug } from '../data/libraryRooms'
 import { getProgramFloor, programCenterY, programBaseY, towerTotalHeight } from '../scene/towerGeometry'
 import { FACTORY_STOPS } from '../scene/factoryStops'
-import { labStation, LAB_FLOOR_OVERVIEW_ZOOM } from '../scene/typologies/labCamera'
+import { labCameraPreset, LAB_FLOOR_OVERVIEW_ZOOM } from '../scene/typologies/labCamera'
 import { chunkPosition, vaultChunk } from '../scene/typologies/floorChunks'
 
 /** Camera zoom ladder — L0 tower → L1 lobby → L2 floor → L3 room → L4 part */
@@ -82,19 +82,6 @@ function labStationRoomEntry(
     zoom,
   }
 }
-/** L4 extreme close — camera almost inside the station typology */
-function labStationCloseEntry(
-  target: [number, number, number],
-  from: 'left' | 'right',
-  zoom: number,
-): CameraPreset {
-  const sign = from === 'left' ? -1 : 1
-  return {
-    position: [target[0] + sign * 0.18, target[1] + 0.05, target[2] + 0.34],
-    lookAt: target,
-    zoom,
-  }
-}
 
 export function cameraPreset(
   floorId: FloorId,
@@ -165,14 +152,8 @@ export function cameraPreset(
   }
 
   if (floorId === '52') {
-    const station = opts.labRoomSlug ? labStation(opts.labRoomSlug) : null
-    if (station && viewMode === 'focus' && opts.focusTarget === 'lab') {
-      const target: [number, number, number] = [station.pos[0], y + station.lookAtY, station.pos[2]]
-      return labStationCloseEntry(target, station.cameraSide, station.partZoom)
-    }
-    if (station && viewMode === 'room') {
-      const target: [number, number, number] = [station.pos[0], y + station.lookAtY, station.pos[2]]
-      return labStationRoomEntry(y, target, station.cameraSide, station.roomZoom)
+    if (opts.labRoomSlug && viewMode === 'room') {
+      return labCameraPreset(y, opts.labRoomSlug)
     }
     return closeStation(y, [0, y + 0.02, 0], 'front', LAB_FLOOR_OVERVIEW_ZOOM, 0.38)
   }

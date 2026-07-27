@@ -74,10 +74,6 @@ interface SiteContextValue {
 
   toggleLabRoom: (slug: string) => void
 
-  handleLabTypologyClick: (slug: string) => void
-
-  exitLabFocus: () => void
-
   toggleLibraryRoom: (slug: LibraryRoomSlug) => void
 
   toggleFactoryStop: (stop: number) => void
@@ -358,16 +354,6 @@ export function SiteProvider({ children }: { children: ReactNode }) {
     setViewMode('room')
   }, [labRoomSlug, phase])
 
-  const handleLabTypologyClick = useCallback((slug: string) => {
-    if (isInteractionLocked(phase)) return
-    if (labRoomSlug !== slug || viewMode !== 'room') return
-    setViewMode('focus')
-  }, [labRoomSlug, viewMode, phase])
-
-  const exitLabFocus = useCallback(() => {
-    if (labRoomSlug) setViewMode('room')
-  }, [labRoomSlug])
-
 
 
   const toggleLibraryRoom = useCallback((slug: LibraryRoomSlug) => {
@@ -590,10 +576,6 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
       toggleLabRoom,
 
-      handleLabTypologyClick,
-
-      exitLabFocus,
-
       toggleLibraryRoom,
 
       toggleFactoryStop,
@@ -665,10 +647,6 @@ export function SiteProvider({ children }: { children: ReactNode }) {
       goToFloor,
 
       toggleLabRoom,
-
-      handleLabTypologyClick,
-
-      exitLabFocus,
 
       toggleLibraryRoom,
 

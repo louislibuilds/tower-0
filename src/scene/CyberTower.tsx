@@ -45,7 +45,6 @@ interface CyberTowerProps {
   onFloorHover: (id: FloorId | null) => void
   onFloorClick: (id: FloorId) => void
   onLabRoomClick: (slug: string) => void
-  onLabTypologyClick: (slug: string) => void
   onLabRoomHover: (slug: string | null) => void
   onLibraryRoomClick: (slug: LibraryRoomSlug) => void
   onLibraryRoomHover: (slug: LibraryRoomSlug | null) => void
@@ -145,7 +144,6 @@ function ProgramFloorBand({
   onFloorHover,
   onFloorClick,
   onLabRoomClick,
-  onLabTypologyClick,
   onLabRoomHover,
   onLibraryRoomClick,
   onLibraryRoomHover,
@@ -172,7 +170,6 @@ function ProgramFloorBand({
   onFloorHover: (id: FloorId | null) => void
   onFloorClick: (id: FloorId) => void
   onLabRoomClick: (slug: string) => void
-  onLabTypologyClick: (slug: string) => void
   onLabRoomHover: (slug: string | null) => void
   onLibraryRoomClick: (slug: LibraryRoomSlug) => void
   onLibraryRoomHover: (slug: LibraryRoomSlug | null) => void
@@ -302,7 +299,6 @@ function ProgramFloorBand({
             selectedBookSlug={selectedBookSlug}
             selectedCredentialSlug={selectedCredentialSlug}
             onLabRoomClick={onLabRoomClick}
-            onLabTypologyClick={onLabTypologyClick}
             onLabRoomHover={onLabRoomHover}
             onLibraryRoomClick={onLibraryRoomClick}
             onLibraryRoomHover={onLibraryRoomHover}
@@ -390,7 +386,6 @@ export function CyberTower({
   onFloorHover,
   onFloorClick,
   onLabRoomClick,
-  onLabTypologyClick,
   onLabRoomHover,
   onLibraryRoomClick,
   onLibraryRoomHover,
@@ -489,7 +484,6 @@ export function CyberTower({
                 onFloorHover={onFloorHover}
                 onFloorClick={onFloorClick}
                 onLabRoomClick={onLabRoomClick}
-                onLabTypologyClick={onLabTypologyClick}
                 onLabRoomHover={onLabRoomHover}
                 onLibraryRoomClick={onLibraryRoomClick}
                 onLibraryRoomHover={onLibraryRoomHover}
