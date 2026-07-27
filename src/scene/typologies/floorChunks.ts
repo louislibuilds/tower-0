@@ -3,24 +3,15 @@ import type { LibraryRoomSlug } from '../../data/libraryRooms'
 import { getProgramFloor } from '../towerGeometry'
 import { bandInterior } from './interiorScale'
 
-/** Vertical tier within a multi-room floor — lower slab vs raised mezzanine */
-export type ChunkTier = 'lower' | 'raised'
-
 export interface ExhibitChunk {
   id: string
   slug: string
   code?: string
   pos: [number, number, number]
   size: { w: number; d: number; h: number }
-  tier: ChunkTier
   cameraSide: 'left' | 'right'
+  /** Camera look-at height; defaults to station footprint center */
   lookAtY?: number
-}
-
-export const RAISED_TIER_LIFT = 0.12
-
-export function tierLift(tier: ChunkTier): number {
-  return tier === 'raised' ? RAISED_TIER_LIFT : 0
 }
 
 export function floorInterior(floorId: FloorId) {
@@ -30,7 +21,7 @@ export function floorInterior(floorId: FloorId) {
 
 export const MIN_CHUNK = { w: 0.42, d: 0.38, h: 0.48 } as const
 
-/** 52F — five authored station anchors inside enlarged band (~1.80 × 1.44 interior) */
+/** 52F — five station anchors on a single flat floor slab */
 export const LAB_CHUNKS: ExhibitChunk[] = [
   {
     id: 'lab-001',
@@ -38,7 +29,6 @@ export const LAB_CHUNKS: ExhibitChunk[] = [
     code: '001',
     pos: [0, 0, 0.38],
     size: { w: 0.52, d: 0.48, h: 0.55 },
-    tier: 'lower',
     cameraSide: 'right',
   },
   {
@@ -47,7 +37,6 @@ export const LAB_CHUNKS: ExhibitChunk[] = [
     code: '002',
     pos: [0.48, 0, 0.06],
     size: { w: 0.46, d: 0.44, h: 0.52 },
-    tier: 'lower',
     cameraSide: 'left',
   },
   {
@@ -56,7 +45,6 @@ export const LAB_CHUNKS: ExhibitChunk[] = [
     code: '003',
     pos: [-0.58, 0, -0.24],
     size: { w: 0.5, d: 0.46, h: 0.58 },
-    tier: 'raised',
     cameraSide: 'right',
   },
   {
@@ -65,7 +53,6 @@ export const LAB_CHUNKS: ExhibitChunk[] = [
     code: '004',
     pos: [0.55, 0, -0.2],
     size: { w: 0.52, d: 0.48, h: 0.56 },
-    tier: 'raised',
     cameraSide: 'left',
   },
   {
@@ -74,7 +61,6 @@ export const LAB_CHUNKS: ExhibitChunk[] = [
     code: '005',
     pos: [-0.22, 0, -0.02],
     size: { w: 0.44, d: 0.4, h: 0.5 },
-    tier: 'lower',
     cameraSide: 'right',
   },
 ]
@@ -85,7 +71,6 @@ export const VAULT_CHUNKS: Record<LibraryRoomSlug, ExhibitChunk> = {
     slug: 'library',
     pos: [-0.42, 0, 0.14],
     size: { w: 0.74, d: 0.56, h: 0.62 },
-    tier: 'lower',
     cameraSide: 'left',
   },
   archive: {
@@ -93,17 +78,22 @@ export const VAULT_CHUNKS: Record<LibraryRoomSlug, ExhibitChunk> = {
     slug: 'archive',
     pos: [0.46, 0, -0.12],
     size: { w: 0.7, d: 0.52, h: 0.58 },
-    tier: 'raised',
     cameraSide: 'right',
   },
 }
 
 export function chunkPosition(chunk: ExhibitChunk): [number, number, number] {
-  return [chunk.pos[0], tierLift(chunk.tier) + chunk.pos[1], chunk.pos[2]]
+  return chunk.pos
 }
 
+/** Station footprint center — not label height */
+export function chunkBaseLookAt(chunk: ExhibitChunk): number {
+  return chunk.lookAtY ?? 0.04
+}
+
+/** @deprecated Use chunkBaseLookAt */
 export function chunkLookAtY(chunk: ExhibitChunk): number {
-  return chunk.lookAtY ?? 0.1 + tierLift(chunk.tier)
+  return chunkBaseLookAt(chunk)
 }
 
 export function labChunk(slug: string): ExhibitChunk | undefined {
