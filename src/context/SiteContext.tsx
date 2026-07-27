@@ -46,6 +46,10 @@ interface SiteContextValue {
 
   hoveredLabSlug: string | null
 
+  hoveredLibraryRoomSlug: LibraryRoomSlug | null
+
+  hoveredFactoryStop: number | null
+
   floor: ReturnType<typeof useFloorNavigation>['floor']
 
   direction: number
@@ -71,6 +75,10 @@ interface SiteContextValue {
   setSelectedCredentialSlug: (slug: string | null) => void
 
   setHoveredLabSlug: (slug: string | null) => void
+
+  setHoveredLibraryRoomSlug: (slug: LibraryRoomSlug | null) => void
+
+  setHoveredFactoryStop: (stop: number | null) => void
 
   toggleFloor: (id: FloorId) => void
 
@@ -155,6 +163,10 @@ function clearFloorSelections(setters: {
 
   setHoverLab: (v: string | null) => void
 
+  setHoverLib: (v: LibraryRoomSlug | null) => void
+
+  setHoverFactory: (v: number | null) => void
+
 }) {
 
   setters.setLab(null)
@@ -168,6 +180,10 @@ function clearFloorSelections(setters: {
   setters.setCred(null)
 
   setters.setHoverLab(null)
+
+  setters.setHoverLib(null)
+
+  setters.setHoverFactory(null)
 
 }
 
@@ -193,6 +209,10 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
   const [hoveredLabSlug, setHoveredLabSlug] = useState<string | null>(null)
 
+  const [hoveredLibraryRoomSlug, setHoveredLibraryRoomSlug] = useState<LibraryRoomSlug | null>(null)
+
+  const [hoveredFactoryStop, setHoveredFactoryStop] = useState<number | null>(null)
+
   const setHoveredFloorSafe = useCallback(
     (id: FloorId | null) => {
       if (isInteractionLocked(phase)) return
@@ -205,6 +225,22 @@ export function SiteProvider({ children }: { children: ReactNode }) {
     (slug: string | null) => {
       if (isInteractionLocked(phase)) return
       setHoveredLabSlug(slug)
+    },
+    [phase],
+  )
+
+  const setHoveredLibraryRoomSlugSafe = useCallback(
+    (slug: LibraryRoomSlug | null) => {
+      if (isInteractionLocked(phase)) return
+      setHoveredLibraryRoomSlug(slug)
+    },
+    [phase],
+  )
+
+  const setHoveredFactoryStopSafe = useCallback(
+    (stop: number | null) => {
+      if (isInteractionLocked(phase)) return
+      setHoveredFactoryStop(stop)
     },
     [phase],
   )
@@ -234,6 +270,10 @@ export function SiteProvider({ children }: { children: ReactNode }) {
       setCred: setSelectedCredentialSlugState,
 
       setHoverLab: setHoveredLabSlug,
+
+      setHoverLib: setHoveredLibraryRoomSlug,
+
+      setHoverFactory: setHoveredFactoryStop,
 
     })
 
@@ -648,6 +688,10 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
       hoveredLabSlug,
 
+      hoveredLibraryRoomSlug,
+
+      hoveredFactoryStop,
+
       labRoomSlug,
 
       libraryRoomSlug,
@@ -698,6 +742,10 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
       setHoveredLabSlug: setHoveredLabSlugSafe,
 
+      setHoveredLibraryRoomSlug: setHoveredLibraryRoomSlugSafe,
+
+      setHoveredFactoryStop: setHoveredFactoryStopSafe,
+
       setTheme,
 
       toggleTheme,
@@ -737,6 +785,10 @@ export function SiteProvider({ children }: { children: ReactNode }) {
       hoveredFloorId,
 
       hoveredLabSlug,
+
+      hoveredLibraryRoomSlug,
+
+      hoveredFactoryStop,
 
       labRoomSlug,
 
@@ -785,6 +837,10 @@ export function SiteProvider({ children }: { children: ReactNode }) {
       setHoveredFloorSafe,
 
       setHoveredLabSlugSafe,
+
+      setHoveredLibraryRoomSlugSafe,
+
+      setHoveredFactoryStopSafe,
 
       navigateBack,
 

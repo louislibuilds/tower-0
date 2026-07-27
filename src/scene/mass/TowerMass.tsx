@@ -11,7 +11,7 @@ interface TowerMassProps {
   extrude: number
   theme: Theme
   showGroundGrid?: boolean
-  /** Hide poured concrete / wash — basement floors need unobstructed view */
+  /** Hide poured concrete / wash (legacy — basement floors now use transparent grid plates) */
   hideSolidGround?: boolean
   footprintW: number
   footprintD: number

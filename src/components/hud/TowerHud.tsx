@@ -179,7 +179,7 @@ export function TowerRail() {
 
 /** Bottom-center status line */
 export function TowerStatus() {
-  const { hoveredFloorId, hoveredLabSlug, floorId, labRoomSlug, libraryRoomSlug, factoryStop, strings } =
+  const { hoveredFloorId, hoveredLabSlug, hoveredLibraryRoomSlug, hoveredFactoryStop, floorId, labRoomSlug, libraryRoomSlug, factoryStop, strings } =
     useSite()
 
   if (hoveredLabSlug && floorId === '52') {
@@ -188,6 +188,25 @@ export function TowerStatus() {
     return (
       <div className="tower-status" aria-live="polite">
         52 · Lab · {loc?.title ?? project?.title}
+      </div>
+    )
+  }
+
+  if (hoveredLibraryRoomSlug && floorId === '99') {
+    const roomLabel =
+      hoveredLibraryRoomSlug === 'archive' ? strings.library.archiveTitle : strings.library.libraryTitle
+    return (
+      <div className="tower-status" aria-live="polite">
+        99 · {hoveredLibraryRoomSlug === 'archive' ? 'Archive' : 'Library'} · {roomLabel}
+      </div>
+    )
+  }
+
+  if (hoveredFactoryStop !== null && floorId === '23') {
+    const sem = FACTORY_AREAS[hoveredFactoryStop]
+    return (
+      <div className="tower-status" aria-live="polite">
+        23 · {areaLabel(hoveredFactoryStop)} · {sem?.label ?? ''}
       </div>
     )
   }

@@ -8,6 +8,7 @@ import { libraryBooks } from '../../data/libraryBooks'
 import type { LibraryRoomSlug } from '../../data/libraryRooms'
 import { FloorPlate } from '../primitives/FloorPlate'
 import { PickTarget } from '../primitives/PickTarget'
+import { markTowerPick } from '../primitives/pickVolume'
 import { StationCallout } from '../primitives/StationCallout'
 import { chunkPosition, vaultCornerAnchor, VAULT_CHUNKS, STATION_FOOTPRINT_INSET, STATION_HIT_MARGIN } from './floorChunks'
 import { ArchiveVaultLayout } from './layouts/ArchiveVaultLayout'
@@ -198,6 +199,7 @@ function VaultMorphZone({
           onPointerOut={() => onHover(null)}
         >
           <mesh
+            ref={(mesh) => markTowerPick(mesh)}
             raycast={roomLocked ? () => null : undefined}
             onClick={(e) => {
               if (thin || roomLocked) return

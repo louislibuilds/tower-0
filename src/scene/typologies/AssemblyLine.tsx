@@ -8,7 +8,9 @@ interface AssemblyLineProps extends TypologyProps {
   factoryStop: number | null
   viewMode?: ViewMode
   roomFocus?: boolean
+  floorOverview?: boolean
   onSelectStop: (stop: number) => void
+  onHoverStop?: (stop: number | null) => void
 }
 
 /** 23 · Assembly Line — horizontal timeline with assembly arms */
@@ -17,7 +19,10 @@ export function AssemblyLine({
   accent,
   entered,
   factoryStop,
+  viewMode = 'floor',
+  floorOverview = false,
   onSelectStop,
+  onHoverStop,
 }: AssemblyLineProps) {
   const m = typologyMat(theme, accent, entered)
   const plate = floorPlateSize('23')
@@ -28,10 +33,11 @@ export function AssemblyLine({
         theme={theme}
         accent={accent}
         entered={entered}
-        active
-        plateWidth={plate.w}
         factoryStop={factoryStop}
+        viewMode={viewMode}
+        floorOverview={floorOverview}
         onSelectStop={onSelectStop}
+        onHoverStop={onHoverStop}
       />
     </FloorPlate>
   )
