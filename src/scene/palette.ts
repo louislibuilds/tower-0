@@ -1,6 +1,6 @@
-/** Tower 0 color law — INK (dark / cyber) / PAPER (light / blueprint) */
+/** Tower 0 color law — Day (architectural model) / Night (cyberpunk) */
 export interface ScenePalette {
-  print: 'paper' | 'ink'
+  mode: 'day' | 'night'
   paper: string
   concrete: string
   resin: string
@@ -16,42 +16,42 @@ export interface ScenePalette {
   chickenMute: string
   grid: string
   shade: string
-  /** Blueprint orthographic — day cyan stroke */
+  /** Day model — sage stroke on warm ground */
   neon: string
-  /** Cyber night — bright cyan glow */
+  /** Night cyber — bright cyan glow */
   neonBright: string
-  /** Cyber night — green accent (token sG) */
+  /** Night cyber — green accent */
   neonGreen: string
-  /** Semi-transparent blueprint face (hex for material color; pair with opacity) */
+  /** Semi-transparent typology face (hex for material color; pair with opacity) */
   bpFace: string
   bpEdge: string
 }
 
-export const PAPER_PRINT: ScenePalette = {
-  print: 'paper',
-  paper: '#F2F1ED',
-  concrete: '#C8C4BC',
-  resin: '#E8E6E1',
-  graphite: '#2A2C2E',
-  mute: '#5A5D61',
-  ink: '#0E0F10',
-  alum: '#B6BBC2',
-  glass: '#9CB8CC',
-  blueprint: '#1E4A6E',
-  signal: '#2F6BFF',
-  chicken: '#E8B84A',
-  chickenMute: '#C49A3A',
-  grid: '#B8C8D8',
-  shade: '#565A5F',
-  neon: '#0094D0',
-  neonBright: '#3AACDA',
-  neonGreen: '#2A9870',
-  bpFace: '#B8D4E8',
-  bpEdge: '#0094D0',
+export const DAY_PRINT: ScenePalette = {
+  mode: 'day',
+  paper: '#F7F4EF',
+  concrete: '#D4CFC6',
+  resin: '#EDE8E0',
+  graphite: '#2C2824',
+  mute: '#6B6560',
+  ink: '#1A1714',
+  alum: '#B0AAA2',
+  glass: '#A8B8B0',
+  blueprint: '#3D6B5C',
+  signal: '#C45C26',
+  chicken: '#D4923A',
+  chickenMute: '#A8742E',
+  grid: '#DDD6CC',
+  shade: '#5C5650',
+  neon: '#3D6B5C',
+  neonBright: '#5A8A72',
+  neonGreen: '#4A7A58',
+  bpFace: '#D4E0D8',
+  bpEdge: '#3D6B5C',
 }
 
-export const INK_PRINT: ScenePalette = {
-  print: 'ink',
+export const NIGHT_PRINT: ScenePalette = {
+  mode: 'night',
   paper: '#0C1218',
   concrete: '#1A3848',
   resin: '#142028',
@@ -73,8 +73,13 @@ export const INK_PRINT: ScenePalette = {
   bpEdge: '#00AAD0',
 }
 
+/** @deprecated use DAY_PRINT */
+export const PAPER_PRINT = DAY_PRINT
+/** @deprecated use NIGHT_PRINT */
+export const INK_PRINT = NIGHT_PRINT
+
 export function getScenePalette(theme: 'light' | 'dark'): ScenePalette {
-  return theme === 'dark' ? INK_PRINT : PAPER_PRINT
+  return theme === 'dark' ? NIGHT_PRINT : DAY_PRINT
 }
 
 /** Warm/cool highlight for blueprint typology fills */
@@ -89,8 +94,8 @@ export function typologyHighlight(theme: 'light' | 'dark', lit: boolean): { warm
     }
   }
   return {
-    warm: pal.blueprint,
-    cool: pal.signal,
+    warm: pal.signal,
+    cool: pal.blueprint,
     emissiveWarm: 0,
     emissiveCool: 0,
   }

@@ -1,8 +1,8 @@
 # Tower 0
 
-> **Software is not written. It is constructed.**
+> **Rome wasn't built in a day — neither is good software.**
 
-Louis Li's Master of IT portfolio — a cyberpunk skyscraper you navigate floor by floor.
+Louis Li's Master of IT portfolio — a cyberpunk skyscraper by night, an architectural model by day. Navigate floor by floor.
 
 **Repo:** [github.com/louislibuilds/tower-0](https://github.com/louislibuilds/tower-0)
 
@@ -25,7 +25,7 @@ URL: `#/G`, `#/23`, `#/52`, `#/B2`, `#/B10`, `#/99`, `#/roof`
 - **Full-viewport 3D tower** — art-deco tiered cyberpunk skyscraper (React Three Fiber, orthographic camera)
 - **Per-floor exhibits** — holographic 3D markers + glass overlay cards
 - **Boot sequence** — footprint ink → tower extrude
-- **Themes** — Dark (neon cyberpunk) / Light (ink drawing)
+- **Themes** — Day (warm architectural model) / Night (neon cyberpunk)
 - **i18n** — English · 繁體中文 · 日本語
 - **2D fallback** — SVG elevation when WebGL unavailable or reduced motion
 
@@ -54,7 +54,7 @@ src/
   camera/OrthoRig.tsx        Per-floor orthographic camera
 ```
 
-Orthographic tower portfolio · INK/PAPER Tower 0 · cyberpunk reference art.
+Day architectural tower · Night cyberpunk · Louis Li portfolio.
 
 ## License
 

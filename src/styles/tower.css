@@ -1,58 +1,63 @@
 /* Tower 0 design tokens — DARK / LIGHT */
 :root,
 [data-theme='light'] {
-  --paper: #F2F1ED;
-  --concrete: #C8C4BC;
-  --resin: #E8E6E1;
-  --graphite: #2A2C2E;
-  --graphite-mute: #5A5D61;
-  --ink: #0E0F10;
-  --alum: #B6BBC2;
-  --glass: #B8C4D4;
-  --blueprint: #1E3A5F;
-  --signal: #2F6BFF;
-  --chicken: #E8B84A;
-  --chicken-mute: #C49A3A;
-  --grid: #D0CEC8;
-  --shade: #565A5F;
-  --line: color-mix(in srgb, var(--graphite) 18%, transparent);
+  --paper: #F7F4EF;
+  --concrete: #D4CFC6;
+  --resin: #EDE8E0;
+  --graphite: #2C2824;
+  --graphite-mute: #6B6560;
+  --ink: #1A1714;
+  --alum: #B0AAA2;
+  --glass: #A8B8B0;
+  --blueprint: #3D6B5C;
+  --signal: #C45C26;
+  --chicken: #D4923A;
+  --chicken-mute: #A8742E;
+  --grid: #DDD6CC;
+  --shade: #5C5650;
+  --neon: #3D6B5C;
+  --neon-bright: #5A8A72;
+  --line: color-mix(in srgb, var(--graphite) 14%, transparent);
   --bg: var(--paper);
   --text: var(--graphite);
   --text-dim: var(--graphite-mute);
   --accent: var(--signal);
   --surface-elevated: var(--resin);
-  --graphite-line: color-mix(in srgb, var(--graphite) 28%, transparent);
+  --graphite-line: color-mix(in srgb, var(--graphite) 22%, transparent);
   --font-display: 'Georgia', 'Times New Roman', serif;
   --font-mono: 'Consolas', 'Monaco', 'Courier New', monospace;
   --font-body: system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --ease-tower: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-tower: cubic-bezier(0.25, 0.92, 0.38, 1);
   --hd: #1a6b3a;
-  --d: #2F6BFF;
+  --d: #C45C26;
   --cr: #8a6a00;
-  --scene-cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M12 5v14M5 12h14' stroke='%230E0F10' stroke-width='1.25' fill='none'/%3E%3C/svg%3E") 12 12, crosshair;
+  --scene-cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M12 5v14M5 12h14' stroke='%232C2824' stroke-width='1.25' fill='none'/%3E%3C/svg%3E") 12 12, crosshair;
 }
 
 [data-theme='dark'] {
-  --paper: #0E0F10;
-  --concrete: #3A3C40;
-  --resin: #1A1B1D;
-  --graphite: #E6E4DF;
-  --graphite-mute: #A8AAAE;
-  --ink: #F2F1ED;
-  --alum: #6A7078;
+  --paper: #0C1218;
+  --concrete: #1A3848;
+  --resin: #142028;
+  --graphite: #88D4F0;
+  --graphite-mute: #5A8AA0;
+  --ink: #E8F8FF;
+  --alum: #3A5870;
   --glass: #33404E;
   --blueprint: #5B82BC;
-  --signal: #2F6BFF;
+  --signal: #3A8AFF;
   --chicken: #E8B84A;
   --chicken-mute: #B8922E;
-  --grid: #2A2C2E;
-  --shade: #08090A;
+  --grid: #1A4058;
+  --shade: #080C10;
+  --neon: #00AAD0;
+  --neon-bright: #56DAFF;
   --line: color-mix(in srgb, var(--graphite) 22%, transparent);
   --bg: var(--paper);
   --text: var(--graphite);
   --text-dim: var(--graphite-mute);
   --surface-elevated: #1A1B1D;
   --graphite-line: color-mix(in srgb, var(--graphite) 28%, transparent);
+  --ease-tower: cubic-bezier(0.22, 1, 0.36, 1);
   --scene-cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M12 5v14M5 12h14' stroke='%23F2F1ED' stroke-width='1.25' fill='none'/%3E%3C/svg%3E") 12 12, crosshair;
 }
 
@@ -1336,12 +1341,18 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 .tower-resume-preview-embed {
   margin-bottom: 0.55rem;
   border: 1px solid var(--line);
-  background: #fff;
+  border-radius: 6px;
+  background: color-mix(in srgb, #fff 92%, var(--paper) 8%);
   overflow: hidden;
   max-height: 11rem;
 }
+[data-theme='dark'] .tower-resume-preview-embed {
+  background: color-mix(in srgb, var(--resin) 88%, #000 12%);
+  border-color: color-mix(in srgb, var(--neon) 28%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--neon) 12%, transparent);
+}
 
-/* ── PDF.js canvas preview (A4 sheet stack) ── */
+/* ── PDF.js canvas preview ── */
 .resume-preview {
   display: flex;
   flex-direction: column;
@@ -1363,22 +1374,33 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 }
 .resume-preview__loading,
 .resume-preview__error {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
   color: var(--graphite-mute);
   padding: 0.5rem;
 }
 .resume-preview__page {
   margin: 0;
   background: #fff;
-  border: 1px solid color-mix(in srgb, var(--graphite) 28%, transparent);
-  box-shadow: 0 12px 32px color-mix(in srgb, var(--graphite) 22%, transparent);
+  border: 1px solid color-mix(in srgb, var(--graphite) 18%, transparent);
+  border-radius: 4px;
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--shade) 18%, transparent);
   overflow: hidden;
+}
+[data-theme='dark'] .resume-preview__page {
+  border-color: color-mix(in srgb, var(--neon) 22%, transparent);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--neon) 14%, transparent),
+    0 12px 36px color-mix(in srgb, #000 55%, transparent);
 }
 .resume-preview--compact .resume-preview__page {
   box-shadow: none;
   flex: 1 1 0;
   min-width: 0;
+  border-radius: 3px;
+}
+[data-theme='dark'] .resume-preview--compact .resume-preview__page {
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--neon) 12%, transparent);
 }
 .resume-preview__page--loading {
   aspect-ratio: 210 / 297;
@@ -1406,8 +1428,12 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   outline: 1px solid color-mix(in srgb, var(--signal) 55%, transparent);
   background: color-mix(in srgb, var(--signal) 8%, transparent);
 }
+[data-theme='dark'] .resume-preview__links a:hover {
+  outline-color: color-mix(in srgb, var(--neon) 55%, transparent);
+  background: color-mix(in srgb, var(--neon) 10%, transparent);
+}
 
-/* ── Résumé print drawer (PDF preview panel) ── */
+/* ── Résumé print drawer ── */
 .tower-resume-drawer {
   position: fixed;
   inset: 0;
@@ -1421,29 +1447,55 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
-  padding: 0.7rem 1rem;
+  padding: 0.85rem 1.1rem;
   border-bottom: 1px solid var(--line);
-  border-top: 2px solid var(--graphite);
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.1em;
-  background: var(--paper);
   flex-shrink: 0;
 }
-.tower-resume-drawer__stamp {
+[data-theme='light'] .tower-resume-drawer__bar {
+  border-top: 3px solid var(--signal);
+  background: color-mix(in srgb, var(--resin) 55%, var(--paper) 45%);
+  font-family: var(--font-body);
+}
+[data-theme='dark'] .tower-resume-drawer__bar {
+  border-top: 2px solid var(--neon);
+  background: color-mix(in srgb, var(--resin) 92%, #000 8%);
+  font-family: var(--font-mono);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--neon) 18%, transparent);
+}
+.tower-resume-drawer__head {
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 0.15rem;
   min-width: 0;
 }
-.tower-resume-drawer__site {
+.tower-resume-drawer__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   color: var(--graphite);
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
+  text-transform: none;
 }
-.tower-resume-drawer__doc {
-  color: var(--graphite-mute);
+[data-theme='dark'] .tower-resume-drawer__title {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
+  color: var(--neon-bright);
+}
+.tower-resume-drawer__meta {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--graphite-mute);
+  letter-spacing: 0.01em;
+  text-transform: none;
+}
+[data-theme='dark'] .tower-resume-drawer__meta {
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  color: var(--graphite-mute);
 }
 .tower-resume-drawer__actions {
   display: flex;
@@ -1456,17 +1508,34 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   border: 1px solid var(--signal);
   background: color-mix(in srgb, var(--paper) 70%, var(--signal) 30%);
   color: var(--graphite);
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+[data-theme='dark'] .tower-resume-drawer__btn {
   font-family: var(--font-mono);
   font-size: 0.62rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  cursor: pointer;
+  border-radius: 0;
+  border-color: var(--neon);
+  background: color-mix(in srgb, var(--resin) 80%, var(--neon) 20%);
+  color: var(--ink);
 }
 .tower-resume-drawer__btn--ghost {
   border-color: var(--line);
   background: transparent;
   font-weight: 500;
+}
+[data-theme='dark'] .tower-resume-drawer__btn--ghost {
+  border-color: color-mix(in srgb, var(--graphite) 35%, transparent);
+  background: transparent;
+  color: var(--graphite);
 }
 a.tower-resume-drawer__btn {
   display: inline-flex;
@@ -1476,11 +1545,17 @@ a.tower-resume-drawer__btn {
 .tower-resume-drawer__body {
   flex: 1;
   overflow: auto;
-  padding: 1rem;
+  padding: 1.25rem 1rem 2rem;
+}
+[data-theme='light'] .tower-resume-drawer__body {
   background:
-    linear-gradient(var(--line) 1px, transparent 1px) 0 0 / 32px 32px,
-    linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0 / 32px 32px,
+    radial-gradient(ellipse 120% 80% at 50% 0%, color-mix(in srgb, var(--resin) 80%, transparent), transparent 55%),
     var(--paper);
+}
+[data-theme='dark'] .tower-resume-drawer__body {
+  background:
+    radial-gradient(ellipse 90% 60% at 50% 20%, color-mix(in srgb, var(--neon) 8%, transparent), transparent 70%),
+    linear-gradient(180deg, var(--paper) 0%, color-mix(in srgb, var(--shade) 70%, var(--paper) 30%) 100%);
 }
 
 .tower-boot-plate {
@@ -1500,10 +1575,16 @@ a.tower-resume-drawer__btn {
   letter-spacing: 0.2em;
   color: var(--signal);
 }
+[data-theme='dark'] .tower-boot-plate__code {
+  color: var(--neon);
+}
 .tower-boot-plate__name {
   margin: 0.35rem 0 0;
   font-size: 0.62rem;
   letter-spacing: 0.16em;
+  color: var(--graphite-mute);
+}
+[data-theme='dark'] .tower-boot-plate__name {
   color: var(--graphite);
 }
 @keyframes stamp-fade {

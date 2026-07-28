@@ -5,7 +5,7 @@ import { profile } from '../../data/profile'
 import { ResumePdfPreview } from './ResumePdfPreview'
 
 export function ResumePrintDrawer() {
-  const { locale, strings, resumePreviewOpen, closeResumePreview, printResume } = useSite()
+  const { locale, theme, strings, resumePreviewOpen, closeResumePreview, printResume } = useSite()
   const resumeLocale = resumeLocaleForSite(locale)
   const t = strings.resumePrint
 
@@ -25,11 +25,19 @@ export function ResumePrintDrawer() {
   if (!resumePreviewOpen) return null
 
   return (
-    <div className="tower-resume-drawer" role="dialog" aria-modal="true" aria-label={t.drawerTitle}>
+    <div
+      className="tower-resume-drawer"
+      data-theme={theme}
+      role="dialog"
+      aria-modal="true"
+      aria-label={t.drawerTitle}
+    >
       <div className="tower-resume-drawer__bar">
-        <div className="tower-resume-drawer__stamp">
-          <span className="tower-resume-drawer__site">{profile.brand} · {profile.siteCode}</span>
-          <span className="tower-resume-drawer__doc">{t.drawerDoc}</span>
+        <div className="tower-resume-drawer__head">
+          <p className="tower-resume-drawer__title">{t.drawerTitle}</p>
+          <p className="tower-resume-drawer__meta">
+            {profile.displayName} · {t.drawerDoc}
+          </p>
         </div>
         <div className="tower-resume-drawer__actions">
           <button type="button" className="tower-resume-drawer__btn" onClick={printResume}>
