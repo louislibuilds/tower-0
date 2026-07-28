@@ -63,8 +63,14 @@ export interface LocaleStrings {
     completionLabel: string
   }
   lab: {
-    intro: string
-    selectRoom: string
+    heroTitle: string
+    heroTagline: string
+    floorIntro: string
+    statusPending: string
+    statusActive: string
+    statusCompleted: string
+    emptyResearchTitle: string
+    emptyIntro: string
     role: string
     team: string
     course: string
@@ -119,7 +125,7 @@ export interface LocaleStrings {
   }
   projects: Record<
     string,
-    { title: string; hook: string; role: string; team?: string; course?: string }
+    { title: string; hook: string; body: string; role: string; team?: string; course?: string; credit?: string }
   >
   credentials: Record<string, { title: string; detail?: string; body?: string; bullets?: string[]; credit?: string }>
   skillGroups: Record<string, string>
@@ -235,7 +241,19 @@ const en: LocaleStrings = {
     overview: 'Four semester lines run parallel — click an area to zoom in.',
     completionLabel: 'UTS MIT COMPLETE',
   },
-  lab: { intro: 'Five project rooms on this floor.', selectRoom: 'Select a room on the model or rail.', role: 'Role', team: 'Team', course: 'Course' },
+  lab: {
+    heroTitle: 'Laboratory',
+    heroTagline: 'Suites ‧ Status ‧ Output',
+    floorIntro: 'Eight lab suites — research status, notes, and output on record.',
+    statusPending: 'Research not started',
+    statusActive: 'Research in progress',
+    statusCompleted: 'Research completed',
+    emptyResearchTitle: '—',
+    emptyIntro: 'Suite reserved — research not yet assigned.',
+    role: 'Role',
+    team: 'Team',
+    course: 'Course',
+  },
   infra: {
     skillsTitle: 'Skills — Risers & Pipes',
     coursesTitle: 'Course Links → Projects',
@@ -307,33 +325,38 @@ const en: LocaleStrings = {
   },
   projects: {
     'unihack-2026': {
-      title: 'UniHack 2026 — Your Rock Is Coming',
-      hook: '48-hour MVP: map discovery + 7-day weather forecasts.',
-      role: 'Team Lead & Technical Director',
-      team: 'Cross-functional hackathon team',
+      title: 'your·rock·is·coming',
+      hook: 'Sydney tennis court discovery, weather-aware booking — built in 48 hours at UniHack 2026.',
+      body: 'Sydney tennis players juggle fragmented council, club, and school sites — each with its own booking flow. Outdoor courts depend on weather, yet most tools treat forecast as an afterthought.\n\nyour·rock·is·coming maps Sydney venues with surface, lighting, parking, and suburb filters; booking flows through date, slot, and confirmation with a 7-day forecast, rain chance, and dryness index before you commit.\n\nShipped full-stack (React + Express + SQLite) and a frontend-only demo path for hackathon delivery. I formed the UniHack 2026 team and drove end-to-end integration — map, weather APIs, and a demo-ready booking path.',
+      role: 'Team Lead & Full-stack Developer',
+      team: 'UniHack 2026 cross-functional team',
     },
     'cloud-computing': {
       title: 'SUNishop — Cloud E-Commerce',
-      hook: 'LAMP → MERN migration with CI and AWS Academy deployment.',
+      hook: 'LAMP → MERN migration with CI gates, automated server tests, and a live storefront that kept shipping after AWS Academy credits expired.',
+      body: 'Course deliverable for Cloud Computing & SaaS and Infrastructure for Cloud Computing — migrate a legacy LAMP e-commerce stack to MERN, deploy on AWS, and treat release hygiene as part of the product.\n\nBuilt React storefront, Node/Express API, MongoDB data layer, CI pipeline, and automated server tests before every release. Initial deployment ran on AWS via UTS AWS Academy; when credits expired, re-hosted to Vercel (frontend), Railway (API), and MongoDB Atlas so the shop could stay live.\n\nWalked in thinking deploy-and-done; left knowing environment config, rollback, test gates — and when to move stacks — are all part of shipping.',
       role: 'Full-stack Developer',
-      course: '42904 (100 HD) · 42891 (95 HD)',
+      course: '42904 Cloud Computing & SaaS (100 HD) · 42891 Infrastructure for Cloud (95 HD)',
     },
     nlp: {
       title: 'Mock Interview Coach',
-      hook: 'STT-powered mock interviews with STAR-based NLP feedback.',
+      hook: 'STT → structured STAR scoring → feedback. Hybrid LLM + deterministic mock so demos always run.',
+      body: 'Self-practice interviews lack immediate, structured feedback — STAR evidence, fluency, filler words. Recording and replaying is slow and hard to quantify.\n\nWizard flow: record → faster-whisper STT → preprocess → /v1/score. With OPENAI_API_KEY, LLM JSON scoring; otherwise deterministic NLP mock (keywords, structure, fluency, evidence). LLM failures fall back to mock so demos stay reproducible.\n\nBuilt end-to-end: FastAPI + faster-whisper, NLP mock engine, React wizard with score breakdown UI, EN/zh-TW docs. Assessment 3 final: 94 HD (NLP Algorithms, 42850). The lesson that stuck: measure, validate, document — not just pick a model.',
       role: 'Lead Developer',
       course: '42850 NLP Algorithms (94 HD)',
     },
     dl: {
-      title: 'VTuber Motion Pipeline',
-      hook: 'Real-time pose → VRM avatar via MediaPipe, Kalidokit, gesture CNN.',
-      role: 'Software Dev · Productization',
-      team: 'Ko-Chun Liao, Junjie Niu',
+      title: 'VTuber MoCap',
+      hook: 'Browser VTuber motion capture: webcam → MediaPipe → Kalidokit → VRM. TechFest 2026 showcase · 95 HD.',
+      body: 'Deep Learning & CNN (42028) — real-time pose capture driving a VRM avatar entirely in the browser. Open localhost, allow camera, run the full pipeline.\n\nWebcam → MediaPipe Holistic → Kalidokit (head, arms, finger curl) → three.js + @pixiv/three-vrm retarget. Optional gesture CNN (ONNX) for throttled browser classification.\n\nOwned browser pipeline productization: ESM import maps, CDN deps, camera permissions, EN/zh-TW docs for a stable TechFest demo. Final grade: 95 HD. Nominated to UTS TechFest 2026 AI Showcase (Dr. Nabin Sharma). CV pipelines fail quietly before models fail loudly — smoothing and browser constraints matter as much as the network.',
+      role: 'Software Dev · Productization · Team Coordination',
+      team: 'Ko-Chun Liao (concept & framework), Junjie Niu (experiments)',
       course: '42028 Deep Learning & CNN (95 HD)',
     },
     kata: {
-      title: 'KATA — Resume & Job Tracker',
-      hook: 'Unified job-search: craft résumés, deploy PDFs, track applications.',
+      title: 'KATA',
+      hook: 'Guided résumé builder with live A4 preview, four templates, and print-ready PDF — the tool behind my own applications.',
+      body: 'Evolved from desktop RESUmade — step-by-step filling beat one long form. Renamed KATA (型) to mean “shape your professional form,” with landing, editor, and PDF export in one deployable app.\n\nNine-step builder: contact → summary → education → experience → skills → projects → certifications → references → layout. Live A4 preview with zoom and collapsible panels. Heritage, Clean, Sidebar, Classic templates; PDF export with clickable links and multi-page support up to four pages.\n\nLocal-first drafts with .kata.json export (legacy .resumade.json import). Integrated with JOBO tracker under bubblechickenlab.com/kata — résumé shapes the document, tracker holds the pipeline. Active build: template system, Suite AI assist, deeper tracker workflow.',
       role: 'Sole Builder',
     },
   },
@@ -494,7 +517,19 @@ const zhTW: LocaleStrings = {
     overview: '四條學期產線並行 — 點選區域以拉近檢視。',
     completionLabel: 'UTS MIT COMPLETE',
   },
-  lab: { intro: '本層五間專案房。', selectRoom: '在模型或左側面板選擇一間房。', role: '角色', team: '團隊', course: '課程' },
+  lab: {
+    heroTitle: '實驗室',
+    heroTagline: '實驗室 ‧ 狀態 ‧ 產出',
+    floorIntro: '八間實驗室 — 研究狀態、主題與產出紀錄。',
+    statusPending: '尚未開始研究',
+    statusActive: '研究中',
+    statusCompleted: '研究結束',
+    emptyResearchTitle: '—',
+    emptyIntro: '保留中的實驗室 — 尚未指派研究主題。',
+    role: '角色',
+    team: '團隊',
+    course: '課程',
+  },
   infra: {
     skillsTitle: '技能 — 管線與機電',
     coursesTitle: '課程連結 → 專案',
@@ -565,33 +600,38 @@ const zhTW: LocaleStrings = {
   },
   projects: {
     'unihack-2026': {
-      title: 'UniHack 2026 — Your Rock Is Coming',
-      hook: '48 小時 MVP：地圖探索 + 7 日天氣預報。',
-      role: '隊長 & 技術總監',
-      team: '跨領域黑客松團隊',
+      title: 'your·rock·is·coming',
+      hook: 'Sydney 網球場探索 + 天氣感知訂場 — UniHack 2026 48 小時作品。',
+      body: 'Sydney 打網球的人面對碎片化生態：場地散在各 council、俱樂部、學校網站，訂場工具各寫各的；戶外場地還受天氣影響，訂完才發現會淋雨很常見。\n\nyour·rock·is·coming 用互動地圖探索 Sydney 場地，依 surface、夜燈、停車、suburb 篩選；訂場整合 7 日 forecast、rain chance 與 dryness index，確認前就知道天氣風險。\n\n支援 full stack（React + Express + SQLite）與 frontend-only demo。我組建 UniHack 2026 團隊，負責前後端整合、天氣 API 串接，以及 hackathon 現場可 demo 的最小完整路徑。',
+      role: '隊長 & 全端開發',
+      team: 'UniHack 2026 跨領域團隊',
     },
     'cloud-computing': {
       title: 'SUNishop — 雲端電商',
-      hook: 'LAMP → MERN 遷移，CI 與 AWS Academy 部署。',
+      hook: 'LAMP → MERN 遷移，CI 關卡與自動化 server 測試；AWS Academy credits 到期後仍持續部署的線上商店。',
+      body: 'Cloud Computing & SaaS 與 Infrastructure for Cloud Computing 課程產出 — 把 legacy LAMP 電商遷到 MERN，在 AWS 部署，並把 release 紀律當成產品的一部分。\n\nReact  storefront、Node/Express API、MongoDB、CI pipeline，每次 release 前跑自動化 server 測試。初期透過 UTS AWS Academy 部署在 AWS；credits 到期後改部署到 Vercel（前端）、Railway（API）、MongoDB Atlas（資料庫），讓商店能繼續跑。\n\n原本以為 deploy 完就結束，後來才懂環境、回滾、測試關卡——以及什麼時候該換 hosting——都是產品的一部分。',
       role: '全端開發',
-      course: '42904 (100 HD) · 42891 (95 HD)',
+      course: '42904 雲端運算 & SaaS (100 HD) · 42891 雲端基礎設施 (95 HD)',
     },
     nlp: {
       title: 'Mock Interview Coach',
-      hook: 'STT 模擬面試，STAR 框架 NLP 評分回饋。',
+      hook: 'STT → STAR 結構化評分 → 回饋。LLM + 離線 mock 混合，demo 永遠跑得通。',
+      body: '自練面試缺的不是題庫，而是講完之後立刻知道哪裡弱——STAR 結構、證據、語速與填充詞。錄影回放 feedback 慢，也難量化。\n\nWizard 流程：錄音 → faster-whisper STT → 前處理 → /v1/score。有 OPENAI_API_KEY 走 LLM JSON 評分；否則 deterministic NLP mock（keywords、structure、fluency、evidence）。LLM 失敗自動 fallback mock，demo 可重現。\n\nEnd-to-end：FastAPI + faster-whisper、NLP mock engine、React wizard 與 score breakdown UI，EN/zh-TW 文件。Assessment 3 最終 94 HD（NLP Algorithms, 42850）。這門課教我的：NLP 落地要先能 measure、validate、document。',
       role: '主要開發',
       course: '42850 NLP 演算法 (94 HD)',
     },
     dl: {
-      title: 'VTuber 動作管線',
-      hook: '即時姿態 → VRM 虛擬角色，MediaPipe + Kalidokit + CNN。',
-      role: '軟體開發 · 產品化',
-      team: 'Ko-Chun Liao, Junjie Niu',
+      title: 'VTuber MoCap',
+      hook: '瀏覽器 VTuber 動捕：webcam → MediaPipe → Kalidokit → VRM。TechFest 2026 展示 · 95 HD。',
+      body: 'Deep Learning & CNN（42028）——在瀏覽器內完成即時動作捕捉並驅動 VRM 虛擬角色。打開 localhost、允許相機，就能 demo 完整 pipeline。\n\nWebcam → MediaPipe Holistic → Kalidokit（頭、手臂、手指 curl）→ three.js + @pixiv/three-vrm retarget。可選手勢 CNN（ONNX）在瀏覽器做 throttled 分類。\n\n負責 browser pipeline 產品化：ESM import map、CDN 依賴、相機權限、EN/zh-TW 文件，讓 TechFest 當天穩定展示。最終 95 HD；獲 Dr. Nabin Sharma 提名 UTS TechFest 2026 AI Showcase。CV pipeline 常常比模型更早、更安靜地壞掉——smoothing 與瀏覽器限制和網路一樣重要。',
+      role: '軟體開發 · 產品化 · 團隊協調',
+      team: 'Ko-Chun Liao（構想與框架）、Junjie Niu（實驗設計）',
       course: '42028 深度學習 & CNN (95 HD)',
     },
     kata: {
-      title: 'KATA — 履歷 & 求職追蹤',
-      hook: '統一求職平台：撰寫履歷、匯出 PDF、追蹤申請。',
+      title: 'KATA',
+      hook: '引導式履歷編輯 + 即時 A4 預覽、四款模板、可點擊連結的 PDF — 我自己求職在用的工具。',
+      body: '前身是桌面版 RESUmade——分步填寫比一次性長表單更不容易放棄。2026 年改名 KATA（型），強調「打造你的專業樣貌」，landing、editor、PDF 匯出收斂成可部署的單頁應用。\n\n九步驟：聯絡 → 簡介 → 學歷 → 經歷 → 技能 → 專案 → 證照 → 推薦人 → 版面。右側 A4 即時預覽；Heritage、Clean、Sidebar、Classic 四款模板；PDF 滿版 A4、連結可點擊，最多四頁。\n\n本機草稿 + .kata.json 匯出（相容 .resumade.json）。與 JOBO tracker 同在 bubblechickenlab.com/kata — 履歷負責「長什麼樣」，tracker 負責「投到哪」。持續迭代模板、Suite AI 輔助與 tracker 工作流串接。',
       role: '獨立開發',
     },
   },
@@ -753,8 +793,14 @@ const ja: LocaleStrings = {
     completionLabel: 'UTS MIT COMPLETE',
   },
   lab: {
-    intro: 'この階に5つのプロジェクトルーム。',
-    selectRoom: 'モデルまたはレールでルームを選択。',
+    heroTitle: 'ラボラトリー',
+    heroTagline: 'スイート ‧ 状態 ‧ 成果',
+    floorIntro: '8 つのラボスイート — 研究状態、テーマ、成果の記録。',
+    statusPending: '研究未開始',
+    statusActive: '研究中',
+    statusCompleted: '研究完了',
+    emptyResearchTitle: '—',
+    emptyIntro: '予約済みスイート — 研究テーマは未割当。',
     role: '役割',
     team: 'チーム',
     course: 'コース',
@@ -829,33 +875,38 @@ const ja: LocaleStrings = {
   },
   projects: {
     'unihack-2026': {
-      title: 'UniHack 2026 — Your Rock Is Coming',
-      hook: '48時間 MVP：地図探索 + 7日間天気予報。',
-      role: 'チームリード & テクニカルディレクター',
-      team: 'クロスファンクショナルハッカソンチーム',
+      title: 'your·rock·is·coming',
+      hook: 'Sydney テニスコート探索 + 天候連動予約 — UniHack 2026・48時間。',
+      body: 'Sydney のテニスプレイヤーは council・クラブ・学校サイトに散らばった予約フローと格闘する。屋外コートは天候依存なのに、多くのツールは forecast を後付けにしている。\n\nyour·rock·is·coming は Sydney コートを地図で探索し、surface・照明・駐車・suburb で絞り込み。7日間 forecast、rain chance、dryness index を予約前に表示。\n\nfull stack（React + Express + SQLite）と frontend-only demo の両方。UniHack 2026 チームを組成し、地図・天候 API・デモ可能な最小 booking パスを end-to-end で担当。',
+      role: 'チームリード & フルスタック',
+      team: 'UniHack 2026 クロスファンクショナルチーム',
     },
     'cloud-computing': {
       title: 'SUNishop — クラウド E コマース',
-      hook: 'LAMP → MERN 移行、CI と AWS Academy デプロイ。',
+      hook: 'LAMP → MERN 移行、CI ゲート、自動 server テスト。AWS Academy credits 終了後も稼働するストアフロント。',
+      body: 'Cloud Computing & SaaS と Infrastructure for Cloud Computing の成果物 — legacy LAMP EC を MERN に移行し AWS にデプロイ。リリース規律もプロダクトの一部。\n\nReact storefront、Node/Express API、MongoDB、CI、リリース前の自動 server テスト。初期は UTS AWS Academy 経由で AWS；credits 終了後 Vercel（FE）・Railway（API）・MongoDB Atlas に再ホスト。\n\ndeploy すれば終わり、と思っていた。環境設定、ロールバック、テストゲート、スタック移行の判断 — すべて shipping の一部だと学んだ。',
       role: 'フルスタック開発者',
-      course: '42904 (100 HD) · 42891 (95 HD)',
+      course: '42904 Cloud Computing & SaaS (100 HD) · 42891 Infrastructure for Cloud (95 HD)',
     },
     nlp: {
       title: 'Mock Interview Coach',
-      hook: 'STT 模擬面接、STAR フレームワーク NLP フィードバック。',
+      hook: 'STT → STAR 構造化スコア → フィードバック。LLM + オフライン mock でデモは常に再現可能。',
+      body: '独学面接に足りないのは題集ではなく、話した直後の構造化フィードバック — STAR 証拠、流暢さ、フィラー語。録画の再生は遅く、定量化も難しい。\n\nWizard：録音 → faster-whisper STT → 前処理 → /v1/score。OPENAI_API_KEY があれば LLM JSON 採点、なければ deterministic NLP mock。LLM 失敗時は mock に fallback。\n\nFastAPI + faster-whisper、NLP mock engine、React wizard、EN/zh-TW ドキュメントを end-to-end で構築。Assessment 3：94 HD（NLP Algorithms, 42850）。measure、validate、document — モデル選び以上に残った教訓。',
       role: 'リード開発者',
       course: '42850 NLP アルゴリズム (94 HD)',
     },
     dl: {
-      title: 'VTuber モーションパイプライン',
-      hook: 'リアルタイム姿勢 → VRM アバター、MediaPipe + Kalidokit + CNN。',
-      role: 'ソフトウェア開発 · 製品化',
-      team: 'Ko-Chun Liao, Junjie Niu',
+      title: 'VTuber MoCap',
+      hook: 'ブラウザ VTuber モーキャプ：webcam → MediaPipe → Kalidokit → VRM。TechFest 2026 · 95 HD。',
+      body: 'Deep Learning & CNN（42028）— ブラウザ内リアルタイム pose capture で VRM アバターを駆動。localhost を開き、カメラ許可で pipeline 全体を demo。\n\nWebcam → MediaPipe Holistic → Kalidokit → three.js + @pixiv/three-vrm。任意で gesture CNN（ONNX）をブラウザで throttled 分類。\n\nbrowser pipeline の製品化：ESM import map、CDN、カメラ権限、TechFest 向け EN/zh-TW ドキュメント。最終 95 HD。UTS TechFest 2026 AI Showcase ノミネート（Dr. Nabin Sharma）。CV pipeline はモデルより先に、静かに壊れる — smoothing とブラウザ制約が同じくらい重要。',
+      role: 'ソフトウェア開発 · 製品化 · チーム調整',
+      team: 'Ko-Chun Liao（構想・フレームワーク）、Junjie Niu（実験設計）',
       course: '42028 深層学習 & CNN (95 HD)',
     },
     kata: {
-      title: 'KATA — 履歴書 & 求人トラッカー',
-      hook: '統合求人プラットフォーム：履歴書作成、PDF エクスポート、応募追跡。',
+      title: 'KATA',
+      hook: 'ガイド付き履歴書ビルダー + ライブ A4 プレビュー、4テンプレート、クリック可能 PDF — 自分の応募で使用中。',
+      body: 'デスクトップ版 RESUmade から進化 — ステップ入力が長いフォームより続けやすい。2026年 KATA（型）に改名し、landing・editor・PDF を一つの deployable app に。\n\n9ステップ builder + ライブ A4 プレビュー。Heritage、Clean、Sidebar、Classic。PDF は A4 フル、リンククリック可、最大4ページ。\n\nローカルファースト + .kata.json エクスポート（.resumade.json 互換）。JOBO tracker と bubblechickenlab.com/kata で一体 — 履歴書は形、tracker は pipeline。テンプレート、Suite AI、tracker 連携を継続開発中。',
       role: '単独開発者',
     },
   },

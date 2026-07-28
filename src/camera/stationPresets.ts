@@ -10,7 +10,7 @@ import type { ViewMode } from '../building/viewMode'
 import type { LibraryRoomSlug } from '../data/libraryRooms'
 import { getProgramFloor, programCenterY, programBaseY, towerTotalHeight } from '../scene/towerGeometry'
 import { floorPlateSize } from '../scene/typologies/interiorScale'
-import { labCellAnchor, labChunk, vaultCornerAnchor } from '../scene/typologies/floorChunks'
+import { labCellAnchor, labChunk, vaultCornerAnchor, LAB_CHUNKS } from '../scene/typologies/floorChunks'
 import { FACTORY_LINE_X } from '../scene/factoryStops'
 
 export interface AuthoredPreset {
@@ -60,14 +60,13 @@ function labFocusPreset(slug: string): AuthoredPreset | null {
   }
 }
 
-/** 52F · five lab suites — back-wall gallery (99F pattern) */
-const LAB_STATIONS: Record<string, AuthoredPreset> = {
-  'unihack-2026': labFocusPreset('unihack-2026')!,
-  'cloud-computing': labFocusPreset('cloud-computing')!,
-  nlp: labFocusPreset('nlp')!,
-  dl: labFocusPreset('dl')!,
-  kata: labFocusPreset('kata')!,
-}
+/** 52F · lab suites — back-wall gallery (99F pattern) */
+const LAB_STATIONS: Record<string, AuthoredPreset> = Object.fromEntries(
+  LAB_CHUNKS.map((chunk) => {
+    const preset = labFocusPreset(chunk.slug)
+    return preset ? ([chunk.slug, preset] as const) : null
+  }).filter((entry): entry is [string, AuthoredPreset] => entry !== null),
+)
 
 const LAB_FLOOR_OVERVIEW: AuthoredPreset = {
   lookAt: [0, 0.06, -0.18],

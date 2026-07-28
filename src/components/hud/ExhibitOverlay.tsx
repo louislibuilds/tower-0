@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useSite } from '../../context/SiteContext'
 import { profile } from '../../data/profile'
 import { gradeSummary } from '../../data/academic'
-import { labProjects } from '../../data/projects'
+import { LAB_SUITES, labCardTitle, labProject, labSuite, labTagline } from '../../data/labs'
 import { credentials } from '../../data/credentials'
 import { libraryBooks } from '../../data/libraryBooks'
 import { experiences } from '../../data/experience'
@@ -179,48 +179,77 @@ function FactoryExhibit({ factoryStop }: { factoryStop: number }) {
 }
 
 function LabExhibit({ labRoomSlug }: { labRoomSlug: string | null }) {
-  const { strings } = useSite()
+  const { strings, toggleLabRoom } = useSite()
   const l = strings.lab
+  const eyebrow = `52F · ${profile.brand} · ${profile.siteCode}`
 
   if (labRoomSlug) {
-    const p = labProjects.find((proj) => proj.slug === labRoomSlug)
+    const suite = labSuite(labRoomSlug)
+    if (!suite) return null
+    const p = labProject(labRoomSlug)
+    const loc = p ? strings.projects[p.slug as keyof typeof strings.projects] : null
+    const cardTitle = labCardTitle(suite.code)
+    const tagline = labTagline(suite, strings)
+
+    if (suite.empty) {
+      return (
+        <>
+          <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{eyebrow}</p>
+          <h3 className="tower-exhibit-card__name">{cardTitle}</h3>
+          <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{tagline}</p>
+          <hr className="tower-exhibit-roof__rule" />
+          <p className="tower-exhibit-card__body">{l.emptyIntro}</p>
+        </>
+      )
+    }
+
     if (!p) return null
-    const loc = strings.projects[p.slug]
+
     return (
-      <article className="tower-exhibit-project tower-exhibit-project--solo">
-        <h4>{loc?.title ?? p.title}</h4>
-        <p>{loc?.hook ?? p.hook}</p>
+      <>
+        <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{eyebrow}</p>
+        <h3 className="tower-exhibit-card__name">{cardTitle}</h3>
+        <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{tagline}</p>
+        <hr className="tower-exhibit-roof__rule" />
+        {(loc?.body ?? loc?.hook ?? p.hook).split('\n\n').map((para, i) => (
+          <p key={i} className="tower-exhibit-card__body">{para}</p>
+        ))}
         <div className="tower-exhibit-project__meta">
           <span>{l.role}: {loc?.role ?? p.role}</span>
+          {(loc?.team ?? p.team) && <span>{l.team}: {loc?.team ?? p.team}</span>}
           {(loc?.course ?? p.course) && <span>{l.course}: {loc?.course ?? p.course}</span>}
-          {p.grade && <span>{p.mark} {p.grade}</span>}
+          {p.stack.length > 0 && (
+            <span className="tower-exhibit-project__stack">{p.stack.join(' · ')}</span>
+          )}
         </div>
-        {p.stack.length > 0 && (
-          <p className="tower-exhibit-project__stack">{p.stack.join(' · ')}</p>
-        )}
         <div className="tower-exhibit-project__links">
           {p.links.map((link) => (
             <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer">{link.label} ↗</a>
           ))}
         </div>
-      </article>
+      </>
     )
   }
 
   return (
     <>
-      <p className="tower-exhibit-card__body">{l.intro}</p>
-      <p className="tower-exhibit-card__hint">{l.selectRoom}</p>
-      <div className="tower-exhibit-projects">
-        {labProjects.map((p) => {
-          const loc = strings.projects[p.slug]
-          return (
-            <article key={p.slug} className="tower-exhibit-project">
-              <h4>{loc?.title ?? p.title}</h4>
-              <p>{loc?.hook ?? p.hook}</p>
-            </article>
-          )
-        })}
+      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{eyebrow}</p>
+      <h3 className="tower-exhibit-card__name">{l.heroTitle}</h3>
+      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{l.heroTagline}</p>
+      <hr className="tower-exhibit-roof__rule" />
+      <p className="tower-exhibit-card__body">{l.floorIntro}</p>
+      <div className="tower-exhibit-contacts tower-exhibit-contacts--stack">
+        {LAB_SUITES.map((suite) => (
+          <button
+            key={suite.slug}
+            type="button"
+            className="tower-exhibit-vault-entry"
+            onClick={() => toggleLabRoom(suite.slug)}
+          >
+            <strong>{labCardTitle(suite.code)}</strong>
+            <span>{labTagline(suite, strings)}</span>
+          </button>
+        ))}
       </div>
     </>
   )
@@ -536,7 +565,8 @@ export function ExhibitOverlay() {
 
   const isRoofPanel = floorId === 'roof' && viewMode !== 'focus'
   const isVaultPanel = floorId === '99'
-  const isMinimalPanel = isRoofPanel || isVaultPanel
+  const isLabPanel = floorId === '52'
+  const isMinimalPanel = isRoofPanel || isVaultPanel || isLabPanel
 
   const headerTitle =
     floorId === '23'

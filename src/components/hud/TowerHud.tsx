@@ -2,8 +2,7 @@ import { FLOORS } from '../../building/program'
 import { FACTORY_AREAS, areaLabel } from '../../scene/factoryStops'
 import { libraryBooks } from '../../data/libraryBooks'
 import { credentials } from '../../data/credentials'
-import { labProjects } from '../../data/projects'
-import { labLabel } from '../../scene/rooms/LaboratoryRoom'
+import { LAB_SUITES, labCardTitle, labResearchTitle, labSuite } from '../../data/labs'
 import { LIBRARY_ROOMS } from '../../data/libraryRooms'
 import { profile } from '../../data/profile'
 import { useSite } from '../../context/SiteContext'
@@ -125,20 +124,17 @@ export function TowerRail() {
 
                 {floor.id === '52' && active && (
                   <ul className="tower-rail-rooms">
-                    {labProjects.map((p, i) => {
-                      const code = String(i + 1).padStart(3, '0')
-                      return (
-                        <li key={p.slug}>
-                          <button
-                            type="button"
-                            className={labRoomSlug === p.slug ? 'is-room-active' : undefined}
-                            onClick={() => toggleLabRoom(p.slug)}
-                          >
-                            {labLabel(code, p.slug)}
-                          </button>
-                        </li>
-                      )
-                    })}
+                    {LAB_SUITES.map((suite) => (
+                      <li key={suite.slug}>
+                        <button
+                          type="button"
+                          className={labRoomSlug === suite.slug ? 'is-room-active' : undefined}
+                          onClick={() => toggleLabRoom(suite.slug)}
+                        >
+                          {labCardTitle(suite.code)}
+                        </button>
+                      </li>
+                    ))}
                   </ul>
                 )}
 
@@ -203,13 +199,14 @@ export function TowerStatus() {
   } = useSite()
 
   if (hoveredLabSlug && floorId === '52') {
-    const project = labProjects.find((p) => p.slug === hoveredLabSlug)
-    const loc = project ? strings.projects[project.slug] : null
-    return (
-      <div className="tower-status" aria-live="polite">
-        52 · Lab · {loc?.title ?? project?.title}
-      </div>
-    )
+    const suite = labSuite(hoveredLabSlug)
+    if (suite) {
+      return (
+        <div className="tower-status" aria-live="polite">
+          52 · {labCardTitle(suite.code)} · {labResearchTitle(suite, strings)}
+        </div>
+      )
+    }
   }
 
   if (hoveredLibraryRoomSlug && floorId === '99') {
@@ -246,13 +243,14 @@ export function TowerStatus() {
     const loc = strings.floors[floorId]
 
     if (floorId === '52' && labRoomSlug) {
-      const project = labProjects.find((p) => p.slug === labRoomSlug)
-      const locP = project ? strings.projects[project.slug] : null
-      return (
-        <div className="tower-status tower-status--muted">
-          {f.label} · {locP?.title ?? project?.title}
-        </div>
-      )
+      const suite = labSuite(labRoomSlug)
+      if (suite) {
+        return (
+          <div className="tower-status tower-status--muted">
+            {f.label} · {labCardTitle(suite.code)}
+          </div>
+        )
+      }
     }
 
     if (floorId === '99' && libraryRoomSlug) {

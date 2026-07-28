@@ -30,54 +30,80 @@ export const STATION_FOOTPRINT_INSET = 0.92
 export const STATION_HIT_MARGIN = { w: 0.18, h: 0.1, d: 0.18 } as const
 
 /**
- * 52F — five lab suites; four corners + center (no chunk overlap).
- * TL: VTuber · TR: Mock Interview · BL: SUNishop · FR: KATA · center: Unihack.
+ * 52F — eight lab suites in a 4×2 grid (five active + three reserved).
  */
 export const LAB_CHUNKS: ExhibitChunk[] = [
   {
     id: 'lab-001',
     slug: 'unihack-2026',
     code: '001',
-    pos: [-0.02, 0, -0.12],
-    size: { w: 0.58, d: 0.48, h: 0.4 },
+    pos: [-0.2, 0, -0.45],
+    size: { w: 0.46, d: 0.4, h: 0.36 },
     cameraSide: 'left',
-    calloutOffset: [0, 0.4, 0.06],
+    calloutOffset: [0, 0.34, 0.06],
   },
   {
     id: 'lab-002',
     slug: 'cloud-computing',
     code: '002',
-    pos: [-0.55, 0, 0.48],
-    size: { w: 0.5, d: 0.44, h: 0.38 },
+    pos: [-0.6, 0, 0.4],
+    size: { w: 0.46, d: 0.4, h: 0.36 },
     cameraSide: 'right',
-    calloutOffset: [-0.52, 0.34, 0.3],
+    calloutOffset: [-0.48, 0.3, 0.28],
   },
   {
     id: 'lab-003',
     slug: 'nlp',
     code: '003',
-    pos: [0.55, 0, -0.48],
-    size: { w: 0.54, d: 0.48, h: 0.4 },
+    pos: [0.6, 0, -0.45],
+    size: { w: 0.46, d: 0.4, h: 0.36 },
     cameraSide: 'left',
-    calloutOffset: [0.52, 0.44, -0.3],
+    calloutOffset: [0.48, 0.34, -0.28],
   },
   {
     id: 'lab-004',
     slug: 'dl',
     code: '004',
-    pos: [-0.55, 0, -0.48],
-    size: { w: 0.54, d: 0.48, h: 0.4 },
+    pos: [-0.6, 0, -0.45],
+    size: { w: 0.46, d: 0.4, h: 0.36 },
     cameraSide: 'right',
-    calloutOffset: [-0.52, 0.44, -0.3],
+    calloutOffset: [-0.48, 0.34, -0.28],
   },
   {
     id: 'lab-005',
     slug: 'kata',
     code: '005',
-    pos: [0.72, 0, 0.26],
-    size: { w: 0.54, d: 0.48, h: 0.4 },
+    pos: [0.6, 0, 0.4],
+    size: { w: 0.46, d: 0.4, h: 0.36 },
     cameraSide: 'left',
-    calloutOffset: [0.48, 0.28, 0.44],
+    calloutOffset: [0.48, 0.3, 0.28],
+  },
+  {
+    id: 'lab-006',
+    slug: 'lab-006',
+    code: '006',
+    pos: [-0.2, 0, 0.4],
+    size: { w: 0.46, d: 0.4, h: 0.36 },
+    cameraSide: 'right',
+    calloutOffset: [0, 0.3, 0.28],
+  },
+  {
+    id: 'lab-007',
+    slug: 'lab-007',
+    code: '007',
+    pos: [0.2, 0, -0.45],
+    size: { w: 0.46, d: 0.4, h: 0.36 },
+    cameraSide: 'left',
+    calloutOffset: [0.2, 0.34, -0.2],
+  },
+  {
+    id: 'lab-008',
+    slug: 'lab-008',
+    code: '008',
+    pos: [0.2, 0, 0.4],
+    size: { w: 0.46, d: 0.4, h: 0.36 },
+    cameraSide: 'right',
+    calloutOffset: [0.2, 0.3, 0.28],
   },
 ]
 

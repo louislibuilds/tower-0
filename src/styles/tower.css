@@ -690,8 +690,8 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 }
 .tower-exhibit-project h4 { font-size: 0.8rem; margin-bottom: 0.25rem; color: var(--graphite); }
 .tower-exhibit-project p { font-size: 0.72rem; color: var(--graphite-mute); margin-bottom: 0.35rem; }
-.tower-exhibit-project__meta { font-size: 0.65rem; color: var(--graphite-mute); display: flex; flex-direction: column; gap: 0.1rem; }
-.tower-exhibit-project__links { display: flex; gap: 0.65rem; margin-top: 0.35rem; }
+.tower-exhibit-project__meta { font-size: 0.65rem; color: var(--graphite-mute); display: flex; flex-direction: column; gap: 0.1rem; margin-top: 0.15rem; }
+.tower-exhibit-project__links { display: flex; gap: 0.65rem; margin-top: 0.55rem; padding-top: 0.55rem; border-top: 1px solid var(--line); }
 .tower-exhibit-project__links a { font-family: var(--font-mono); font-size: 0.65rem; }
 
 .tower-exhibit-section-title {
@@ -907,7 +907,10 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   font-family: var(--font-mono);
   font-size: 0.62rem;
   color: var(--graphite-mute);
-  margin-top: 0.35rem;
+  line-height: 1.45;
+}
+.tower-exhibit-project__meta .tower-exhibit-project__stack {
+  margin-top: 0.15rem;
 }
 .tower-exhibit-stats--hero {
   display: grid;

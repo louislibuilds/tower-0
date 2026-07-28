@@ -3,6 +3,7 @@ import { useRef, useState } from 'react'
 import type { Group } from 'three'
 import type { ViewMode } from '../../building/viewMode'
 import { useSite } from '../../context/SiteContext'
+import { labCardTitle, labSuite } from '../../data/labs'
 import { FloorPlate } from '../primitives/FloorPlate'
 import { markTowerPick } from '../primitives/pickVolume'
 import { StationCallout } from '../primitives/StationCallout'
@@ -17,16 +18,13 @@ import { lerpZoom, useZoomMorph } from './useZoomMorph'
 export { LAB_CAMERA_TARGETS, LAB_STATIONS as LAB_LAYOUT } from './labAnchors'
 
 export function labShortTitle(slug: string): string {
-  if (slug === 'unihack-2026') return 'Unihack 2026'
-  if (slug === 'cloud-computing') return 'SUNishop'
-  if (slug === 'nlp') return 'Mock Interview'
-  if (slug === 'dl') return 'VTuber Mocap'
-  if (slug === 'kata') return 'KATA'
+  const suite = labSuite(slug)
+  if (suite) return labCardTitle(suite.code)
   return slug
 }
 
-export function labLabel(code: string, slug: string): string {
-  return `Lab · ${code} ${labShortTitle(slug)}`
+export function labLabel(code: string, _slug?: string): string {
+  return labCardTitle(code)
 }
 
 interface BenchRowProps extends TypologyProps {
@@ -129,7 +127,8 @@ function LabMorphZone({
   const { navigateBack } = useSite()
   const { w, d, h } = chunk.size
   const code = chunk.code ?? ''
-  const title = labShortTitle(slug)
+  const suite = labSuite(slug)
+  const title = suite ? labCardTitle(suite.code) : labShortTitle(slug)
   const progress = useZoomMorph(zoomed)
   const groupRef = useRef<Group>(null)
   const [showShell, setShowShell] = useState(false)

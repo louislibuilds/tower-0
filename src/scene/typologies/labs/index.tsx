@@ -9,6 +9,9 @@ export type LabTypologySlug =
   | 'nlp'
   | 'dl'
   | 'kata'
+  | 'lab-006'
+  | 'lab-007'
+  | 'lab-008'
 
 const LaunchPadStation = lazy(() =>
   import('./LaunchPadStation').then((m) => ({ default: m.LaunchPadStation })),
@@ -23,6 +26,9 @@ const MocapStage = lazy(() => import('./MocapStage').then((m) => ({ default: m.M
 const DocumentFoundryStation = lazy(() =>
   import('./DocumentFoundryStation').then((m) => ({ default: m.DocumentFoundryStation })),
 )
+const EmptyLabStation = lazy(() =>
+  import('./EmptyLabStation').then((m) => ({ default: m.EmptyLabStation })),
+)
 
 const LAB_TYPOLOGY: Record<LabTypologySlug, ComponentType<TypologyProps>> = {
   'unihack-2026': LaunchPadStation,
@@ -30,6 +36,9 @@ const LAB_TYPOLOGY: Record<LabTypologySlug, ComponentType<TypologyProps>> = {
   nlp: InterviewBooth,
   dl: MocapStage,
   kata: DocumentFoundryStation,
+  'lab-006': EmptyLabStation,
+  'lab-007': EmptyLabStation,
+  'lab-008': EmptyLabStation,
 }
 
 export function LabTypology({
