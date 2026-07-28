@@ -38,7 +38,7 @@ function def(
 }
 
 export const FLOORS: FloorDef[] = [
-  def('B10', 'B10', 'basement', 'Printer', 'Social · Print Resume', -10, 0),
+  def('B10', 'B10', 'basement', 'Tech Centre', 'Social · Print Resume', -10, 0),
   def('B2', 'B2', 'basement', 'Infrastructure', 'Skills · Tech & Soft', -2, 1),
   def('G', 'G', 'ground', 'Lobby', 'Welcome · About · Thesis', 0, 2),
   def('23', '23', 'tower', 'Factory', 'Academic Timeline · Semester Lines', 23, 3),

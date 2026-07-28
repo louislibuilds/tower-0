@@ -1,4 +1,3 @@
-import { Html } from '@react-three/drei'
 import { FloorPlate } from '../primitives/FloorPlate'
 import { blueprintFitScale, floorPlateSize } from './interiorScale'
 import { TechCentreLayout } from './layouts/TechCentreLayout'
@@ -26,9 +25,6 @@ export function RackHall({ theme, accent, entered, active }: TypologyProps) {
         </group>
       ))}
 
-      <Html center position={[0.38, 0.22, 0.14]} style={{ pointerEvents: 'none' }}>
-        <div className={`scene-label scene-label--tiny ${lit ? 'scene-label--active' : ''}`}>PRINT</div>
-      </Html>
     </FloorPlate>
   )
 }

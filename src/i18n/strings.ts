@@ -196,10 +196,10 @@ const en: LocaleStrings = {
   },
   floors: {
     B10: {
-      title: 'Printer',
+      title: 'Tech Centre',
       subtitle: 'Social · Print Resume',
-      exhibitTitle: 'PRINTER · B10',
-      exhibitHook: 'Outbound social links — plus a copier for resume export.',
+      exhibitTitle: 'Tech Centre · B10',
+      exhibitHook: 'Outbound social links — plus a printer for resume export.',
     },
     B2: {
       title: 'Infrastructure',
@@ -297,12 +297,12 @@ const en: LocaleStrings = {
     softSkillsTitle: 'Soft Skills',
   },
   tech: {
-    heroTitle: 'PRINTER',
+    heroTitle: 'Tech Centre',
     heroTagline: 'Social · Portfolio · Resume',
     floorIntro:
-      'Basement print room — outbound links to LinkedIn, Instagram, Threads, portfolio, and GitHub. Use the copier when you need a hard copy.',
+      'Basement print room — outbound links to LinkedIn, Instagram, Threads, portfolio, and GitHub. Use the printer when you need a hard copy.',
     socialTitle: 'Connect',
-    printerTitle: 'Copier',
+    printerTitle: 'PRINTER',
     resumeIntro:
       'A4 two-page resume PDF (EN / zh-TW). Preview below; Print opens the file with clickable links.',
     previewTitle: 'Resume preview',
@@ -506,9 +506,9 @@ const zhTW: LocaleStrings = {
   },
   floors: {
     B10: {
-      title: 'PRINTER',
+      title: '科技中心',
       subtitle: '社群 · Print Resume',
-      exhibitTitle: 'PRINTER · B10',
+      exhibitTitle: '科技中心 · B10',
       exhibitHook: '對外社群連結 — 需要紙本時可用影印機輸出 resume。',
     },
     B2: {
@@ -606,12 +606,12 @@ const zhTW: LocaleStrings = {
     softSkillsTitle: '軟技能',
   },
   tech: {
-    heroTitle: 'PRINTER',
+    heroTitle: '科技中心',
     heroTagline: '社群 · 作品集 · Resume',
     floorIntro:
       '地下室影印室 — 對外的 LinkedIn、Instagram、Threads、作品集與 GitHub。需要紙本時使用影印機。',
     socialTitle: '連結',
-    printerTitle: '影印機',
+    printerTitle: 'PRINTER',
     resumeIntro: 'A4 雙頁 resume PDF（EN / zh-TW）。下方預覽；列印會開啟 PDF 並保留可點連結。',
     previewTitle: 'Resume 預覽',
     previewHint: '可捲動 · 連結可點 · 列印使用 PDF 檔',
@@ -810,10 +810,10 @@ const ja: LocaleStrings = {
   },
   floors: {
     B10: {
-      title: 'PRINTER',
+      title: 'テックセンター',
       subtitle: 'SNS · Print Resume',
-      exhibitTitle: 'PRINTER · B10',
-      exhibitHook: '外部 SNS リンク — コピー機で resume 印刷も。',
+      exhibitTitle: 'テックセンター · B10',
+      exhibitHook: '外部 SNS リンク — プリンターで resume 印刷も。',
     },
     B2: {
       title: 'インフラ',
@@ -910,12 +910,12 @@ const ja: LocaleStrings = {
     softSkillsTitle: 'ソフトスキル',
   },
   tech: {
-    heroTitle: 'PRINTER',
+    heroTitle: 'テックセンター',
     heroTagline: 'SNS · Portfolio · Resume',
     floorIntro:
-      '地下のコピールーム — LinkedIn、Instagram、Threads、ポートフォリオ、GitHub へのリンク。紙が必要なときはコピー機を使う。',
+      '地下のコピールーム — LinkedIn、Instagram、Threads、ポートフォリオ、GitHub へのリンク。紙が必要なときはプリンターを使う。',
     socialTitle: 'Connect',
-    printerTitle: 'Copier',
+    printerTitle: 'PRINTER',
     resumeIntro:
       'A4 二枚 resume PDF（EN / zh-TW）。下でプレビュー；印刷はリンク付き PDF を開く。',
     previewTitle: 'Resume preview',
