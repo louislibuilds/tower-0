@@ -16,9 +16,19 @@ import {
   programCenterY,
   PROGRAM_FLOORS,
   SPIRE_HEIGHT,
+  visualBandHeight,
   type ProgramFloor,
   type ShaftSegment,
 } from './towerGeometry'
+import {
+  FACADE_HEIGHT_RATIO,
+  FACADE_SIDE_WIDTH_RATIO,
+  FACADE_WIDTH_RATIO,
+  facadeWindowCols,
+  facadeWindowRows,
+  shaftFloorLineStep,
+  WINDOW_PANE_FLOOR_RATIO,
+} from './towerFacade'
 import { getScenePalette } from './palette'
 import { CircuitBase } from './exhibits/CircuitBase'
 import { TowerMass } from './mass/TowerMass'
@@ -76,8 +86,9 @@ function ShaftSection({
 
   const floorLines = useMemo(() => {
     const lines: THREE.Vector3[][] = []
-    const count = Math.min(segment.floorCount, 40)
-    for (let i = 1; i < count; i++) {
+    const count = segment.floorCount
+    const step = shaftFloorLineStep(count)
+    for (let i = step; i < count; i += step) {
       const fy = -h / 2 + (i / count) * h
       lines.push([
         new THREE.Vector3(-w / 2, fy, d / 2 + 0.005),
@@ -113,15 +124,16 @@ function ShaftSection({
           opacity={shellFade ? 0.45 : isNight ? 0.7 : 0.55}
         />
       </lineSegments>
-      {Array.from({ length: 5 }).map((_, i) => {
-        const x = -w / 2 + 0.12 + i * ((w - 0.24) / 4)
+      {Array.from({ length: 3 }).map((_, i) => {
+        const x = -w / 2 + 0.14 + i * ((w - 0.28) / 2)
         return (
           <mesh key={i} position={[x, 0, d / 2 + 0.006]} raycast={() => null}>
-            <planeGeometry args={[0.04, h * 0.96]} />
+            <planeGeometry args={[0.035, h * 0.94]} />
             <meshStandardMaterial
-              color={isNight ? pal.neon : pal.shade}
+              color={isNight ? pal.neon : pal.graphite}
               transparent
-              opacity={shellFade ? 0.1 : isNight ? 0.22 : 0.4}
+              opacity={shellFade ? 0.08 : isNight ? 0.22 : 0.14}
+              depthWrite={false}
             />
           </mesh>
         )
@@ -231,8 +243,9 @@ function ProgramFloorBand({
   const pal = getScenePalette(theme)
   const bandProgress = bandExtrudeProgress(globalExtrude, bandIndex, totalBands)
   const baseY = programBaseY(program)
-  const y = baseY + (program.bandHeight / 2) * bandProgress
-  const h = program.bandHeight * bandProgress
+  const bandH = visualBandHeight(program)
+  const y = baseY + (bandH / 2) * bandProgress
+  const h = bandH * bandProgress
   const w = program.width
   const d = program.depth
   const edges = useMemo(() => new THREE.EdgesGeometry(new THREE.BoxGeometry(w, h, d)), [w, h, d])
@@ -330,29 +343,51 @@ function ProgramFloorBand({
       )}
 
       {
-        !hideFacade && !shellFade && (
-        <group position={[0, 0, d / 2 + 0.01]}>
-          {program.id === 'G' ? (
-            <LobbyAutoDoors
-              bandWidth={w}
-              bandHeight={h}
-              night={isNight}
-              active={hovered}
-            />
-          ) : (
-            <WindowMatrix
-              width={w * 0.88}
-              height={h * 0.72}
-              cols={zone === 'basement' ? 4 : 5}
-              rows={zone === 'roof' ? 2 : 4}
-              pattern={windowPattern}
-              night={isNight}
-              active={hovered}
-              accentRatio={0.12}
-            />
-          )}
-        </group>
-        )
+        !hideFacade && !shellFade && (() => {
+          const sideWindows = program.id === 'G' || program.id === '23' || program.id === '52' || program.id === '99'
+          const windowRows = facadeWindowRows(program)
+          const windowProps = {
+            pattern: windowPattern,
+            night: isNight,
+            active: hovered,
+            accentRatio: 0.12,
+            paneFloorRatio: WINDOW_PANE_FLOOR_RATIO,
+          } as const
+
+          return (
+            <>
+              <group position={[0, 0, d / 2 + 0.01]}>
+                {program.id === 'G' ? (
+                  <LobbyAutoDoors
+                    bandWidth={w}
+                    bandHeight={h}
+                    night={isNight}
+                    active={hovered}
+                  />
+                ) : (
+                  <WindowMatrix
+                    width={w * FACADE_WIDTH_RATIO}
+                    height={h * FACADE_HEIGHT_RATIO}
+                    cols={facadeWindowCols(program, 'front')}
+                    rows={windowRows}
+                    {...windowProps}
+                  />
+                )}
+              </group>
+              {sideWindows && (
+                <group position={[w / 2 + 0.01, 0, 0]} rotation={[0, Math.PI / 2, 0]}>
+                  <WindowMatrix
+                    width={d * FACADE_SIDE_WIDTH_RATIO}
+                    height={h * FACADE_HEIGHT_RATIO}
+                    cols={facadeWindowCols(program, 'side')}
+                    rows={windowRows}
+                    {...windowProps}
+                  />
+                </group>
+              )}
+            </>
+          )
+        })()
       }
 
       {isNight && entered && !hideBandShell && !floorCutaway && (
@@ -363,7 +398,7 @@ function ProgramFloorBand({
         <group position={[0, -h / 2, 0]}>
           <FloorRoom
             floorId={program.id}
-            bandHeight={program.bandHeight}
+            bandHeight={program.interiorHeight}
             theme={theme}
             accent={pal.signal}
             entered={entered}
@@ -513,9 +548,9 @@ export function CyberTower({
   }, [teardownBlueprint, pal.graphite, pal.blueprint])
 
   const roofProgram = getProgramFloor('roof')
-  const spireBase = programBaseY(roofProgram) + roofProgram.bandHeight
+  const spireBase = programBaseY(roofProgram) + visualBandHeight(roofProgram)
   const f99 = getProgramFloor('99')
-  const identityPlateY = programBaseY(f99) + f99.bandHeight
+  const identityPlateY = programBaseY(f99) + visualBandHeight(f99)
   const identityPlateX = -f99.width / 2 + f99.width * 0.27
   const identityPlateZ = f99.depth / 2 + 0.015
   const showIdentityPlate = extrude > 0.55

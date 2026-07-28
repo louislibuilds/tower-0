@@ -65,6 +65,7 @@ export interface LocaleStrings {
     overview: string
     completionLabel: string
     tsaCertTitle: string
+    deansListCertTitle: string
     degreeCertTitle: string
   }
   lab: {
@@ -249,6 +250,7 @@ const en: LocaleStrings = {
     overview: 'Four semester lines run parallel — click an area to zoom in.',
     completionLabel: 'UTS MIT COMPLETE',
     tsaCertTitle: 'UTS TSA · Letter of Recognition',
+    deansListCertTitle: "UTS · Dean's List 2026",
     degreeCertTitle: 'UTS · Master of IT Testamur',
   },
   lab: {
@@ -530,6 +532,7 @@ const zhTW: LocaleStrings = {
     overview: '四條學期產線並行 — 點選區域以拉近檢視。',
     completionLabel: 'UTS MIT COMPLETE',
     tsaCertTitle: 'UTS 台灣同學會 · 服務證明',
+    deansListCertTitle: 'UTS · 2026 院長榮譽榜',
     degreeCertTitle: 'UTS · 資訊科技碩士學位證書',
   },
   lab: {
@@ -810,6 +813,7 @@ const ja: LocaleStrings = {
     overview: '4学期のラインが並行 — エリアをクリックしてズーム。',
     completionLabel: 'UTS MIT COMPLETE',
     tsaCertTitle: 'UTS TSA · Letter of Recognition',
+    deansListCertTitle: "UTS · Dean's List 2026",
     degreeCertTitle: 'UTS · Master of IT Testamur',
   },
   lab: {

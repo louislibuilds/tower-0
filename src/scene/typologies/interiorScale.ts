@@ -94,12 +94,12 @@ export const LAB_BLUEPRINT_DIMS: Record<string, [number, number]> = {
 
 export function lab52Interior() {
   const band = getProgramFloor('52')
-  return bandInterior(band.width, band.depth, band.bandHeight)
+  return bandInterior(band.width, band.depth, band.interiorHeight)
 }
 
 export function vault99Interior() {
   const band = getProgramFloor('99')
-  return bandInterior(band.width, band.depth, band.bandHeight)
+  return bandInterior(band.width, band.depth, band.interiorHeight)
 }
 
 /** One half-zone inside 99F when library or archive is expanded */
@@ -114,15 +114,15 @@ export function vaultZoneInterior() {
 
 export function factory23Interior() {
   const band = getProgramFloor('23')
-  return bandInterior(band.width, band.depth, band.bandHeight)
+  return bandInterior(band.width, band.depth, band.interiorHeight)
 }
 
 export function infraB2Interior() {
   const band = getProgramFloor('B2')
-  return bandInterior(band.width, band.depth, band.bandHeight)
+  return bandInterior(band.width, band.depth, band.interiorHeight)
 }
 
 export function techB10Interior() {
   const band = getProgramFloor('B10')
-  return bandInterior(band.width, band.depth, band.bandHeight)
+  return bandInterior(band.width, band.depth, band.interiorHeight)
 }

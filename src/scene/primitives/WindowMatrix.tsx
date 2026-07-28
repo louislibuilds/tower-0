@@ -1,6 +1,4 @@
-import { Line } from '@react-three/drei'
 import { useMemo } from 'react'
-import * as THREE from 'three'
 import { gridHash } from './geometry'
 import { usePalette } from './InkEdges'
 
@@ -17,6 +15,8 @@ interface WindowMatrixProps {
   active?: boolean
   /** Fraction of lit windows that use green cyber accent (0–1) */
   accentRatio?: number
+  /** Pane height as fraction of cell (0.2–0.6 typical curtain wall) */
+  paneFloorRatio?: number
 }
 
 function cellOffset(pattern: WindowPattern, col: number, row: number, cols: number, rows: number) {
@@ -37,6 +37,7 @@ export function WindowMatrix({
   night = false,
   active = false,
   accentRatio = 0.12,
+  paneFloorRatio = 0.42,
 }: WindowMatrixProps) {
   const pal = usePalette()
   const cellW = (w - 0.12) / cols
@@ -52,41 +53,21 @@ export function WindowMatrix({
         const x = x0 + col * cellW + cellW / 2 + stagger * cellW * 0.2
         const y = y0 + row * cellH + cellH / 2
         const hash = gridHash(col, row, 7)
-        const lit = night && hash > 0.28
+        // Basement floors stay dark at night — no occupied-office glow
+        const lit = night && pattern !== 'basement' && hash > 0.28
         const accent = lit && hash < accentRatio
         const pw = cellW * (0.55 + hash * 0.15)
-        const ph = cellH * (0.5 + ((hash * 1.7) % 0.2))
+        const ph = cellH * paneFloorRatio * (0.92 + ((hash * 1.7) % 0.12))
         out.push({ x, y, pw, ph, lit, accent })
       }
     }
     return out
-  }, [cols, rows, pattern, night, accentRatio, cellW, cellH, x0, y0])
+  }, [cols, rows, pattern, night, accentRatio, paneFloorRatio, cellW, cellH, x0, y0])
 
-  const frame = useMemo(() => {
-    const hw = w / 2
-    const hh = h / 2
-    return [
-      new THREE.Vector3(-hw, -hh, z),
-      new THREE.Vector3(hw, -hh, z),
-      new THREE.Vector3(hw, hh, z),
-      new THREE.Vector3(-hw, hh, z),
-      new THREE.Vector3(-hw, -hh, z),
-    ]
-  }, [w, h, z])
-
-  const frameColor = night ? pal.neon : active ? pal.bpEdge : pal.graphite
   const skipRay = () => null
 
   return (
     <group>
-      <Line
-        points={frame}
-        color={frameColor}
-        lineWidth={active ? 1.5 : 1}
-        transparent
-        opacity={night ? 0.65 : active ? 0.85 : 0.5}
-        raycast={skipRay}
-      />
       {panes.map((p, i) => {
         const fill = p.lit
           ? p.accent

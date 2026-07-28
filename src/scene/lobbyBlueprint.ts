@@ -76,6 +76,9 @@ export function lobbyDoorTransomSpan(bandWidth: number) {
 export const LOBBY_COUNTER_BP_H = 2.05
 /** Door leaf cap — ≤ 4× counter height (~ half a person each) */
 export const LOBBY_DOOR_MAX_COUNTER_MULT = 4
+/** Door leaf cap — ≤ 4× counter height; ~one floor slice at 66% of prior scale */
+export const LOBBY_DOOR_BAND_RATIO = 0.2
+export const LOBBY_DOOR_HEIGHT_SCALE = 0.66
 
 export function lobbyCounterSceneHeight() {
   return LOBBY_COUNTER_BP_H * BP_UNIT * lobbyPlateScale()
@@ -83,8 +86,8 @@ export function lobbyCounterSceneHeight() {
 
 export function lobbyDoorPanelHeight(bandHeight: number) {
   return Math.min(
-    lobbyCounterSceneHeight() * LOBBY_DOOR_MAX_COUNTER_MULT,
-    bandHeight * 0.3,
+    lobbyCounterSceneHeight() * LOBBY_DOOR_MAX_COUNTER_MULT * LOBBY_DOOR_HEIGHT_SCALE,
+    bandHeight * LOBBY_DOOR_BAND_RATIO,
   )
 }
 

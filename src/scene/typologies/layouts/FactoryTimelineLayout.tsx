@@ -1,7 +1,8 @@
-import { Line } from '@react-three/drei'
+import { Line, useTexture } from '@react-three/drei'
 import gsap from 'gsap'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
+import { FACTORY_WALL_CERTS } from '../../../assets/factory'
 import {
   areaLabel,
   FACTORY_BLUEPRINT,
@@ -24,6 +25,7 @@ import { factory23Interior } from '../interiorScale'
 import { ThinnedStation } from '../ThinnedStation'
 import { TypologyBpMesh } from '../TypologyBpMesh'
 import { typologyMat, type TypologyProps } from '../types'
+import type { Theme } from '../../../context/SiteContext'
 
 const { w: ROOM_W, d: ROOM_D } = FACTORY_BLUEPRINT
 const BELT_TOP = FACTORY_BELT_TOP
@@ -31,24 +33,16 @@ const TIMELINE_Y = factoryTimelineSceneY()
 /** Short drop when an area is selected */
 const DROP_LIFT = 0.055
 
-const DEGREE_CERT_PATH = 'assets/factory/uts-mit-degree.png'
-const TSA_LETTER_PATH = 'assets/factory/uts-tsa-letter.png'
-
-function factoryAssetUrl(relative: string): string {
-  const base = import.meta.env.BASE_URL ?? '/'
-  return `${base}${relative.replace(/^\//, '')}`
-}
-
 /** Portrait frame aspect (matches graduation testamur) */
 const CERT_ASPECT = 13 / 18
-/** Share of backdrop height reserved for each certificate */
-const CERT_WALL_FILL = 0.24
+/** Share of backdrop height reserved for each certificate (three across) */
+const CERT_WALL_FILL = 0.19
 
-const TSA_MOUNT_BP_X = 7.55
-const DEGREE_MOUNT_BP_X = 9.35
-/** Far −Z offset — larger gap between belt (y≈1.5) and backdrop */
+/** Far −Z backdrop — original layout (behind belt, does not block camera) */
 const BACKDROP_BP_Y = -1.35
 const BACKDROP_BP_D = 0.1
+/** Left → right on wall: TSA · Dean's List · Testamur */
+const CERT_BP_X = [6.85, 8.25, 9.65] as const
 
 /** Backdrop height in blueprint z — fills 23F interior after plate scale */
 function factoryBackdropWallHBp() {
@@ -56,93 +50,93 @@ function factoryBackdropWallHBp() {
   return factory23Interior().h / (BP_UNIT * scale)
 }
 
+/** Dim certificate scans — especially harsh on meshBasicMaterial in night mode */
+function certDisplayTint(theme: Theme, lit: boolean): string {
+  if (theme === 'dark') {
+    return lit ? '#9aa3ae' : '#6e757d'
+  }
+  return lit ? '#ddd8d2' : '#c8c2ba'
+}
+
+function certFrameColor(theme: Theme): string {
+  return theme === 'dark' ? '#5a6068' : '#ece8e2'
+}
+
 function WallCertificate({
-  path,
+  src,
   width,
   height,
+  theme,
   lit,
 }: {
-  path: string
+  src: string
   width: number
   height: number
+  theme: Theme
   lit: boolean
 }) {
-  const resolved = useMemo(() => factoryAssetUrl(path), [path])
-  const [map, setMap] = useState<THREE.Texture | null>(null)
-  const [failed, setFailed] = useState(false)
-
-  useEffect(() => {
-    let live = true
-    let tex: THREE.Texture | null = null
-    setMap(null)
-    setFailed(false)
-
-    const loader = new THREE.TextureLoader()
-    loader.load(
-      resolved,
-      (texture) => {
-        if (!live) {
-          texture.dispose()
-          return
-        }
-        texture.colorSpace = THREE.SRGBColorSpace
-        texture.anisotropy = 4
-        tex = texture
-        setMap(texture)
-      },
-      undefined,
-      () => {
-        if (live) setFailed(true)
-      },
-    )
-
-    return () => {
-      live = false
-      tex?.dispose()
-    }
-  }, [resolved])
+  const map = useTexture(src)
+  map.colorSpace = THREE.SRGBColorSpace
+  map.anisotropy = 4
+  const tint = certDisplayTint(theme, lit)
+  const frame = certFrameColor(theme)
 
   return (
     <group>
       <mesh position={[0, 0, -0.001]} raycast={() => null}>
         <planeGeometry args={[width + 0.006, height + 0.006]} />
-        <meshStandardMaterial color="#ece8e2" roughness={0.95} />
+        <meshStandardMaterial color={frame} roughness={0.95} />
       </mesh>
       <mesh position={[0, 0, 0]} raycast={() => null}>
         <planeGeometry args={[width, height]} />
-        <meshStandardMaterial
-          map={failed ? undefined : (map ?? undefined)}
-          color={failed || !map ? '#d4cfc8' : '#ffffff'}
-          roughness={0.92}
-          metalness={0.02}
-          emissive={lit ? '#ffffff' : '#000000'}
-          emissiveIntensity={lit ? 0.06 : 0}
-        />
+        <meshBasicMaterial map={map} toneMapped color={tint} />
+      </mesh>
+    </group>
+  )
+}
+
+function WallCertificateFallback({
+  width,
+  height,
+  theme,
+}: {
+  width: number
+  height: number
+  theme: Theme
+}) {
+  return (
+    <group>
+      <mesh raycast={() => null}>
+        <planeGeometry args={[width, height]} />
+        <meshBasicMaterial color={theme === 'dark' ? '#5a6068' : '#d4cfc8'} />
       </mesh>
     </group>
   )
 }
 
 function CertificateMount({
-  path,
+  src,
   title,
   code,
   position,
   certW,
   certH,
   accent,
+  theme,
   entered,
 }: {
-  path: string
+  src: string
   title: string
   code: string
   position: [number, number, number]
   certW: number
   certH: number
   accent: string
+  theme: Theme
   entered: boolean
 }) {
   const [hovered, setHovered] = useState(false)
+  const lit = entered || hovered
 
   return (
     <group position={position}>
@@ -156,7 +150,9 @@ function CertificateMount({
         onClick={() => {}}
         onHover={setHovered}
       />
-      <WallCertificate path={path} width={certW} height={certH} lit={entered || hovered} />
+      <Suspense fallback={<WallCertificateFallback width={certW} height={certH} theme={theme} />}>
+        <WallCertificate src={src} width={certW} height={certH} theme={theme} lit={lit} />
+      </Suspense>
       {hovered && (
         <StationCallout
           code={code}
@@ -197,26 +193,30 @@ function FactoryCompletionWall({
 
   if (!visible) return null
 
-  const mounts = [
-    { path: TSA_LETTER_PATH, title: w.tsaCertTitle, code: '2025', bpX: TSA_MOUNT_BP_X },
-    { path: DEGREE_CERT_PATH, title: w.degreeCertTitle, code: '2026', bpX: DEGREE_MOUNT_BP_X },
-  ] as const
+  const certTitles = [w.tsaCertTitle, w.deansListCertTitle, w.degreeCertTitle] as const
+  const mounts = FACTORY_WALL_CERTS.map((cert, i) => ({
+    src: cert.src,
+    title: certTitles[i],
+    code: cert.year,
+    bpX: CERT_BP_X[i],
+  }))
 
   return (
     <group>
       <TypologyBpMesh box={wall} color={m.body} />
-      {mounts.map(({ path, title, code, bpX }) => {
+      {mounts.map(({ src, title, code, bpX }) => {
         const [cx, cy, cz] = bpPoint(bpX, faceBpY, mountBpZ, ROOM_W, ROOM_D)
         return (
           <CertificateMount
-            key={path}
-            path={path}
+            key={src}
+            src={src}
             title={title}
             code={code}
             position={[cx, cy, cz + 0.003]}
             certW={certW}
             certH={certH}
             accent={accent}
+            theme={theme}
             entered={entered}
           />
         )

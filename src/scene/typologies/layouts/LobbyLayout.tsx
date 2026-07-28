@@ -250,7 +250,9 @@ function PerimeterShell({ m }: { m: ReturnType<typeof typologyMat> }) {
   )
 }
 
-/** G · UTS Building 1 — layout from lobby blueprint grid (34×23) */
+/** G · UTS Building 1 — layout from lobby blueprint grid (34×23)
+ *  Interior −Z back wall = reception counter (row 10). Thesis wall / identity plate not modeled yet.
+ *  +Z entrance spandrels live on band facade → LobbyAutoDoors (not here). */
 export function LobbyLayout({ theme, accent, entered }: TypologyProps) {
   const m = typologyMat(theme, accent, entered)
   const lit = entered

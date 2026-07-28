@@ -6,7 +6,9 @@ import {
   lobbyDoorTransomSpan,
   lobbyFacadeMetrics,
 } from '../lobbyBlueprint'
+import { lobbyTransomRows } from '../towerFacade'
 import { usePalette } from './InkEdges'
+import { WindowMatrix } from './WindowMatrix'
 
 interface LobbyAutoDoorsProps {
   bandWidth: number
@@ -165,6 +167,18 @@ export function LobbyAutoDoors({
   const leftSpandrelW = firstDoorLeft - facade.facadeLeft
   const rightSpandrelW = facade.facadeRight - lastDoorRight
 
+  /** Curtain-wall spandrel beside the three door bays — keep glassy, not concrete slabs */
+  const spandrelMat = {
+    color: glassColor,
+    transparent: true as const,
+    opacity: night ? 0.16 : 0.1,
+    roughness: 0.16,
+    metalness: 0.08,
+    depthWrite: false,
+  }
+
+  const transomRows = lobbyTransomRows(transomH)
+
   return (
     <group>
       {leftSpandrelW > 0.01 && (
@@ -173,13 +187,7 @@ export function LobbyAutoDoors({
           raycast={skipRay}
         >
           <planeGeometry args={[leftSpandrelW * 0.96, h * 0.9]} />
-          <meshStandardMaterial
-            color={night ? pal.bpFace : pal.concrete}
-            roughness={0.88}
-            metalness={0.06}
-            transparent
-            opacity={night ? 0.32 : 0.7}
-          />
+          <meshStandardMaterial {...spandrelMat} />
         </mesh>
       )}
 
@@ -189,27 +197,22 @@ export function LobbyAutoDoors({
           raycast={skipRay}
         >
           <planeGeometry args={[rightSpandrelW * 0.96, h * 0.9]} />
-          <meshStandardMaterial
-            color={night ? pal.bpFace : pal.concrete}
-            roughness={0.88}
-            metalness={0.06}
-            transparent
-            opacity={night ? 0.32 : 0.7}
-          />
+          <meshStandardMaterial {...spandrelMat} />
         </mesh>
       )}
 
-      <mesh position={[transom.centerX, transomBottom + transomH / 2, z - 0.001]} raycast={skipRay}>
-        <planeGeometry args={[transom.width * 0.98, transomH]} />
-        <meshStandardMaterial
-          color={glassColor}
-          transparent
-          opacity={night ? 0.14 : 0.12}
-          roughness={0.2}
-          metalness={0.05}
-          depthWrite={false}
+      <group position={[transom.centerX, transomBottom + transomH / 2, z + 0.002]}>
+        <WindowMatrix
+          width={transom.width * 0.96}
+          height={transomH * 0.94}
+          cols={5}
+          rows={transomRows}
+          pattern="grid"
+          night={night}
+          active={active}
+          z={0}
         />
-      </mesh>
+      </group>
 
       {bays.map((bay, i) => (
         <AutoDoorBay

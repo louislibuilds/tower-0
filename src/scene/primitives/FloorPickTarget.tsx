@@ -4,8 +4,8 @@ import type { Mesh } from 'three'
 import { WireBox } from './WireBox'
 import { markTowerPick } from './pickVolume'
 
-/** Slightly larger than band shell — easier tower-view picks on upper floors */
-const HIT_PAD = 1.14
+/** Slightly larger than band shell — easier tower-view picks on thin proportional bands */
+const HIT_PAD = 1.32
 
 interface FloorPickTargetProps {
   size: [number, number, number]

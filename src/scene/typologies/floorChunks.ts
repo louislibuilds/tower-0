@@ -20,7 +20,7 @@ export interface ExhibitChunk {
 
 export function floorInterior(floorId: FloorId) {
   const band = getProgramFloor(floorId)
-  return bandInterior(band.width, band.depth, band.bandHeight)
+  return bandInterior(band.width, band.depth, band.interiorHeight)
 }
 
 export const MIN_CHUNK = { w: 0.34, d: 0.3, h: 0.34 } as const

@@ -8,7 +8,7 @@ import type { FloorId } from '../building/program'
 import type { SitePhase } from '../building/sitePhase'
 import type { ViewMode } from '../building/viewMode'
 import type { LibraryRoomSlug } from '../data/libraryRooms'
-import { getProgramFloor, programCenterY, programBaseY, towerTotalHeight } from '../scene/towerGeometry'
+import { getProgramFloor, programCenterY, programBaseY, towerTotalHeight, visualBandHeight } from '../scene/towerGeometry'
 import { floorPlateSize } from '../scene/typologies/interiorScale'
 import { labCellAnchor, labChunk, vaultCornerAnchor, LAB_CHUNKS } from '../scene/typologies/floorChunks'
 import { FACTORY_LINE_X } from '../scene/factoryStops'
@@ -139,7 +139,7 @@ const VAULT_CREDENTIAL_FOCUS = vaultFocusPreset(
 /** 23F · front elevation — closer, higher frame on stack midline */
 function factoryTimelinePreset(factoryStop: number | null): AuthoredPreset {
   const band = getProgramFloor('23')
-  const plateY = -band.bandHeight / 2 + 0.34
+  const plateY = -band.interiorHeight / 2 + 0.34
   const focusX = factoryStop !== null ? (FACTORY_LINE_X[factoryStop] ?? 0) : 0
   const focused = factoryStop !== null
   return {
@@ -165,7 +165,7 @@ const B2_FOCUS: AuthoredPreset = { lookAt: [0, 0.06, 0.02], eye: [-0.38, 0.2, 0.
 function roofPresets(): { floor: AuthoredPreset; room: AuthoredPreset } {
   const roof = getProgramFloor('roof')
   const f99 = getProgramFloor('99')
-  const plateY = programBaseY(f99) + f99.bandHeight + 0.24
+  const plateY = programBaseY(f99) + visualBandHeight(f99) + 0.24
   const centerY = programCenterY(roof)
   const lift = plateY - centerY
   const zPlate = f99.depth / 2 + 0.02
@@ -178,7 +178,7 @@ function roofPresets(): { floor: AuthoredPreset; room: AuthoredPreset } {
 
 export function roofPlateY(): number {
   const roof = getProgramFloor('roof')
-  return programBaseY(roof) + roof.bandHeight * 0.55
+  return programBaseY(roof) + visualBandHeight(roof) * 0.55
 }
 
 export function stationCameraPreset(
