@@ -21,6 +21,7 @@ export interface LocaleStrings {
     themeLight: string
     rollDrawing: string
     printResume: string
+    elevatorLabel: string
   }
   stamp: {
     code: string
@@ -84,24 +85,24 @@ export interface LocaleStrings {
     course: string
   }
   infra: {
-    skillsTitle: string
-    coursesTitle: string
-    viewProject: string
+    heroTitle: string
+    heroTagline: string
+    floorIntro: string
+    techSkillsTitle: string
+    softSkillsTitle: string
   }
   tech: {
-    intro: string
+    heroTitle: string
+    heroTagline: string
+    floorIntro: string
+    platformBody: string
+    appsTitle: string
+    sourceTitle: string
     github: string
     githubDesc: string
-    nagi: string
-    nagiDesc: string
-    kata: string
-    kataDesc: string
     print: string
     printDesc: string
-    reposTitle: string
     openProfile: string
-    openNagi: string
-    openKata: string
     printNow: string
   }
   library: {
@@ -168,6 +169,7 @@ const en: LocaleStrings = {
     themeLight: 'Day',
     rollDrawing: 'End set',
     printResume: 'RESUME',
+    elevatorLabel: 'ELEVATOR',
   },
   stamp: {
     code: 'TOWER 0',
@@ -186,7 +188,7 @@ const en: LocaleStrings = {
     },
     B2: {
       title: 'Infrastructure',
-      subtitle: 'Skills · Courses · Links',
+      subtitle: 'Skills · Tech & Soft',
       exhibitTitle: 'Infrastructure · B2',
       exhibitHook: 'Risers, pipes, and the circuit board beneath the tower.',
     },
@@ -226,7 +228,7 @@ const en: LocaleStrings = {
     heroTagline: 'Software Engineer · Full-Stack · Creator',
     motto: 'Rome wasn\'t built in a day — neither is good software.',
     floorIntro:
-      'UTS Master of Information Technology · Sydney. I build systems the way architects build towers — structure first, then the rooms that tell the story.',
+      'I build systems the way architects build towers — structure first, then the rooms that tell the story.',
     degree: 'Degree',
     institution: 'Institution',
     wam: 'WAM',
@@ -272,24 +274,26 @@ const en: LocaleStrings = {
     course: 'Course',
   },
   infra: {
-    skillsTitle: 'Skills — Risers & Pipes',
-    coursesTitle: 'Course Links → Projects',
-    viewProject: 'View project ↗',
+    heroTitle: 'Infrastructure',
+    heroTagline: 'Skills · Risers · Pipes',
+    floorIntro:
+      'Mechanical core beneath the tower — the technical stack and working habits that connect every floor.',
+    techSkillsTitle: 'Technical Skills',
+    softSkillsTitle: 'Soft Skills',
   },
   tech: {
-    intro: 'Underground tech centre — repos, exports, deployment.',
+    heroTitle: 'Tech Centre',
+    heroTagline: 'Apps · Source · Print',
+    floorIntro: 'The deepest floor — live apps, GitHub, and what this tower can print.',
+    platformBody:
+      'Shipped work on bubblechickenlab.com — portfolio and writing, KATA for résumé and applications. Both run local or cloud; source repos and print exports are here.',
+    appsTitle: 'Live Apps',
+    sourceTitle: 'Source & Export',
     github: 'GitHub',
-    githubDesc: 'louislibuilds — repos, commits, open source',
-    nagi: 'bubblechickenlab',
-    nagiDesc: '3-app production platform — nagi, KATA editor, job tracker',
-    kata: 'KATA Editor',
-    kataDesc: 'Craft & export résumé with PDF export',
+    githubDesc: 'louislibuilds — course projects, ML pipelines, and open-source builds',
     print: 'Print Résumé',
-    printDesc: 'Print identity plate or use KATA for full sheets',
-    reposTitle: 'Highlighted Repos',
+    printDesc: 'Export this tower identity plate, or use KATA for full A4 sheets',
     openProfile: 'Open profile ↗',
-    openNagi: 'Open site ↗',
-    openKata: 'Open KATA ↗',
     printNow: 'Print now',
   },
   library: {
@@ -413,15 +417,21 @@ const en: LocaleStrings = {
   },
   skillGroups: {
     Languages: 'Languages',
-    Frontend: 'Frontend',
+    'Frontend & UI': 'Frontend & UI',
     'Backend & Data': 'Backend & Data',
     'Cloud & DevOps': 'Cloud & DevOps',
+    'CS & Systems': 'CS & Systems',
     'ML / AI': 'ML / AI',
+    'Leadership & Collaboration': 'Leadership & Collaboration',
+    'Delivery & Quality': 'Delivery & Quality',
+    Communication: 'Communication',
   },
   platformApps: {
-    nagi: { name: 'nagi', hook: 'Portfolio-as-architecture — multilingual CMS on bubblechickenlab.com.' },
-    'kata-editor': { name: 'KATA Editor', hook: 'Résumé variants with live preview and PDF export.' },
-    'kata-tracker': { name: 'KATA Tracker', hook: 'Local-first job application tracker.' },
+    nagi: { name: 'Portfolio', hook: 'Self-hosted personal site — portfolio and writing in one place.' },
+    kata: {
+      name: 'KATA',
+      hook: 'Draft résumés and track applications in one workflow — local or cloud saves, PDF export when you need it.',
+    },
   },
   focus: {
     panelHint: 'Focus detail · side panel',
@@ -453,6 +463,7 @@ const zhTW: LocaleStrings = {
     themeLight: '日間',
     rollDrawing: '收起',
     printResume: 'RESUME',
+    elevatorLabel: '電梯',
   },
   stamp: {
     code: 'TOWER 0',
@@ -471,7 +482,7 @@ const zhTW: LocaleStrings = {
     },
     B2: {
       title: '基礎設施',
-      subtitle: '技能 · 課程 · 連結',
+      subtitle: '技能 · 技術 & 軟技能',
       exhibitTitle: '基礎設施 · B2',
       exhibitHook: '塔樓底下的管線、機電井與電路板。',
     },
@@ -511,7 +522,7 @@ const zhTW: LocaleStrings = {
     heroTagline: '軟體工程師 · 全端 · 創作者',
     motto: '萬丈高樓平地起 — 一磚一瓦，皆為根基。',
     floorIntro:
-      'UTS 資訊科技碩士 · 雪梨。我用蓋樓的方式寫軟體——先承重結構，再讓每層有自己的故事。',
+      '我用蓋樓的方式寫軟體——先承重結構，再讓每層有自己的故事。',
     degree: '學位',
     institution: '學校',
     wam: 'WAM',
@@ -557,24 +568,25 @@ const zhTW: LocaleStrings = {
     course: '課程',
   },
   infra: {
-    skillsTitle: '技能 — 管線與機電',
-    coursesTitle: '課程連結 → 專案',
-    viewProject: '查看專案 ↗',
+    heroTitle: '基礎設施',
+    heroTagline: '技能 · 管線 · 機電',
+    floorIntro: '塔下的機電核心 — 串連各樓層的技術棧與工作方式。',
+    techSkillsTitle: '技術技能',
+    softSkillsTitle: '軟技能',
   },
   tech: {
-    intro: '地下科技中心 — 程式庫、匯出、部署。',
+    heroTitle: '科技中心',
+    heroTagline: 'App · 原始碼 · 列印',
+    floorIntro: '最底層 — 正式環境 App、GitHub 與可列印匯出。',
+    platformBody:
+      'bubblechickenlab.com 上的出貨作品 — 作品集與文章、一站式求職的 KATA。兩者皆支援本地與雲端；原始碼與列印匯出在這裡。',
+    appsTitle: '正式環境 App',
+    sourceTitle: '原始碼 & 匯出',
     github: 'GitHub',
-    githubDesc: 'louislibuilds — 開源專案與提交紀錄',
-    nagi: 'bubblechickenlab',
-    nagiDesc: '三應用生產平台 — nagi、KATA 編輯器、求職追蹤',
-    kata: 'KATA 編輯器',
-    kataDesc: '撰寫與匯出 PDF 履歷',
+    githubDesc: 'louislibuilds — 課程專案、ML 管線與開源作品',
     print: '列印履歷',
-    printDesc: '列印身份铭牌或使用 KATA 完整版',
-    reposTitle: '精選 Repos',
+    printDesc: '列印此塔身份銘牌，或使用 KATA 輸出完整 A4 履歷',
     openProfile: '開啟 GitHub ↗',
-    openNagi: '開啟網站 ↗',
-    openKata: '開啟 KATA ↗',
     printNow: '立即列印',
   },
   library: {
@@ -697,15 +709,18 @@ const zhTW: LocaleStrings = {
   },
   skillGroups: {
     Languages: '程式語言',
-    Frontend: '前端',
+    'Frontend & UI': '前端 & UI',
     'Backend & Data': '後端 & 資料',
     'Cloud & DevOps': '雲端 & DevOps',
+    'CS & Systems': 'CS & 系統',
     'ML / AI': '機器學習 / AI',
+    'Leadership & Collaboration': '領導 & 協作',
+    'Delivery & Quality': '交付 & 品質',
+    Communication: '溝通',
   },
   platformApps: {
-    nagi: { name: 'nagi', hook: '作品集即建築 — bubblechickenlab.com 多語 CMS。' },
-    'kata-editor': { name: 'KATA 編輯器', hook: '履歷變體即時預覽與 PDF 匯出。' },
-    'kata-tracker': { name: 'KATA 追蹤器', hook: '本地優先的求職申請追蹤。' },
+    nagi: { name: '作品集', hook: '自架個人網站，收錄作品集與文章。' },
+    kata: { name: 'KATA', hook: '一站式撰寫履歷、追蹤求職申請 — 支援本地與雲端存檔，可匯出 PDF。' },
   },
   focus: {
     panelHint: '特寫詳情 · 右側面板',
@@ -737,6 +752,7 @@ const ja: LocaleStrings = {
     themeLight: 'デイ',
     rollDrawing: 'セット終了',
     printResume: 'RESUME',
+    elevatorLabel: 'エレベーター',
   },
   stamp: {
     code: 'TOWER 0',
@@ -755,7 +771,7 @@ const ja: LocaleStrings = {
     },
     B2: {
       title: 'インフラ',
-      subtitle: 'スキル · コース · リンク',
+      subtitle: 'スキル · テック & ソフト',
       exhibitTitle: 'インフラ · B2',
       exhibitHook: '塔の下の立管、配管、回路基板。',
     },
@@ -795,7 +811,7 @@ const ja: LocaleStrings = {
     heroTagline: 'ソフトウェアエンジニア · フルスタック · クリエイター',
     motto: '万丈の高層も一層から — 良いソフトウェアも同じ。',
     floorIntro:
-      'UTS 情報工学修士 · シドニー。建築のようにシステムを組み立てる — 構造を先に、物語を語る部屋を後に。',
+      '建築のようにシステムを組み立てる — 構造を先に、物語を語る部屋を後に。',
     degree: '学位',
     institution: '大学',
     wam: 'WAM',
@@ -841,24 +857,25 @@ const ja: LocaleStrings = {
     course: 'コース',
   },
   infra: {
-    skillsTitle: 'スキル — 立管と配管',
-    coursesTitle: 'コースリンク → プロジェクト',
-    viewProject: 'プロジェクトを見る ↗',
+    heroTitle: 'インフラ',
+    heroTagline: 'スキル · 立管 · 配管',
+    floorIntro: '塔の下の機械室 — 各階をつなぐ技術スタックと働き方。',
+    techSkillsTitle: 'テクニカルスキル',
+    softSkillsTitle: 'ソフトスキル',
   },
   tech: {
-    intro: '地下テックセンター — リポジトリ、エクスポート、デプロイ。',
+    heroTitle: 'テックセンター',
+    heroTagline: 'App · ソース · 印刷',
+    floorIntro: '最下階 — 本番 App、GitHub、この塔が印刷できるもの。',
+    platformBody:
+      'bubblechickenlab.com の出荷作品 — ポートフォリオと執筆、求職向け KATA。どちらもローカル／クラウド対応。ソースと印刷はここ。',
+    appsTitle: '本番 App',
+    sourceTitle: 'ソース & エクスポート',
     github: 'GitHub',
-    githubDesc: 'louislibuilds — リポジトリ、コミット、オープンソース',
-    nagi: 'bubblechickenlab',
-    nagiDesc: '3アプリ本番プラットフォーム — nagi、KATA エディター、求人トラッカー',
-    kata: 'KATA エディター',
-    kataDesc: 'PDF エクスポート付き履歴書作成',
+    githubDesc: 'louislibuilds — コースプロジェクト、ML パイプライン、OSS',
     print: '履歴書を印刷',
-    printDesc: 'アイデンティティプレートを印刷、または KATA で完全版',
-    reposTitle: '注目リポジトリ',
+    printDesc: 'この塔のアイデンティティプレート、または KATA で A4 完全版',
     openProfile: 'プロフィールを開く ↗',
-    openNagi: 'サイトを開く ↗',
-    openKata: 'KATA を開く ↗',
     printNow: '今すぐ印刷',
   },
   library: {
@@ -981,15 +998,21 @@ const ja: LocaleStrings = {
   },
   skillGroups: {
     Languages: '言語',
-    Frontend: 'フロントエンド',
+    'Frontend & UI': 'フロントエンド & UI',
     'Backend & Data': 'バックエンド & データ',
     'Cloud & DevOps': 'クラウド & DevOps',
+    'CS & Systems': 'CS & システム',
     'ML / AI': 'ML / AI',
+    'Leadership & Collaboration': 'リーダーシップ & 協働',
+    'Delivery & Quality': 'デリバリー & 品質',
+    Communication: 'コミュニケーション',
   },
   platformApps: {
-    nagi: { name: 'nagi', hook: 'ポートフォリオ即建築 — bubblechickenlab.com 多言語 CMS。' },
-    'kata-editor': { name: 'KATA エディター', hook: '履歴書バリアントのライブプレビューと PDF エクスポート。' },
-    'kata-tracker': { name: 'KATA トラッカー', hook: 'ローカルファーストの求人応募トラッカー。' },
+    nagi: { name: 'ポートフォリオ', hook: '自前ホストの個人サイト — ポートフォリオと文章をひとまとめに。' },
+    kata: {
+      name: 'KATA',
+      hook: '履歴書の作成から応募管理まで — ローカル／クラウド保存、PDF エクスポート対応。',
+    },
   },
   focus: {
     panelHint: 'フォーカス詳細 · サイドパネル',

@@ -6,9 +6,10 @@ import { LAB_SUITES, labCardTitle, labProject, labSuite, labTagline } from '../.
 import { credentials } from '../../data/credentials'
 import { libraryBooks } from '../../data/libraryBooks'
 import { experiences } from '../../data/experience'
-import { platformSummary } from '../../data/platform'
-import { courseLinks, skillGroups } from '../../data/skills'
+import { platformApps } from '../../data/platform'
+import { softSkillGroups, techSkillGroups } from '../../data/skills'
 import type { FloorId } from '../../building/program'
+import { FLOORS } from '../../building/program'
 import type { LibraryRoomSlug } from '../../data/libraryRooms'
 import { LIBRARY_ROOMS } from '../../data/libraryRooms'
 
@@ -301,33 +302,94 @@ function LabExhibit({ labRoomSlug }: { labRoomSlug: string | null }) {
   )
 }
 
+function ExhibitElevator({ currentFloorId }: { currentFloorId: FloorId }) {
+  const { strings, toggleFloor } = useSite()
+
+  return (
+    <nav className="tower-exhibit-elevator" aria-label={strings.site.elevatorLabel}>
+      <p className="tower-exhibit-elevator__label">{strings.site.elevatorLabel}</p>
+      <ul className="tower-exhibit-elevator__shaft">
+        {FLOORS.map((floor) => {
+          const loc = strings.floors[floor.id]
+          const isHere = floor.id === currentFloorId
+          const title = loc?.title ?? floor.title
+          return (
+            <li key={floor.id}>
+              <button
+                type="button"
+                className={isHere ? 'is-here' : undefined}
+                disabled={isHere}
+                aria-current={isHere ? 'location' : undefined}
+                aria-label={`${floor.label} · ${title}`}
+                onClick={() => toggleFloor(floor.id)}
+              >
+                {floor.label}
+              </button>
+            </li>
+          )
+        })}
+      </ul>
+    </nav>
+  )
+}
+
+function InfraPanelHeader() {
+  const { strings } = useSite()
+  const b = strings.infra
+  const eyebrow = `B2 · ${profile.brand} · ${profile.siteCode}`
+
+  return (
+    <>
+      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{eyebrow}</p>
+      <h3 className="tower-exhibit-card__name">{b.heroTitle}</h3>
+      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{b.heroTagline}</p>
+      <hr className="tower-exhibit-roof__rule" />
+      <p className="tower-exhibit-card__body">{b.floorIntro}</p>
+    </>
+  )
+}
+
+function SkillGroupList({ groups }: { groups: typeof techSkillGroups }) {
+  const { strings } = useSite()
+
+  return (
+    <div className="tower-exhibit-skills">
+      {groups.map((g) => (
+        <div key={g.category}>
+          <strong>{strings.skillGroups[g.category as keyof typeof strings.skillGroups] ?? g.category}</strong>
+          <p>{g.items.join(' · ')}</p>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 function InfraExhibit() {
   const { strings } = useSite()
   const i = strings.infra
   return (
     <>
-      <h4 className="tower-exhibit-section-title">{i.skillsTitle}</h4>
-      <div className="tower-exhibit-skills">
-        {skillGroups.map((g) => (
-          <div key={g.category}>
-            <strong>{strings.skillGroups[g.category as keyof typeof strings.skillGroups] ?? g.category}</strong>
-            <p>{g.items.join(' · ')}</p>
-          </div>
-        ))}
-      </div>
-      <h4 className="tower-exhibit-section-title">{i.coursesTitle}</h4>
-      <div className="tower-exhibit-courses">
-        {courseLinks.map((c) => (
-          <div key={c.code} className="tower-exhibit-course">
-            <span>{c.code}</span>
-            <span>{c.title}</span>
-            <span className={`grade-${c.grade.toLowerCase()}`}>{c.mark ?? '—'} {c.grade}</span>
-            {c.projectUrl && (
-              <a href={c.projectUrl} target="_blank" rel="noopener noreferrer">{i.viewProject}</a>
-            )}
-          </div>
-        ))}
-      </div>
+      <InfraPanelHeader />
+      <h4 className="tower-exhibit-section-title">{i.techSkillsTitle}</h4>
+      <SkillGroupList groups={techSkillGroups} />
+      <h4 className="tower-exhibit-section-title">{i.softSkillsTitle}</h4>
+      <SkillGroupList groups={softSkillGroups} />
+    </>
+  )
+}
+
+function TechPanelHeader() {
+  const { strings } = useSite()
+  const t = strings.tech
+  const eyebrow = `B10 · ${profile.brand} · ${profile.siteCode}`
+
+  return (
+    <>
+      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{eyebrow}</p>
+      <h3 className="tower-exhibit-card__name">{t.heroTitle}</h3>
+      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{t.heroTagline}</p>
+      <hr className="tower-exhibit-roof__rule" />
+      <p className="tower-exhibit-card__body">{t.floorIntro}</p>
     </>
   )
 }
@@ -335,19 +397,37 @@ function InfraExhibit() {
 function TechExhibit() {
   const { strings } = useSite()
   const t = strings.tech
+  const appStrings = strings.platformApps
+
   return (
     <>
-      <p className="tower-exhibit-card__body">{t.intro}</p>
-      <p className="tower-exhibit-card__body">{platformSummary}</p>
+      <TechPanelHeader />
+      <p className="tower-exhibit-card__body">{t.platformBody}</p>
+
+      <h4 className="tower-exhibit-section-title">{t.appsTitle}</h4>
+      <div className="tower-exhibit-contacts tower-exhibit-contacts--stack">
+        {platformApps.map((app) => {
+          const loc = appStrings[app.slug as keyof typeof appStrings]
+          return (
+            <a
+              key={app.slug}
+              className="tower-exhibit-vault-entry tower-exhibit-vault-entry--link"
+              href={app.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <strong>{loc?.name ?? app.name}</strong>
+              <span>{loc?.hook ?? app.hook}</span>
+              <em>{app.stack.join(' · ')}</em>
+            </a>
+          )
+        })}
+      </div>
+
+      <h4 className="tower-exhibit-section-title">{t.sourceTitle}</h4>
       <div className="tower-exhibit-actions">
         <a className="tower-exhibit-action" href={profile.links.github} target="_blank" rel="noopener noreferrer">
           <strong>{t.github}</strong><span>{t.githubDesc}</span><em>{t.openProfile}</em>
-        </a>
-        <a className="tower-exhibit-action" href={profile.links.nagi} target="_blank" rel="noopener noreferrer">
-          <strong>{t.nagi}</strong><span>{t.nagiDesc}</span><em>{t.openNagi}</em>
-        </a>
-        <a className="tower-exhibit-action" href={profile.links.kata} target="_blank" rel="noopener noreferrer">
-          <strong>{t.kata}</strong><span>{t.kataDesc}</span><em>{t.openKata}</em>
         </a>
         <button type="button" className="tower-exhibit-action" onClick={() => window.print()}>
           <strong>{t.print}</strong><span>{t.printDesc}</span><em>{t.printNow}</em>
@@ -617,7 +697,9 @@ export function ExhibitOverlay() {
   const isLabPanel = floorId === '52'
   const isFactoryPanel = floorId === '23'
   const isLobbyPanel = floorId === 'G'
-  const isMinimalPanel = isRoofPanel || isVaultPanel || isLabPanel || isFactoryPanel || isLobbyPanel
+  const isInfraPanel = floorId === 'B2'
+  const isTechPanel = floorId === 'B10'
+  const isMinimalPanel = isRoofPanel || isVaultPanel || isLabPanel || isFactoryPanel || isLobbyPanel || isInfraPanel || isTechPanel
 
   const headerTitle =
     floorStrings?.exhibitTitle ?? floor.title
@@ -648,12 +730,15 @@ export function ExhibitOverlay() {
           {viewMode === 'focus' ? (
             <FocusExhibit />
           ) : (
-            <ExhibitBody
-              floorId={floorId}
-              labRoomSlug={labRoomSlug}
-              libraryRoomSlug={libraryRoomSlug}
-              factoryStop={factoryStop}
-            />
+            <>
+              <ExhibitBody
+                floorId={floorId}
+                labRoomSlug={labRoomSlug}
+                libraryRoomSlug={libraryRoomSlug}
+                factoryStop={factoryStop}
+              />
+              <ExhibitElevator currentFloorId={floorId} />
+            </>
           )}
         </div>
       </motion.aside>

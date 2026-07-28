@@ -10,29 +10,21 @@ export interface PlatformApp {
 export const platformApps: PlatformApp[] = [
   {
     slug: 'nagi',
-    name: 'nagi',
-    path: '/',
-    hook: 'Portfolio-as-architecture — this tower lives here. Trilingual UI, CMS, case studies.',
+    name: 'Portfolio',
+    path: '/work',
+    hook: 'Self-hosted personal site — portfolio and writing in one place.',
     stack: ['React', 'Three.js', 'Supabase', 'TipTap'],
-    url: 'https://www.bubblechickenlab.com',
+    url: 'https://www.bubblechickenlab.com/work',
   },
   {
-    slug: 'kata-editor',
-    name: 'KATA Editor',
-    path: '/kata/editor',
-    hook: 'Craft résumé variants with live preview and PDF export — the sheet this tower prints from.',
-    stack: ['React', 'TypeScript', 'PDF Export'],
-    url: 'https://www.bubblechickenlab.com/kata/editor',
-  },
-  {
-    slug: 'kata-tracker',
-    name: 'KATA Tracker',
-    path: '/kata/tracker',
-    hook: 'Local-first job application tracker used daily during the job search.',
-    stack: ['React', 'Supabase', 'Local-first'],
-    url: 'https://www.bubblechickenlab.com/kata/tracker',
+    slug: 'kata',
+    name: 'KATA',
+    path: '/kata',
+    hook: 'Draft résumés and track applications in one workflow — local or cloud saves, PDF export when you need it.',
+    stack: ['React', 'TypeScript', 'Supabase', 'Local + Cloud'],
+    url: 'https://www.bubblechickenlab.com/kata',
   },
 ]
 
 export const platformSummary =
-  'Full-stack engineer operating a 3-app production platform on bubblechickenlab.com — sole builder from database schema to deploy.'
+  'Shipped work on bubblechickenlab.com — portfolio and writing, KATA for the job search; repos and exports behind them.'

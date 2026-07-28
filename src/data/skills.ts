@@ -3,46 +3,48 @@ export interface SkillGroup {
   items: string[]
 }
 
-export interface CourseLink {
-  code: string
-  title: string
-  mark: number | null
-  grade: string
-  projectSlug?: string
-  projectUrl?: string
-}
-
-export const skillGroups: SkillGroup[] = [
+/**
+ * Technical skills — union of archived résumé tiers (swe-26-06 master, cloud/web variants).
+ */
+export const techSkillGroups: SkillGroup[] = [
   {
     category: 'Languages',
-    items: ['JavaScript', 'TypeScript', 'Python', 'Java', 'SQL', 'C'],
+    items: ['JavaScript', 'TypeScript', 'Python', 'Java', 'SQL', 'HTML', 'CSS'],
   },
   {
-    category: 'Frontend',
-    items: ['React', 'Next.js', 'Three.js', 'Tailwind CSS'],
+    category: 'Frontend & UI',
+    items: ['React', 'Next.js', 'Three.js', 'Tailwind CSS', 'Responsive UI', 'i18n (EN / zh-TW / zh-CN)', 'SEO', 'Google Analytics'],
   },
   {
     category: 'Backend & Data',
-    items: ['Node.js', 'Express', 'FastAPI', 'PostgreSQL', 'MongoDB', 'Supabase'],
+    items: ['Node.js', 'Express', 'FastAPI', 'REST APIs', 'JSON schemas', 'PostgreSQL', 'MongoDB', 'Supabase', 'OAuth'],
   },
   {
     category: 'Cloud & DevOps',
-    items: ['AWS', 'Docker', 'Git', 'CI/CD', 'Vercel', 'Railway'],
+    items: ['AWS', 'Azure', 'GCP', 'Docker', 'Git', 'GitHub', 'CI/CD', 'Vercel', 'Railway', 'Linux', 'UNIX', 'Networking (TCP/IP, DNS)'],
+  },
+  {
+    category: 'CS & Systems',
+    items: ['Data structures & algorithms', 'Databases', 'Object-oriented design', 'System design basics', 'Debugging & troubleshooting'],
   },
   {
     category: 'ML / AI',
-    items: ['PyTorch', 'MediaPipe', 'NLP', 'ONNX', 'CNN'],
+    items: ['PyTorch', 'NLP', 'Deep Learning', 'CNN', 'MediaPipe', 'ONNX', 'Computer vision'],
   },
 ]
 
-export const courseLinks: CourseLink[] = [
-  { code: '42904', title: 'Cloud Computing & SaaS', mark: 100, grade: 'HD', projectSlug: 'cloud-computing', projectUrl: 'https://github.com/louislibuilds/SUNi-Make-Your-Day-Shining' },
-  { code: '42891', title: 'Infrastructure for Cloud Computing', mark: 95, grade: 'HD', projectSlug: 'cloud-computing', projectUrl: 'https://github.com/louislibuilds/SUNi-Make-Your-Day-Shining' },
-  { code: '42850', title: 'NLP Algorithms', mark: 94, grade: 'HD', projectSlug: 'nlp', projectUrl: 'https://github.com/louis-li-builds/mock-interview-coach-stt-star-feedback-scoring-nlp-uts-project' },
-  { code: '42028', title: 'Deep Learning & CNN', mark: 95, grade: 'HD', projectSlug: 'dl', projectUrl: 'https://github.com/louis-li-builds/dl-cnn-UTSproject51-vtuber-mediapipe-kalidokit' },
-  { code: '32541', title: 'Project Management', mark: 97, grade: 'HD' },
-  { code: '32555', title: 'Software Development', mark: 91, grade: 'HD' },
-  { code: '32557', title: 'Enterprise Information Systems', mark: 91, grade: 'HD' },
-  { code: '32130', title: 'Data Analytics', mark: 87, grade: 'HD' },
-  { code: '32040', title: 'Industry Project', mark: 77, grade: 'D' },
+/** Soft skills — leadership, delivery, communication from archived résumés & UTS experience. */
+export const softSkillGroups: SkillGroup[] = [
+  {
+    category: 'Leadership & Collaboration',
+    items: ['Team leadership', 'Cross-functional planning', 'Stakeholder communication', 'Volunteer coordination', 'Code review participation'],
+  },
+  {
+    category: 'Delivery & Quality',
+    items: ['End-to-end ownership', 'Deadline-driven delivery', 'Automated testing', 'Agile delivery', 'Technical documentation'],
+  },
+  {
+    category: 'Communication',
+    items: ['English (Fluent)', 'Mandarin Chinese (Native)', 'Explaining trade-offs to non-technical audiences', 'Async / remote collaboration', 'Risk communication'],
+  },
 ]

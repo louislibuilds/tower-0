@@ -539,6 +539,8 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   overflow-y: auto;
   padding: 0.85rem 1rem 1rem;
   flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 .tower-exhibit-card__eyebrow {
   font-family: var(--font-mono);
@@ -719,6 +721,63 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 .tower-exhibit-skills { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 0.5rem; }
 .tower-exhibit-skills strong { font-size: 0.7rem; color: var(--signal); display: block; margin-bottom: 0.1rem; }
 .tower-exhibit-skills p { font-size: 0.7rem; color: var(--graphite-mute); }
+
+/* ── Exhibit elevator (floor picker) ── */
+.tower-exhibit-elevator {
+  margin-top: auto;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--line);
+  flex-shrink: 0;
+}
+.tower-exhibit-elevator__label {
+  margin: 0 0 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.54rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--graphite-mute);
+}
+.tower-exhibit-elevator__shaft {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  gap: 0.22rem;
+}
+.tower-exhibit-elevator__shaft li {
+  flex: 1 1 0;
+  min-width: 0;
+}
+.tower-exhibit-elevator__shaft button {
+  appearance: none;
+  width: 100%;
+  padding: 0.38rem 0.15rem;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--paper) 96%, var(--graphite) 4%);
+  color: var(--graphite-mute);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+.tower-exhibit-elevator__shaft button:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--signal) 55%, var(--line));
+  background: color-mix(in srgb, var(--paper) 88%, var(--signal) 12%);
+  color: var(--graphite);
+}
+.tower-exhibit-elevator__shaft button.is-here {
+  border: 2px solid var(--signal);
+  background: color-mix(in srgb, var(--paper) 76%, var(--signal) 24%);
+  color: var(--graphite);
+  font-weight: 700;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--signal) 28%, transparent);
+  cursor: default;
+}
 .tower-exhibit-courses { display: flex; flex-direction: column; gap: 0.3rem; }
 .tower-exhibit-course {
   display: grid;
@@ -759,6 +818,8 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 }
 .tower-exhibit-contacts strong { font-family: var(--font-mono); font-size: 0.6rem; color: var(--signal); }
 .tower-exhibit-contacts span { font-size: 0.65rem; color: var(--graphite-mute); }
+.tower-exhibit-contacts em { font-style: normal; font-family: var(--font-mono); font-size: 0.55rem; color: var(--graphite-mute); opacity: 0.85; margin-top: 0.2rem; }
+.tower-exhibit-vault-entry--link { text-decoration: none; }
 .tower-exhibit-vault-entry {
   appearance: none;
   text-align: left;
