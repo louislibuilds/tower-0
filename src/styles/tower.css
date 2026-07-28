@@ -1476,10 +1476,162 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   }
 }
 
-@media print {
-  .tower-canvas, .tower-rail, .tower-toolbar, .tower-status { display: none; }
-  .tower-exhibit { position: static; width: 100%; margin: 0; border: 1px solid #ccc; }
-  .tower-exhibit-roof__print { display: none; }
+.tower-exhibit-card__body--mute {
+  font-size: 0.68rem;
+  color: var(--graphite-mute);
+  margin-top: -0.15rem;
+  margin-bottom: 0.45rem;
+}
+
+/* ── B10 résumé PDF embed ── */
+.tower-resume-preview-embed {
+  margin-bottom: 0.55rem;
+  border: 1px solid var(--line);
+  background: #fff;
+  overflow: hidden;
+  max-height: 11rem;
+}
+
+/* ── PDF.js canvas preview (A4 sheet stack) ── */
+.resume-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 0.5rem 0 2rem;
+}
+.resume-preview--compact {
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.35rem;
+  max-width: none;
+}
+.resume-preview__loading,
+.resume-preview__error {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--graphite-mute);
+  padding: 0.5rem;
+}
+.resume-preview__page {
+  margin: 0;
+  background: #fff;
+  border: 1px solid color-mix(in srgb, var(--graphite) 28%, transparent);
+  box-shadow: 0 12px 32px color-mix(in srgb, var(--graphite) 22%, transparent);
+  overflow: hidden;
+}
+.resume-preview--compact .resume-preview__page {
+  box-shadow: none;
+  flex: 1 1 0;
+  min-width: 0;
+}
+.resume-preview__page--loading {
+  aspect-ratio: 210 / 297;
+  background: color-mix(in srgb, var(--paper) 90%, var(--graphite) 10%);
+}
+.resume-preview__canvas-wrap {
+  position: relative;
+  line-height: 0;
+}
+.resume-preview__canvas {
+  display: block;
+  vertical-align: top;
+}
+.resume-preview__links {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.resume-preview__links a {
+  position: absolute;
+  pointer-events: auto;
+  background: transparent;
+}
+.resume-preview__links a:hover {
+  outline: 1px solid color-mix(in srgb, var(--signal) 55%, transparent);
+  background: color-mix(in srgb, var(--signal) 8%, transparent);
+}
+
+/* ── Résumé print drawer (PDF preview panel) ── */
+.tower-resume-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+}
+.tower-resume-drawer__bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--line);
+  border-top: 2px solid var(--graphite);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  background: var(--paper);
+  flex-shrink: 0;
+}
+.tower-resume-drawer__stamp {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+.tower-resume-drawer__site {
+  color: var(--graphite);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+.tower-resume-drawer__doc {
+  color: var(--graphite-mute);
+  text-transform: uppercase;
+}
+.tower-resume-drawer__actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+.tower-resume-drawer__btn {
+  appearance: none;
+  padding: 0.45rem 0.75rem;
+  border: 1px solid var(--signal);
+  background: color-mix(in srgb, var(--paper) 70%, var(--signal) 30%);
+  color: var(--graphite);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.tower-resume-drawer__btn--ghost {
+  border-color: var(--line);
+  background: transparent;
+  font-weight: 500;
+}
+a.tower-resume-drawer__btn {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+.tower-resume-drawer__body {
+  flex: 1;
+  overflow: auto;
+  padding: 1rem;
+  background:
+    linear-gradient(var(--line) 1px, transparent 1px) 0 0 / 32px 32px,
+    linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0 / 32px 32px,
+    var(--paper);
 }
 
 .tower-boot-plate {

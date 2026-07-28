@@ -6,7 +6,8 @@ import { LAB_SUITES, labCardTitle, labProject, labSuite, labTagline } from '../.
 import { credentials } from '../../data/credentials'
 import { libraryBooks } from '../../data/libraryBooks'
 import { experiences } from '../../data/experience'
-import { platformApps } from '../../data/platform'
+import { ResumePdfPreview } from '../resume/ResumePdfPreview'
+import { resumeLocaleForSite } from '../../data/resumePrint'
 import { softSkillGroups, techSkillGroups } from '../../data/skills'
 import type { FloorId } from '../../building/program'
 import { FLOORS } from '../../building/program'
@@ -395,43 +396,37 @@ function TechPanelHeader() {
 }
 
 function TechExhibit() {
-  const { strings } = useSite()
+  const { strings, locale, openResumePreview, printResume } = useSite()
   const t = strings.tech
-  const appStrings = strings.platformApps
+  const resumeLocale = resumeLocaleForSite(locale)
 
   return (
     <>
       <TechPanelHeader />
-      <p className="tower-exhibit-card__body">{t.platformBody}</p>
+      <p className="tower-exhibit-card__body">{t.resumeIntro}</p>
 
-      <h4 className="tower-exhibit-section-title">{t.appsTitle}</h4>
-      <div className="tower-exhibit-contacts tower-exhibit-contacts--stack">
-        {platformApps.map((app) => {
-          const loc = appStrings[app.slug as keyof typeof appStrings]
-          return (
-            <a
-              key={app.slug}
-              className="tower-exhibit-vault-entry tower-exhibit-vault-entry--link"
-              href={app.url}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <strong>{loc?.name ?? app.name}</strong>
-              <span>{loc?.hook ?? app.hook}</span>
-              <em>{app.stack.join(' · ')}</em>
-            </a>
-          )
-        })}
+      <h4 className="tower-exhibit-section-title">{t.previewTitle}</h4>
+      <p className="tower-exhibit-card__body tower-exhibit-card__body--mute">{t.previewHint}</p>
+      <div className="tower-resume-preview-embed">
+        <ResumePdfPreview resumeLocale={resumeLocale} compact />
       </div>
 
-      <h4 className="tower-exhibit-section-title">{t.sourceTitle}</h4>
       <div className="tower-exhibit-actions">
-        <a className="tower-exhibit-action" href={profile.links.github} target="_blank" rel="noopener noreferrer">
-          <strong>{t.github}</strong><span>{t.githubDesc}</span><em>{t.openProfile}</em>
-        </a>
-        <button type="button" className="tower-exhibit-action" onClick={() => window.print()}>
-          <strong>{t.print}</strong><span>{t.printDesc}</span><em>{t.printNow}</em>
+        <button type="button" className="tower-exhibit-action" onClick={openResumePreview}>
+          <strong>{t.openPreview}</strong>
+          <span>{t.previewHint}</span>
+          <em>{t.openPreview}</em>
         </button>
+        <button type="button" className="tower-exhibit-action" onClick={printResume}>
+          <strong>{t.print}</strong>
+          <span>{t.printDesc}</span>
+          <em>{t.printNow}</em>
+        </button>
+        <a className="tower-exhibit-action" href={profile.links.kata} target="_blank" rel="noopener noreferrer">
+          <strong>KATA</strong>
+          <span>{t.kataNote}</span>
+          <em>{t.openKata}</em>
+        </a>
       </div>
     </>
   )
@@ -554,7 +549,7 @@ function Floor99Exhibit({ libraryRoomSlug }: { libraryRoomSlug: LibraryRoomSlug 
 }
 
 function RoofExhibit() {
-  const { strings } = useSite()
+  const { strings, openResumePreview } = useSite()
   const r = strings.roof
   const eyebrow = `${profile.locationShort} · ${profile.brand} · ${profile.siteCode}`
   const links = [
@@ -582,7 +577,7 @@ function RoofExhibit() {
           </a>
         ))}
       </div>
-      <button type="button" className="tower-exhibit-roof__print" onClick={() => window.print()}>
+      <button type="button" className="tower-exhibit-roof__print" onClick={openResumePreview}>
         {r.printResume}
       </button>
     </>

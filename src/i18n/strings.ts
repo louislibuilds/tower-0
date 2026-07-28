@@ -95,15 +95,21 @@ export interface LocaleStrings {
     heroTitle: string
     heroTagline: string
     floorIntro: string
-    platformBody: string
-    appsTitle: string
-    sourceTitle: string
-    github: string
-    githubDesc: string
+    resumeIntro: string
+    previewTitle: string
+    previewHint: string
+    openPreview: string
     print: string
     printDesc: string
-    openProfile: string
     printNow: string
+    kataNote: string
+    openKata: string
+  }
+  resumePrint: {
+    drawerTitle: string
+    drawerDoc: string
+    printNow: string
+    close: string
   }
   library: {
     heroTitle: string
@@ -283,18 +289,24 @@ const en: LocaleStrings = {
   },
   tech: {
     heroTitle: 'Tech Centre',
-    heroTagline: 'Apps · Source · Print',
-    floorIntro: 'The deepest floor — live apps, GitHub, and what this tower can print.',
-    platformBody:
-      'Shipped work on bubblechickenlab.com — portfolio and writing, KATA for résumé and applications. Both run local or cloud; source repos and print exports are here.',
-    appsTitle: 'Live Apps',
-    sourceTitle: 'Source & Export',
-    github: 'GitHub',
-    githubDesc: 'louislibuilds — course projects, ML pipelines, and open-source builds',
+    heroTagline: 'Résumé · Export · Print',
+    floorIntro: 'The deepest floor — the two-page hiring résumé this tower prints.',
+    resumeIntro:
+      'A4 two-page PDF from KATA — rendered in-browser at full quality. Links are clickable; Print opens the PDF for a linked hard copy.',
+    previewTitle: 'Résumé PDF',
+    previewHint: 'Scroll the preview · links work · Print uses the PDF file',
+    openPreview: 'Open preview',
     print: 'Print Résumé',
-    printDesc: 'Export this tower identity plate, or use KATA for full A4 sheets',
-    openProfile: 'Open profile ↗',
+    printDesc: 'Two A4 pages — use the browser print dialog',
     printNow: 'Print now',
+    kataNote: 'Need an editable version? KATA builds and exports these sheets.',
+    openKata: 'Open KATA ↗',
+  },
+  resumePrint: {
+    drawerTitle: 'Résumé preview',
+    drawerDoc: 'PDF · A4 · 2 pages',
+    printNow: 'Print',
+    close: 'Close',
   },
   library: {
     heroTitle: 'Library & Archive',
@@ -576,18 +588,24 @@ const zhTW: LocaleStrings = {
   },
   tech: {
     heroTitle: '科技中心',
-    heroTagline: 'App · 原始碼 · 列印',
-    floorIntro: '最底層 — 正式環境 App、GitHub 與可列印匯出。',
-    platformBody:
-      'bubblechickenlab.com 上的出貨作品 — 作品集與文章、一站式求職的 KATA。兩者皆支援本地與雲端；原始碼與列印匯出在這裡。',
-    appsTitle: '正式環境 App',
-    sourceTitle: '原始碼 & 匯出',
-    github: 'GitHub',
-    githubDesc: 'louislibuilds — 課程專案、ML 管線與開源作品',
+    heroTagline: '履歷 · 匯出 · 列印',
+    floorIntro: '最底層 — 這座塔可列印的兩頁 A4 履歷。',
+    resumeIntro:
+      'KATA 匯出的 A4 雙頁 PDF — 瀏覽器內完整渲染。連結可點；列印會開啟 PDF 檔以保留連結。',
+    previewTitle: '履歷 PDF',
+    previewHint: '可捲動預覽 · 連結可點 · 列印使用 PDF 檔',
+    openPreview: '開啟預覽',
     print: '列印履歷',
-    printDesc: '列印此塔身份銘牌，或使用 KATA 輸出完整 A4 履歷',
-    openProfile: '開啟 GitHub ↗',
+    printDesc: '兩頁 A4 — 使用瀏覽器列印對話框',
     printNow: '立即列印',
+    kataNote: '需要可編輯版本？KATA 可撰寫並匯出這些頁面。',
+    openKata: '開啟 KATA ↗',
+  },
+  resumePrint: {
+    drawerTitle: '履歷預覽',
+    drawerDoc: 'PDF · A4 · 2 頁',
+    printNow: '列印',
+    close: '關閉',
   },
   library: {
     heroTitle: '圖書館 & 檔案室',
@@ -865,18 +883,24 @@ const ja: LocaleStrings = {
   },
   tech: {
     heroTitle: 'テックセンター',
-    heroTagline: 'App · ソース · 印刷',
-    floorIntro: '最下階 — 本番 App、GitHub、この塔が印刷できるもの。',
-    platformBody:
-      'bubblechickenlab.com の出荷作品 — ポートフォリオと執筆、求職向け KATA。どちらもローカル／クラウド対応。ソースと印刷はここ。',
-    appsTitle: '本番 App',
-    sourceTitle: 'ソース & エクスポート',
-    github: 'GitHub',
-    githubDesc: 'louislibuilds — コースプロジェクト、ML パイプライン、OSS',
+    heroTagline: '履歴書 · エクスポート · 印刷',
+    floorIntro: '最下階 — この塔が印刷する A4 二枚の履歴書。',
+    resumeIntro:
+      'KATA の A4 二枚 PDF — ブラウザ内フル品質レンダリング。リンククリック可；印刷は PDF を開いてリンク保持。',
+    previewTitle: '履歴書 PDF',
+    previewHint: 'スクロールプレビュー · リンク可 · 印刷は PDF',
+    openPreview: 'プレビューを開く',
     print: '履歴書を印刷',
-    printDesc: 'この塔のアイデンティティプレート、または KATA で A4 完全版',
-    openProfile: 'プロフィールを開く ↗',
+    printDesc: 'A4 二枚 — ブラウザの印刷ダイアログを使用',
     printNow: '今すぐ印刷',
+    kataNote: '編集可能版が必要？KATA で作成・エクスポートできます。',
+    openKata: 'KATA を開く ↗',
+  },
+  resumePrint: {
+    drawerTitle: '履歴書プレビュー',
+    drawerDoc: 'PDF · A4 · 2 ページ',
+    printNow: '印刷',
+    close: '閉じる',
   },
   library: {
     heroTitle: '図書館 & アーカイブ',

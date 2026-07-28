@@ -7,6 +7,7 @@ import { ExitOverlay, BootPlateOverlay } from './hud/BootPlateOverlay'
 import { FocusOverlay } from './hud/FocusOverlay'
 import { SceneBootSplash } from './SceneBootSplash'
 import { TowerCredits, TowerRail, TowerStatus, TowerToolbar } from './hud/TowerHud'
+import { ResumePrintDrawer } from './resume/ResumePrintDrawer'
 import { TowerSilhouette } from './TowerSilhouette'
 import { resetSceneCursor } from '../scene/sceneCursor'
 
@@ -114,6 +115,7 @@ export function TowerShell() {
           {strings.site.rollingDrawing}
         </div>
       )}
+      <ResumePrintDrawer />
     </div>
   )
 }

@@ -11,7 +11,7 @@ import { getFloor } from '../../building/program'
 
 /** Top-right — lang + Day/Night toggle */
 export function TowerToolbar() {
-  const { strings, theme, toggleTheme, locale, setLocale, localeLabels, bootDone, startExit, phase } = useSite()
+  const { strings, theme, toggleTheme, locale, setLocale, localeLabels, bootDone, startExit, phase, openResumePreview } = useSite()
 
   return (
     <div className="tower-toolbar">
@@ -44,7 +44,7 @@ export function TowerToolbar() {
         <button
           type="button"
           className="tower-toolbar-btn tower-toolbar-resume"
-          onClick={() => window.print()}
+          onClick={openResumePreview}
         >
           {strings.site.printResume}
         </button>

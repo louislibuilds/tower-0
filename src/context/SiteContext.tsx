@@ -28,6 +28,8 @@ import {
   factoryAreaSlug,
 } from '../building/siteRoute'
 
+import { printResumePdf, resumeLocaleForSite } from '../data/resumePrint'
+
 import { FACTORY_STOPS } from '../scene/factoryStops'
 
 
@@ -139,6 +141,10 @@ interface SiteContextValue {
   /** Zoom out one navigation level (focus → room → floor → tower) */
   navigateBack: () => void
 
+  resumePreviewOpen: boolean
+  openResumePreview: () => void
+  closeResumePreview: () => void
+  printResume: () => void
 }
 
 
@@ -189,6 +195,17 @@ export function SiteProvider({ children }: { children: ReactNode }) {
   const [phase, setPhase] = useState<SitePhase>('boot')
 
   const [bootDone, setBootDone] = useState(false)
+
+  const [resumePreviewOpen, setResumePreviewOpen] = useState(false)
+
+  const openResumePreview = useCallback(() => setResumePreviewOpen(true), [])
+  const closeResumePreview = useCallback(() => setResumePreviewOpen(false), [])
+  const printResume = useCallback(() => {
+    setResumePreviewOpen(false)
+    window.requestAnimationFrame(() => {
+      printResumePdf(resumeLocaleForSite(locale))
+    })
+  }, [locale])
 
   const routeLive = bootDone && phase !== 'boot' && phase !== 'scan'
   const routeView = useMemo(
@@ -603,6 +620,11 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
       navigateBack,
 
+      resumePreviewOpen,
+      openResumePreview,
+      closeResumePreview,
+      printResume,
+
     }),
 
     [
@@ -684,6 +706,11 @@ export function SiteProvider({ children }: { children: ReactNode }) {
       setHoveredFactoryStopSafe,
 
       navigateBack,
+
+      resumePreviewOpen,
+      openResumePreview,
+      closeResumePreview,
+      printResume,
 
     ],
 
