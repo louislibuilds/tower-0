@@ -9,7 +9,7 @@ function useIdentityPlateMap(theme: Theme) {
 
   const tex = useMemo(() => {
     const w = 512
-    const h = 560
+    const h = 620
     const canvas = document.createElement('canvas')
     canvas.width = w
     canvas.height = h
@@ -23,26 +23,21 @@ function useIdentityPlateMap(theme: Theme) {
     ctx.fillStyle = m.body
     ctx.fillRect(0, 0, w, h)
 
+    const eyebrow = `${profile.locationShort} · ${profile.brand} · ${profile.siteCode}`
+
     ctx.fillStyle = mute
-    ctx.font = '600 14px monospace'
-    ctx.fillText('TOWER 0 · ZONE 0', pad, y)
-    y += 40
+    ctx.font = '600 13px monospace'
+    ctx.fillText(eyebrow, pad, y)
+    y += 38
 
     ctx.fillStyle = ink
     ctx.font = '700 38px Georgia, serif'
     ctx.fillText(profile.displayName, pad, y)
-    y += 36
+    y += 40
 
     ctx.fillStyle = mute
-    ctx.font = 'italic 16px Georgia, serif'
-    ctx.fillText(profile.degree, pad, y)
-    y += 28
-
-    ctx.fillStyle = ink
-    ctx.font = '15px Georgia, serif'
-    ctx.fillText(profile.institution, pad, y)
-    y += 24
-    ctx.fillText(`WAM ${profile.wam} · GPA ${profile.gpa}/${profile.gpaScale}`, pad, y)
+    ctx.font = '600 13px monospace'
+    ctx.fillText("Let's keep in touch!", pad, y)
     y += 32
 
     ctx.strokeStyle = rule
@@ -56,6 +51,8 @@ function useIdentityPlateMap(theme: Theme) {
       ['MAIL', 'louis.li.builds@gmail.com'],
       ['GITHUB', 'github.com/louislibuilds'],
       ['LINKEDIN', 'linkedin.com/in/louis-li-builds'],
+      ['PORTFOLIO', 'bubblechickenlab.com/work'],
+      ['KATA.app', 'bubblechickenlab.com/kata'],
     ]
     ctx.font = '600 12px monospace'
     for (const [label, addr] of doors) {
@@ -63,7 +60,7 @@ function useIdentityPlateMap(theme: Theme) {
       ctx.fillText(label, pad, y)
       ctx.fillStyle = ink
       ctx.font = '13px monospace'
-      ctx.fillText(addr, pad + 88, y)
+      ctx.fillText(addr, pad + 96, y)
       ctx.font = '600 12px monospace'
       y += 26
     }

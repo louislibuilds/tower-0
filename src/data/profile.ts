@@ -1,7 +1,9 @@
 export const profile = {
   displayName: 'Louis Li',
   legalName: 'ChengYi Li',
-  tagline: 'Software is not written. It is constructed.',
+  locationShort: 'Sydney',
+  brand: 'bubblechickenlab',
+  siteCode: 'TOWER ZERO',
   thesis:
     'Master of Information Technology graduate (UTS) building full-stack systems — from cloud infrastructure to NLP pipelines — with a portfolio-as-architecture mindset.',
   bio: 'Full-stack developer · UTS MIT · Sydney. I construct software the way buildings are built: load-bearing boundaries, service risers, and rooms that each tell a story.',
@@ -24,6 +26,7 @@ export const profile = {
     github: 'https://github.com/louislibuilds',
     linkedin: 'https://www.linkedin.com/in/louis-li-builds/',
     nagi: 'https://www.bubblechickenlab.com',
+    portfolio: 'https://www.bubblechickenlab.com/work',
     kata: 'https://www.bubblechickenlab.com/kata',
     instagram: 'https://www.instagram.com/bubblechickenlab/',
   },

@@ -16,8 +16,6 @@ export interface FactoryTimelineCalloutProps {
   anchorY?: number
   /** Shared timeline datum height (local Y) */
   timelineY?: number
-  /** Stagger above datum so labels don't overlap */
-  labelOffset?: number
   labelZ?: number
 }
 
@@ -32,27 +30,24 @@ export function FactoryTimelineCallout({
   hidden = false,
   anchorY = 0.12,
   timelineY = 0.38,
-  labelOffset = 0.06,
   labelZ = 0.08,
 }: FactoryTimelineCalloutProps) {
   const pal = usePalette()
-  const labelY = timelineY + labelOffset
 
   const lineColor = active ? pal.signal : pal.mute
   const points = useMemo(
     () => [
       new THREE.Vector3(0, anchorY, 0),
       new THREE.Vector3(0, timelineY, 0),
-      new THREE.Vector3(0, labelY, labelZ * 0.35),
     ],
-    [anchorY, timelineY, labelY, labelZ],
+    [anchorY, timelineY],
   )
 
   if (hidden) return null
 
   const cls = [
     'site-caption',
-    'site-caption--above',
+    'site-caption--datum',
     active ? 'site-caption--note' : '',
     dimmed ? 'site-caption--dim' : '',
   ]
@@ -72,7 +67,8 @@ export function FactoryTimelineCallout({
         gapSize={0.01}
       />
       <Html
-        position={[0, labelY, labelZ]}
+        center={false}
+        position={[0, timelineY, labelZ]}
         zIndexRange={[80, 0]}
         className="site-caption-wrap"
         wrapperClass="site-caption-html"

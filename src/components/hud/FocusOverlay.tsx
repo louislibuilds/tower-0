@@ -6,23 +6,23 @@ export function FocusOverlay() {
     viewMode,
     selectedBookSlug,
     selectedCredentialSlug,
-    toggleBook,
-    toggleCredential,
+    navigateBack,
     strings,
   } = useSite()
 
   if (viewMode !== 'focus') return null
 
-  const onBack = () => {
-    if (selectedBookSlug) toggleBook(selectedBookSlug)
-    else if (selectedCredentialSlug) toggleCredential(selectedCredentialSlug)
-  }
+  const backLabel = selectedCredentialSlug
+    ? strings.focus.backToArchive
+    : selectedBookSlug
+      ? strings.focus.backToLibrary
+      : strings.focus.back
 
   return (
     <div className="tower-focus-hint" role="status" aria-live="polite">
       <span className="tower-focus-hint__label">{strings.focus.panelHint}</span>
-      <button type="button" className="tower-focus-hint__back" onClick={onBack}>
-        {strings.focus.back}
+      <button type="button" className="tower-focus-hint__back" onClick={navigateBack}>
+        {backLabel}
       </button>
     </div>
   )

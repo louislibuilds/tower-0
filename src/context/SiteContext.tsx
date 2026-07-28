@@ -529,8 +529,9 @@ export function SiteProvider({ children }: { children: ReactNode }) {
     if (isInteractionLocked(phase)) return
 
     setFactoryStopState((prev) => {
-      const current = prev ?? (delta > 0 ? -1 : FACTORY_STOPS.length)
-      const next = (current + delta + FACTORY_STOPS.length) % FACTORY_STOPS.length
+      const current = prev ?? 0
+      const next = Math.max(0, Math.min(FACTORY_STOPS.length - 1, current + delta))
+      if (next === current) return prev
       setViewMode('room')
       return next
     })
@@ -546,8 +547,7 @@ export function SiteProvider({ children }: { children: ReactNode }) {
     if (isInteractionLocked(phase)) return
     if (selectedBookSlug === slug) {
       setSelectedBookSlugState(null)
-      setLibraryRoomSlugState(null)
-      setViewMode('floor')
+      setViewMode('room')
       return
     }
     setLibraryRoomSlugState('library')
@@ -562,8 +562,7 @@ export function SiteProvider({ children }: { children: ReactNode }) {
     if (isInteractionLocked(phase)) return
     if (selectedCredentialSlug === slug) {
       setSelectedCredentialSlugState(null)
-      setLibraryRoomSlugState(null)
-      setViewMode('floor')
+      setViewMode('room')
       return
     }
     setLibraryRoomSlugState('archive')

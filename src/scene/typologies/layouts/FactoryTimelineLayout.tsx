@@ -1,19 +1,20 @@
-import { Line } from '@react-three/drei'
+import { Html, Line } from '@react-three/drei'
 import gsap from 'gsap'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 import {
   areaLabel,
   FACTORY_BLUEPRINT,
+  FACTORY_COMPLETION_BP_X,
   FACTORY_CRATE_STACKS,
   FACTORY_STATION_GRID_X,
-  FACTORY_TIMELINE_LABEL_OFFSET,
   factoryPlateScale,
   FACTORY_BELT_TOP,
   semesterTimelineLabel,
   type FactoryCrate,
   type FactoryCrateVariant,
 } from '../../factoryStops'
+import { useSite } from '../../../context/SiteContext'
 import { FactoryTimelineCallout } from '../../primitives/FactoryTimelineCallout'
 import { FactoryTimelineRail, factoryTimelineSceneY } from '../../primitives/FactoryTimelineRail'
 import { PickTarget } from '../../primitives/PickTarget'
@@ -27,6 +28,68 @@ const BELT_TOP = FACTORY_BELT_TOP
 const TIMELINE_Y = factoryTimelineSceneY()
 /** Short drop when an area is selected */
 const DROP_LIFT = 0.055
+
+function completionLocalBox(x: number, y: number, z: number, w: number, d: number, h: number): BpBox {
+  const abs = bpBox(x, y, z, w, d, h, ROOM_W, ROOM_D)
+  const anchor = bpPoint(FACTORY_COMPLETION_BP_X, 1.5, 0, ROOM_W, ROOM_D)
+  return {
+    position: [
+      abs.position[0] - anchor[0],
+      abs.position[1] - anchor[1],
+      abs.position[2] - anchor[2],
+    ],
+    size: abs.size,
+  }
+}
+
+/** End-of-line MIT completion certificate on the conveyor */
+function FactoryCompletionPlaque({
+  theme,
+  accent,
+  entered,
+  visible,
+}: {
+  theme: TypologyProps['theme']
+  accent: string
+  entered: boolean
+  visible: boolean
+}) {
+  const { strings } = useSite()
+  const m = typologyMat(theme, accent, entered)
+  const anchor = bpPoint(FACTORY_COMPLETION_BP_X, 1.5, 0, ROOM_W, ROOM_D)
+  const lit = entered
+
+  if (!visible) return null
+
+  return (
+    <group position={anchor}>
+      <TypologyBpMesh
+        box={completionLocalBox(FACTORY_COMPLETION_BP_X, 1.5, 0, 0.1, 0.3, 0.055)}
+        color={m.pal.concrete}
+        metalness={0.25}
+      />
+      <TypologyBpMesh
+        box={completionLocalBox(FACTORY_COMPLETION_BP_X - 0.02, 1.5, 0.2, 0.34, 0.035, 0.22)}
+        color={m.alt}
+        metalness={0.4}
+        emissive={lit ? accent : undefined}
+        emissiveIntensity={lit ? 0.07 : 0}
+      />
+      <Html
+        center
+        position={[0, 0.31, 0.045]}
+        className="site-caption-wrap"
+        wrapperClass="factory-plaque-html"
+        style={{ pointerEvents: 'none' }}
+        sprite
+      >
+        <div className={`factory-plaque${lit ? ' factory-plaque--lit' : ''}`}>
+          {strings.factory.completionLabel}
+        </div>
+      </Html>
+    </group>
+  )
+}
 
 const CARDBOARD = '#c4bdb0'
 const CARDBOARD_DARK = '#b0a898'
@@ -292,7 +355,6 @@ function FactoryStation({
           dimmed={thin}
           anchorY={Math.max(stackHeight, BELT_TOP) + 0.02}
           timelineY={TIMELINE_Y - anchor[1]}
-          labelOffset={FACTORY_TIMELINE_LABEL_OFFSET[stopIndex] ?? FACTORY_TIMELINE_LABEL_OFFSET[0]}
         />
       )}
 
@@ -420,6 +482,13 @@ export function FactoryTimelineLayout({
           crates={FACTORY_CRATE_STACKS[si] ?? FACTORY_CRATE_STACKS[0]}
         />
       ))}
+
+      <FactoryCompletionPlaque
+        theme={theme}
+        accent={accent}
+        entered={entered}
+        visible={showTimeline}
+      />
     </group>
   )
 }

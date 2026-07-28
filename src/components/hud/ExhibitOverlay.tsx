@@ -283,20 +283,24 @@ function TechExhibit() {
 }
 
 function ArchiveExhibit() {
-  const { strings } = useSite()
+  const { strings, toggleCredential } = useSite()
   const l = strings.library
   return (
     <>
       <p className="tower-exhibit-card__body">{l.archiveIntro}</p>
-      <div className="tower-exhibit-credentials">
+      <div className="tower-exhibit-contacts tower-exhibit-contacts--stack">
         {credentials.map((cred) => {
           const loc = strings.credentials[cred.slug as keyof typeof strings.credentials]
           return (
-            <article key={cred.slug} className="tower-exhibit-credential">
-              <time>{cred.year}</time>
-              <h4>{loc?.title ?? cred.title}</h4>
-              <p>{loc?.detail ?? cred.detail}</p>
-            </article>
+            <button
+              key={cred.slug}
+              type="button"
+              className="tower-exhibit-vault-entry"
+              onClick={() => toggleCredential(cred.slug)}
+            >
+              <strong>{loc?.title ?? cred.title}</strong>
+              <span>{cred.year} · {loc?.detail ?? cred.detail ?? cred.issuer}</span>
+            </button>
           )
         })}
       </div>
@@ -344,22 +348,31 @@ function LibraryPlatformExhibit() {
 }
 
 function Floor99Exhibit({ libraryRoomSlug }: { libraryRoomSlug: LibraryRoomSlug | null }) {
-  const { strings } = useSite()
+  const { strings, toggleLibraryRoom } = useSite()
   const l = strings.library
 
   if (libraryRoomSlug === 'archive') return <ArchiveExhibit />
   if (libraryRoomSlug === 'library') return <LibraryPlatformExhibit />
 
+  const eyebrow = `99F · ${profile.brand} · ${profile.siteCode}`
+
   return (
     <>
-      <p className="tower-exhibit-card__body">{l.heroSub}</p>
-      <p className="tower-exhibit-card__hint">{l.selectRoom}</p>
-      <div className="tower-exhibit-room-cards">
+      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{eyebrow}</p>
+      <h3 className="tower-exhibit-card__name">{l.heroTitle}</h3>
+      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{l.heroTagline}</p>
+      <hr className="tower-exhibit-roof__rule" />
+      <div className="tower-exhibit-contacts tower-exhibit-contacts--stack">
         {LIBRARY_ROOMS.map((room) => (
-          <article key={room.slug} className="tower-exhibit-project">
-            <h4>{room.slug === 'archive' ? l.archiveTitle : l.libraryTitle}</h4>
-            <p>{room.slug === 'archive' ? l.archiveIntro : l.libraryIntro}</p>
-          </article>
+          <button
+            key={room.slug}
+            type="button"
+            className="tower-exhibit-vault-entry"
+            onClick={() => toggleLibraryRoom(room.slug)}
+          >
+            <strong>{room.slug === 'archive' ? l.archiveTitle : l.libraryTitle}</strong>
+            <span>{room.slug === 'archive' ? l.archiveIntro : l.libraryIntro}</span>
+          </button>
         ))}
       </div>
     </>
@@ -369,19 +382,21 @@ function Floor99Exhibit({ libraryRoomSlug }: { libraryRoomSlug: LibraryRoomSlug 
 function RoofExhibit() {
   const { strings } = useSite()
   const r = strings.roof
+  const eyebrow = `${profile.locationShort} · ${profile.brand} · ${profile.siteCode}`
   const links = [
-    { label: 'Email', url: profile.links.email, desc: 'louis.li.builds@gmail.com' },
-    { label: 'GitHub', url: profile.links.github, desc: 'louislibuilds' },
-    { label: 'LinkedIn', url: profile.links.linkedin, desc: 'louis-li-builds' },
-    { label: 'nagi', url: profile.links.nagi, desc: 'bubblechickenlab.com' },
-    { label: 'KATA', url: profile.links.kata, desc: 'bubblechickenlab.com/kata' },
+    { label: r.linkLabels.email, url: profile.links.email, desc: 'louis.li.builds@gmail.com' },
+    { label: r.linkLabels.github, url: profile.links.github, desc: 'louislibuilds' },
+    { label: r.linkLabels.linkedin, url: profile.links.linkedin, desc: 'louis-li-builds' },
+    { label: r.linkLabels.portfolio, url: profile.links.portfolio, desc: 'bubblechickenlab.com/work' },
+    { label: r.linkLabels.kata, url: profile.links.kata, desc: 'bubblechickenlab.com/kata' },
   ]
   return (
     <>
-      <p className="tower-exhibit-card__eyebrow">{r.site}</p>
+      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{eyebrow}</p>
       <h3 className="tower-exhibit-card__name">{profile.displayName}</h3>
-      <p className="tower-exhibit-card__legal">{profile.legalName} · {profile.location}</p>
-      <div className="tower-exhibit-contacts">
+      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{r.cta}</p>
+      <hr className="tower-exhibit-roof__rule" />
+      <div className="tower-exhibit-contacts tower-exhibit-contacts--stack">
         {links.map((link) => (
           <a
             key={link.label}
@@ -393,7 +408,9 @@ function RoofExhibit() {
           </a>
         ))}
       </div>
-      <p className="tower-exhibit-card__footer">{r.footer}</p>
+      <button type="button" className="tower-exhibit-roof__print" onClick={() => window.print()}>
+        {r.printResume}
+      </button>
     </>
   )
 }
@@ -427,13 +444,27 @@ function FocusExhibit() {
     const cred = credentials.find((c) => c.slug === selectedCredentialSlug)
     const loc = cred ? strings.credentials[cred.slug as keyof typeof strings.credentials] : null
     if (!cred) return null
+    const summary = loc?.detail ?? cred.detail
+    const body = loc?.body ?? cred.body
+    const bullets = loc?.bullets ?? cred.bullets
+    const credit = loc?.credit ?? cred.credit
+    const showSummary = summary && summary !== cred.issuer
     return (
       <>
         <p className="tower-exhibit-card__eyebrow">{f.credentialEyebrow}</p>
         <time className="tower-exhibit-card__meta">{cred.year}</time>
         <h3 className="tower-exhibit-card__name">{loc?.title ?? cred.title}</h3>
         <p className="tower-exhibit-card__issuer">{cred.issuer}</p>
-        <p className="tower-exhibit-card__body">{loc?.detail ?? cred.detail}</p>
+        {showSummary && <p className="tower-exhibit-card__body tower-exhibit-card__body--lead">{summary}</p>}
+        {body && <p className="tower-exhibit-card__body">{body}</p>}
+        {bullets && bullets.length > 0 && (
+          <ul className="tower-exhibit-card__bullets">
+            {bullets.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        )}
+        {credit && <p className="tower-exhibit-card__body tower-exhibit-card__body--credit">{credit}</p>}
       </>
     )
   }
@@ -489,25 +520,50 @@ export function ExhibitOverlay() {
             ? `${floorId}-${factoryStop}`
             : floorId
 
+  const isRoofPanel = floorId === 'roof' && viewMode !== 'focus'
+  const isVaultOverview = floorId === '99' && !libraryRoomSlug && viewMode !== 'focus'
+  const isMinimalPanel = isRoofPanel || isVaultOverview
+
+  const headerTitle =
+    floorId === '23'
+      ? strings.factory.panelTitle
+      : floorId === 'roof'
+        ? floorStrings?.title ?? floor.title
+        : floorId === '99' && libraryRoomSlug === 'archive'
+          ? strings.library.archiveTitle
+          : floorId === '99' && libraryRoomSlug === 'library'
+            ? strings.library.libraryTitle
+            : floorStrings?.exhibitTitle ?? floor.title
+  const headerSubtitle =
+    floorId === '23'
+      ? `${strings.factory.panelFloor} — ${floorStrings?.exhibitHook ?? floor.subtitle}`
+      : floorId === 'roof' || isVaultOverview
+        ? null
+        : floorId === '99' && libraryRoomSlug
+          ? null
+          : floorStrings?.exhibitHook ?? floor.subtitle
+
   return (
     <AnimatePresence mode="wait" custom={direction}>
       <motion.aside
         key={overlayKey}
-        className="tower-exhibit"
+        className={isMinimalPanel ? 'tower-exhibit tower-exhibit--roof' : 'tower-exhibit'}
         custom={direction}
         initial={{ opacity: 0, x: 40, filter: 'blur(6px)' }}
         animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
         exit={{ opacity: 0, x: -30, filter: 'blur(6px)' }}
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-        aria-label={floorStrings?.exhibitTitle}
+        aria-label={floorId === 'roof' ? profile.displayName : floorStrings?.exhibitTitle}
       >
+        {!isMinimalPanel && (
         <header className="tower-exhibit-card__header">
           <span className="tower-exhibit-card__badge" data-zone={floor.zone}>{floor.label}</span>
           <div>
-            <h2>{floorStrings?.exhibitTitle ?? floor.title}</h2>
-            <p>{floorStrings?.exhibitHook ?? floor.subtitle}</p>
+            <h2>{headerTitle}</h2>
+            {headerSubtitle && <p>{headerSubtitle}</p>}
           </div>
         </header>
+        )}
         <div className="tower-exhibit-card__scroll">
           {viewMode === 'focus' ? (
             <FocusExhibit />

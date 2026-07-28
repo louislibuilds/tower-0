@@ -17,7 +17,7 @@ export function TowerToolbar() {
   return (
     <div className="tower-toolbar">
       {bootDone && phase !== 'exit' && phase !== 'void' && (
-        <button type="button" className="tower-toolbar-exit" onClick={startExit}>
+        <button type="button" className="tower-toolbar-btn tower-toolbar-exit" onClick={startExit}>
           {strings.site.rollDrawing}
         </button>
       )}
@@ -35,12 +35,21 @@ export function TowerToolbar() {
       </div>
       <button
         type="button"
-        className="tower-toolbar-theme"
+        className="tower-toolbar-btn tower-toolbar-theme"
         onClick={toggleTheme}
         aria-label={theme === 'dark' ? strings.site.themeLight : strings.site.themeDark}
       >
         {theme === 'dark' ? strings.site.themeLight : strings.site.themeDark}
       </button>
+      {bootDone && phase !== 'exit' && phase !== 'void' && (
+        <button
+          type="button"
+          className="tower-toolbar-btn tower-toolbar-resume"
+          onClick={() => window.print()}
+        >
+          {strings.site.printResume}
+        </button>
+      )}
     </div>
   )
 }
@@ -179,8 +188,19 @@ export function TowerRail() {
 
 /** Bottom-center status line */
 export function TowerStatus() {
-  const { hoveredFloorId, hoveredLabSlug, hoveredLibraryRoomSlug, hoveredFactoryStop, floorId, labRoomSlug, libraryRoomSlug, factoryStop, strings } =
-    useSite()
+  const {
+    hoveredFloorId,
+    hoveredLabSlug,
+    hoveredLibraryRoomSlug,
+    hoveredFactoryStop,
+    floorId,
+    labRoomSlug,
+    libraryRoomSlug,
+    factoryStop,
+    prevFactoryStop,
+    nextFactoryStop,
+    strings,
+  } = useSite()
 
   if (hoveredLabSlug && floorId === '52') {
     const project = labProjects.find((p) => p.slug === hoveredLabSlug)
@@ -247,9 +267,34 @@ export function TowerStatus() {
 
     if (floorId === '23') {
       const sem = factoryStop !== null ? FACTORY_AREAS[factoryStop] : null
+      if (factoryStop !== null && sem) {
+        const atFirst = factoryStop === 0
+        const atLast = factoryStop === FACTORY_AREAS.length - 1
+        return (
+          <div className="tower-status tower-status--nav tower-status--muted" aria-live="polite">
+            <button
+              type="button"
+              className="tower-status__chev tower-status__chev--prev"
+              disabled={atFirst}
+              aria-label="Previous area"
+              onClick={prevFactoryStop}
+            />
+            <span className="tower-status__label">
+              {f.label} · {areaLabel(factoryStop)} · {sem.label}
+            </span>
+            <button
+              type="button"
+              className="tower-status__chev tower-status__chev--next"
+              disabled={atLast}
+              aria-label="Next area"
+              onClick={nextFactoryStop}
+            />
+          </div>
+        )
+      }
       return (
         <div className="tower-status tower-status--muted">
-          {f.label} · {sem ? `${areaLabel(factoryStop!)} · ${sem.label}` : loc?.title}
+          {f.label} · {loc?.title}
         </div>
       )
     }

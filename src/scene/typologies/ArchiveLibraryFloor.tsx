@@ -250,36 +250,63 @@ function VaultMorphZone({
           {zoomed && slug === 'library' && viewMode === 'room' &&
             libraryBooks.map((book, i) => {
               const box = libraryBookPickBox(i)
+              const lit = hoveredBookSlug === book.slug || selectedBookSlug === book.slug
               return (
-                <PickTarget
-                  key={book.slug}
-                  position={box.position}
-                  size={box.size}
-                  accent={accent}
-                  guideColor={m.pal.graphite}
-                  active={selectedBookSlug === book.slug}
-                  hovered={hoveredBookSlug === book.slug}
-                  onClick={() => onBookClick(book.slug)}
-                  onHover={(over) => setHoveredBookSlug(over ? book.slug : null)}
-                />
+                <group key={book.slug}>
+                  <PickTarget
+                    position={box.position}
+                    size={box.size}
+                    accent={accent}
+                    guideColor={m.pal.graphite}
+                    active={selectedBookSlug === book.slug}
+                    hovered={hoveredBookSlug === book.slug}
+                    onClick={() => onBookClick(book.slug)}
+                    onHover={(over) => setHoveredBookSlug(over ? book.slug : null)}
+                  />
+                  {lit && (
+                    <group position={box.position}>
+                      <StationCallout
+                        code={String(i + 1).padStart(3, '0')}
+                        title={book.title}
+                        active={selectedBookSlug === book.slug}
+                        anchorY={box.size[1] / 2}
+                        offset={[0, 0.28, 0.22]}
+                      />
+                    </group>
+                  )}
+                </group>
               )
             })}
 
           {zoomed && slug === 'archive' && viewMode === 'room' &&
-            credentials.slice(0, 7).map((cred, i) => {
+            credentials.map((cred, i) => {
               const box = archiveCredentialPickBox(i)
+              const lit = hoveredCredentialSlug === cred.slug || selectedCredentialSlug === cred.slug
+              const loc = strings.credentials[cred.slug as keyof typeof strings.credentials]
               return (
-                <PickTarget
-                  key={cred.slug}
-                  position={box.position}
-                  size={box.size}
-                  accent={accent}
-                  guideColor={m.pal.graphite}
-                  active={selectedCredentialSlug === cred.slug}
-                  hovered={hoveredCredentialSlug === cred.slug}
-                  onClick={() => onCredentialClick(cred.slug)}
-                  onHover={(over) => setHoveredCredentialSlug(over ? cred.slug : null)}
-                />
+                <group key={cred.slug}>
+                  <PickTarget
+                    position={box.position}
+                    size={box.size}
+                    accent={accent}
+                    guideColor={m.pal.graphite}
+                    active={selectedCredentialSlug === cred.slug}
+                    hovered={hoveredCredentialSlug === cred.slug}
+                    onClick={() => onCredentialClick(cred.slug)}
+                    onHover={(over) => setHoveredCredentialSlug(over ? cred.slug : null)}
+                  />
+                  {lit && (
+                    <group position={box.position}>
+                      <StationCallout
+                        code={String(i + 1).padStart(3, '0')}
+                        title={loc?.title ?? cred.title}
+                        active={selectedCredentialSlug === cred.slug}
+                        anchorY={box.size[1] / 2}
+                        offset={[0, 0.28, 0.22]}
+                      />
+                    </group>
+                  )}
+                </group>
               )
             })}
 

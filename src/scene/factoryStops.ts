@@ -33,13 +33,15 @@ export const FACTORY_LINE_Z = FACTORY_LINE_X
 
 export const FACTORY_STOPS = [...FACTORY_LINE_X]
 
+/** End-of-line completion plaque — blueprint x after Area 04 */
+export const FACTORY_COMPLETION_BP_X = 10.15
+
 export function areaLabel(index: number) {
   return `Area ${String(index + 1).padStart(2, '0')}`
 }
 
-/** Stagger label heights above the shared timeline datum (resume2 L1) */
+/** Shared timeline datum height in blueprint z (FactoryTimelineRail) */
 export const FACTORY_TIMELINE_BP_Z = 3.8
-export const FACTORY_TIMELINE_LABEL_OFFSET = [0.06, 0.2, 0.1, 0.24] as const
 
 export function semesterTimelineLabel(index: number) {
   const sem = FACTORY_AREAS[index]

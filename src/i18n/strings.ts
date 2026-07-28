@@ -18,6 +18,7 @@ export interface LocaleStrings {
     themeDark: string
     themeLight: string
     rollDrawing: string
+    printResume: string
   }
   stamp: {
     code: string
@@ -54,9 +55,12 @@ export interface LocaleStrings {
     hd: string
     d: string
     avg: string
+    panelTitle: string
+    panelFloor: string
     selectArea: string
     allAreas: string
     overview: string
+    completionLabel: string
   }
   lab: {
     intro: string
@@ -87,30 +91,38 @@ export interface LocaleStrings {
     printNow: string
   }
   library: {
-    hero: string
-    heroSub: string
+    heroTitle: string
+    heroTagline: string
     archiveTitle: string
     libraryTitle: string
     archiveIntro: string
     libraryIntro: string
-    selectRoom: string
     experienceTitle: string
   }
   roof: {
-    site: string
-    footer: string
+    cta: string
+    printResume: string
+    linkLabels: {
+      email: string
+      github: string
+      linkedin: string
+      portfolio: string
+      kata: string
+    }
     copy: string
   }
   projects: Record<
     string,
     { title: string; hook: string; role: string; team?: string; course?: string }
   >
-  credentials: Record<string, { title: string; detail?: string }>
+  credentials: Record<string, { title: string; detail?: string; body?: string; bullets?: string[]; credit?: string }>
   skillGroups: Record<string, string>
   platformApps: Record<string, { name: string; hook: string }>
   focus: {
     panelHint: string
     back: string
+    backToArchive: string
+    backToLibrary: string
     bookOpen: string
     credentialEyebrow: string
   }
@@ -126,13 +138,14 @@ const en: LocaleStrings = {
     architectRole: 'Master of IT · Full-stack',
     tagline: 'Software is not written. It is constructed.',
     constructing: 'Constructing…',
-    rollingDrawing: 'Rolling drawing…',
+    rollingDrawing: 'Ending set…',
     fallback: '2D elevation · WebGL unavailable',
     floors: 'FLOORS',
     hint: 'Select a floor or room on the model or rail.',
     themeDark: 'Night',
     themeLight: 'Day',
-    rollDrawing: 'Roll drawing',
+    rollDrawing: 'End set',
+    printResume: 'RESUME',
   },
   stamp: {
     code: 'TOWER 0',
@@ -183,8 +196,8 @@ const en: LocaleStrings = {
     roof: {
       title: 'Roof',
       subtitle: 'Contact',
-      exhibitTitle: 'Roof · Contact',
-      exhibitHook: 'Identity plate under open sky.',
+      exhibitTitle: 'Roof',
+      exhibitHook: '',
     },
   },
   lobby: {
@@ -209,9 +222,12 @@ const en: LocaleStrings = {
     hd: 'High Distinction',
     d: 'Distinction',
     avg: 'Avg',
+    panelTitle: 'University of Technology Sydney · Master of Information Technology',
+    panelFloor: 'Factory · 23F',
     selectArea: 'Select a production line (Area 01–04) on the model or rail.',
     allAreas: 'All production lines',
     overview: 'Four semester lines run parallel — click an area to zoom in.',
+    completionLabel: 'UTS MIT COMPLETE',
   },
   lab: { intro: 'Five project rooms on this floor.', selectRoom: 'Select a room on the model or rail.', role: 'Role', team: 'Team', course: 'Course' },
   infra: {
@@ -236,18 +252,24 @@ const en: LocaleStrings = {
     printNow: 'Print now',
   },
   library: {
-    hero: 'Archive & Library',
-    heroSub: 'Master of Information Technology · UTS · WAM 86.9',
+    heroTitle: 'Library & Archive',
+    heroTagline: 'Leadership ‧ Certification ‧ Achievement',
     archiveTitle: 'Archive',
     libraryTitle: 'Library',
     archiveIntro: 'Plan chest of credentials — degrees, dean\'s list, leadership, certificates.',
     libraryIntro: 'Reading desk — bubblechickenlab platform, writing, and side projects.',
-    selectRoom: 'Select Archive or Library on the model or rail.',
     experienceTitle: 'Leadership & Platform',
   },
   roof: {
-    site: 'SITE · TOWER 0',
-    footer: 'Software is not written. It is constructed.',
+    cta: "Let's keep in touch!",
+    printResume: 'Print résumé',
+    linkLabels: {
+      email: 'Email',
+      github: 'GitHub',
+      linkedin: 'LinkedIn',
+      portfolio: 'Portfolio',
+      kata: 'KATA.app',
+    },
     copy: '© {year} Louis Li · Tower 0',
   },
   projects: {
@@ -283,13 +305,38 @@ const en: LocaleStrings = {
     },
   },
   credentials: {
-    'deans-list': { title: "Dean's List 2026", detail: 'UTS Faculty of Engineering & IT' },
-    degree: { title: 'Master of Information Technology', detail: 'C04295 · 96 CP · WAM 86.9' },
-    techfest: { title: 'TechFest AI Showcase Nominee', detail: 'VTuber Motion Pipeline' },
-    'tsa-founder': { title: 'UTS TSA — Co-founder', detail: '1,000+ followers' },
-    'tsa-vp': { title: 'Vice President & Secretary', detail: 'Jun 2025 – Jun 2026' },
-    'tsa-consultant': { title: 'Consultant', detail: 'UTS TSA advisory' },
-    acf: { title: 'ACF Mentoring Program', detail: 'Australia Career Forum · 2026' },
+    'deans-list': {
+      title: "Dean's List 2026",
+      detail: 'Outstanding academic achievement · 2026',
+      body: 'Recognised for consistently high marks across the MIT program — WAM 86.9 over 96 CP, including nine High Distinctions.',
+    },
+    degree: {
+      title: 'Master of Information Technology',
+      detail: 'C04295 · 96 CP · WAM 86.9 · GPA 6.5/7',
+      body: 'Completed Aug 2024 – Aug 2026 with 9 High Distinctions across 96 credit points. Software engineering coursework included Cloud Computing & SaaS, Infrastructure for Cloud Computing, and Fundamentals of Software Development — delivering a LAMP-to-MERN e-commerce platform deployed on AWS with CI/CD. Advanced work in NLP Algorithms and Deep Learning & CNN shipped ML pipelines to GitHub; Project Management and Industry Project strengthened cross-functional planning, stakeholder communication, team leadership, and deadline-driven delivery.',
+    },
+    techfest: {
+      title: 'TechFest AI Showcase Nominee',
+      detail: 'Deep Learning & CNN · 42028 · 95 HD · TechFest 2026',
+      body: 'Nominated to present at the UTS TechFest 2026 AI Showcase. Led a browser-based VTuber motion-capture pipeline for Deep Learning & CNN (42028): webcam → MediaPipe Holistic → Kalidokit → VRM avatar, with optional gesture classification via ONNX CNN inference in the browser. Drove software integration, productization, and team coordination — tuning landmark smoothing, pipeline stability, and demo-ready delivery for a live stage showcase. High Distinction (95); case study and open-source repo on bubblechickenlab.com/work/vtuber-mocap.',
+      credit: 'Ko-Chun Liao — project concept and framework; Junjie Niu — experiment design and research support throughout.',
+    },
+    tsa: {
+      title: 'UTS Taiwan Student Association',
+      detail: 'Co-founder · Vice President & Secretary · Consultant · Jun 2025 – Jun 2026',
+      body: 'Co-founded UTS TSA from zero and served across the founding cycle into an advisory consultant role. Grew community channels 25%+ to 1,000+ followers while building cross-cultural events and programming for Taiwanese students at UTS.',
+      bullets: [
+        'Co-founder: brand identity, social channels, first-semester event calendar, and founding executive structure',
+        'Vice President & Secretary (Jun 2025 – Jun 2026): event delivery, volunteer coordination, stakeholder liaison, and internal communications',
+        'Consultant (2026): governance continuity, executive handover, and long-term planning for the next committee',
+      ],
+    },
+    acf: {
+      title: 'ACF Mentoring Program',
+      detail: 'Mentee · Mentor: Howard C. · Organizer: Peter Wei',
+      body: 'Joined the Australia Career Forum (ACF) Mentoring Program in 2026 as a mentee. Through structured sessions and ongoing check-ins with Howard C., worked on graduate job-search strategy, resume refinement, interview preparation, and navigating the Australian tech hiring market — with honest, practical feedback tied to real applications. Mentorship here was more than career tactics: having someone in your corner who normalizes growing, stumbling, and trying again made a real difference — including naming and working through imposter syndrome when it mattered most during job search.',
+      credit: 'Peter Wei — organized the program and created space for mentors and mentees to learn from one another. Howard C. — resume reviews, fresh insights when they were needed most, and encouragement to keep going.',
+    },
   },
   skillGroups: {
     Languages: 'Languages',
@@ -306,8 +353,10 @@ const en: LocaleStrings = {
   focus: {
     panelHint: 'Focus detail · side panel',
     back: 'Back to room',
+    backToArchive: 'Back to Archive',
+    backToLibrary: 'Back to Library',
     bookOpen: 'Open link ↗',
-    credentialEyebrow: 'Credential · focus',
+    credentialEyebrow: 'Archive · credential',
   },
 }
 
@@ -321,13 +370,14 @@ const zhTW: LocaleStrings = {
     architectRole: '資訊科技碩士 · 全端開發',
     tagline: '軟體不是寫出來的，是建造出來的。',
     constructing: '建造中…',
-    rollingDrawing: '收圖中…',
+    rollingDrawing: '收起中…',
     fallback: '2D 立面 · WebGL 不可用',
     floors: '樓層',
     hint: '在模型或左欄選擇樓層或房間。',
     themeDark: '夜間',
     themeLight: '日間',
-    rollDrawing: '收圖',
+    rollDrawing: '收起',
+    printResume: 'RESUME',
   },
   stamp: {
     code: 'TOWER 0',
@@ -378,8 +428,8 @@ const zhTW: LocaleStrings = {
     roof: {
       title: '屋頂',
       subtitle: '聯絡',
-      exhibitTitle: '屋頂 · 聯絡',
-      exhibitHook: '開闊天空下的身份铭牌。',
+      exhibitTitle: '屋頂',
+      exhibitHook: '',
     },
   },
   lobby: {
@@ -404,9 +454,12 @@ const zhTW: LocaleStrings = {
     hd: '高級優等',
     d: '優等',
     avg: '平均',
+    panelTitle: 'University of Technology Sydney · Master of Information Technology',
+    panelFloor: '工廠 · 23F',
     selectArea: '在模型或左側面板選擇產線（Area 01–04）。',
     allAreas: '全部產線',
     overview: '四條學期產線並行 — 點選區域以拉近檢視。',
+    completionLabel: 'UTS MIT COMPLETE',
   },
   lab: { intro: '本層五間專案房。', selectRoom: '在模型或左側面板選擇一間房。', role: '角色', team: '團隊', course: '課程' },
   infra: {
@@ -431,18 +484,24 @@ const zhTW: LocaleStrings = {
     printNow: '立即列印',
   },
   library: {
-    hero: '檔案室 & 圖書館',
-    heroSub: '資訊科技碩士 · UTS · WAM 86.9',
+    heroTitle: '圖書館 & 檔案室',
+    heroTagline: '領導經歷 ‧ 證照 ‧ 成就',
     archiveTitle: '檔案室',
     libraryTitle: '圖書館',
     archiveIntro: '證書抽屜 — 學位、院長榮譽榜、領導經歷、證照。',
     libraryIntro: '閱讀桌 — bubblechickenlab 平台、寫作與 side projects。',
-    selectRoom: '在模型或左側面板選擇檔案室或圖書館。',
     experienceTitle: '領導 & 平台',
   },
   roof: {
-    site: 'SITE · TOWER 0',
-    footer: '軟體不是寫出來的，是建造出來的。',
+    cta: '保持聯繫！',
+    printResume: '列印履歷',
+    linkLabels: {
+      email: 'Email',
+      github: 'GitHub',
+      linkedin: 'LinkedIn',
+      portfolio: 'Portfolio',
+      kata: 'KATA.app',
+    },
     copy: '© {year} Louis Li · Tower 0',
   },
   projects: {
@@ -478,13 +537,38 @@ const zhTW: LocaleStrings = {
     },
   },
   credentials: {
-    'deans-list': { title: '院長榮譽榜 2026', detail: 'UTS 工程與資訊科技學院' },
-    degree: { title: '資訊科技碩士', detail: 'C04295 · 96 學分 · WAM 86.9' },
-    techfest: { title: 'TechFest AI 展示提名', detail: 'VTuber 動作管線專案' },
-    'tsa-founder': { title: 'UTS 台灣學生會 — 共同創辦人', detail: '1,000+ 追蹤者' },
-    'tsa-vp': { title: '副會長 & 秘書', detail: '2025/06 – 2026/06' },
-    'tsa-consultant': { title: '顧問', detail: 'UTS TSA 營運諮詢' },
-    acf: { title: 'ACF 導師計畫', detail: 'Australia Career Forum · 2026' },
+    'deans-list': {
+      title: '院長榮譽榜 2026',
+      detail: '優異學術成就 · 2026',
+      body: '因資訊科技碩士學程持續優異成績獲選 — WAM 86.9、96 學分，含九科 HD。',
+    },
+    degree: {
+      title: '資訊科技碩士',
+      detail: 'C04295 · 96 學分 · WAM 86.9 · GPA 6.5/7',
+      body: '2024/08 – 2026/08 完成，96 學分中共 9 科 HD。軟體工程課程含 Cloud Computing & SaaS、Infrastructure for Cloud Computing、Fundamentals of Software Development — 實作 LAMP 至 MERN 電商平台並部署於 AWS 與 CI/CD。NLP Algorithms、Deep Learning & CNN 等進階課程產出可部署的 ML 管線；Project Management 與 Industry Project 強化跨團隊規劃、利害關係人溝通、團隊領導，以及在期限下協作交付。',
+    },
+    techfest: {
+      title: 'TechFest AI 展示提名',
+      detail: 'Deep Learning & CNN · 42028 · 95 HD · TechFest 2026',
+      body: '獲 Dr. Nabin Sharma 提名，於 UTS TechFest 2026 AI Showcase 上台展示。主導 Deep Learning & CNN (42028) 瀏覽器 VTuber 動作捕捉 pipeline：webcam → MediaPipe Holistic → Kalidokit → VRM 虛擬角色，並以 ONNX CNN 在瀏覽器端做可選手勢分類。負責軟體整合、產品化與團隊協調 — 調 landmark 平滑、pipeline 穩定度與現場 demo 交付。High Distinction (95)；case study 與開源 repo 見 bubblechickenlab.com/work/vtuber-mocap。',
+      credit: 'Ko-Chun Liao — 專案構想與框架；Junjie Niu — 實驗設計與研究支援。',
+    },
+    tsa: {
+      title: 'UTS Taiwan Student Association',
+      detail: '共同創辦人 · 副會長 & 秘書 · 顧問 · 2025/06 – 2026/06',
+      body: '從零共同創辦 UTS TSA，歷經創會期至顧問角色。社群渠道成長 25%+、達 1,000+ 追蹤，並為 UTS 台灣學生建立跨文化活動與學期規劃。',
+      bullets: [
+        '共同創辦人：品牌識別、社群渠道、首學期活動行事曆與創會幹部架構',
+        '副會長 & 秘書（2025/06 – 2026/06）：活動執行、志工協調、對外聯繫與內部溝通',
+        '顧問（2026）：治理延續、幹部交接與下一屆團隊的中長期規劃',
+      ],
+    },
+    acf: {
+      title: 'ACF 導師計畫',
+      detail: '學員 · 導師：Howard C. · 舉辦：Peter Wei',
+      body: '2026 年參加 Australia Career Forum (ACF) 導師計畫。與 Howard C. 定期會談，針對畢業求職策略、履歷修訂、面試準備與澳洲科技業市場 — 獲得務實、誠實、貼近真實申請的回饋。導師的價值不只是求職技巧：有人在旁提醒你可以成長、可以跌倒、可以再試一次，意義重大 — 包括在求職期間一起面對並命名 imposter syndrome。',
+      credit: 'Peter Wei — 策劃計畫並建立導師與學員互相學習的空間。Howard C. — 履歷檢視、關鍵時刻的新視角，以及持續的鼓勵。',
+    },
   },
   skillGroups: {
     Languages: '程式語言',
@@ -501,8 +585,10 @@ const zhTW: LocaleStrings = {
   focus: {
     panelHint: '特寫詳情 · 右側面板',
     back: '返回房間',
+    backToArchive: '返回檔案室',
+    backToLibrary: '返回圖書館',
     bookOpen: '開啟連結 ↗',
-    credentialEyebrow: '證書 · 特寫',
+    credentialEyebrow: '檔案室 · 證書',
   },
 }
 
@@ -522,7 +608,7 @@ const zhCN: LocaleStrings = {
     '23': { title: '工厂', subtitle: '产线 · 成绩', exhibitTitle: '工厂 · 23F', exhibitHook: '四条学期产线 — 成绩、等级、里程碑。' },
     '52': { title: '实验室', subtitle: '团队项目', exhibitTitle: '实验室 · 52F', exhibitHook: '五间项目房 — 从黑客松到研究管线。' },
     '99': { title: '图书馆 & 档案室', subtitle: '奖项 · 证书', exhibitTitle: '图书馆 · 99F', exhibitHook: '学位、院长荣誉榜、领导经历、证书。' },
-    roof: { title: '屋顶', subtitle: '联系', exhibitTitle: '屋顶 · 联系', exhibitHook: '开阔天空下的身份铭牌。' },
+    roof: { title: '屋顶', subtitle: '联系', exhibitTitle: '屋顶', exhibitHook: '' },
   },
   lobby: {
     ...zhTW.lobby,
@@ -546,14 +632,14 @@ const zhCN: LocaleStrings = {
   },
   library: {
     ...zhTW.library,
+    heroTitle: '图书馆 & 档案室',
     archiveTitle: '档案室',
     libraryTitle: '图书馆',
     archiveIntro: '证书抽屉 — 学位、院长荣誉榜、领导经历、证照。',
     libraryIntro: '阅读桌 — bubblechickenlab 平台、写作与 side projects。',
-    selectRoom: '在模型或左侧面板选择档案室或图书馆。',
     experienceTitle: '领导 & 平台',
   },
-  roof: { ...zhTW.roof, footer: '软件不是写出来的，是建造出来的。' },
+  roof: { ...zhTW.roof },
   projects: {
     'unihack-2026': { ...zhTW.projects['unihack-2026'], hook: '48 小时 MVP：地图探索 + 7 日天气预报。', role: '队长 & 技术总监', team: '跨领域黑客松团队' },
     'cloud-computing': { ...zhTW.projects['cloud-computing'], title: 'SUNishop — 云端电商', hook: 'LAMP → MERN 迁移，CI 与 AWS Academy 部署。', role: '全端开发' },
@@ -562,13 +648,12 @@ const zhCN: LocaleStrings = {
     kata: { ...zhTW.projects.kata, title: 'KATA — 简历 & 求职追踪', hook: '统一求职平台：撰写简历、导出 PDF、追踪申请。', role: '独立开发' },
   },
   credentials: {
-    'deans-list': { title: '院长荣誉榜 2026', detail: 'UTS 工程与信息技术学院' },
-    degree: { title: '信息技术硕士', detail: 'C04295 · 96 学分 · WAM 86.9' },
-    techfest: { title: 'TechFest AI 展示提名', detail: 'VTuber 动作管线项目' },
-    'tsa-founder': { title: 'UTS 台湾学生会 — 共同创办人', detail: '1,000+ 追踪者' },
-    'tsa-vp': { title: '副会长 & 秘书', detail: '2025/06 – 2026/06' },
-    'tsa-consultant': { title: '顾问', detail: 'UTS TSA 运营咨询' },
-    acf: { title: 'ACF 导师计划', detail: 'Australia Career Forum · 2026' },
+    ...zhTW.credentials,
+    'deans-list': { ...zhTW.credentials['deans-list'], title: '院长荣誉榜 2026', detail: '优异学术成就 · 2026' },
+    degree: { ...zhTW.credentials.degree, title: '信息技术硕士' },
+    techfest: { ...zhTW.credentials.techfest, title: 'TechFest AI 展示提名' },
+    tsa: { ...zhTW.credentials.tsa, title: 'UTS Taiwan Student Association' },
+    acf: { ...zhTW.credentials.acf, title: 'ACF 导师计划' },
   },
   skillGroups: {
     Languages: '编程语言',
@@ -594,13 +679,14 @@ const ja: LocaleStrings = {
     architectRole: '情報工学修士 · フルスタック',
     tagline: 'ソフトウェアは書かれるのではない。組み立てられる。',
     constructing: '建造中…',
-    rollingDrawing: '図面を巻き取り中…',
+    rollingDrawing: 'セット終了中…',
     fallback: '2D 立面 · WebGL 不可',
     floors: '階',
     hint: 'モデルまたは左レールで階・部屋を選択。',
     themeDark: 'ナイト',
     themeLight: 'デイ',
-    rollDrawing: '図面を巻く',
+    rollDrawing: 'セット終了',
+    printResume: 'RESUME',
   },
   stamp: {
     code: 'TOWER 0',
@@ -651,8 +737,8 @@ const ja: LocaleStrings = {
     roof: {
       title: '屋上',
       subtitle: '連絡先',
-      exhibitTitle: '屋上 · 連絡先',
-      exhibitHook: '開けた空の下のアイデンティティプレート。',
+      exhibitTitle: '屋上',
+      exhibitHook: '',
     },
   },
   lobby: {
@@ -677,9 +763,12 @@ const ja: LocaleStrings = {
     hd: 'High Distinction',
     d: 'Distinction',
     avg: '平均',
+    panelTitle: 'University of Technology Sydney · Master of Information Technology',
+    panelFloor: 'Factory · 23F',
     selectArea: 'モデルまたはレールで生産ライン（Area 01–04）を選択。',
     allAreas: 'すべての生産ライン',
     overview: '4学期のラインが並行 — エリアをクリックしてズーム。',
+    completionLabel: 'UTS MIT COMPLETE',
   },
   lab: {
     intro: 'この階に5つのプロジェクトルーム。',
@@ -710,18 +799,24 @@ const ja: LocaleStrings = {
     printNow: '今すぐ印刷',
   },
   library: {
-    hero: 'アーカイブ & 図書館',
-    heroSub: '情報工学修士 · UTS · WAM 86.9',
+    heroTitle: '図書館 & アーカイブ',
+    heroTagline: 'リーダーシップ ‧ 資格 ‧ 実績',
     archiveTitle: 'アーカイブ',
     libraryTitle: '図書館',
     archiveIntro: '資格の引き出し — 学位、ディーンズリスト、リーダーシップ、証書。',
     libraryIntro: '読書机 — bubblechickenlab プラットフォーム、執筆、サイドプロジェクト。',
-    selectRoom: 'モデルまたはレールでアーカイブまたは図書館を選択。',
     experienceTitle: 'リーダーシップ & プラットフォーム',
   },
   roof: {
-    site: 'SITE · TOWER 0',
-    footer: 'ソフトウェアは書かれるのではない。組み立てられる。',
+    cta: 'また連絡しましょう！',
+    printResume: '履歴書を印刷',
+    linkLabels: {
+      email: 'Email',
+      github: 'GitHub',
+      linkedin: 'LinkedIn',
+      portfolio: 'Portfolio',
+      kata: 'KATA.app',
+    },
     copy: '© {year} Louis Li · Tower 0',
   },
   projects: {
@@ -757,13 +852,38 @@ const ja: LocaleStrings = {
     },
   },
   credentials: {
-    'deans-list': { title: 'ディーンズリスト 2026', detail: 'UTS 工学・IT 学部' },
-    degree: { title: '情報工学修士', detail: 'C04295 · 96 単位 · WAM 86.9' },
-    techfest: { title: 'TechFest AI ショーケースノミネート', detail: 'VTuber モーションパイプライン' },
-    'tsa-founder': { title: 'UTS TSA — 共同創設者', detail: '1,000+ フォロワー' },
-    'tsa-vp': { title: '副会長 & 秘書', detail: '2025/06 – 2026/06' },
-    'tsa-consultant': { title: 'コンサルタント', detail: 'UTS TSA アドバイザリー' },
-    acf: { title: 'ACF メンタリングプログラム', detail: 'Australia Career Forum · 2026' },
+    'deans-list': {
+      title: 'ディーンズリスト 2026',
+      detail: '優秀な学業成績 · 2026',
+      body: '情報工学修士プログラムで優秀な成績 — WAM 86.9、96 単位、HD 9 科目。',
+    },
+    degree: {
+      title: '情報工学修士',
+      detail: 'C04295 · 96 単位 · WAM 86.9 · GPA 6.5/7',
+      body: '2024/08 – 2026/08 修了。96 単位中 HD 9 科目。Cloud Computing & SaaS、Infrastructure for Cloud Computing、Fundamentals of Software Development で LAMP→MERN EC を AWS + CI/CD へデプロイ。NLP Algorithms、Deep Learning & CNN で ML パイプラインを GitHub 公開。Project Management と Industry Project でクロスファンクショナルな計画、ステークホルダーコミュニケーション、チームリーダーシップ、期限下での協働デリバリーを強化。',
+    },
+    techfest: {
+      title: 'TechFest AI ショーケースノミネート',
+      detail: 'Deep Learning & CNN · 42028 · 95 HD · TechFest 2026',
+      body: 'UTS TechFest 2026 AI Showcase へのノミネート。Deep Learning & CNN (42028) のブラウザ VTuber モーションキャプチャをリード：webcam → MediaPipe Holistic → Kalidokit → VRM、任意の ONNX CNN ジェスチャ分類。ソフトウェア統合、製品化、チーム調整 — ランドマーク平滑化とデモ品質まで担当。High Distinction (95)。case study と OSS は bubblechickenlab.com/work/vtuber-mocap。',
+      credit: 'Ko-Chun Liao — プロジェクト構想とフレームワーク；Junjie Niu — 実験設計と研究支援。',
+    },
+    tsa: {
+      title: 'UTS Taiwan Student Association',
+      detail: '共同創設者 · 副会長 & 秘書 · コンサルタント · 2025/06 – 2026/06',
+      body: 'UTS TSA をゼロから共同創設し、創設期からアドバイザーまで担当。コミュニティチャネルを 25%+ 成長させ 1,000+ フォロワー、UTS の台湾人学生向けクロスカルチャー・プログラムを構築。',
+      bullets: [
+        '共同創設者：ブランド、SNS、初学期イベントカレンダー、創設幹部体制',
+        '副会長 & 秘書（2025/06 – 2026/06）：イベント運営、ボランティア調整、対外連携、内部コミュニケーション',
+        'コンサルタント（2026）：ガバナンス継続、幹部引き継ぎ、次期チームの中長期計画',
+      ],
+    },
+    acf: {
+      title: 'ACF メンタリングプログラム',
+      detail: 'メンティ · メンター: Howard C. · 主催: Peter Wei',
+      body: '2026 年に Australia Career Forum (ACF) メンタリングプログラムに参加。Howard C. との定期セッションで、新卒就職戦略、履歴書改善、面接準備、豪州テック市場への適応 — 実際の応募に即した実践的なフィードバックを得た。メンターシップはキャリア術だけではなく、成長・失敗・再挑戦を当たり前にしてくれる存在 — 求職中の imposter syndrome に向き合う支援も含め、大きな意味を持った。',
+      credit: 'Peter Wei — プログラムを組織し、メンターとメンティが学び合う場を創出。Howard C. — 履歴書レビュー、必要な時の新しい視点、継続的な励まし。',
+    },
   },
   skillGroups: {
     Languages: '言語',
@@ -780,8 +900,10 @@ const ja: LocaleStrings = {
   focus: {
     panelHint: 'フォーカス詳細 · サイドパネル',
     back: 'ルームに戻る',
+    backToArchive: 'アーカイブに戻る',
+    backToLibrary: '図書館に戻る',
     bookOpen: 'リンクを開く ↗',
-    credentialEyebrow: '資格 · フォーカス',
+    credentialEyebrow: 'アーカイブ · 資格',
   },
 }
 
