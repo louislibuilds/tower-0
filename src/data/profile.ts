@@ -4,6 +4,7 @@ export const profile = {
   locationShort: 'Sydney',
   brand: 'bubblechickenlab',
   siteCode: 'TOWER ZERO',
+  tagline: 'Software Engineer · Full-Stack · Creator',
   thesis:
     'Master of Information Technology graduate (UTS) building full-stack systems — from cloud infrastructure to NLP pipelines — with a portfolio-as-architecture mindset.',
   bio: 'Full-stack developer · UTS MIT · Sydney. I construct software the way buildings are built: load-bearing boundaries, service risers, and rooms that each tell a story.',

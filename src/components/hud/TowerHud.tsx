@@ -66,7 +66,7 @@ export function TowerCredits() {
       <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow tower-credits__eyebrow">{eyebrow}</p>
       <h2 className="tower-credits__name">{s.architectName}</h2>
       <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow tower-credits__tagline">
-        {strings.lobby.heroTagline}
+        {profile.tagline}
       </p>
       <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow tower-credits__credential">{credential}</p>
       <div className="tower-credits-links">

@@ -10,6 +10,7 @@ import { techCentreLinks } from '../../data/techLinks'
 import { ResumePdfPreview } from '../resume/ResumePdfPreview'
 import { resumeLocaleForSite } from '../../data/resumePrint'
 import { softSkillGroups, techSkillGroups } from '../../data/skills'
+import { FLOOR_HERO_TAGLINES, LOBBY_RESUME_LABELS, TECH_SKILLS_TITLE } from '../../data/resumeLabels'
 import type { FloorId } from '../../building/program'
 import { FLOORS } from '../../building/program'
 import type { LibraryRoomSlug } from '../../data/libraryRooms'
@@ -32,7 +33,7 @@ function LobbyPanelHeader() {
     <>
       <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{eyebrow}</p>
       <h3 className="tower-exhibit-card__name">{s.welcomeName}</h3>
-      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{s.heroTagline}</p>
+      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{profile.tagline}</p>
       <hr className="tower-exhibit-roof__rule" />
       <blockquote className="tower-exhibit-card__thesis">{s.motto}</blockquote>
       <p className="tower-exhibit-card__body">{s.floorIntro}</p>
@@ -69,13 +70,13 @@ function LobbyExhibit() {
       </div>
 
       <dl className="tower-exhibit-card__meta">
-        <div><dt>{s.degree}</dt><dd>{profile.degree}</dd></div>
-        <div><dt>{s.institution}</dt><dd>{profile.institution}</dd></div>
-        <div><dt>{s.program}</dt><dd>{profile.programCode} · {profile.programStart} – {profile.programEnd}</dd></div>
-        <div><dt>{s.location}</dt><dd>{profile.location}</dd></div>
+        <div><dt>{LOBBY_RESUME_LABELS.degree}</dt><dd>{profile.degree}</dd></div>
+        <div><dt>{LOBBY_RESUME_LABELS.institution}</dt><dd>{profile.institution}</dd></div>
+        <div><dt>{LOBBY_RESUME_LABELS.program}</dt><dd>{profile.programCode} · {profile.programStart} – {profile.programEnd}</dd></div>
+        <div><dt>{LOBBY_RESUME_LABELS.location}</dt><dd>{profile.location}</dd></div>
       </dl>
 
-      <h4 className="tower-exhibit-section-title">{s.experienceTitle}</h4>
+      <h4 className="tower-exhibit-section-title">{LOBBY_RESUME_LABELS.experience}</h4>
       <div className="tower-exhibit-experience">
         {experiences.slice(0, 2).map((exp) => (
           <article key={exp.slug} className="tower-exhibit-experience__item">
@@ -129,7 +130,7 @@ function FactoryPanelHeader({ areaIndex }: { areaIndex?: number }) {
     <>
       <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{eyebrow}</p>
       <h3 className="tower-exhibit-card__name">{w.heroTitle}</h3>
-      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{w.heroTagline}</p>
+      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{FLOOR_HERO_TAGLINES.factory}</p>
       <hr className="tower-exhibit-roof__rule" />
       <p className="tower-exhibit-card__body">{w.floorIntro}</p>
     </>
@@ -284,7 +285,7 @@ function LabExhibit({ labRoomSlug }: { labRoomSlug: string | null }) {
     <>
       <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{eyebrow}</p>
       <h3 className="tower-exhibit-card__name">{l.heroTitle}</h3>
-      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{l.heroTagline}</p>
+      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{FLOOR_HERO_TAGLINES.lab}</p>
       <hr className="tower-exhibit-roof__rule" />
       <p className="tower-exhibit-card__body">{l.floorIntro}</p>
       <div className="tower-exhibit-contacts tower-exhibit-contacts--stack">
@@ -344,21 +345,32 @@ function InfraPanelHeader() {
     <>
       <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{eyebrow}</p>
       <h3 className="tower-exhibit-card__name">{b.heroTitle}</h3>
-      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{b.heroTagline}</p>
+      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{FLOOR_HERO_TAGLINES.infra}</p>
       <hr className="tower-exhibit-roof__rule" />
       <p className="tower-exhibit-card__body">{b.floorIntro}</p>
     </>
   )
 }
 
-function SkillGroupList({ groups }: { groups: typeof techSkillGroups }) {
-  const { strings } = useSite()
+function TechSkillGroupList() {
+  return (
+    <div className="tower-exhibit-skills">
+      {techSkillGroups.map((g) => (
+        <div key={g.category}>
+          <strong>{g.category}</strong>
+          <p>{g.items.join(' · ')}</p>
+        </div>
+      ))}
+    </div>
+  )
+}
 
+function SoftSkillGroupList({ groups }: { groups: typeof softSkillGroups }) {
   return (
     <div className="tower-exhibit-skills">
       {groups.map((g) => (
         <div key={g.category}>
-          <strong>{strings.skillGroups[g.category as keyof typeof strings.skillGroups] ?? g.category}</strong>
+          <strong>{g.category}</strong>
           <p>{g.items.join(' · ')}</p>
         </div>
       ))}
@@ -372,10 +384,10 @@ function InfraExhibit() {
   return (
     <>
       <InfraPanelHeader />
-      <h4 className="tower-exhibit-section-title">{i.techSkillsTitle}</h4>
-      <SkillGroupList groups={techSkillGroups} />
+      <h4 className="tower-exhibit-section-title">{TECH_SKILLS_TITLE}</h4>
+      <TechSkillGroupList />
       <h4 className="tower-exhibit-section-title">{i.softSkillsTitle}</h4>
-      <SkillGroupList groups={softSkillGroups} />
+      <SoftSkillGroupList groups={i.softSkillGroups} />
     </>
   )
 }
@@ -389,7 +401,7 @@ function TechPanelHeader() {
     <>
       <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{eyebrow}</p>
       <h3 className="tower-exhibit-card__name">{t.heroTitle}</h3>
-      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{t.heroTagline}</p>
+      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{FLOOR_HERO_TAGLINES.tech}</p>
       <hr className="tower-exhibit-roof__rule" />
       <p className="tower-exhibit-card__body">{t.floorIntro}</p>
     </>
@@ -547,7 +559,7 @@ function Floor99Exhibit({ libraryRoomSlug }: { libraryRoomSlug: LibraryRoomSlug 
     <>
       <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{eyebrow}</p>
       <h3 className="tower-exhibit-card__name">{l.heroTitle}</h3>
-      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{l.heroTagline}</p>
+      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{FLOOR_HERO_TAGLINES.library}</p>
       <hr className="tower-exhibit-roof__rule" />
       <div className="tower-exhibit-contacts tower-exhibit-contacts--stack">
         {LIBRARY_ROOMS.map((room) => (

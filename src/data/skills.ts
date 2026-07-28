@@ -45,6 +45,13 @@ export const softSkillGroups: SkillGroup[] = [
   },
   {
     category: 'Communication',
-    items: ['English (Fluent)', 'Mandarin Chinese (Native)', 'Explaining trade-offs to non-technical audiences', 'Async / remote collaboration', 'Risk communication'],
+    items: [
+      'English (Fluent)',
+      'Mandarin Chinese (Native)',
+      'Japanese (Learning)',
+      'Explaining trade-offs to non-technical audiences',
+      'Async / remote collaboration',
+      'Risk communication',
+    ],
   },
 ]

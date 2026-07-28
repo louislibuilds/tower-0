@@ -35,19 +35,13 @@ export interface LocaleStrings {
   >
   lobby: {
     welcomeName: string
-    heroTagline: string
     motto: string
     floorIntro: string
-    degree: string
-    institution: string
     wam: string
     gpa: string
     cp: string
     hdCount: string
     deansList: string
-    program: string
-    location: string
-    experienceTitle: string
     hint: string
   }
   factory: {
@@ -57,7 +51,6 @@ export interface LocaleStrings {
     d: string
     avg: string
     heroTitle: string
-    heroTagline: string
     floorIntro: string
     panelTitle: string
     panelFloor: string
@@ -71,7 +64,6 @@ export interface LocaleStrings {
   }
   lab: {
     heroTitle: string
-    heroTagline: string
     floorIntro: string
     statusPending: string
     statusActive: string
@@ -84,14 +76,12 @@ export interface LocaleStrings {
   }
   infra: {
     heroTitle: string
-    heroTagline: string
     floorIntro: string
-    techSkillsTitle: string
     softSkillsTitle: string
+    softSkillGroups: { category: string; items: string[] }[]
   }
   tech: {
     heroTitle: string
-    heroTagline: string
     floorIntro: string
     socialTitle: string
     printerTitle: string
@@ -120,7 +110,6 @@ export interface LocaleStrings {
   }
   library: {
     heroTitle: string
-    heroTagline: string
     archiveTitle: string
     archiveTagline: string
     libraryTitle: string
@@ -149,7 +138,6 @@ export interface LocaleStrings {
     { title: string; hook: string; body: string; role: string; team?: string; course?: string; credit?: string }
   >
   credentials: Record<string, { title: string; detail?: string; body?: string; bullets?: string[]; credit?: string }>
-  skillGroups: Record<string, string>
   focus: {
     panelHint: string
     back: string
@@ -234,20 +222,14 @@ const en: LocaleStrings = {
   },
   lobby: {
     welcomeName: 'Welcome',
-    heroTagline: 'Software Engineer · Full-Stack · Creator',
     motto: 'Rome wasn\'t built in a day — neither is good software.',
     floorIntro:
       'I build systems the way architects build towers — structure first, then the rooms that tell the story.',
-    degree: 'Degree',
-    institution: 'Institution',
     wam: 'WAM',
     gpa: 'GPA',
     cp: 'Credit Points',
     hdCount: 'HD',
     deansList: "Dean's List",
-    program: 'Program',
-    location: 'Location',
-    experienceTitle: 'Experience',
     hint: 'Select a floor from the rail — the tower is the map.',
   },
   factory: {
@@ -257,7 +239,6 @@ const en: LocaleStrings = {
     d: 'Distinction',
     avg: 'Avg',
     heroTitle: 'Factory',
-    heroTagline: 'Semesters ‧ Grades ‧ Lines',
     floorIntro: 'Four semester production lines — marks, averages, and the degree at end of belt.',
     panelTitle: 'University of Technology Sydney · Master of Information Technology',
     panelFloor: 'Factory · 23F',
@@ -271,7 +252,6 @@ const en: LocaleStrings = {
   },
   lab: {
     heroTitle: 'Laboratory',
-    heroTagline: 'Suites ‧ Status ‧ Output',
     floorIntro: 'Eight lab suites — research status, notes, and output on record.',
     statusPending: 'Research not started',
     statusActive: 'Research in progress',
@@ -284,15 +264,45 @@ const en: LocaleStrings = {
   },
   infra: {
     heroTitle: 'Infrastructure',
-    heroTagline: 'Skills · Risers · Pipes',
     floorIntro:
       'Mechanical core beneath the tower — the technical stack and working habits that connect every floor.',
-    techSkillsTitle: 'Technical Skills',
     softSkillsTitle: 'Soft Skills',
+    softSkillGroups: [
+      {
+        category: 'Leadership & Collaboration',
+        items: [
+          'Team leadership',
+          'Cross-functional planning',
+          'Stakeholder communication',
+          'Volunteer coordination',
+          'Code review participation',
+        ],
+      },
+      {
+        category: 'Delivery & Quality',
+        items: [
+          'End-to-end ownership',
+          'Deadline-driven delivery',
+          'Automated testing',
+          'Agile delivery',
+          'Technical documentation',
+        ],
+      },
+      {
+        category: 'Communication',
+        items: [
+          'English (Fluent)',
+          'Mandarin Chinese (Native)',
+          'Japanese (Learning)',
+          'Explaining trade-offs to non-technical audiences',
+          'Async / remote collaboration',
+          'Risk communication',
+        ],
+      },
+    ],
   },
   tech: {
     heroTitle: 'Tech Centre',
-    heroTagline: 'Social · Portfolio · Resume',
     floorIntro:
       'Basement print room — outbound links to LinkedIn, Instagram, Threads, portfolio, and GitHub. Use the printer when you need a hard copy.',
     socialTitle: 'Connect',
@@ -323,7 +333,6 @@ const en: LocaleStrings = {
   },
   library: {
     heroTitle: 'Library & Archive',
-    heroTagline: 'Leadership ‧ Certification ‧ Achievement',
     archiveTitle: 'Archive',
     archiveTagline: 'Credentials · Honors · Leadership',
     libraryTitle: 'Library',
@@ -439,17 +448,6 @@ const en: LocaleStrings = {
       credit: 'Peter Wei — organized the program and created space for mentors and mentees to learn from one another. Howard C. — resume reviews, fresh insights when they were needed most, and encouragement to keep going.',
     },
   },
-  skillGroups: {
-    Languages: 'Languages',
-    'Frontend & UI': 'Frontend & UI',
-    'Backend & Data': 'Backend & Data',
-    'Cloud & DevOps': 'Cloud & DevOps',
-    'CS & Systems': 'CS & Systems',
-    'ML / AI': 'ML / AI',
-    'Leadership & Collaboration': 'Leadership & Collaboration',
-    'Delivery & Quality': 'Delivery & Quality',
-    Communication: 'Communication',
-  },
   focus: {
     panelHint: 'Focus detail · side panel',
     back: 'Back to room',
@@ -478,7 +476,7 @@ const zhTW: LocaleStrings = {
     themeLight: '日間',
     rollDrawing: '收起',
     printResume: 'RESUME',
-    elevatorLabel: '電梯',
+    elevatorLabel: 'ELEVATOR',
   },
   stamp: {
     code: 'TOWER 0',
@@ -534,20 +532,14 @@ const zhTW: LocaleStrings = {
   },
   lobby: {
     welcomeName: '歡迎',
-    heroTagline: '軟體工程師 · 全端 · 創作者',
     motto: '萬丈高樓平地起 — 一磚一瓦，皆為根基。',
     floorIntro:
       '我用蓋樓的方式寫軟體——先承重結構，再讓每層有自己的故事。',
-    degree: '學位',
-    institution: '學校',
     wam: 'WAM',
     gpa: 'GPA',
     cp: '學分',
     hdCount: 'HD',
     deansList: '院長榮譽榜',
-    program: '學程',
-    location: '地點',
-    experienceTitle: '經歷',
     hint: '從樓層導覽選擇 — 這座塔就是你的地圖。',
   },
   factory: {
@@ -557,7 +549,6 @@ const zhTW: LocaleStrings = {
     d: '優等',
     avg: '平均',
     heroTitle: '工廠',
-    heroTagline: '學期 ‧ 成績 ‧ 產線',
     floorIntro: '四條學期產線 — 成績、平均與輸送帶末端的學位證書。',
     panelTitle: 'University of Technology Sydney · Master of Information Technology',
     panelFloor: '工廠 · 23F',
@@ -571,7 +562,6 @@ const zhTW: LocaleStrings = {
   },
   lab: {
     heroTitle: '實驗室',
-    heroTagline: '實驗室 ‧ 狀態 ‧ 產出',
     floorIntro: '八間實驗室 — 研究狀態、主題與產出紀錄。',
     statusPending: '尚未開始研究',
     statusActive: '研究中',
@@ -584,14 +574,44 @@ const zhTW: LocaleStrings = {
   },
   infra: {
     heroTitle: '基礎設施',
-    heroTagline: '技能 · 管線 · 機電',
     floorIntro: '塔下的機電核心 — 串連各樓層的技術棧與工作方式。',
-    techSkillsTitle: '技術技能',
     softSkillsTitle: '軟技能',
+    softSkillGroups: [
+      {
+        category: '領導與協作',
+        items: [
+          '團隊領導',
+          '跨職能規劃',
+          '利害關係人溝通',
+          '志工協調',
+          '程式碼審查參與',
+        ],
+      },
+      {
+        category: '交付與品質',
+        items: [
+          '端到端負責',
+          '期限導向交付',
+          '自動化測試',
+          '敏捷交付',
+          '技術文件撰寫',
+        ],
+      },
+      {
+        category: '溝通',
+        items: [
+          '英語（流利）',
+          '中文（母語）',
+          '日語學習中',
+          '向非技術對象說明權衡',
+          '非同步／遠端協作',
+          '風險溝通',
+        ],
+      },
+    ],
   },
   tech: {
     heroTitle: '科技中心',
-    heroTagline: '社群 · 作品集 · Resume',
     floorIntro:
       '地下室影印室 — 對外的 LinkedIn、Instagram、Threads、作品集與 GitHub。需要紙本時使用影印機。',
     socialTitle: '連結',
@@ -621,7 +641,6 @@ const zhTW: LocaleStrings = {
   },
   library: {
     heroTitle: '圖書館 & 檔案室',
-    heroTagline: '領導經歷 ‧ 證照 ‧ 成就',
     archiveTitle: '檔案室',
     archiveTagline: '證照 · 榮譽 · 領導',
     libraryTitle: '圖書館',
@@ -736,17 +755,6 @@ const zhTW: LocaleStrings = {
       credit: 'Peter Wei — 策劃計畫並建立導師與學員互相學習的空間。Howard C. — 履歷檢視、關鍵時刻的新視角，以及持續的鼓勵。',
     },
   },
-  skillGroups: {
-    Languages: '程式語言',
-    'Frontend & UI': '前端 & UI',
-    'Backend & Data': '後端 & 資料',
-    'Cloud & DevOps': '雲端 & DevOps',
-    'CS & Systems': 'CS & 系統',
-    'ML / AI': '機器學習 / AI',
-    'Leadership & Collaboration': '領導 & 協作',
-    'Delivery & Quality': '交付 & 品質',
-    Communication: '溝通',
-  },
   focus: {
     panelHint: '特寫詳情 · 右側面板',
     back: '返回房間',
@@ -775,7 +783,7 @@ const ja: LocaleStrings = {
     themeLight: 'デイ',
     rollDrawing: 'セット終了',
     printResume: '履歴書',
-    elevatorLabel: 'エレベーター',
+    elevatorLabel: 'ELEVATOR',
   },
   stamp: {
     code: 'TOWER 0',
@@ -831,20 +839,14 @@ const ja: LocaleStrings = {
   },
   lobby: {
     welcomeName: 'ようこそ',
-    heroTagline: 'ソフトウェアエンジニア · フルスタック · クリエイター',
     motto: '高い塔は、一階から。良いソフトウェアも、一行から。',
     floorIntro:
       '建築のようにシステムを組み立てる — 構造を先に、物語を語る部屋を後に。',
-    degree: '学位',
-    institution: '大学',
     wam: 'WAM',
     gpa: 'GPA',
     cp: '単位',
     hdCount: 'HD',
     deansList: 'ディーンズリスト',
-    program: 'プログラム',
-    location: '所在地',
-    experienceTitle: '経歴',
     hint: '左のレールから階を選択 — この塔が地図です。',
   },
   factory: {
@@ -854,7 +856,6 @@ const ja: LocaleStrings = {
     d: 'Distinction',
     avg: '平均',
     heroTitle: 'ファクトリー',
-    heroTagline: '学期 ‧ 成績 ‧ ライン',
     floorIntro: '4学期の生産ライン — 成績、平均、ベルト末端の学位証書。',
     panelTitle: 'University of Technology Sydney · Master of Information Technology',
     panelFloor: 'ファクトリー · 23F',
@@ -868,7 +869,6 @@ const ja: LocaleStrings = {
   },
   lab: {
     heroTitle: 'ラボラトリー',
-    heroTagline: 'スイート ‧ 状態 ‧ 成果',
     floorIntro: '8 つのラボスイート — 研究状態、テーマ、成果の記録。',
     statusPending: '研究未開始',
     statusActive: '研究中',
@@ -881,14 +881,44 @@ const ja: LocaleStrings = {
   },
   infra: {
     heroTitle: 'インフラ',
-    heroTagline: 'スキル · 立管 · 配管',
     floorIntro: '塔の下の機械室 — 各階をつなぐ技術スタックと働き方。',
-    techSkillsTitle: 'テクニカルスキル',
     softSkillsTitle: 'ソフトスキル',
+    softSkillGroups: [
+      {
+        category: 'リーダーシップ & 協働',
+        items: [
+          'チームリーダーシップ',
+          'クロスファンクショナルな計画',
+          'ステークホルダーコミュニケーション',
+          'ボランティア調整',
+          'コードレビュー参加',
+        ],
+      },
+      {
+        category: 'デリバリー & 品質',
+        items: [
+          'エンドツーエンドのオーナーシップ',
+          '期限に沿ったデリバリー',
+          '自動テスト',
+          'アジャイルデリバリー',
+          '技術ドキュメント',
+        ],
+      },
+      {
+        category: 'コミュニケーション',
+        items: [
+          '英語（流利）',
+          '中国語（母語）',
+          '日本語学習中',
+          '非技術者へのトレードオフ説明',
+          '非同期／リモート協働',
+          'リスクコミュニケーション',
+        ],
+      },
+    ],
   },
   tech: {
     heroTitle: 'テックセンター',
-    heroTagline: 'SNS · ポートフォリオ · 履歴書',
     floorIntro:
       '地下の印刷室 — LinkedIn、Instagram、Threads、ポートフォリオ、GitHub へのリンク。紙が必要なときはプリンターを使う。',
     socialTitle: 'リンク',
@@ -919,7 +949,6 @@ const ja: LocaleStrings = {
   },
   library: {
     heroTitle: '図書館 & アーカイブ',
-    heroTagline: 'リーダーシップ ‧ 資格 ‧ 実績',
     archiveTitle: 'アーカイブ',
     archiveTagline: '資格 · 栄誉 · リーダーシップ',
     libraryTitle: '図書館',
@@ -1033,17 +1062,6 @@ const ja: LocaleStrings = {
       body: '2026 年に Australia Career Forum (ACF) メンタリングプログラムに参加。Howard C. との定期セッションで、新卒就職戦略、履歴書改善、面接準備、豪州テック市場への適応 — 実際の応募に即した実践的なフィードバックを得た。メンターシップはキャリア術だけではなく、成長・失敗・再挑戦を当たり前にしてくれる存在 — 求職中の imposter syndrome に向き合う支援も含め、大きな意味を持った。',
       credit: 'Peter Wei — プログラムを組織し、メンターとメンティが学び合う場を創出。Howard C. — 履歴書レビュー、必要な時の新しい視点、継続的な励まし。',
     },
-  },
-  skillGroups: {
-    Languages: '言語',
-    'Frontend & UI': 'フロントエンド & UI',
-    'Backend & Data': 'バックエンド & データ',
-    'Cloud & DevOps': 'クラウド & DevOps',
-    'CS & Systems': 'CS & システム',
-    'ML / AI': 'ML / AI',
-    'Leadership & Collaboration': 'リーダーシップ & 協働',
-    'Delivery & Quality': 'デリバリー & 品質',
-    Communication: 'コミュニケーション',
   },
   focus: {
     panelHint: 'フォーカス詳細 · サイドパネル',
