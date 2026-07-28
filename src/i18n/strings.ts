@@ -1,4 +1,4 @@
-export type Locale = 'en' | 'zh-TW' | 'zh-CN' | 'ja'
+export type Locale = 'en' | 'zh-TW' | 'ja'
 export type Theme = 'dark' | 'light'
 
 export interface LocaleStrings {
@@ -94,10 +94,16 @@ export interface LocaleStrings {
     heroTitle: string
     heroTagline: string
     archiveTitle: string
+    archiveTagline: string
     libraryTitle: string
+    libraryTagline: string
     archiveIntro: string
     libraryIntro: string
-    experienceTitle: string
+    librarianTitle: string
+    featuredRole: string
+    featuredBullets: string[]
+    publicationsTitle: string
+    publications: Record<string, { title: string; description: string }>
   }
   roof: {
     cta: string
@@ -255,10 +261,37 @@ const en: LocaleStrings = {
     heroTitle: 'Library & Archive',
     heroTagline: 'Leadership ‧ Certification ‧ Achievement',
     archiveTitle: 'Archive',
+    archiveTagline: 'Credentials · Honors · Leadership',
     libraryTitle: 'Library',
-    archiveIntro: 'Plan chest of credentials — degrees, dean\'s list, leadership, certificates.',
-    libraryIntro: 'Reading desk — bubblechickenlab platform, writing, and side projects.',
-    experienceTitle: 'Leadership & Platform',
+    libraryTagline: 'Platform · Writing · Projects',
+    archiveIntro: 'Document vault — what was earned, recognized, and led along the way.',
+    libraryIntro: 'Desk of shipped work — bubblechickenlab tools, repos, and ongoing builds.',
+    librarianTitle: 'Librarian',
+    featuredRole: 'Founder · Developer · Creator',
+    featuredBullets: [
+      'Independent practice under bubblechickenlab — products, portfolios, and tools where software meets storytelling and craft.',
+      'Full-stack ownership from idea to ship: design, engineering, deployment, and the narrative around what gets published.',
+    ],
+    publicationsTitle: 'Publications',
+    publications: {
+      nagi: {
+        title: 'NAGI · Portfolio',
+        description: 'Self-hosted personal site — portfolio and writing in one place.',
+      },
+      kata: {
+        title: 'KATA · Résumé & Tracker',
+        description:
+          'Draft résumés and track applications in one workflow — local or cloud saves, PDF export when you need it.',
+      },
+      github: {
+        title: 'GitHub · louislibuilds',
+        description: 'github.com/louislibuilds',
+      },
+      linkedin: {
+        title: 'LinkedIn',
+        description: 'linkedin.com/in/louis-li-builds',
+      },
+    },
   },
   roof: {
     cta: "Let's keep in touch!",
@@ -487,10 +520,36 @@ const zhTW: LocaleStrings = {
     heroTitle: '圖書館 & 檔案室',
     heroTagline: '領導經歷 ‧ 證照 ‧ 成就',
     archiveTitle: '檔案室',
+    archiveTagline: '證照 · 榮譽 · 領導',
     libraryTitle: '圖書館',
-    archiveIntro: '證書抽屜 — 學位、院長榮譽榜、領導經歷、證照。',
-    libraryIntro: '閱讀桌 — bubblechickenlab 平台、寫作與 side projects。',
-    experienceTitle: '領導 & 平台',
+    libraryTagline: '平台 · 寫作 · 專案',
+    archiveIntro: '文件庫 — 一路走來的成就、榮譽與領導經歷。',
+    libraryIntro: '出貨書桌 — bubblechickenlab 工具、repo 與進行中的作品。',
+    librarianTitle: '館長',
+    featuredRole: '創辦人 · 開發者 · 創作者',
+    featuredBullets: [
+      '以 bubblechickenlab 為名的獨立工作室 — 在軟體、敘事與工藝的交會處，打造產品、作品集與工具。',
+      '從構想到上線全責：設計、工程、部署，以及圍繞每次發佈的敘事與迭代。',
+    ],
+    publicationsTitle: '著作',
+    publications: {
+      nagi: {
+        title: 'NAGI · Portfolio',
+        description: '自架個人網站，收錄作品集與文章。',
+      },
+      kata: {
+        title: 'KATA · Résumé & Tracker',
+        description: '一站式撰寫履歷、追蹤求職申請 — 支援本地與雲端存檔，可匯出 PDF。',
+      },
+      github: {
+        title: 'GitHub · louislibuilds',
+        description: 'github.com/louislibuilds',
+      },
+      linkedin: {
+        title: 'LinkedIn',
+        description: 'linkedin.com/in/louis-li-builds',
+      },
+    },
   },
   roof: {
     cta: '保持聯繫！',
@@ -589,83 +648,6 @@ const zhTW: LocaleStrings = {
     backToLibrary: '返回圖書館',
     bookOpen: '開啟連結 ↗',
     credentialEyebrow: '檔案室 · 證書',
-  },
-}
-
-const zhCN: LocaleStrings = {
-  ...zhTW,
-  site: {
-    ...zhTW.site,
-    siteTitle: 'The Tower of STEM, Zone 0',
-    architectRole: '信息技术硕士 · 全栈开发',
-    fallback: '2D 立面 · WebGL 不可用',
-    hint: '在模型或左栏选择楼层或房间。',
-  },
-  floors: {
-    B10: { title: '科技中心', subtitle: 'GitHub · 打印简历', exhibitTitle: '科技中心 · B10', exhibitHook: '源代码、部署产物、可打印简历。' },
-    B2: { title: '基础设施', subtitle: '技能 · 课程 · 链接', exhibitTitle: '基础设施 · B2', exhibitHook: '塔楼下的管线、机电井与电路板。' },
-    G: { title: '大厅', subtitle: '欢迎 · 关于', exhibitTitle: '大厅 · 地面', exhibitHook: '论述墙与地面层的身份铭牌。' },
-    '23': { title: '工厂', subtitle: '产线 · 成绩', exhibitTitle: '工厂 · 23F', exhibitHook: '四条学期产线 — 成绩、等级、里程碑。' },
-    '52': { title: '实验室', subtitle: '团队项目', exhibitTitle: '实验室 · 52F', exhibitHook: '五间项目房 — 从黑客松到研究管线。' },
-    '99': { title: '图书馆 & 档案室', subtitle: '奖项 · 证书', exhibitTitle: '图书馆 · 99F', exhibitHook: '学位、院长荣誉榜、领导经历、证书。' },
-    roof: { title: '屋顶', subtitle: '联系', exhibitTitle: '屋顶', exhibitHook: '' },
-  },
-  lobby: {
-    ...zhTW.lobby,
-    thesis: '万丈高楼平地起 · 学习即建造',
-    bio: '全栈开发者 · UTS 信息技术硕士 · 悉尼。',
-    hint: '从楼层导览选择 — 这座塔就是你的地图。',
-    deansList: '院长荣誉榜',
-    experienceTitle: '经历',
-  },
-  factory: { ...zhTW.factory, selectArea: '在模型或左侧面板选择产线（Area 01–04）。', allAreas: '全部产线', overview: '四条学期产线并行 — 点击区域以拉近查看。' },
-  lab: { intro: '本层五间项目房。', selectRoom: '在模型或左侧面板选择一间房。', role: '角色', team: '团队', course: '课程' },
-  infra: { skillsTitle: '技能 — 管线与机电', coursesTitle: '课程链接 → 项目', viewProject: '查看项目 ↗' },
-  tech: {
-    ...zhTW.tech,
-    intro: '地下科技中心 — 代码库、导出、部署。',
-    print: '打印简历',
-    printDesc: '打印身份铭牌或使用 KATA 完整版',
-    openProfile: '打开 GitHub ↗',
-    openNagi: '打开网站 ↗',
-    printNow: '立即打印',
-  },
-  library: {
-    ...zhTW.library,
-    heroTitle: '图书馆 & 档案室',
-    archiveTitle: '档案室',
-    libraryTitle: '图书馆',
-    archiveIntro: '证书抽屉 — 学位、院长荣誉榜、领导经历、证照。',
-    libraryIntro: '阅读桌 — bubblechickenlab 平台、写作与 side projects。',
-    experienceTitle: '领导 & 平台',
-  },
-  roof: { ...zhTW.roof },
-  projects: {
-    'unihack-2026': { ...zhTW.projects['unihack-2026'], hook: '48 小时 MVP：地图探索 + 7 日天气预报。', role: '队长 & 技术总监', team: '跨领域黑客松团队' },
-    'cloud-computing': { ...zhTW.projects['cloud-computing'], title: 'SUNishop — 云端电商', hook: 'LAMP → MERN 迁移，CI 与 AWS Academy 部署。', role: '全端开发' },
-    nlp: { ...zhTW.projects.nlp, hook: 'STT 模拟面试，STAR 框架 NLP 评分反馈。', role: '主要开发', course: '42850 NLP 算法 (94 HD)' },
-    dl: { ...zhTW.projects.dl, title: 'VTuber 动作管线', hook: '实时姿态 → VRM 虚拟角色，MediaPipe + Kalidokit + CNN。', role: '软件开发 · 产品化' },
-    kata: { ...zhTW.projects.kata, title: 'KATA — 简历 & 求职追踪', hook: '统一求职平台：撰写简历、导出 PDF、追踪申请。', role: '独立开发' },
-  },
-  credentials: {
-    ...zhTW.credentials,
-    'deans-list': { ...zhTW.credentials['deans-list'], title: '院长荣誉榜 2026', detail: '优异学术成就 · 2026' },
-    degree: { ...zhTW.credentials.degree, title: '信息技术硕士' },
-    techfest: { ...zhTW.credentials.techfest, title: 'TechFest AI 展示提名' },
-    tsa: { ...zhTW.credentials.tsa, title: 'UTS Taiwan Student Association' },
-    acf: { ...zhTW.credentials.acf, title: 'ACF 导师计划' },
-  },
-  skillGroups: {
-    Languages: '编程语言',
-    Frontend: '前端',
-    'Backend & Data': '后端 & 数据',
-    'Cloud & DevOps': '云端 & DevOps',
-    'ML / AI': '机器学习 / AI',
-  },
-  platformApps: {
-    nagi: { name: 'nagi', hook: '作品集即建筑 — bubblechickenlab.com 多语 CMS。' },
-    'kata-editor': { name: 'KATA 编辑器', hook: '简历变体即时预览与 PDF 导出。' },
-    'kata-tracker': { name: 'KATA 追踪器', hook: '本地优先的求职申请追踪。' },
   },
 }
 
@@ -802,10 +784,36 @@ const ja: LocaleStrings = {
     heroTitle: '図書館 & アーカイブ',
     heroTagline: 'リーダーシップ ‧ 資格 ‧ 実績',
     archiveTitle: 'アーカイブ',
+    archiveTagline: '資格 · 栄誉 · リーダーシップ',
     libraryTitle: '図書館',
-    archiveIntro: '資格の引き出し — 学位、ディーンズリスト、リーダーシップ、証書。',
-    libraryIntro: '読書机 — bubblechickenlab プラットフォーム、執筆、サイドプロジェクト。',
-    experienceTitle: 'リーダーシップ & プラットフォーム',
+    libraryTagline: 'プラットフォーム · 執筆 · プロジェクト',
+    archiveIntro: '文書保管庫 — これまでに得た実績、評価、リーダーシップ。',
+    libraryIntro: '出荷デスク — bubblechickenlab のツール、リポジトリ、進行中のビルド。',
+    librarianTitle: '館長',
+    featuredRole: 'Founder · Developer · Creator',
+    featuredBullets: [
+      'bubblechickenlab 名義の独立スタジオ — ソフトウェアとストーリーテリング、クラフトが交わるプロダクト・ポートフォリオ・ツールを構築。',
+      'アイデアから公開まで一貫して担当：デザイン、エンジニアリング、デプロイ、そして発表物をめぐるナラティブ。',
+    ],
+    publicationsTitle: '著作',
+    publications: {
+      nagi: {
+        title: 'NAGI · Portfolio',
+        description: '自前ホストの個人サイト — ポートフォリオと文章をひとまとめに。',
+      },
+      kata: {
+        title: 'KATA · Résumé & Tracker',
+        description: '履歴書の作成から応募管理まで — ローカル／クラウド保存、PDF エクスポート対応。',
+      },
+      github: {
+        title: 'GitHub · louislibuilds',
+        description: 'github.com/louislibuilds',
+      },
+      linkedin: {
+        title: 'LinkedIn',
+        description: 'linkedin.com/in/louis-li-builds',
+      },
+    },
   },
   roof: {
     cta: 'また連絡しましょう！',
@@ -907,19 +915,17 @@ const ja: LocaleStrings = {
   },
 }
 
-export const STRINGS: Record<Locale, LocaleStrings> = { en, 'zh-TW': zhTW, 'zh-CN': zhCN, ja }
+export const STRINGS: Record<Locale, LocaleStrings> = { en, 'zh-TW': zhTW, ja }
 
 export const LOCALE_LABELS: Record<Locale, string> = {
   en: 'EN',
   'zh-TW': '繁',
-  'zh-CN': '简',
   ja: '日',
 }
 
 export const HTML_LANG: Record<Locale, string> = {
   en: 'en',
   'zh-TW': 'zh-Hant',
-  'zh-CN': 'zh-Hans',
   ja: 'ja',
 }
 

@@ -26,7 +26,7 @@ URL: `#/G`, `#/23`, `#/52`, `#/B2`, `#/B10`, `#/99`, `#/roof`
 - **Per-floor exhibits** — holographic 3D markers + glass overlay cards
 - **Boot sequence** — footprint ink → tower extrude
 - **Themes** — Dark (neon cyberpunk) / Light (ink drawing)
-- **i18n** — English · 繁體中文 · 简体中文
+- **i18n** — English · 繁體中文 · 日本語
 - **2D fallback** — SVG elevation when WebGL unavailable or reduced motion
 
 ## Development
@@ -50,7 +50,7 @@ src/
   scene/exhibits/            Floor holograms, circuit board
   components/hud/            TowerHud, ExhibitOverlay, BootPlateOverlay
   context/SiteContext.tsx    Theme + locale + navigation
-  i18n/strings.ts            EN / zh-TW / zh-CN
+  i18n/strings.ts            EN / zh-TW / ja
   camera/OrthoRig.tsx        Per-floor orthographic camera
 ```
 

@@ -6,7 +6,7 @@ import { labProjects } from '../../data/projects'
 import { credentials } from '../../data/credentials'
 import { libraryBooks } from '../../data/libraryBooks'
 import { experiences } from '../../data/experience'
-import { platformApps, platformSummary } from '../../data/platform'
+import { platformSummary } from '../../data/platform'
 import { courseLinks, skillGroups } from '../../data/skills'
 import type { FloorId } from '../../building/program'
 import type { LibraryRoomSlug } from '../../data/libraryRooms'
@@ -285,8 +285,14 @@ function TechExhibit() {
 function ArchiveExhibit() {
   const { strings, toggleCredential } = useSite()
   const l = strings.library
+  const eyebrow = `99F · ${profile.brand} · ${profile.siteCode}`
+
   return (
     <>
+      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{eyebrow}</p>
+      <h3 className="tower-exhibit-card__name">{l.archiveTitle}</h3>
+      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{l.archiveTagline}</p>
+      <hr className="tower-exhibit-roof__rule" />
       <p className="tower-exhibit-card__body">{l.archiveIntro}</p>
       <div className="tower-exhibit-contacts tower-exhibit-contacts--stack">
         {credentials.map((cred) => {
@@ -309,38 +315,51 @@ function ArchiveExhibit() {
 }
 
 function LibraryPlatformExhibit() {
-  const { strings } = useSite()
+  const { strings, toggleBook } = useSite()
   const l = strings.library
+  const eyebrow = `99F · ${profile.brand} · ${profile.siteCode}`
+  const featured = experiences.find((exp) => exp.slug === 'bubblechickenlab')
+
+  const bookDetail = (slug: string) => l.publications[slug]?.description ?? ''
+
+  const bookTitle = (slug: string, fallback: string) => l.publications[slug]?.title ?? fallback
+
   return (
     <>
+      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{eyebrow}</p>
+      <h3 className="tower-exhibit-card__name">{l.libraryTitle}</h3>
+      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{l.libraryTagline}</p>
+      <hr className="tower-exhibit-roof__rule" />
       <p className="tower-exhibit-card__body">{l.libraryIntro}</p>
-      <div className="tower-exhibit-projects">
-        {platformApps.map((app) => {
-          const loc = strings.platformApps?.[app.slug]
-          return (
-            <article key={app.slug} className="tower-exhibit-project">
-              <h4>{loc?.name ?? app.name}</h4>
-              <p>{loc?.hook ?? app.hook}</p>
-              <p className="tower-exhibit-project__stack">{app.stack.join(' · ')}</p>
-              <div className="tower-exhibit-project__links">
-                <a href={app.url} target="_blank" rel="noopener noreferrer">{app.path} ↗</a>
-              </div>
+      {featured && (
+        <>
+          <h4 className="tower-exhibit-section-title">{l.librarianTitle}</h4>
+          <div className="tower-exhibit-experience">
+            <article className="tower-exhibit-experience__item">
+              <strong>{profile.displayName}</strong>
+              <span>{l.featuredRole}</span>
+              <span>{featured.company} · {featured.start} – {featured.end}</span>
+              <ul>
+                {l.featuredBullets.map((b) => (
+                  <li key={b}>{b}</li>
+                ))}
+              </ul>
             </article>
-          )
-        })}
-      </div>
-      <h4 className="tower-exhibit-section-title">{l.experienceTitle}</h4>
-      <div className="tower-exhibit-experience">
-        {experiences.map((exp) => (
-          <article key={exp.slug} className="tower-exhibit-experience__item">
-            <strong>{exp.title}</strong>
-            <span>{exp.company} · {exp.start} – {exp.end}</span>
-            <ul>
-              {exp.bullets.map((b) => (
-                <li key={b}>{b}</li>
-              ))}
-            </ul>
-          </article>
+          </div>
+        </>
+      )}
+      <h4 className="tower-exhibit-section-title">{l.publicationsTitle}</h4>
+      <div className="tower-exhibit-contacts tower-exhibit-contacts--stack">
+        {libraryBooks.map((book) => (
+          <button
+            key={book.slug}
+            type="button"
+            className="tower-exhibit-vault-entry"
+            onClick={() => toggleBook(book.slug)}
+          >
+            <strong>{bookTitle(book.slug, book.title)}</strong>
+            <span>{bookDetail(book.slug)}</span>
+          </button>
         ))}
       </div>
     </>
@@ -422,17 +441,12 @@ function FocusExhibit() {
   if (selectedBookSlug) {
     const book = libraryBooks.find((b) => b.slug === selectedBookSlug)
     if (!book) return null
+    const pub = strings.library.publications[book.slug]
     return (
       <>
         <p className="tower-exhibit-card__eyebrow">{strings.library.libraryTitle}</p>
-        <h3 className="tower-exhibit-card__name">{book.title}</h3>
-        <p className="tower-exhibit-card__body">
-          {book.slug === 'nagi'
-            ? strings.platformApps.nagi.hook
-            : book.slug === 'kata'
-              ? strings.platformApps['kata-editor'].hook
-              : book.url}
-        </p>
+        <h3 className="tower-exhibit-card__name">{pub?.title ?? book.title}</h3>
+        <p className="tower-exhibit-card__body">{pub?.description ?? book.url}</p>
         <button type="button" className="tower-exhibit-card__action" onClick={() => handleBookClick(book.slug)}>
           {f.bookOpen}
         </button>
@@ -521,27 +535,17 @@ export function ExhibitOverlay() {
             : floorId
 
   const isRoofPanel = floorId === 'roof' && viewMode !== 'focus'
-  const isVaultOverview = floorId === '99' && !libraryRoomSlug && viewMode !== 'focus'
-  const isMinimalPanel = isRoofPanel || isVaultOverview
+  const isVaultPanel = floorId === '99'
+  const isMinimalPanel = isRoofPanel || isVaultPanel
 
   const headerTitle =
     floorId === '23'
       ? strings.factory.panelTitle
-      : floorId === 'roof'
-        ? floorStrings?.title ?? floor.title
-        : floorId === '99' && libraryRoomSlug === 'archive'
-          ? strings.library.archiveTitle
-          : floorId === '99' && libraryRoomSlug === 'library'
-            ? strings.library.libraryTitle
-            : floorStrings?.exhibitTitle ?? floor.title
+      : floorStrings?.exhibitTitle ?? floor.title
   const headerSubtitle =
     floorId === '23'
       ? `${strings.factory.panelFloor} — ${floorStrings?.exhibitHook ?? floor.subtitle}`
-      : floorId === 'roof' || isVaultOverview
-        ? null
-        : floorId === '99' && libraryRoomSlug
-          ? null
-          : floorStrings?.exhibitHook ?? floor.subtitle
+      : floorStrings?.exhibitHook ?? floor.subtitle
 
   return (
     <AnimatePresence mode="wait" custom={direction}>

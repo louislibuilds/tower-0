@@ -144,6 +144,7 @@ function loadTheme(): Theme {
 function loadLocale(): Locale {
   if (typeof window === 'undefined') return 'en'
   const stored = localStorage.getItem('tower0-locale')
+  if (stored === 'zh-CN') return 'zh-TW'
   return isLocale(stored) ? stored : 'en'
 }
 

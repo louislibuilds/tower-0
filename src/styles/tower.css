@@ -967,9 +967,11 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 .tower-exhibit-experience { display: flex; flex-direction: column; gap: 0.65rem; }
 .tower-exhibit-experience__item strong { display: block; font-size: 0.82rem; }
 .tower-exhibit-experience__item span {
+  display: block;
   font-family: var(--font-mono);
   font-size: 0.6rem;
   color: var(--graphite-mute);
+  margin-top: 0.18rem;
 }
 .tower-exhibit-experience__item p,
 .tower-exhibit-experience__item li {

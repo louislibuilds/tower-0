@@ -26,14 +26,14 @@ export const experiences: Experience[] = [
   {
     slug: 'bubblechickenlab',
     company: 'bubblechickenlab',
-    title: 'Full-Stack Developer & Owner',
+    title: 'Founder · Developer · Creator',
     location: 'Sydney, NSW',
-    start: '2024',
+    start: 'Jun 2026',
     end: 'Present',
     current: true,
     bullets: [
-      'Architected 3-app platform on one domain: portfolio (nagi), résumé editor, job tracker.',
-      'Operate production stack: React, Three.js, Supabase, Edge Functions, Resend, SEO prerender.',
+      'Independent practice under bubblechickenlab — products, portfolios, and tools where software meets storytelling and craft.',
+      'Full-stack ownership from idea to ship: design, engineering, deployment, and the narrative around what gets published.',
     ],
   },
   {
