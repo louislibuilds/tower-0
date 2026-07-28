@@ -97,8 +97,10 @@ export function TowerShell() {
         </div>
       )}
 
-      <TowerCredits />
-      {!interactionLocked && <TowerRail />}
+      <aside className="tower-sidebar">
+        <TowerCredits />
+        {!interactionLocked && <TowerRail />}
+      </aside>
       <TowerToolbar />
       {!interactionLocked && <TowerStatus />}
       <BootPlateOverlay visible={phase === 'boot' || phase === 'scan'} />

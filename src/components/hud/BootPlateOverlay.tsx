@@ -8,7 +8,6 @@ export function BootPlateOverlay({ visible }: { visible: boolean }) {
     <div className="tower-boot-plate" aria-hidden="true">
       <p className="tower-boot-plate__code">{strings.stamp.code}</p>
       <p className="tower-boot-plate__name">{strings.stamp.name}</p>
-      <p className="tower-boot-plate__rev">{strings.stamp.rev}</p>
     </div>
   )
 }

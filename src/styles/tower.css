@@ -158,45 +158,62 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   letter-spacing: 0.08em;
 }
 
-/* ── Title block (top-left) ── */
-.tower-credits {
+/* ── Left sidebar — title block + rail (stacked, no overlap) ── */
+.tower-sidebar {
   position: absolute;
-  top: 4.85rem;
-  left: 1.25rem;
+  left: 0;
+  top: 0;
+  bottom: 0;
   z-index: 8;
-  padding-top: 0.5rem;
-  border-top: 2px solid var(--graphite);
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.12em;
-  line-height: 1.35;
+  width: min(15rem, 42vw);
+  padding: 1rem 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
   pointer-events: none;
 }
-.tower-credits-zone {
-  text-transform: uppercase;
-  color: var(--graphite-mute);
+.tower-sidebar > * {
+  pointer-events: auto;
 }
-.tower-credits-name {
-  margin-top: 0.15rem;
-  font-size: 0.68rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+
+/* ── Title block (top-left) ── */
+.tower-credits {
+  flex-shrink: 0;
+  padding-top: 0.5rem;
+  border-top: 2px solid var(--graphite);
+}
+.tower-credits__eyebrow {
+  margin-bottom: 0.35rem;
+}
+.tower-credits__name {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  line-height: 1.1;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   color: var(--graphite);
+  margin: 0 0 0.3rem;
 }
-.tower-credits-role {
-  margin-top: 0.1rem;
-  text-transform: uppercase;
-  color: var(--graphite-mute);
+.tower-credits__tagline {
+  margin-bottom: 0.35rem;
+}
+.tower-credits__credential {
+  margin-bottom: 0.5rem;
+  line-height: 1.45;
 }
 .tower-credits-links {
-  margin-top: 0.35rem;
+  margin-top: 0.25rem;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.55rem;
+  gap: 0.45rem;
 }
 .tower-credits-links a {
   pointer-events: auto;
-  color: var(--graphite);
+  font-family: var(--font-mono);
+  font-size: 0.52rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--graphite-mute);
   border-bottom: 1px solid var(--line);
   transition: color 0.2s, border-color 0.2s;
 }
@@ -264,20 +281,14 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 
 /* ── Left rail ── */
 .tower-rail {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  z-index: 5;
-  width: min(15rem, 42vw);
-  padding: 9.75rem 1rem 1.5rem;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
   background: none;
-  pointer-events: none;
 }
-.tower-rail > * { pointer-events: auto; }
 
 .tower-rail-brand {
   appearance: none;
@@ -770,13 +781,16 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   body { overflow: auto; }
   .tower-root { height: auto; min-height: 100dvh; }
   .tower-canvas { position: relative; height: 50dvh; min-height: 300px; }
-  .tower-rail {
+  .tower-sidebar {
     position: relative;
     width: 100%;
+    max-height: none;
     padding: 1rem;
+  }
+  .tower-rail {
+    flex: none;
     max-height: none;
   }
-  .tower-credits { position: relative; top: auto; left: auto; padding: 1rem 1rem 0; }
   .tower-toolbar { position: relative; top: auto; right: auto; padding: 0.5rem 1rem; justify-content: flex-end; }
   .tower-exhibit {
     position: relative;

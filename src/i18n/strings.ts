@@ -8,8 +8,10 @@ export interface LocaleStrings {
     siteCode: string
     zoneName: string
     architectName: string
-    architectRole: string
-    tagline: string
+    creditsComplete: string
+    linkGithub: string
+    linkLinkedin: string
+    linkPortfolio: string
     constructing: string
     rollingDrawing: string
     fallback: string
@@ -23,7 +25,6 @@ export interface LocaleStrings {
   stamp: {
     code: string
     name: string
-    rev: string
   }
   exit: {
     label: string
@@ -151,11 +152,13 @@ const en: LocaleStrings = {
   site: {
     name: 'Tower Zone 0',
     siteTitle: 'The Tower of STEM, Zone 0',
-    siteCode: 'ZONE · 0',
-    zoneName: 'Tower Zone 0',
+    siteCode: 'bubblechickenlab · Louis Li present',
+    zoneName: 'bubblechickenlab · TOWER ZERO',
     architectName: 'Louis Li',
-    architectRole: 'Master of IT · Full-stack',
-    tagline: 'Software is not written. It is constructed.',
+    creditsComplete: 'COMPLETE',
+    linkGithub: 'GITHUB',
+    linkLinkedin: 'LINKEDIN',
+    linkPortfolio: 'PORTFOLIO',
     constructing: 'Constructing…',
     rollingDrawing: 'Ending set…',
     fallback: '2D elevation · WebGL unavailable',
@@ -169,7 +172,6 @@ const en: LocaleStrings = {
   stamp: {
     code: 'TOWER 0',
     name: 'LOUIS LI',
-    rev: 'LEARNING IS CONSTRUCTION · REV A',
   },
   exit: {
     label: 'END OF SET',
@@ -435,11 +437,13 @@ const zhTW: LocaleStrings = {
   site: {
     name: 'Tower Zone 0',
     siteTitle: 'The Tower of STEM, Zone 0',
-    siteCode: 'ZONE · 0',
-    zoneName: 'Tower Zone 0',
+    siteCode: 'bubblechickenlab · Louis Li 呈現',
+    zoneName: 'bubblechickenlab · TOWER ZERO',
     architectName: 'Louis Li',
-    architectRole: '資訊科技碩士 · 全端開發',
-    tagline: '軟體不是寫出來的，是建造出來的。',
+    creditsComplete: '完成',
+    linkGithub: 'GITHUB',
+    linkLinkedin: 'LINKEDIN',
+    linkPortfolio: 'PORTFOLIO',
     constructing: '建造中…',
     rollingDrawing: '收起中…',
     fallback: '2D 立面 · WebGL 不可用',
@@ -453,7 +457,6 @@ const zhTW: LocaleStrings = {
   stamp: {
     code: 'TOWER 0',
     name: 'LOUIS LI',
-    rev: 'LEARNING IS CONSTRUCTION · REV A',
   },
   exit: {
     label: 'END OF SET',
@@ -718,11 +721,13 @@ const ja: LocaleStrings = {
   site: {
     name: 'Tower Zone 0',
     siteTitle: 'The Tower of STEM, Zone 0',
-    siteCode: 'ZONE · 0',
-    zoneName: 'Tower Zone 0',
+    siteCode: 'bubblechickenlab · Louis Li present',
+    zoneName: 'bubblechickenlab · TOWER ZERO',
     architectName: 'Louis Li',
-    architectRole: '情報工学修士 · フルスタック',
-    tagline: 'ソフトウェアは書かれるのではない。組み立てられる。',
+    creditsComplete: '修了',
+    linkGithub: 'GITHUB',
+    linkLinkedin: 'LINKEDIN',
+    linkPortfolio: 'PORTFOLIO',
     constructing: '建造中…',
     rollingDrawing: 'セット終了中…',
     fallback: '2D 立面 · WebGL 不可',
@@ -736,7 +741,6 @@ const ja: LocaleStrings = {
   stamp: {
     code: 'TOWER 0',
     name: 'LOUIS LI',
-    rev: 'LEARNING IS CONSTRUCTION · REV A',
   },
   exit: {
     label: 'END OF SET',
