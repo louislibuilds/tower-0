@@ -34,9 +34,10 @@ export interface LocaleStrings {
     { title: string; subtitle: string; exhibitTitle: string; exhibitHook: string }
   >
   lobby: {
-    welcome: string
-    thesis: string
-    bio: string
+    welcomeName: string
+    heroTagline: string
+    motto: string
+    floorIntro: string
     degree: string
     institution: string
     wam: string
@@ -219,9 +220,11 @@ const en: LocaleStrings = {
     },
   },
   lobby: {
-    welcome: 'Welcome to',
-    thesis: 'Every tower rises from the ground — learning is construction.',
-    bio: 'Full-stack developer · UTS MIT · Sydney. I construct software the way buildings are built.',
+    welcomeName: 'Welcome',
+    heroTagline: 'Software Engineer · Full-Stack · Creator',
+    motto: 'Rome wasn\'t built in a day — neither is good software.',
+    floorIntro:
+      'UTS Master of Information Technology · Sydney. I build systems the way architects build towers — structure first, then the rooms that tell the story.',
     degree: 'Degree',
     institution: 'Institution',
     wam: 'WAM',
@@ -501,9 +504,11 @@ const zhTW: LocaleStrings = {
     },
   },
   lobby: {
-    welcome: '歡迎來到',
-    thesis: '萬丈高樓平地起 · 學習即建造',
-    bio: '全端開發者 · UTS 資訊科技碩士 · 雪梨。',
+    welcomeName: '歡迎',
+    heroTagline: '軟體工程師 · 全端 · 創作者',
+    motto: '萬丈高樓平地起 — 一磚一瓦，皆為根基。',
+    floorIntro:
+      'UTS 資訊科技碩士 · 雪梨。我用蓋樓的方式寫軟體——先承重結構，再讓每層有自己的故事。',
     degree: '學位',
     institution: '學校',
     wam: 'WAM',
@@ -782,9 +787,11 @@ const ja: LocaleStrings = {
     },
   },
   lobby: {
-    welcome: 'ようこそ',
-    thesis: '万丈高層は平地から起こる · 学びは建造である',
-    bio: 'フルスタック開発者 · UTS 情報工学修士 · シドニー。',
+    welcomeName: 'ようこそ',
+    heroTagline: 'ソフトウェアエンジニア · フルスタック · クリエイター',
+    motto: '万丈の高層も一層から — 良いソフトウェアも同じ。',
+    floorIntro:
+      'UTS 情報工学修士 · シドニー。建築のようにシステムを組み立てる — 構造を先に、物語を語る部屋を後に。',
     degree: '学位',
     institution: '大学',
     wam: 'WAM',

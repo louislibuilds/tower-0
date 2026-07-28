@@ -1,9 +1,12 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
+/** Subpath on bubblechicken.com; set VITE_BASE_PATH=/ for Vercel root deploy */
+const base = process.env.VITE_BASE_PATH ?? '/towerzero/'
+
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/towerzero/',
+  base,
   plugins: [react()],
   build: {
     rolldownOptions: {

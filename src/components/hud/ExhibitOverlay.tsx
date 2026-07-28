@@ -20,14 +20,29 @@ function gradeClass(grade: string) {
   return 'grade-cr'
 }
 
+function LobbyPanelHeader() {
+  const { strings } = useSite()
+  const s = strings.lobby
+  const eyebrow = `G · ${profile.brand} · ${profile.siteCode}`
+
+  return (
+    <>
+      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{eyebrow}</p>
+      <h3 className="tower-exhibit-card__name">{s.welcomeName}</h3>
+      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{s.heroTagline}</p>
+      <hr className="tower-exhibit-roof__rule" />
+      <blockquote className="tower-exhibit-card__thesis">{s.motto}</blockquote>
+      <p className="tower-exhibit-card__body">{s.floorIntro}</p>
+    </>
+  )
+}
+
 function LobbyExhibit() {
   const { strings } = useSite()
   const s = strings.lobby
   return (
     <>
-      <p className="tower-exhibit-card__eyebrow">{s.welcome}</p>
-      <blockquote className="tower-exhibit-card__thesis">{s.thesis}</blockquote>
-      <p className="tower-exhibit-card__body">{s.bio}</p>
+      <LobbyPanelHeader />
 
       <div className="tower-exhibit-stats tower-exhibit-stats--hero">
         <div className="tower-exhibit-stat tower-exhibit-stat--hero">
@@ -601,7 +616,8 @@ export function ExhibitOverlay() {
   const isVaultPanel = floorId === '99'
   const isLabPanel = floorId === '52'
   const isFactoryPanel = floorId === '23'
-  const isMinimalPanel = isRoofPanel || isVaultPanel || isLabPanel || isFactoryPanel
+  const isLobbyPanel = floorId === 'G'
+  const isMinimalPanel = isRoofPanel || isVaultPanel || isLabPanel || isFactoryPanel || isLobbyPanel
 
   const headerTitle =
     floorStrings?.exhibitTitle ?? floor.title

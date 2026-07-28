@@ -11,19 +11,6 @@ export interface Experience {
 
 export const experiences: Experience[] = [
   {
-    slug: 'uts-tsa',
-    company: 'UTS Taiwan Student Association',
-    title: 'Co-founder · Vice President & Secretary',
-    location: 'Sydney, NSW',
-    start: 'Jun 2025',
-    end: 'Jun 2026',
-    bullets: [
-      'Built the association from zero to 1,000+ followers across platforms.',
-      'Led cross-functional volunteer delivery — scope, assign, unblock, ship on deadlines.',
-      'Consultant role (2026) for ongoing association operations.',
-    ],
-  },
-  {
     slug: 'bubblechickenlab',
     company: 'bubblechickenlab',
     title: 'Founder · Developer · Creator',
@@ -34,6 +21,19 @@ export const experiences: Experience[] = [
     bullets: [
       'Independent practice under bubblechickenlab — products, portfolios, and tools where software meets storytelling and craft.',
       'Full-stack ownership from idea to ship: design, engineering, deployment, and the narrative around what gets published.',
+    ],
+  },
+  {
+    slug: 'uts-tsa',
+    company: 'UTS Taiwan Student Association',
+    title: 'Co-founder · Vice President & Secretary',
+    location: 'Sydney, NSW',
+    start: 'Jun 2025',
+    end: 'Jun 2026',
+    bullets: [
+      'Built the association from zero to 1,000+ followers across platforms.',
+      'Led cross-functional volunteer delivery — scope, assign, unblock, ship on deadlines.',
+      'Consultant role (2026) for ongoing association operations.',
     ],
   },
   {
