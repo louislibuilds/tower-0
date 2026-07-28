@@ -2,12 +2,13 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "vite",
-  "build": {
-    "env": {
-      "VITE_BASE_PATH": "/"
-    }
-  },
+  "redirects": [
+    { "source": "/towerzero", "destination": "/towerzero/", "permanent": true },
+    { "source": "/", "destination": "/towerzero/", "permanent": false }
+  ],
   "rewrites": [
-    { "source": "/((?!assets/|favicon\\.svg|icons\\.svg).*)", "destination": "/index.html" }
+    { "source": "/towerzero/assets/:path*", "destination": "/assets/:path*" },
+    { "source": "/towerzero/", "destination": "/index.html" },
+    { "source": "/towerzero/:path*", "destination": "/index.html" }
   ]
 }
