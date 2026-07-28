@@ -75,9 +75,12 @@ export function TowerCredits() {
 export function TowerRail() {
   const {
     floorId,
+    viewMode,
+    atTower,
     labRoomSlug,
     libraryRoomSlug,
     factoryStop,
+    goToTower,
     toggleFloor,
     toggleLabRoom,
     toggleLibraryRoom,
@@ -87,9 +90,11 @@ export function TowerRail() {
     strings,
   } = useSite()
 
+  const railFloorOpen = !atTower && viewMode !== 'tower' && floorId !== null
+
   return (
     <aside className="tower-rail">
-      <button type="button" className="tower-rail-brand" onClick={() => toggleFloor('G')}>
+      <button type="button" className="tower-rail-brand" onClick={goToTower}>
         <span className="tower-rail-title">{strings.site.siteTitle}</span>
         <span className="tower-rail-code">{strings.site.siteCode}</span>
       </button>
@@ -97,7 +102,7 @@ export function TowerRail() {
       <nav aria-label="Floor navigation">
         <ul className="tower-rail-floors">
           {[...FLOORS].reverse().map((floor) => {
-            const active = floor.id === floorId
+            const active = railFloorOpen && floor.id === floorId
             const loc = strings.floors[floor.id]
             return (
               <li key={floor.id} className={active ? 'is-active' : undefined}>
@@ -190,6 +195,8 @@ export function TowerStatus() {
     hoveredLibraryRoomSlug,
     hoveredFactoryStop,
     floorId,
+    viewMode,
+    atTower,
     labRoomSlug,
     libraryRoomSlug,
     factoryStop,
@@ -197,6 +204,22 @@ export function TowerStatus() {
     nextFactoryStop,
     strings,
   } = useSite()
+
+  if (viewMode === 'tower' || atTower) {
+    return (
+      <div className="tower-status tower-status--muted">
+        {strings.site.hint}
+      </div>
+    )
+  }
+
+  if (!floorId) {
+    return (
+      <div className="tower-status tower-status--muted">
+        {strings.site.hint}
+      </div>
+    )
+  }
 
   if (hoveredLabSlug && floorId === '52') {
     const suite = labSuite(hoveredLabSlug)

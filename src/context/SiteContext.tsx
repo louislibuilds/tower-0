@@ -14,7 +14,19 @@ import type { LibraryRoomSlug } from '../data/libraryRooms'
 
 import { libraryBooks } from '../data/libraryBooks'
 
-import { useFloorNavigation } from '../hooks/useFloorNavigation'
+import { useSiteNavigation } from '../hooks/useSiteNavigation'
+
+import {
+  bookFocusLocation,
+  credentialFocusLocation,
+  defaultFloorLocation,
+  factoryStopLocation,
+  labRoomLocation,
+  libraryRoomLocation,
+  locationToViewState,
+  parentLocation,
+  factoryAreaSlug,
+} from '../building/siteRoute'
 
 import { FACTORY_STOPS } from '../scene/factoryStops'
 
@@ -32,7 +44,9 @@ interface SiteContextValue {
 
   strings: LocaleStrings
 
-  floorId: FloorId
+  floorId: FloorId | null
+
+  atTower: boolean
 
   viewMode: ViewMode
 
@@ -50,7 +64,7 @@ interface SiteContextValue {
 
   hoveredFactoryStop: number | null
 
-  floor: ReturnType<typeof useFloorNavigation>['floor']
+  floor: ReturnType<typeof useSiteNavigation>['floor']
 
   direction: number
 
@@ -102,6 +116,8 @@ interface SiteContextValue {
 
   goToFloor: (id: FloorId) => void
 
+  goToTower: () => void
+
   setHoveredFloor: (id: FloorId | null) => void
 
   setTheme: (t: Theme) => void
@@ -150,69 +166,62 @@ function loadLocale(): Locale {
 
 
 
-function clearFloorSelections(setters: {
-
-  setLab: (v: string | null) => void
-
-  setLib: (v: LibraryRoomSlug | null) => void
-
-  setFactory: (v: number | null) => void
-
-  setBook: (v: string | null) => void
-
-  setCred: (v: string | null) => void
-
+function clearInteriorHover(setters: {
   setHoverLab: (v: string | null) => void
-
   setHoverLib: (v: LibraryRoomSlug | null) => void
-
   setHoverFactory: (v: number | null) => void
-
 }) {
-
-  setters.setLab(null)
-
-  setters.setLib(null)
-
-  setters.setFactory(null)
-
-  setters.setBook(null)
-
-  setters.setCred(null)
-
   setters.setHoverLab(null)
-
   setters.setHoverLib(null)
-
   setters.setHoverFactory(null)
-
 }
 
 
 
 export function SiteProvider({ children }: { children: ReactNode }) {
 
-  const nav = useFloorNavigation()
+  const nav = useSiteNavigation()
 
   const [theme, setThemeState] = useState<Theme>(loadTheme)
 
   const [locale, setLocaleState] = useState<Locale>(loadLocale)
 
-  const [viewMode, setViewMode] = useState<ViewMode>('tower')
-
   const [phase, setPhase] = useState<SitePhase>('boot')
 
   const [bootDone, setBootDone] = useState(false)
 
-  const [hoveredFloorId, setHoveredFloor] = useState<FloorId | null>(null)
+  const routeLive = bootDone && phase !== 'boot' && phase !== 'scan'
+  const routeView = useMemo(
+    () => (routeLive ? locationToViewState(nav.location) : null),
+    [routeLive, nav.location],
+  )
 
-  const [labRoomSlug, setLabRoomSlugState] = useState<string | null>(null)
+  const viewMode = routeView?.viewMode ?? 'tower'
+  const labRoomSlug = routeView?.labRoomSlug ?? null
+  const libraryRoomSlug = routeView?.libraryRoomSlug ?? null
+  const factoryStop = routeView?.factoryStop ?? null
+  const selectedBookSlug = routeView?.selectedBookSlug ?? null
+  const selectedCredentialSlug = routeView?.selectedCredentialSlug ?? null
+
+  const [hoveredFloorId, setHoveredFloor] = useState<FloorId | null>(null)
 
   const [hoveredLabSlug, setHoveredLabSlug] = useState<string | null>(null)
 
   const [hoveredLibraryRoomSlug, setHoveredLibraryRoomSlug] = useState<LibraryRoomSlug | null>(null)
 
   const [hoveredFactoryStop, setHoveredFactoryStop] = useState<number | null>(null)
+
+  const clearInteriorHoverState = useCallback(() => {
+    clearInteriorHover({
+      setHoverLab: setHoveredLabSlug,
+      setHoverLib: setHoveredLibraryRoomSlug,
+      setHoverFactory: setHoveredFactoryStop,
+    })
+  }, [])
+
+  const clearSubs = useCallback(() => {
+    clearInteriorHoverState()
+  }, [clearInteriorHoverState])
 
   const setHoveredFloorSafe = useCallback(
     (id: FloorId | null) => {
@@ -246,297 +255,120 @@ export function SiteProvider({ children }: { children: ReactNode }) {
     [phase],
   )
 
-  const [libraryRoomSlug, setLibraryRoomSlugState] = useState<LibraryRoomSlug | null>(null)
-
-  const [factoryStop, setFactoryStopState] = useState<number | null>(null)
-
-  const [selectedBookSlug, setSelectedBookSlugState] = useState<string | null>(null)
-
-  const [selectedCredentialSlug, setSelectedCredentialSlugState] = useState<string | null>(null)
-
-
-
-  const clearSubs = useCallback(() => {
-
-    clearFloorSelections({
-
-      setLab: setLabRoomSlugState,
-
-      setLib: setLibraryRoomSlugState,
-
-      setFactory: setFactoryStopState,
-
-      setBook: setSelectedBookSlugState,
-
-      setCred: setSelectedCredentialSlugState,
-
-      setHoverLab: setHoveredLabSlug,
-
-      setHoverLib: setHoveredLibraryRoomSlug,
-
-      setHoverFactory: setHoveredFactoryStop,
-
-    })
-
-  }, [])
-
-
-
   const toggleFloor = useCallback(
-
     (id: FloorId) => {
-
       if (isInteractionLocked(phase)) return
-
-      if (id === nav.floorId) {
-
-        if (viewMode !== 'tower') {
-
-          setViewMode('tower')
-
-          clearSubs()
-
-        } else {
-
-          setViewMode(id === 'roof' ? 'room' : 'floor')
-
-        }
-
+      if (nav.atTower || nav.floorId !== id) {
+        nav.goToFloor(id)
         return
-
       }
-
-      nav.goToFloor(id)
-
-      clearSubs()
-
-      setViewMode(id === 'roof' ? 'room' : 'floor')
-
+      nav.goToTower()
     },
-
-    [nav, viewMode, clearSubs, phase],
-
+    [nav, phase],
   )
 
-
-
   const finishBoot = useCallback(() => {
-
     setPhase('lobby')
-
     setBootDone(true)
-
     nav.goToFloor('G')
-
-    setViewMode('floor')
-
   }, [nav])
-
-
 
   const startExit = useCallback(() => {
     if (isInteractionLocked(phase)) return
-
     clearSubs()
-
     setPhase('exit')
-
-    setViewMode('tower')
-
-  }, [clearSubs, phase])
-
-
+    nav.goToTower()
+  }, [clearSubs, phase, nav])
 
   const reopenSite = useCallback(() => {
-
     setPhase('boot')
-
     setBootDone(false)
-
     clearSubs()
-
-    setViewMode('tower')
-
-    nav.goToFloor('G')
-
+    nav.goToTower()
   }, [nav, clearSubs])
 
-
-
   const goToFloor = useCallback(
-
     (id: FloorId) => {
-
       if (isInteractionLocked(phase)) return
-
-      if (id === nav.floorId && viewMode !== 'tower') {
-
+      if (!nav.atTower && nav.floorId === id && viewMode !== 'tower') {
         toggleFloor(id)
-
         return
-
       }
-
       nav.goToFloor(id)
-
-      clearSubs()
-
-      setViewMode(id === 'roof' ? 'room' : 'floor')
-
     },
-
-    [nav, viewMode, toggleFloor, clearSubs, phase],
-
+    [nav, viewMode, toggleFloor, phase],
   )
 
-
-
-  const toggleLabRoom = useCallback((slug: string) => {
+  const goToTower = useCallback(() => {
     if (isInteractionLocked(phase)) return
-    if (labRoomSlug === slug && (viewMode === 'room' || viewMode === 'focus')) {
-      return
-    }
-    if (labRoomSlug === slug) {
-      setLabRoomSlugState(null)
-      setViewMode('floor')
-      return
-    }
-    setLabRoomSlugState(slug)
-    setSelectedBookSlugState(null)
-    setSelectedCredentialSlugState(null)
-    setViewMode('room')
-  }, [labRoomSlug, viewMode, phase])
+    nav.goToTower()
+    setHoveredFloorSafe(null)
+    clearInteriorHoverState()
+  }, [nav, phase, setHoveredFloorSafe, clearInteriorHoverState])
 
-
-
-  const toggleLibraryRoom = useCallback((slug: LibraryRoomSlug) => {
-    if (isInteractionLocked(phase)) return
-
-    setLibraryRoomSlugState((prev) => {
-
-      if (prev === slug && (viewMode === 'room' || viewMode === 'focus')) {
-        return prev
+  const toggleLabRoom = useCallback(
+    (slug: string) => {
+      if (isInteractionLocked(phase)) return
+      const onRoom =
+        nav.location.kind === 'room' && nav.location.floorId === '52' && nav.location.room === slug
+      if (onRoom && (viewMode === 'room' || viewMode === 'focus')) return
+      if (onRoom) {
+        nav.navigate(defaultFloorLocation('52'))
+        return
       }
+      nav.navigate(labRoomLocation(slug))
+    },
+    [nav, viewMode, phase],
+  )
 
-      if (prev === slug) {
-
-        setViewMode('floor')
-
-        setSelectedBookSlugState(null)
-
-        setSelectedCredentialSlugState(null)
-
-        return null
-
+  const toggleLibraryRoom = useCallback(
+    (slug: LibraryRoomSlug) => {
+      if (isInteractionLocked(phase)) return
+      const onRoom =
+        nav.location.kind === 'room' && nav.location.floorId === '99' && nav.location.room === slug
+      if (onRoom && (viewMode === 'room' || viewMode === 'focus')) return
+      if (onRoom) {
+        nav.navigate(defaultFloorLocation('99'))
+        return
       }
+      nav.navigate(libraryRoomLocation(slug))
+    },
+    [nav, phase, viewMode],
+  )
 
-      setViewMode('room')
-
-      setSelectedBookSlugState(null)
-
-      setSelectedCredentialSlugState(null)
-
-      return slug
-
-    })
-
-  }, [phase, viewMode])
-
-
-
-  const toggleFactoryStop = useCallback((stop: number) => {
-    if (isInteractionLocked(phase)) return
-
-    setFactoryStopState((prev) => {
-
-      if (prev === stop && viewMode === 'room') {
-        return prev
+  const toggleFactoryStop = useCallback(
+    (stop: number) => {
+      if (isInteractionLocked(phase)) return
+      const areaSlug = factoryAreaSlug(stop)
+      const onStop =
+        nav.location.kind === 'room' && nav.location.floorId === '23' && nav.location.room === areaSlug
+      if (onStop && viewMode === 'room') return
+      if (onStop) {
+        nav.navigate(defaultFloorLocation('23'))
+        return
       }
-
-      if (prev === stop) {
-
-        setViewMode('floor')
-
-        return null
-
-      }
-
-      setViewMode('room')
-
-      return stop
-
-    })
-
-  }, [phase, viewMode])
-
-
+      nav.navigate(factoryStopLocation(stop))
+    },
+    [nav, phase, viewMode],
+  )
 
   const navigateBack = useCallback(() => {
     if (isInteractionLocked(phase)) return
+    nav.navigate(parentLocation(nav.location))
+    setHoveredFloorSafe(null)
+    clearInteriorHoverState()
+  }, [phase, nav, setHoveredFloorSafe, clearInteriorHoverState])
 
-    if (viewMode === 'focus') {
-      if (selectedBookSlug) {
-        setSelectedBookSlugState(null)
-        setViewMode('room')
-        return
-      }
-      if (selectedCredentialSlug) {
-        setSelectedCredentialSlugState(null)
-        setViewMode('room')
-        return
-      }
-    }
-
-    if (viewMode === 'room' || viewMode === 'focus') {
-      if (labRoomSlug) {
-        setLabRoomSlugState(null)
-        setViewMode('floor')
-        return
-      }
-      if (libraryRoomSlug) {
-        setLibraryRoomSlugState(null)
-        setSelectedBookSlugState(null)
-        setSelectedCredentialSlugState(null)
-        setViewMode('floor')
-        return
-      }
-      if (factoryStop !== null) {
-        setFactoryStopState(null)
-        setViewMode('floor')
-        return
-      }
-      setViewMode('floor')
-      return
-    }
-
-    if (viewMode === 'floor') {
-      setViewMode('tower')
-      clearSubs()
-    }
-  }, [
-    phase,
-    viewMode,
-    labRoomSlug,
-    libraryRoomSlug,
-    factoryStop,
-    selectedBookSlug,
-    selectedCredentialSlug,
-    clearSubs,
-  ])
-
-
-
-  const stepFactoryStop = useCallback((delta: number) => {
-    if (isInteractionLocked(phase)) return
-
-    setFactoryStopState((prev) => {
-      const current = prev ?? 0
+  const stepFactoryStop = useCallback(
+    (delta: number) => {
+      if (isInteractionLocked(phase)) return
+      const current = factoryStop ?? 0
       const next = Math.max(0, Math.min(FACTORY_STOPS.length - 1, current + delta))
-      if (next === current) return prev
-      setViewMode('room')
-      return next
-    })
-  }, [phase])
+      if (next === current) return
+      nav.navigate(factoryStopLocation(next))
+    },
+    [phase, factoryStop, nav],
+  )
 
   const nextFactoryStop = useCallback(() => stepFactoryStop(1), [stepFactoryStop])
 
@@ -544,33 +376,29 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
 
 
-  const toggleBook = useCallback((slug: string) => {
-    if (isInteractionLocked(phase)) return
-    if (selectedBookSlug === slug) {
-      setSelectedBookSlugState(null)
-      setViewMode('room')
-      return
-    }
-    setLibraryRoomSlugState('library')
-    setSelectedCredentialSlugState(null)
-    setSelectedBookSlugState(slug)
-    setViewMode('focus')
-  }, [selectedBookSlug, phase])
+  const toggleBook = useCallback(
+    (slug: string) => {
+      if (isInteractionLocked(phase)) return
+      if (selectedBookSlug === slug) {
+        nav.navigate(libraryRoomLocation('library'))
+        return
+      }
+      nav.navigate(bookFocusLocation(slug))
+    },
+    [selectedBookSlug, phase, nav],
+  )
 
-
-
-  const toggleCredential = useCallback((slug: string) => {
-    if (isInteractionLocked(phase)) return
-    if (selectedCredentialSlug === slug) {
-      setSelectedCredentialSlugState(null)
-      setViewMode('room')
-      return
-    }
-    setLibraryRoomSlugState('archive')
-    setSelectedBookSlugState(null)
-    setSelectedCredentialSlugState(slug)
-    setViewMode('focus')
-  }, [selectedCredentialSlug, phase])
+  const toggleCredential = useCallback(
+    (slug: string) => {
+      if (isInteractionLocked(phase)) return
+      if (selectedCredentialSlug === slug) {
+        nav.navigate(libraryRoomLocation('archive'))
+        return
+      }
+      nav.navigate(credentialFocusLocation(slug))
+    },
+    [selectedCredentialSlug, phase, nav],
+  )
 
 
 
@@ -652,14 +480,6 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
 
 
-  /** Hash / sidebar floor changes should enter floor view (not stay in tower overview) */
-  useEffect(() => {
-    if (!bootDone || phase === 'boot' || phase === 'scan') return
-    setViewMode(nav.floorId === 'roof' ? 'room' : 'floor')
-  }, [nav.floorId, bootDone, phase])
-
-
-
   const strings = STRINGS[locale]
 
 
@@ -675,6 +495,8 @@ export function SiteProvider({ children }: { children: ReactNode }) {
       strings,
 
       floorId: nav.floorId,
+
+      atTower: nav.atTower,
 
       viewMode,
 
@@ -710,13 +532,24 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
       goToFloor,
 
+      goToTower,
+
       setHoveredFloor: setHoveredFloorSafe,
 
-      setLabRoomSlug: setLabRoomSlugState,
+      setLabRoomSlug: (slug: string | null) => {
+        if (slug) nav.navigate(labRoomLocation(slug))
+        else nav.navigate(defaultFloorLocation('52'))
+      },
 
-      setLibraryRoomSlug: setLibraryRoomSlugState,
+      setLibraryRoomSlug: (slug: LibraryRoomSlug | null) => {
+        if (slug) nav.navigate(libraryRoomLocation(slug))
+        else nav.navigate(defaultFloorLocation('99'))
+      },
 
-      setFactoryStop: setFactoryStopState,
+      setFactoryStop: (stop: number | null) => {
+        if (stop !== null) nav.navigate(factoryStopLocation(stop))
+        else nav.navigate(defaultFloorLocation('23'))
+      },
 
       toggleLabRoom,
 
@@ -736,9 +569,15 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
       openBook,
 
-      setSelectedBookSlug: setSelectedBookSlugState,
+      setSelectedBookSlug: (slug: string | null) => {
+        if (slug) nav.navigate(bookFocusLocation(slug))
+        else nav.navigate(libraryRoomLocation('library'))
+      },
 
-      setSelectedCredentialSlug: setSelectedCredentialSlugState,
+      setSelectedCredentialSlug: (slug: string | null) => {
+        if (slug) nav.navigate(credentialFocusLocation(slug))
+        else nav.navigate(libraryRoomLocation('archive'))
+      },
 
       setHoveredLabSlug: setHoveredLabSlugSafe,
 
@@ -803,6 +642,8 @@ export function SiteProvider({ children }: { children: ReactNode }) {
       toggleFloor,
 
       goToFloor,
+
+      goToTower,
 
       toggleLabRoom,
 

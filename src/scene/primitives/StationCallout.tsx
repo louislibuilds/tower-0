@@ -16,6 +16,8 @@ export interface StationCalloutProps {
   offset?: [number, number, number]
   /** Band-edge labels: no leader line */
   edge?: boolean
+  /** Wall certificate hover — solid card, wrapped title */
+  credential?: boolean
   /** Floor overview — slightly larger type, leader to station top */
   overview?: boolean
 }
@@ -32,6 +34,7 @@ export function StationCallout({
   anchorY = 0.42,
   offset = [0, 0.32, 0.18],
   edge = false,
+  credential = false,
   overview = false,
 }: StationCalloutProps) {
   const pal = usePalette()
@@ -65,7 +68,7 @@ export function StationCallout({
         style={{ pointerEvents: 'none' }}
       >
         <div
-          className={`station-callout ${active ? 'station-callout--active' : ''} ${edge ? 'station-callout--edge' : ''} ${overview ? 'station-callout--overview' : ''}`}
+          className={`station-callout ${active ? 'station-callout--active' : ''} ${edge ? 'station-callout--edge' : ''} ${credential ? 'station-callout--credential' : ''} ${overview ? 'station-callout--overview' : ''}`}
         >
           <span className="station-callout__code">{code}</span>
           <span className="station-callout__title">{title}</span>

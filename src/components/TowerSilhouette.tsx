@@ -6,7 +6,7 @@ import { useSite } from '../context/SiteContext'
 import { getScenePalette } from '../scene/palette'
 
 interface TowerSilhouetteProps {
-  activeId: FloorId
+  activeId?: FloorId
   theme?: Theme
 }
 
@@ -46,7 +46,7 @@ export function TowerSilhouette({ activeId, theme: themeProp }: TowerSilhouetteP
   const theme = themeProp ?? ctxTheme
   const pal = getScenePalette(theme)
   const dark = theme === 'dark'
-  const activeIdx = LIT_FLOORS[activeId]
+  const activeIdx = activeId ? LIT_FLOORS[activeId] : -1
 
   const bodyFill = dark ? pal.resin : pal.paper
   const bodyStroke = pal.graphite

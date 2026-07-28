@@ -891,6 +891,25 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   line-height: 1.2;
 }
 
+.station-callout--credential {
+  min-width: 4.4rem;
+  max-width: 11rem;
+  padding: 0.3rem 0.56rem;
+  background: var(--paper);
+  border-color: color-mix(in srgb, var(--line) 88%, transparent);
+  box-shadow:
+    0 1px 0 color-mix(in srgb, var(--graphite) 10%, transparent),
+    0 4px 14px color-mix(in srgb, var(--graphite) 12%, transparent);
+}
+
+.station-callout--credential .station-callout__title {
+  white-space: normal;
+  max-width: 10rem;
+  font-size: 0.58rem;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
 [data-theme='dark'] .station-callout {
   background: color-mix(in srgb, var(--paper) 88%, transparent);
 }

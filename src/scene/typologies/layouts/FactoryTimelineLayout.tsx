@@ -1,11 +1,10 @@
-import { Html, Line } from '@react-three/drei'
+import { Line } from '@react-three/drei'
 import gsap from 'gsap'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 import {
   areaLabel,
   FACTORY_BLUEPRINT,
-  FACTORY_COMPLETION_BP_X,
   FACTORY_CRATE_STACKS,
   FACTORY_STATION_GRID_X,
   factoryPlateScale,
@@ -14,11 +13,14 @@ import {
   type FactoryCrate,
   type FactoryCrateVariant,
 } from '../../factoryStops'
-import { useSite } from '../../../context/SiteContext'
 import { FactoryTimelineCallout } from '../../primitives/FactoryTimelineCallout'
 import { FactoryTimelineRail, factoryTimelineSceneY } from '../../primitives/FactoryTimelineRail'
 import { PickTarget } from '../../primitives/PickTarget'
-import { bpBox, bpLine, bpPoint, type BpBox } from '../blueprintLayout'
+import { StationCallout } from '../../primitives/StationCallout'
+import { useSite } from '../../../context/SiteContext'
+import type { ViewMode } from '../../../building/viewMode'
+import { bpBox, bpLine, bpPoint, BP_UNIT, type BpBox } from '../blueprintLayout'
+import { factory23Interior } from '../interiorScale'
 import { ThinnedStation } from '../ThinnedStation'
 import { TypologyBpMesh } from '../TypologyBpMesh'
 import { typologyMat, type TypologyProps } from '../types'
@@ -29,21 +31,149 @@ const TIMELINE_Y = factoryTimelineSceneY()
 /** Short drop when an area is selected */
 const DROP_LIFT = 0.055
 
-function completionLocalBox(x: number, y: number, z: number, w: number, d: number, h: number): BpBox {
-  const abs = bpBox(x, y, z, w, d, h, ROOM_W, ROOM_D)
-  const anchor = bpPoint(FACTORY_COMPLETION_BP_X, 1.5, 0, ROOM_W, ROOM_D)
-  return {
-    position: [
-      abs.position[0] - anchor[0],
-      abs.position[1] - anchor[1],
-      abs.position[2] - anchor[2],
-    ],
-    size: abs.size,
-  }
+const DEGREE_CERT_PATH = 'assets/factory/uts-mit-degree.png'
+const TSA_LETTER_PATH = 'assets/factory/uts-tsa-letter.png'
+
+function factoryAssetUrl(relative: string): string {
+  const base = import.meta.env.BASE_URL ?? '/'
+  return `${base}${relative.replace(/^\//, '')}`
 }
 
-/** End-of-line MIT completion certificate on the conveyor */
-function FactoryCompletionPlaque({
+/** Portrait frame aspect (matches graduation testamur) */
+const CERT_ASPECT = 13 / 18
+/** Share of backdrop height reserved for each certificate */
+const CERT_WALL_FILL = 0.24
+
+const TSA_MOUNT_BP_X = 7.55
+const DEGREE_MOUNT_BP_X = 9.35
+/** Far −Z offset — larger gap between belt (y≈1.5) and backdrop */
+const BACKDROP_BP_Y = -1.35
+const BACKDROP_BP_D = 0.1
+
+/** Backdrop height in blueprint z — fills 23F interior after plate scale */
+function factoryBackdropWallHBp() {
+  const scale = factoryPlateScale()
+  return factory23Interior().h / (BP_UNIT * scale)
+}
+
+function WallCertificate({
+  path,
+  width,
+  height,
+  lit,
+}: {
+  path: string
+  width: number
+  height: number
+  lit: boolean
+}) {
+  const resolved = useMemo(() => factoryAssetUrl(path), [path])
+  const [map, setMap] = useState<THREE.Texture | null>(null)
+  const [failed, setFailed] = useState(false)
+
+  useEffect(() => {
+    let live = true
+    let tex: THREE.Texture | null = null
+    setMap(null)
+    setFailed(false)
+
+    const loader = new THREE.TextureLoader()
+    loader.load(
+      resolved,
+      (texture) => {
+        if (!live) {
+          texture.dispose()
+          return
+        }
+        texture.colorSpace = THREE.SRGBColorSpace
+        texture.anisotropy = 4
+        tex = texture
+        setMap(texture)
+      },
+      undefined,
+      () => {
+        if (live) setFailed(true)
+      },
+    )
+
+    return () => {
+      live = false
+      tex?.dispose()
+    }
+  }, [resolved])
+
+  return (
+    <group>
+      <mesh position={[0, 0, -0.001]} raycast={() => null}>
+        <planeGeometry args={[width + 0.006, height + 0.006]} />
+        <meshStandardMaterial color="#ece8e2" roughness={0.95} />
+      </mesh>
+      <mesh position={[0, 0, 0]} raycast={() => null}>
+        <planeGeometry args={[width, height]} />
+        <meshStandardMaterial
+          map={failed ? undefined : (map ?? undefined)}
+          color={failed || !map ? '#d4cfc8' : '#ffffff'}
+          roughness={0.92}
+          metalness={0.02}
+          emissive={lit ? '#ffffff' : '#000000'}
+          emissiveIntensity={lit ? 0.06 : 0}
+        />
+      </mesh>
+    </group>
+  )
+}
+
+function CertificateMount({
+  path,
+  title,
+  code,
+  position,
+  certW,
+  certH,
+  accent,
+  entered,
+}: {
+  path: string
+  title: string
+  code: string
+  position: [number, number, number]
+  certW: number
+  certH: number
+  accent: string
+  entered: boolean
+}) {
+  const [hovered, setHovered] = useState(false)
+
+  return (
+    <group position={position}>
+      <PickTarget
+        position={[0, 0, 0.008]}
+        size={[certW, certH, 0.016]}
+        hitPad={1.05}
+        accent={accent}
+        showGuide="never"
+        hovered={hovered}
+        onClick={() => {}}
+        onHover={setHovered}
+      />
+      <WallCertificate path={path} width={certW} height={certH} lit={entered || hovered} />
+      {hovered && (
+        <StationCallout
+          code={code}
+          title={title}
+          active
+          edge
+          credential
+          anchorY={certH / 2}
+          offset={[0, 0.14, 0.12]}
+        />
+      )}
+    </group>
+  )
+}
+
+/** Far backdrop wall (−Z) — bottom flush with floor plate, full 23F interior height */
+function FactoryCompletionWall({
   theme,
   accent,
   entered,
@@ -56,37 +186,41 @@ function FactoryCompletionPlaque({
 }) {
   const { strings } = useSite()
   const m = typologyMat(theme, accent, entered)
-  const anchor = bpPoint(FACTORY_COMPLETION_BP_X, 1.5, 0, ROOM_W, ROOM_D)
-  const lit = entered
+  const w = strings.factory
+
+  const wallHBp = factoryBackdropWallHBp()
+  const wall = bpBox(0, BACKDROP_BP_Y, 0, ROOM_W, BACKDROP_BP_D, wallHBp, ROOM_W, ROOM_D)
+  const certH = wallHBp * BP_UNIT * CERT_WALL_FILL
+  const certW = certH * CERT_ASPECT
+  const mountBpZ = wallHBp * 0.56
+  const faceBpY = BACKDROP_BP_Y + BACKDROP_BP_D
 
   if (!visible) return null
 
+  const mounts = [
+    { path: TSA_LETTER_PATH, title: w.tsaCertTitle, code: '2025', bpX: TSA_MOUNT_BP_X },
+    { path: DEGREE_CERT_PATH, title: w.degreeCertTitle, code: '2026', bpX: DEGREE_MOUNT_BP_X },
+  ] as const
+
   return (
-    <group position={anchor}>
-      <TypologyBpMesh
-        box={completionLocalBox(FACTORY_COMPLETION_BP_X, 1.5, 0, 0.1, 0.3, 0.055)}
-        color={m.pal.concrete}
-        metalness={0.25}
-      />
-      <TypologyBpMesh
-        box={completionLocalBox(FACTORY_COMPLETION_BP_X - 0.02, 1.5, 0.2, 0.34, 0.035, 0.22)}
-        color={m.alt}
-        metalness={0.4}
-        emissive={lit ? accent : undefined}
-        emissiveIntensity={lit ? 0.07 : 0}
-      />
-      <Html
-        center
-        position={[0, 0.31, 0.045]}
-        className="site-caption-wrap"
-        wrapperClass="factory-plaque-html"
-        style={{ pointerEvents: 'none' }}
-        sprite
-      >
-        <div className={`factory-plaque${lit ? ' factory-plaque--lit' : ''}`}>
-          {strings.factory.completionLabel}
-        </div>
-      </Html>
+    <group>
+      <TypologyBpMesh box={wall} color={m.body} />
+      {mounts.map(({ path, title, code, bpX }) => {
+        const [cx, cy, cz] = bpPoint(bpX, faceBpY, mountBpZ, ROOM_W, ROOM_D)
+        return (
+          <CertificateMount
+            key={path}
+            path={path}
+            title={title}
+            code={code}
+            position={[cx, cy, cz + 0.003]}
+            certW={certW}
+            certH={certH}
+            accent={accent}
+            entered={entered}
+          />
+        )
+      })}
     </group>
   )
 }
@@ -319,6 +453,7 @@ function FactoryStation({
   theme,
   accent,
   entered,
+  viewMode,
   factoryStop,
   floorOverview,
   onSelectStop,
@@ -330,6 +465,7 @@ function FactoryStation({
   theme: TypologyProps['theme']
   accent: string
   entered: boolean
+  viewMode: ViewMode
   factoryStop: number | null
   floorOverview: boolean
   onSelectStop?: (index: number) => void
@@ -343,7 +479,8 @@ function FactoryStation({
   const anchor = bpPoint(sx + 0.75, 1.5, 0, ROOM_W, ROOM_D)
   const [hovered, setHovered] = useState(false)
 
-  const pick = !!onSelectStop
+  const deferToBandPick = viewMode === 'tower'
+  const pick = !!onSelectStop && floorOverview && !deferToBandPick
 
   return (
     <group position={anchor}>
@@ -369,19 +506,6 @@ function FactoryStation({
           entered={entered}
         />
 
-        {active && (
-          <TypologyBpMesh
-            box={{
-              position: [0, BELT_TOP + 0.002, 0],
-              size: [0.14, 0.004, 0.09],
-            }}
-            color={accent}
-            emissive={accent}
-            emissiveIntensity={0.12}
-            opacity={0.35}
-          />
-        )}
-
         {crates.map((crate, i) => (
           <AnimatedCrate
             key={i}
@@ -396,7 +520,8 @@ function FactoryStation({
       {pick && (
         <PickTarget
           position={[0, 0.04, 0.02]}
-          size={[0.14, 0.1, 0.28]}
+          size={[0.12, 0.09, 0.22]}
+          hitPad={1.02}
           accent={accent}
           showGuide="never"
           active={active}
@@ -417,11 +542,13 @@ export function FactoryTimelineLayout({
   theme,
   accent,
   entered,
+  viewMode = 'floor',
   factoryStop = null,
   floorOverview = false,
   onSelectStop,
   onHoverStop,
 }: TypologyProps & {
+  viewMode?: ViewMode
   factoryStop?: number | null
   floorOverview?: boolean
   onSelectStop?: (index: number) => void
@@ -475,6 +602,7 @@ export function FactoryTimelineLayout({
           theme={theme}
           accent={accent}
           entered={entered}
+          viewMode={viewMode}
           factoryStop={factoryStop}
           floorOverview={floorOverview}
           onSelectStop={onSelectStop}
@@ -483,7 +611,7 @@ export function FactoryTimelineLayout({
         />
       ))}
 
-      <FactoryCompletionPlaque
+      <FactoryCompletionWall
         theme={theme}
         accent={accent}
         entered={entered}

@@ -12,7 +12,7 @@ import type { FloorId } from '../../building/program'
 import type { LibraryRoomSlug } from '../../data/libraryRooms'
 import { LIBRARY_ROOMS } from '../../data/libraryRooms'
 
-import { FACTORY_AREAS, areaLabel } from '../../scene/factoryStops'
+import { FACTORY_AREAS, areaLabel, factoryHighlight } from '../../scene/factoryStops'
 
 function gradeClass(grade: string) {
   if (grade === 'HD') return 'grade-hd'
@@ -71,20 +71,60 @@ function LobbyExhibit() {
   )
 }
 
-function FactoryOverview() {
+function FactoryStats() {
   const { strings } = useSite()
   const w = strings.factory
   const s = strings.lobby
   return (
+    <div className="tower-exhibit-stats tower-exhibit-stats--hero">
+      <div className="tower-exhibit-stat tower-exhibit-stat--hero"><span>{profile.wam}</span><label>{w.wam}</label></div>
+      <div className="tower-exhibit-stat tower-exhibit-stat--hero"><span>{gradeSummary.HD}</span><label>{w.hd}</label></div>
+      <div className="tower-exhibit-stat tower-exhibit-stat--hero"><span>{gradeSummary.D}</span><label>{w.d}</label></div>
+      {profile.deansList && (
+        <div className="tower-exhibit-stat tower-exhibit-stat--hero"><span>✦</span><label>{s.deansList}</label></div>
+      )}
+    </div>
+  )
+}
+
+function FactoryPanelHeader({ areaIndex }: { areaIndex?: number }) {
+  const { strings } = useSite()
+  const w = strings.factory
+  const eyebrow = `23F · ${profile.brand} · ${profile.siteCode}`
+
+  if (areaIndex !== undefined) {
+    const sem = FACTORY_AREAS[areaIndex]
+    const hl = factoryHighlight(areaIndex)
+    return (
+      <>
+        <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{eyebrow}</p>
+        <h3 className="tower-exhibit-card__name">{areaLabel(areaIndex)} · {sem.label}</h3>
+        <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">
+          {hl.project} ‧ {hl.takeaway}
+        </p>
+        <hr className="tower-exhibit-roof__rule" />
+      </>
+    )
+  }
+
+  return (
     <>
-      <div className="tower-exhibit-stats tower-exhibit-stats--hero">
-        <div className="tower-exhibit-stat tower-exhibit-stat--hero"><span>{profile.wam}</span><label>{w.wam}</label></div>
-        <div className="tower-exhibit-stat tower-exhibit-stat--hero"><span>{gradeSummary.HD}</span><label>{w.hd}</label></div>
-        <div className="tower-exhibit-stat tower-exhibit-stat--hero"><span>{gradeSummary.D}</span><label>{w.d}</label></div>
-        {profile.deansList && (
-          <div className="tower-exhibit-stat tower-exhibit-stat--hero"><span>✦</span><label>{s.deansList}</label></div>
-        )}
-      </div>
+      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{eyebrow}</p>
+      <h3 className="tower-exhibit-card__name">{w.heroTitle}</h3>
+      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{w.heroTagline}</p>
+      <hr className="tower-exhibit-roof__rule" />
+      <p className="tower-exhibit-card__body">{w.floorIntro}</p>
+    </>
+  )
+}
+
+function FactoryOverview() {
+  const { strings } = useSite()
+  const w = strings.factory
+  return (
+    <>
+      <FactoryPanelHeader />
+      <FactoryStats />
       <p className="tower-exhibit-card__hint">{w.selectArea}</p>
       <div className="tower-exhibit-timeline">
         {FACTORY_AREAS.map((sem, i) => (
@@ -109,21 +149,12 @@ function FactoryOverview() {
 function FactoryExhibit({ factoryStop }: { factoryStop: number }) {
   const { strings, toggleFactoryStop } = useSite()
   const w = strings.factory
-  const s = strings.lobby
   const activeSem = FACTORY_AREAS[factoryStop]
 
   return (
     <>
-      <div className="tower-exhibit-stats tower-exhibit-stats--hero">
-        <div className="tower-exhibit-stat tower-exhibit-stat--hero"><span>{profile.wam}</span><label>{w.wam}</label></div>
-        <div className="tower-exhibit-stat tower-exhibit-stat--hero"><span>{gradeSummary.HD}</span><label>{w.hd}</label></div>
-        <div className="tower-exhibit-stat tower-exhibit-stat--hero"><span>{gradeSummary.D}</span><label>{w.d}</label></div>
-        {profile.deansList && (
-          <div className="tower-exhibit-stat tower-exhibit-stat--hero"><span>✦</span><label>{s.deansList}</label></div>
-        )}
-      </div>
-
-      <p className="tower-exhibit-card__hint">{w.selectArea}</p>
+      <FactoryPanelHeader areaIndex={factoryStop} />
+      <FactoryStats />
 
       <div className="tower-exhibit-semester-tabs">
         {FACTORY_AREAS.map((sem, i) => (
@@ -551,6 +582,9 @@ export function ExhibitOverlay() {
     selectedBookSlug,
     selectedCredentialSlug,
   } = useSite()
+
+  if (!floorId || !floor) return null
+
   const floorStrings = strings.floors[floorId]
   const overlayKey =
     viewMode === 'focus'
@@ -566,16 +600,12 @@ export function ExhibitOverlay() {
   const isRoofPanel = floorId === 'roof' && viewMode !== 'focus'
   const isVaultPanel = floorId === '99'
   const isLabPanel = floorId === '52'
-  const isMinimalPanel = isRoofPanel || isVaultPanel || isLabPanel
+  const isFactoryPanel = floorId === '23'
+  const isMinimalPanel = isRoofPanel || isVaultPanel || isLabPanel || isFactoryPanel
 
   const headerTitle =
-    floorId === '23'
-      ? strings.factory.panelTitle
-      : floorStrings?.exhibitTitle ?? floor.title
-  const headerSubtitle =
-    floorId === '23'
-      ? `${strings.factory.panelFloor} — ${floorStrings?.exhibitHook ?? floor.subtitle}`
-      : floorStrings?.exhibitHook ?? floor.subtitle
+    floorStrings?.exhibitTitle ?? floor.title
+  const headerSubtitle = floorStrings?.exhibitHook ?? floor.subtitle
 
   return (
     <AnimatePresence mode="wait" custom={direction}>

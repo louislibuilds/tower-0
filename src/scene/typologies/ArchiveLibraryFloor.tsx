@@ -174,6 +174,7 @@ function VaultMorphZone({
   })
 
   const roomLocked = zoomed && viewMode === 'room'
+  const deferToBandPick = viewMode === 'tower'
 
   return (
     <ThinnedStation thin={thin}>
@@ -192,17 +193,20 @@ function VaultMorphZone({
       <group ref={groupRef}>
         <group
           onPointerOver={(e) => {
-            if (thin) return
+            if (thin || deferToBandPick) return
             e.stopPropagation()
             onHover(slug)
           }}
-          onPointerOut={() => onHover(null)}
+          onPointerOut={() => {
+            if (deferToBandPick) return
+            onHover(null)
+          }}
         >
           <mesh
             ref={(mesh) => markTowerPick(mesh)}
-            raycast={roomLocked ? () => null : undefined}
+            raycast={roomLocked || deferToBandPick ? () => null : undefined}
             onClick={(e) => {
-              if (thin || roomLocked) return
+              if (thin || roomLocked || deferToBandPick) return
               e.stopPropagation()
               onClick()
             }}

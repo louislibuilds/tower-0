@@ -15,7 +15,7 @@ import { PaletteProvider } from './primitives'
 import { CyberTower } from './CyberTower'
 
 interface TowerSceneProps {
-  activeFloorId: FloorId
+  activeFloorId: FloorId | null
   viewMode: ViewMode
   hoveredFloorId: FloorId | null
   labRoomSlug: string | null
@@ -44,7 +44,7 @@ function InvalidateOnChange({
   viewMode,
   phase,
 }: {
-  floorId: FloorId
+  floorId: FloorId | null
   theme: Theme
   viewMode: ViewMode
   phase: string
@@ -69,7 +69,7 @@ function SceneContent(
   return (
     <>
       <InvalidateOnChange
-        floorId={props.activeFloorId}
+        floorId={props.activeFloorId ?? 'G'}
         theme={props.theme}
         viewMode={props.viewMode}
         phase={phase}
@@ -77,7 +77,7 @@ function SceneContent(
       <color attach="background" args={[bg]} />
       <SiteLights theme={props.theme} />
       <OrthoRig
-        floorId={props.activeFloorId}
+        floorId={props.activeFloorId ?? 'G'}
         viewMode={props.viewMode}
         phase={phase}
         bootDone={bootDone}

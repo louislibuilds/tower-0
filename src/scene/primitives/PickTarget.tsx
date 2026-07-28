@@ -13,6 +13,8 @@ interface PickTargetProps {
   guideColor?: string
   /** never = invisible pick only; hover = wire guide on hover; always = always show guide */
   showGuide?: 'never' | 'hover' | 'always'
+  /** Scale invisible pick volume — lower on dense factory line to avoid hover stick */
+  hitPad?: number
   onClick: () => void
   onHover: (over: boolean) => void
 }
@@ -29,15 +31,16 @@ export function PickTarget({
   accent,
   guideColor = '#8a9098',
   showGuide = 'hover',
+  hitPad = HIT_PAD,
   onClick,
   onHover,
 }: PickTargetProps) {
   const [localHover, setLocalHover] = useState(false)
   const lit = active || hovered || localHover
   const hitSize: [number, number, number] = [
-    size[0] * HIT_PAD,
-    size[1] * HIT_PAD,
-    size[2] * HIT_PAD,
+    size[0] * hitPad,
+    size[1] * hitPad,
+    size[2] * hitPad,
   ]
 
   const bindPick = useCallback((mesh: Mesh | null) => {

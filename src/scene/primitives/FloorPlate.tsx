@@ -43,7 +43,7 @@ export function FloorPlate({
   return (
     <group>
       {variant === 'solid' && (
-        <mesh position={[0, -thickness / 2, 0]}>
+        <mesh position={[0, -thickness / 2, 0]} raycast={() => null}>
           <boxGeometry args={[w, thickness, d]} />
           <meshStandardMaterial color={floorColor} transparent opacity={0.92} roughness={0.85} />
         </mesh>

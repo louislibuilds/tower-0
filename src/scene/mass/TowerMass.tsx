@@ -60,7 +60,7 @@ export function TowerMass({
       )}
 
       {!hideSolidGround && foundation > 0.2 && (
-        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.008 * foundation, 0]}>
+        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.008 * foundation, 0]} raycast={() => null}>
           <planeGeometry args={[footprintW * foundation, footprintD * foundation]} />
           <meshStandardMaterial color={pal.concrete} transparent opacity={0.35 * foundation} />
         </mesh>

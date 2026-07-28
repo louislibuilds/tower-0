@@ -34,7 +34,7 @@ export function DelayedExhibitOverlay() {
   const key = `${floorId}-${viewMode}-${labRoomSlug}-${libraryRoomSlug}-${factoryStop}-${selectedBookSlug}-${selectedCredentialSlug}`
 
   useEffect(() => {
-    if (reducedMotion || viewMode === 'tower') {
+    if (reducedMotion || viewMode === 'tower' || !floorId) {
       setVisible(true)
       return
     }
@@ -48,7 +48,7 @@ export function DelayedExhibitOverlay() {
     return () => window.clearTimeout(t)
   }, [key, reducedMotion, floorId, viewMode])
 
-  if (viewMode === 'tower' || !visible || !bootDone || isBootSequence(phase) || phase === 'exit' || phase === 'void') return null
+  if (viewMode === 'tower' || !floorId || !visible || !bootDone || isBootSequence(phase) || phase === 'exit' || phase === 'void') return null
 
   return (
     <div className="tower-exhibit-wrap tower-exhibit-wrap--enter">

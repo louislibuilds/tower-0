@@ -90,7 +90,7 @@ export function TowerShell() {
         </Suspense>
       ) : (
         <div className="tower-fallback-bg">
-          <TowerSilhouette activeId={floorId} theme={theme} />
+          <TowerSilhouette activeId={floorId ?? undefined} theme={theme} />
           <p className="tower-fallback-note">
             {strings.site.fallback}{reducedMotion ? ' · reduced motion' : ''}
           </p>
@@ -104,7 +104,9 @@ export function TowerShell() {
       <BootPlateOverlay visible={phase === 'boot' || phase === 'scan'} />
       {phase === 'void' && <ExitOverlay onReopen={reopenSite} />}
       <FocusOverlay />
-      {bootDone && phase !== 'void' && phase !== 'exit' && viewMode !== 'tower' && <DelayedExhibitOverlay />}
+      {bootDone && phase !== 'void' && phase !== 'exit' && viewMode !== 'tower' && floorId && (
+        <DelayedExhibitOverlay />
+      )}
       {phase === 'exit' && (
         <div className="tower-exit-progress" aria-hidden="true">
           {strings.site.rollingDrawing}

@@ -55,12 +55,17 @@ export interface LocaleStrings {
     hd: string
     d: string
     avg: string
+    heroTitle: string
+    heroTagline: string
+    floorIntro: string
     panelTitle: string
     panelFloor: string
     selectArea: string
     allAreas: string
     overview: string
     completionLabel: string
+    tsaCertTitle: string
+    degreeCertTitle: string
   }
   lab: {
     heroTitle: string
@@ -234,12 +239,17 @@ const en: LocaleStrings = {
     hd: 'High Distinction',
     d: 'Distinction',
     avg: 'Avg',
+    heroTitle: 'Factory',
+    heroTagline: 'Semesters ‧ Grades ‧ Lines',
+    floorIntro: 'Four semester production lines — marks, averages, and the degree at end of belt.',
     panelTitle: 'University of Technology Sydney · Master of Information Technology',
     panelFloor: 'Factory · 23F',
-    selectArea: 'Select a production line (Area 01–04) on the model or rail.',
+    selectArea: 'Select a line on the model or rail — Area 01–04.',
     allAreas: 'All production lines',
     overview: 'Four semester lines run parallel — click an area to zoom in.',
     completionLabel: 'UTS MIT COMPLETE',
+    tsaCertTitle: 'UTS TSA · Letter of Recognition',
+    degreeCertTitle: 'UTS · Master of IT Testamur',
   },
   lab: {
     heroTitle: 'Laboratory',
@@ -510,12 +520,17 @@ const zhTW: LocaleStrings = {
     hd: '高級優等',
     d: '優等',
     avg: '平均',
+    heroTitle: '工廠',
+    heroTagline: '學期 ‧ 成績 ‧ 產線',
+    floorIntro: '四條學期產線 — 成績、平均與輸送帶末端的學位證書。',
     panelTitle: 'University of Technology Sydney · Master of Information Technology',
     panelFloor: '工廠 · 23F',
-    selectArea: '在模型或左側面板選擇產線（Area 01–04）。',
+    selectArea: '在模型或左側導覽選擇產線 — Area 01–04。',
     allAreas: '全部產線',
     overview: '四條學期產線並行 — 點選區域以拉近檢視。',
     completionLabel: 'UTS MIT COMPLETE',
+    tsaCertTitle: 'UTS 台灣同學會 · 服務證明',
+    degreeCertTitle: 'UTS · 資訊科技碩士學位證書',
   },
   lab: {
     heroTitle: '實驗室',
@@ -785,12 +800,17 @@ const ja: LocaleStrings = {
     hd: 'High Distinction',
     d: 'Distinction',
     avg: '平均',
+    heroTitle: 'ファクトリー',
+    heroTagline: '学期 ‧ 成績 ‧ ライン',
+    floorIntro: '4学期の生産ライン — 成績、平均、ベルト末端の学位証書。',
     panelTitle: 'University of Technology Sydney · Master of Information Technology',
     panelFloor: 'Factory · 23F',
-    selectArea: 'モデルまたはレールで生産ライン（Area 01–04）を選択。',
+    selectArea: 'モデルまたはレールでラインを選択 — Area 01–04。',
     allAreas: 'すべての生産ライン',
     overview: '4学期のラインが並行 — エリアをクリックしてズーム。',
     completionLabel: 'UTS MIT COMPLETE',
+    tsaCertTitle: 'UTS TSA · Letter of Recognition',
+    degreeCertTitle: 'UTS · Master of IT Testamur',
   },
   lab: {
     heroTitle: 'ラボラトリー',

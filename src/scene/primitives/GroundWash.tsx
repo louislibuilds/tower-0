@@ -13,7 +13,7 @@ export function GroundWash({ position = [0, 0.004, 0], width, depth, opacity = 0
   const tex = useGroundWashTexture()
   const pal = usePalette()
   return (
-    <mesh rotation={[-Math.PI / 2, 0, 0]} position={position}>
+    <mesh rotation={[-Math.PI / 2, 0, 0]} position={position} raycast={() => null}>
       <planeGeometry args={[width, depth]} />
       <meshBasicMaterial
         map={tex}

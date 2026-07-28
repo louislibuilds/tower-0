@@ -12,7 +12,7 @@ const STATIONS = [
   { id: 'grid', label: 'GroundGrid', hint: 'Boot blueprint grid (background)' },
 ]
 
-/** Dev sandbox — Phase A primitive gallery. Route: #/dev/typologies */
+/** Dev sandbox — Phase A primitive gallery. Route: /towerzero/dev/typologies */
 export function TypologyGallery() {
   const [night, setNight] = useState(true)
 
@@ -29,7 +29,7 @@ export function TypologyGallery() {
             <input type="checkbox" checked={night} onChange={(e) => setNight(e.target.checked)} />
             Night windows
           </label>
-          <a className="typology-gallery__link" href="#/G">
+          <a className="typology-gallery__link" href="/towerzero/G/lobby">
             ← Back to tower
           </a>
         </div>

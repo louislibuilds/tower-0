@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import type { ThreeEvent } from '@react-three/fiber'
 import type { Mesh } from 'three'
 import { WireBox } from './WireBox'
@@ -12,6 +12,7 @@ interface FloorPickTargetProps {
   accent: string
   hovered?: boolean
   enabled?: boolean
+  hitPad?: number
   onClick: () => void
   onHover: (over: boolean) => void
 }
@@ -22,20 +23,28 @@ export function FloorPickTarget({
   accent,
   hovered = false,
   enabled = true,
+  hitPad = HIT_PAD,
   onClick,
   onHover,
 }: FloorPickTargetProps) {
   const [localHover, setLocalHover] = useState(false)
   const lit = hovered || localHover
   const hitSize: [number, number, number] = [
-    size[0] * HIT_PAD,
-    size[1] * HIT_PAD,
-    size[2] * HIT_PAD,
+    size[0] * hitPad,
+    size[1] * hitPad,
+    size[2] * hitPad,
   ]
 
   const bindPick = useCallback((mesh: Mesh | null) => {
     markTowerPick(mesh)
   }, [])
+
+  useEffect(() => {
+    if (!enabled) {
+      setLocalHover(false)
+      onHover(false)
+    }
+  }, [enabled, onHover])
 
   const enter = (e: ThreeEvent<PointerEvent>) => {
     if (!enabled) return

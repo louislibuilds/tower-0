@@ -43,7 +43,7 @@ export function CircuitBase({ theme, active }: CircuitBaseProps) {
 
   return (
     <group position={[0, b10Base - 0.08, 0]}>
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} raycast={() => null}>
         <planeGeometry args={[8, 6]} />
         <meshStandardMaterial
           color={boardColor}

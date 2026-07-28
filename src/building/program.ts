@@ -52,15 +52,3 @@ export const DEFAULT_FLOOR: FloorId = 'G'
 export function getFloor(id: FloorId): FloorDef {
   return FLOORS.find((f) => f.id === id) ?? FLOORS[2]
 }
-
-export function parseFloorFromHash(hash: string): FloorId {
-  const match = hash.match(/^#\/([^/?#]+)/)
-  if (!match) return DEFAULT_FLOOR
-  const slug = match[1].toLowerCase()
-  const found = FLOORS.find((f) => f.id.toLowerCase() === slug || f.code.toLowerCase() === slug)
-  return found?.id ?? DEFAULT_FLOOR
-}
-
-export function floorHash(id: FloorId): string {
-  return `#/${id}`
-}

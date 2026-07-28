@@ -241,10 +241,10 @@ function MezzanineSlab({ m }: { m: ReturnType<typeof typologyMat> }) {
 function PerimeterShell({ m }: { m: ReturnType<typeof typologyMat> }) {
   return (
     <group>
+      {/* Floor slab — ThresholdHall FloorPlate also draws floor; keep one thin shell tint */}
       <BpInk box={gBox(0, 0, ROOM_W, ROOM_D, 0, 0.07)} color={m.body} />
-      <BpInk box={gBox(0, 0, 1, ROOM_D, 0, 2.45)} color={m.alt} />
+      {/* −X left open (SideWallOpening service gap); +X right low wall restored */}
       <BpInk box={gBox(ROOM_W - 1, 0, 1, ROOM_D, 0, 2.45)} color={m.alt} />
-      {/* Back + side walls only — +Z front open (exterior auto doors on band facade) */}
       <BpInk box={gBox(1, 0, ROOM_W - 2, 1, 0, 2.45)} color={m.alt} />
     </group>
   )

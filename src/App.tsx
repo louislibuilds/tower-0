@@ -1,4 +1,5 @@
 import { Suspense, lazy, useEffect, useState } from 'react'
+import { pathSegments } from './building/siteRoute'
 import { SiteProvider } from './context/SiteContext'
 import { TowerShell } from './components/TowerShell'
 import './styles/tower.css'
@@ -8,20 +9,20 @@ const TypologyGallery = lazy(() =>
 )
 
 function useAppRoute() {
-  const [hash, setHash] = useState(() =>
-    typeof window !== 'undefined' ? window.location.hash : '#/G',
+  const [segments, setSegments] = useState(() =>
+    typeof window !== 'undefined' ? pathSegments() : [],
   )
   useEffect(() => {
-    const onHash = () => setHash(window.location.hash)
-    window.addEventListener('hashchange', onHash)
-    return () => window.removeEventListener('hashchange', onHash)
+    const onNav = () => setSegments(pathSegments())
+    window.addEventListener('popstate', onNav)
+    return () => window.removeEventListener('popstate', onNav)
   }, [])
-  return hash
+  return segments
 }
 
 export default function App() {
-  const hash = useAppRoute()
-  if (hash.startsWith('#/dev/typologies')) {
+  const segments = useAppRoute()
+  if (segments[0] === 'dev' && segments[1] === 'typologies') {
     return (
       <Suspense
         fallback={

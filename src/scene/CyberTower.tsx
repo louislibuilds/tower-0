@@ -30,7 +30,7 @@ import type { ViewMode } from '../building/viewMode'
 import type { LibraryRoomSlug } from '../data/libraryRooms'
 
 interface CyberTowerProps {
-  activeFloorId: FloorId
+  activeFloorId: FloorId | null
   hoveredFloorId: FloorId | null
   labRoomSlug: string | null
   libraryRoomSlug: LibraryRoomSlug | null
@@ -285,18 +285,17 @@ function ProgramFloorBand({
   /** Floors with clickable interior pods on floor overview */
   const hasInteriorPods = program.id === '52' || program.id === '99' || program.id === '23'
 
-  /** Band pick off when interior stations need the pointer (overview or room focus) */
+  /** Off while inside a floor/room so interior pod picks win; re-enabled at tower overview */
   const disableFloorPick =
-    (entered &&
-      viewMode === 'floor' &&
-      hasInteriorPods) ||
-    (entered &&
-      (viewMode === 'room' || viewMode === 'focus') &&
-      ((program.id === '52' && !!labRoomSlug) ||
-        (program.id === '99' && !!libraryRoomSlug) ||
-        (program.id === '23' && factoryStop !== null) ||
-        program.id === 'B2' ||
-        program.id === 'B10'))
+    viewMode !== 'tower' &&
+    entered &&
+    ((viewMode === 'floor' && hasInteriorPods) ||
+      ((viewMode === 'room' || viewMode === 'focus') &&
+        ((program.id === '52' && !!labRoomSlug) ||
+          (program.id === '99' && !!libraryRoomSlug) ||
+          (program.id === '23' && factoryStop !== null) ||
+          program.id === 'B2' ||
+          program.id === 'B10')))
 
   if (bandProgress < 0.01) return null
 
@@ -360,7 +359,7 @@ function ProgramFloorBand({
         <pointLight position={[0, 0.35, 0]} intensity={0.85} distance={4.5} color={pal.neonBright} decay={2} />
       )}
 
-      {entered && bandProgress > 0.6 && (
+      {entered && bandProgress > 0.6 && viewMode !== 'tower' && (
         <group position={[0, -h / 2, 0]}>
           <FloorRoom
             floorId={program.id}
@@ -397,21 +396,27 @@ function ProgramFloorBand({
         />
       )}
 
-      {!hideBandShell && !floorCutaway && (
+      {viewMode !== 'tower' && !hideBandShell && !floorCutaway && (
       <mesh position={[0, h / 2 + 0.012, 0]} raycast={() => null}>
         <boxGeometry args={[w + 0.04, 0.025, d + 0.04]} />
-        <meshStandardMaterial color={pal.graphite} transparent opacity={shellFade ? 0.16 : 0.8} />
+        <meshStandardMaterial
+          color={isNight ? pal.graphite : shellColor}
+          transparent
+          opacity={shellFade ? 0.16 : isNight ? 0.8 : 0.35}
+        />
       </mesh>
       )}
 
+      {!disableFloorPick && (
       <FloorPickTarget
         size={[w, h, d]}
         accent={pal.signal}
         hovered={hovered}
-        enabled={!disableFloorPick}
+        hitPad={viewMode === 'tower' ? 1.22 : undefined}
         onClick={() => onFloorClick(program.id)}
         onHover={(over) => onFloorHover(over ? program.id : null)}
       />
+      )}
     </group>
   )
 }
@@ -487,11 +492,11 @@ export function CyberTower({
 }: CyberTowerProps) {
   const pal = getScenePalette(theme)
   const invalidate = useThree((s) => s.invalidate)
-  const activeProgram = getProgramFloor(activeFloorId)
+  const activeProgram = activeFloorId ? getProgramFloor(activeFloorId) : getProgramFloor('G')
   const activeY = programCenterY(activeProgram)
   const shaftSegments = useMemo(() => getShaftSegments(), [])
   const glowRef = useRef<THREE.PointLight>(null)
-  const isolate = viewMode !== 'tower' && activeFloorId !== 'G'
+  const isolate = viewMode !== 'tower' && activeFloorId !== null && activeFloorId !== 'G'
   const isNight = theme === 'dark'
 
   useEffect(() => {
@@ -548,7 +553,8 @@ export function CyberTower({
           ))}
 
           {PROGRAM_FLOORS.map((program, bandIndex) => {
-            const entered = program.id === activeFloorId
+            const entered =
+              activeFloorId !== null && program.id === activeFloorId && viewMode !== 'tower'
             const hovered = program.id === hoveredFloorId
             const shellFade = isolate && !entered
             return (
