@@ -5,7 +5,7 @@ import { blueprintFitScale, floorPlateSize } from './typologies/interiorScale'
 /** Factory areas — Area 01 = oldest semester (2024 Spring) → Area 04 = newest */
 export const FACTORY_AREAS = [...semesters].reverse()
 
-/** Factory line blueprint grid (11x4 room, four semester stops) */
+/** Factory line blueprint grid (11×4 room, four semester stops) */
 export const FACTORY_BLUEPRINT = { w: 11, d: 4 } as const
 export const FACTORY_STATION_GRID_X = [0.3, 2.9, 5.5, 8.1] as const
 export const FACTORY_CRATE_COUNTS = [2, 4, 6, 9] as const

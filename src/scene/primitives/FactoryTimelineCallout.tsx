@@ -20,7 +20,7 @@ export interface FactoryTimelineCalloutProps {
 }
 
 /**
- * Factory L1 timeline callout — label on datum + dashed leader to crate stack.
+ * L1 timeline callout — label on datum + dashed leader to crate stack.
  */
 export function FactoryTimelineCallout({
   area,

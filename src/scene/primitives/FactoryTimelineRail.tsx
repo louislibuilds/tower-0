@@ -16,7 +16,7 @@ export interface FactoryTimelineRailProps {
   hidden?: boolean
 }
 
-/** Factory L1 datum — one hairline tying all semester stops + tick marks. */
+/** L1 timeline datum — one hairline tying all semester stops + tick marks. */
 export function FactoryTimelineRail({ hidden = false }: FactoryTimelineRailProps) {
   const pal = usePalette()
 
