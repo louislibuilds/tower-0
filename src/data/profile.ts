@@ -29,5 +29,6 @@ export const profile = {
     portfolio: 'https://www.bubblechickenlab.com/work',
     kata: 'https://www.bubblechickenlab.com/kata',
     instagram: 'https://www.instagram.com/bubblechickenlab/',
+    threads: 'https://www.threads.com/@bubblechickenlab',
   },
 } as const

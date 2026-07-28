@@ -1,1 +1,3 @@
-/towerzero/*  /towerzero/index.html  200
+/towerzero/assets/*  /assets/:splat  200
+/towerzero/resume/*  /resume/:splat  200
+/towerzero/*         /towerzero/index.html  200

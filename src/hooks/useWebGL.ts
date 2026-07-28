@@ -1,20 +1,20 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+
+function detectWebGL(): boolean {
+  if (typeof window === 'undefined') return true
+  try {
+    const canvas = document.createElement('canvas')
+    return !!(
+      canvas.getContext('webgl2') ??
+      canvas.getContext('webgl') ??
+      canvas.getContext('experimental-webgl')
+    )
+  } catch {
+    return false
+  }
+}
 
 export function useWebGL(): boolean {
-  const [supported, setSupported] = useState(true)
-
-  useEffect(() => {
-    try {
-      const canvas = document.createElement('canvas')
-      const gl =
-        canvas.getContext('webgl2') ??
-        canvas.getContext('webgl') ??
-        canvas.getContext('experimental-webgl')
-      setSupported(!!gl)
-    } catch {
-      setSupported(false)
-    }
-  }, [])
-
+  const [supported] = useState(detectWebGL)
   return supported
 }

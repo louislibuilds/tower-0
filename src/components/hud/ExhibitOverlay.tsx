@@ -6,6 +6,7 @@ import { LAB_SUITES, labCardTitle, labProject, labSuite, labTagline } from '../.
 import { credentials } from '../../data/credentials'
 import { libraryBooks } from '../../data/libraryBooks'
 import { experiences } from '../../data/experience'
+import { techCentreLinks } from '../../data/techLinks'
 import { ResumePdfPreview } from '../resume/ResumePdfPreview'
 import { resumeLocaleForSite } from '../../data/resumePrint'
 import { softSkillGroups, techSkillGroups } from '../../data/skills'
@@ -403,10 +404,25 @@ function TechExhibit() {
   return (
     <>
       <TechPanelHeader />
-      <p className="tower-exhibit-card__body">{t.resumeIntro}</p>
 
-      <h4 className="tower-exhibit-section-title">{t.previewTitle}</h4>
-      <p className="tower-exhibit-card__body tower-exhibit-card__body--mute">{t.previewHint}</p>
+      <h4 className="tower-exhibit-section-title">{t.socialTitle}</h4>
+      <div className="tower-exhibit-contacts tower-exhibit-contacts--stack">
+        {techCentreLinks.map((link) => (
+          <a
+            key={link.key}
+            className="tower-exhibit-vault-entry tower-exhibit-vault-entry--link"
+            href={link.url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <strong>{t.linkLabels[link.key]}</strong>
+            <span>{link.desc}</span>
+          </a>
+        ))}
+      </div>
+
+      <h4 className="tower-exhibit-section-title">{t.printerTitle}</h4>
+      <p className="tower-exhibit-card__body">{t.resumeIntro}</p>
       <div className="tower-resume-preview-embed">
         <ResumePdfPreview resumeLocale={resumeLocale} compact />
       </div>
@@ -422,12 +438,14 @@ function TechExhibit() {
           <span>{t.printDesc}</span>
           <em>{t.printNow}</em>
         </button>
-        <a className="tower-exhibit-action" href={profile.links.kata} target="_blank" rel="noopener noreferrer">
-          <strong>KATA</strong>
-          <span>{t.kataNote}</span>
-          <em>{t.openKata}</em>
-        </a>
       </div>
+
+      <p className="tower-exhibit-card__body tower-exhibit-card__body--mute">
+        {t.kataNote}{' '}
+        <a href={profile.links.kata} target="_blank" rel="noopener noreferrer">
+          {t.openKata}
+        </a>
+      </p>
     </>
   )
 }

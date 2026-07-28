@@ -8,7 +8,7 @@ import { FocusOverlay } from './hud/FocusOverlay'
 import { SceneBootSplash } from './SceneBootSplash'
 import { TowerCredits, TowerRail, TowerStatus, TowerToolbar } from './hud/TowerHud'
 import { ResumePrintDrawer } from './resume/ResumePrintDrawer'
-import { TowerSilhouette } from './TowerSilhouette'
+import { TowerFallbackPoster } from './TowerFallbackPoster'
 import { resetSceneCursor } from '../scene/sceneCursor'
 
 const TowerScene = lazy(() =>
@@ -45,7 +45,8 @@ export function TowerShell() {
   } = useSite()
   const reducedMotion = useReducedMotion()
   const webgl = useWebGL()
-  const use3D = webgl && !reducedMotion
+  // Keep 3D for reduced-motion users (and Vercel preview bots); TowerScene skips animations.
+  const use3D = webgl
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -91,10 +92,8 @@ export function TowerShell() {
         </Suspense>
       ) : (
         <div className="tower-fallback-bg">
-          <TowerSilhouette activeId={floorId ?? undefined} theme={theme} />
-          <p className="tower-fallback-note">
-            {strings.site.fallback}{reducedMotion ? ' · reduced motion' : ''}
-          </p>
+          <TowerFallbackPoster theme={theme} activeId={floorId ?? undefined} />
+          <p className="tower-fallback-note">{strings.site.fallback}</p>
         </div>
       )}
 

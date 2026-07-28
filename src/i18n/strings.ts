@@ -95,6 +95,8 @@ export interface LocaleStrings {
     heroTitle: string
     heroTagline: string
     floorIntro: string
+    socialTitle: string
+    printerTitle: string
     resumeIntro: string
     previewTitle: string
     previewHint: string
@@ -104,6 +106,13 @@ export interface LocaleStrings {
     printNow: string
     kataNote: string
     openKata: string
+    linkLabels: {
+      linkedin: string
+      instagram: string
+      threads: string
+      portfolio: string
+      github: string
+    }
   }
   resumePrint: {
     drawerTitle: string
@@ -187,10 +196,10 @@ const en: LocaleStrings = {
   },
   floors: {
     B10: {
-      title: 'Tech Centre',
-      subtitle: 'GitHub · Print Résumé',
-      exhibitTitle: 'Tech Centre · B10',
-      exhibitHook: 'Source control, deployment artifacts, printable résumé sheets.',
+      title: 'Printer',
+      subtitle: 'Social · Print Resume',
+      exhibitTitle: 'PRINTER · B10',
+      exhibitHook: 'Outbound social links — plus a copier for resume export.',
     },
     B2: {
       title: 'Infrastructure',
@@ -288,22 +297,32 @@ const en: LocaleStrings = {
     softSkillsTitle: 'Soft Skills',
   },
   tech: {
-    heroTitle: 'Tech Centre',
-    heroTagline: 'Résumé · Export · Print',
-    floorIntro: 'The deepest floor — the two-page hiring résumé this tower prints.',
+    heroTitle: 'PRINTER',
+    heroTagline: 'Social · Portfolio · Resume',
+    floorIntro:
+      'Basement print room — outbound links to LinkedIn, Instagram, Threads, portfolio, and GitHub. Use the copier when you need a hard copy.',
+    socialTitle: 'Connect',
+    printerTitle: 'Copier',
     resumeIntro:
-      'A4 two-page PDF from KATA — rendered in-browser at full quality. Links are clickable; Print opens the PDF for a linked hard copy.',
-    previewTitle: 'Résumé PDF',
-    previewHint: 'Scroll the preview · links work · Print uses the PDF file',
+      'A4 two-page resume PDF (EN / zh-TW). Preview below; Print opens the file with clickable links.',
+    previewTitle: 'Resume preview',
+    previewHint: 'Scroll · links work · Print uses the PDF file',
     openPreview: 'Open preview',
-    print: 'Print Résumé',
-    printDesc: 'Two A4 pages — use the browser print dialog',
+    print: 'Print Resume',
+    printDesc: 'Two A4 pages — linked PDF',
     printNow: 'Print now',
     kataNote: 'Need an editable version? KATA builds and exports these sheets.',
     openKata: 'Open KATA ↗',
+    linkLabels: {
+      linkedin: 'LinkedIn',
+      instagram: 'Instagram',
+      threads: 'Threads',
+      portfolio: 'Portfolio',
+      github: 'GitHub',
+    },
   },
   resumePrint: {
-    drawerTitle: 'Résumé preview',
+    drawerTitle: 'Resume preview',
     drawerDoc: 'PDF · A4 · 2 pages',
     printNow: 'Print',
     close: 'Close',
@@ -346,7 +365,7 @@ const en: LocaleStrings = {
   },
   roof: {
     cta: "Let's keep in touch!",
-    printResume: 'Print résumé',
+    printResume: 'Print Resume',
     linkLabels: {
       email: 'Email',
       github: 'GitHub',
@@ -487,10 +506,10 @@ const zhTW: LocaleStrings = {
   },
   floors: {
     B10: {
-      title: '科技中心',
-      subtitle: 'GitHub · 列印履歷',
-      exhibitTitle: '科技中心 · B10',
-      exhibitHook: '原始碼、部署產物、可列印履歷。',
+      title: 'PRINTER',
+      subtitle: '社群 · Print Resume',
+      exhibitTitle: 'PRINTER · B10',
+      exhibitHook: '對外社群連結 — 需要紙本時可用影印機輸出 resume。',
     },
     B2: {
       title: '基礎設施',
@@ -587,22 +606,31 @@ const zhTW: LocaleStrings = {
     softSkillsTitle: '軟技能',
   },
   tech: {
-    heroTitle: '科技中心',
-    heroTagline: '履歷 · 匯出 · 列印',
-    floorIntro: '最底層 — 這座塔可列印的兩頁 A4 履歷。',
-    resumeIntro:
-      'KATA 匯出的 A4 雙頁 PDF — 瀏覽器內完整渲染。連結可點；列印會開啟 PDF 檔以保留連結。',
-    previewTitle: '履歷 PDF',
-    previewHint: '可捲動預覽 · 連結可點 · 列印使用 PDF 檔',
+    heroTitle: 'PRINTER',
+    heroTagline: '社群 · 作品集 · Resume',
+    floorIntro:
+      '地下室影印室 — 對外的 LinkedIn、Instagram、Threads、作品集與 GitHub。需要紙本時使用影印機。',
+    socialTitle: '連結',
+    printerTitle: '影印機',
+    resumeIntro: 'A4 雙頁 resume PDF（EN / zh-TW）。下方預覽；列印會開啟 PDF 並保留可點連結。',
+    previewTitle: 'Resume 預覽',
+    previewHint: '可捲動 · 連結可點 · 列印使用 PDF 檔',
     openPreview: '開啟預覽',
-    print: '列印履歷',
-    printDesc: '兩頁 A4 — 使用瀏覽器列印對話框',
+    print: 'Print Resume',
+    printDesc: '兩頁 A4 — 連結保留的 PDF',
     printNow: '立即列印',
     kataNote: '需要可編輯版本？KATA 可撰寫並匯出這些頁面。',
     openKata: '開啟 KATA ↗',
+    linkLabels: {
+      linkedin: 'LinkedIn',
+      instagram: 'Instagram',
+      threads: 'Threads',
+      portfolio: 'Portfolio',
+      github: 'GitHub',
+    },
   },
   resumePrint: {
-    drawerTitle: '履歷預覽',
+    drawerTitle: 'Resume 預覽',
     drawerDoc: 'PDF · A4 · 2 頁',
     printNow: '列印',
     close: '關閉',
@@ -644,7 +672,7 @@ const zhTW: LocaleStrings = {
   },
   roof: {
     cta: '保持聯繫！',
-    printResume: '列印履歷',
+    printResume: 'Print Resume',
     linkLabels: {
       email: 'Email',
       github: 'GitHub',
@@ -782,10 +810,10 @@ const ja: LocaleStrings = {
   },
   floors: {
     B10: {
-      title: 'テックセンター',
-      subtitle: 'GitHub · 履歴書印刷',
-      exhibitTitle: 'テックセンター · B10',
-      exhibitHook: 'ソース管理、デプロイ成果物、印刷可能な履歴書。',
+      title: 'PRINTER',
+      subtitle: 'SNS · Print Resume',
+      exhibitTitle: 'PRINTER · B10',
+      exhibitHook: '外部 SNS リンク — コピー機で resume 印刷も。',
     },
     B2: {
       title: 'インフラ',
@@ -882,24 +910,34 @@ const ja: LocaleStrings = {
     softSkillsTitle: 'ソフトスキル',
   },
   tech: {
-    heroTitle: 'テックセンター',
-    heroTagline: '履歴書 · エクスポート · 印刷',
-    floorIntro: '最下階 — この塔が印刷する A4 二枚の履歴書。',
+    heroTitle: 'PRINTER',
+    heroTagline: 'SNS · Portfolio · Resume',
+    floorIntro:
+      '地下のコピールーム — LinkedIn、Instagram、Threads、ポートフォリオ、GitHub へのリンク。紙が必要なときはコピー機を使う。',
+    socialTitle: 'Connect',
+    printerTitle: 'Copier',
     resumeIntro:
-      'KATA の A4 二枚 PDF — ブラウザ内フル品質レンダリング。リンククリック可；印刷は PDF を開いてリンク保持。',
-    previewTitle: '履歴書 PDF',
-    previewHint: 'スクロールプレビュー · リンク可 · 印刷は PDF',
+      'A4 二枚 resume PDF（EN / zh-TW）。下でプレビュー；印刷はリンク付き PDF を開く。',
+    previewTitle: 'Resume preview',
+    previewHint: 'スクロール · リンク可 · 印刷は PDF',
     openPreview: 'プレビューを開く',
-    print: '履歴書を印刷',
-    printDesc: 'A4 二枚 — ブラウザの印刷ダイアログを使用',
+    print: 'Print Resume',
+    printDesc: 'A4 二枚 — リンク付き PDF',
     printNow: '今すぐ印刷',
     kataNote: '編集可能版が必要？KATA で作成・エクスポートできます。',
     openKata: 'KATA を開く ↗',
+    linkLabels: {
+      linkedin: 'LinkedIn',
+      instagram: 'Instagram',
+      threads: 'Threads',
+      portfolio: 'Portfolio',
+      github: 'GitHub',
+    },
   },
   resumePrint: {
-    drawerTitle: '履歴書プレビュー',
-    drawerDoc: 'PDF · A4 · 2 ページ',
-    printNow: '印刷',
+    drawerTitle: 'Resume preview',
+    drawerDoc: 'PDF · A4 · 2 pages',
+    printNow: 'Print',
     close: '閉じる',
   },
   library: {
@@ -939,7 +977,7 @@ const ja: LocaleStrings = {
   },
   roof: {
     cta: 'また連絡しましょう！',
-    printResume: '履歴書を印刷',
+    printResume: 'Print Resume',
     linkLabels: {
       email: 'Email',
       github: 'GitHub',

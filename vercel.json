@@ -8,6 +8,10 @@
   ],
   "rewrites": [
     { "source": "/towerzero/assets/:path*", "destination": "/assets/:path*" },
+    { "source": "/towerzero/resume/:path*", "destination": "/resume/:path*" },
+    { "source": "/towerzero/favicon.svg", "destination": "/favicon.svg" },
+    { "source": "/towerzero/og-poster.svg", "destination": "/og-poster.svg" },
+    { "source": "/towerzero/icons.svg", "destination": "/icons.svg" },
     { "source": "/towerzero/", "destination": "/index.html" },
     { "source": "/towerzero/:path*", "destination": "/index.html" }
   ]
