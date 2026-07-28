@@ -153,7 +153,7 @@ const en: LocaleStrings = {
     siteTitle: 'The Tower of STEM, Zone 0',
     siteCode: 'bubblechickenlab · Louis Li present',
     architectName: 'Louis Li',
-    creditsComplete: 'COMPLETE',
+    creditsComplete: 'PASSED',
     linkGithub: 'GITHUB',
     linkLinkedin: 'LINKEDIN',
     linkPortfolio: 'PORTFOLIO',

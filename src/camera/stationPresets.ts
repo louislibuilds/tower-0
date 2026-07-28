@@ -153,9 +153,9 @@ function factoryTimelinePreset(factoryStop: number | null): AuthoredPreset {
 const G_FLOOR: AuthoredPreset = { lookAt: [0, 0.1, -0.12], eye: [0.42, 0.72, 2.05], zoom: 76 }
 const G_ROOM: AuthoredPreset = { lookAt: [0, 0.08, -0.08], eye: [0.15, 0.48, 1.28], zoom: 112 }
 
-/** B10 · rack hall */
-const B10_FLOOR: AuthoredPreset = { lookAt: [0, 0.06, 0.02], eye: [0.42, 0.22, 0.68], zoom: 268 }
-const B10_FOCUS: AuthoredPreset = { lookAt: [0, 0.06, 0.02], eye: [0.38, 0.2, 0.62], zoom: 288 }
+/** B10 · single hall (16 seats, 4 pods) */
+const B10_FLOOR: AuthoredPreset = { lookAt: [0, 0.08, 0.06], eye: [0.48, 0.28, 0.92], zoom: 208 }
+const B10_FOCUS: AuthoredPreset = { lookAt: [0, 0.08, 0.06], eye: [0.44, 0.26, 0.86], zoom: 224 }
 
 /** B2 · riser core */
 const B2_FLOOR: AuthoredPreset = { lookAt: [0, 0.06, 0.02], eye: [-0.42, 0.22, 0.68], zoom: 268 }

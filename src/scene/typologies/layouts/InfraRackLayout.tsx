@@ -38,7 +38,7 @@ function BpMesh({
   )
 }
 
-/** B2 infrastructure · server rack grid + chilled aisle */
+/** B2 infrastructure · open rack grid + chilled aisle */
 export function InfraRackLayout({
   theme,
   accent,
@@ -60,9 +60,6 @@ export function InfraRackLayout({
 
   return (
     <group scale={scale}>
-      <BpMesh box={bpBox(0, 0, 0, ROOM_W, 0.12, 3.8, ROOM_W, ROOM_D)} color={m.pal.graphite} />
-      <BpMesh box={bpBox(0, 0, 0, 0.12, ROOM_D, 3.8, ROOM_W, ROOM_D)} color={m.pal.graphite} />
-
       {RACKS.map(([x, y], i) => (
         <Fragment key={i}>
           <BpMesh box={bpBox(x, y, 0, 1.0, 0.9, 3.4, ROOM_W, ROOM_D)} color={m.alt} />
