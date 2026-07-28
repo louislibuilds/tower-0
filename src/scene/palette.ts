@@ -95,18 +95,3 @@ export function typologyHighlight(theme: 'light' | 'dark', lit: boolean): { warm
     emissiveCool: 0,
   }
 }
-
-/** Legacy flat tokens for TowerBuilding (unused in main scene) */
-export const palette = {
-  paper: INK_PRINT.paper,
-  surface: INK_PRINT.resin,
-  edge: INK_PRINT.graphite,
-  graphite: INK_PRINT.concrete,
-  ink: INK_PRINT.ink,
-  accent: INK_PRINT.signal,
-  grid: INK_PRINT.grid,
-  basement: INK_PRINT.glass,
-  windowLit: INK_PRINT.neonBright,
-  windowBasement: INK_PRINT.neon,
-  windowOff: INK_PRINT.alum,
-}

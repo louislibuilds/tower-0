@@ -3,10 +3,8 @@ export type Theme = 'dark' | 'light'
 
 export interface LocaleStrings {
   site: {
-    name: string
     siteTitle: string
     siteCode: string
-    zoneName: string
     architectName: string
     creditsComplete: string
     linkGithub: string
@@ -145,7 +143,6 @@ export interface LocaleStrings {
       portfolio: string
       kata: string
     }
-    copy: string
   }
   projects: Record<
     string,
@@ -153,7 +150,6 @@ export interface LocaleStrings {
   >
   credentials: Record<string, { title: string; detail?: string; body?: string; bullets?: string[]; credit?: string }>
   skillGroups: Record<string, string>
-  platformApps: Record<string, { name: string; hook: string }>
   focus: {
     panelHint: string
     back: string
@@ -166,10 +162,8 @@ export interface LocaleStrings {
 
 const en: LocaleStrings = {
   site: {
-    name: 'Tower Zone 0',
     siteTitle: 'The Tower of STEM, Zone 0',
     siteCode: 'bubblechickenlab · Louis Li present',
-    zoneName: 'bubblechickenlab · TOWER ZERO',
     architectName: 'Louis Li',
     creditsComplete: 'COMPLETE',
     linkGithub: 'GITHUB',
@@ -373,7 +367,6 @@ const en: LocaleStrings = {
       portfolio: 'Portfolio',
       kata: 'KATA.app',
     },
-    copy: '© {year} Louis Li · Tower 0',
   },
   projects: {
     'unihack-2026': {
@@ -457,13 +450,6 @@ const en: LocaleStrings = {
     'Delivery & Quality': 'Delivery & Quality',
     Communication: 'Communication',
   },
-  platformApps: {
-    nagi: { name: 'Portfolio', hook: 'Self-hosted personal site — portfolio and writing in one place.' },
-    kata: {
-      name: 'KATA',
-      hook: 'Draft résumés and track applications in one workflow — local or cloud saves, PDF export when you need it.',
-    },
-  },
   focus: {
     panelHint: 'Focus detail · side panel',
     back: 'Back to room',
@@ -476,10 +462,8 @@ const en: LocaleStrings = {
 
 const zhTW: LocaleStrings = {
   site: {
-    name: 'Tower Zone 0',
     siteTitle: 'The Tower of STEM, Zone 0',
     siteCode: 'bubblechickenlab · Louis Li 呈現',
-    zoneName: 'bubblechickenlab · TOWER ZERO',
     architectName: 'Louis Li',
     creditsComplete: '完成',
     linkGithub: 'GITHUB',
@@ -680,7 +664,6 @@ const zhTW: LocaleStrings = {
       portfolio: 'Portfolio',
       kata: 'KATA.app',
     },
-    copy: '© {year} Louis Li · Tower 0',
   },
   projects: {
     'unihack-2026': {
@@ -764,10 +747,6 @@ const zhTW: LocaleStrings = {
     'Delivery & Quality': '交付 & 品質',
     Communication: '溝通',
   },
-  platformApps: {
-    nagi: { name: '作品集', hook: '自架個人網站，收錄作品集與文章。' },
-    kata: { name: 'KATA', hook: '一站式撰寫履歷、追蹤求職申請 — 支援本地與雲端存檔，可匯出 PDF。' },
-  },
   focus: {
     panelHint: '特寫詳情 · 右側面板',
     back: '返回房間',
@@ -780,10 +759,8 @@ const zhTW: LocaleStrings = {
 
 const ja: LocaleStrings = {
   site: {
-    name: 'Tower Zone 0',
     siteTitle: 'The Tower of STEM, Zone 0',
     siteCode: 'bubblechickenlab · Louis Li present',
-    zoneName: 'bubblechickenlab · TOWER ZERO',
     architectName: 'Louis Li',
     creditsComplete: '修了',
     linkGithub: 'GITHUB',
@@ -985,7 +962,6 @@ const ja: LocaleStrings = {
       portfolio: 'Portfolio',
       kata: 'KATA.app',
     },
-    copy: '© {year} Louis Li · Tower 0',
   },
   projects: {
     'unihack-2026': {
@@ -1068,13 +1044,6 @@ const ja: LocaleStrings = {
     'Leadership & Collaboration': 'リーダーシップ & 協働',
     'Delivery & Quality': 'デリバリー & 品質',
     Communication: 'コミュニケーション',
-  },
-  platformApps: {
-    nagi: { name: 'ポートフォリオ', hook: '自前ホストの個人サイト — ポートフォリオと文章をひとまとめに。' },
-    kata: {
-      name: 'KATA',
-      hook: '履歴書の作成から応募管理まで — ローカル／クラウド保存、PDF エクスポート対応。',
-    },
   },
   focus: {
     panelHint: 'フォーカス詳細 · サイドパネル',

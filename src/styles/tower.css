@@ -614,7 +614,6 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   margin-bottom: 0.2rem;
   color: var(--graphite);
 }
-.tower-exhibit-card__legal { font-size: 0.78rem; color: var(--graphite-mute); margin-bottom: 0.75rem; }
 .tower-exhibit-roof__eyebrow {
   letter-spacing: 0.06em;
   text-transform: none;
@@ -650,14 +649,6 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 .tower-exhibit-roof__print:hover {
   color: var(--signal);
   border-color: color-mix(in srgb, var(--signal) 40%, transparent);
-}
-.tower-exhibit-card__footer {
-  font-size: 0.78rem;
-  font-style: italic;
-  color: var(--graphite-mute);
-  margin-top: 0.75rem;
-  padding-top: 0.65rem;
-  border-top: 1px solid var(--line);
 }
 .tower-exhibit-card__meta {
   display: grid;
@@ -884,30 +875,6 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
-}
-
-/* ── 3D Html labels ── */
-.scene-label {
-  font-family: var(--font-mono);
-  font-size: 0.58rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--graphite);
-  background: color-mix(in srgb, var(--paper) 88%, transparent);
-  border: 1px solid var(--line);
-  padding: 0.25rem 0.45rem;
-  white-space: nowrap;
-  pointer-events: none;
-  backdrop-filter: blur(4px);
-  opacity: 1;
-  transition: opacity 0.45s var(--ease-tower);
-}
-.scene-label--hidden {
-  opacity: 0;
-}
-.scene-label--active {
-  color: var(--signal);
-  border-color: color-mix(in srgb, var(--signal) 40%, transparent);
 }
 
 /* ── Station callouts (architectural drawing labels) ── */
@@ -1144,138 +1111,6 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   font-size: 0.78rem;
   color: var(--text-dim);
   margin-bottom: 0.5rem;
-}
-
-.focus-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 50;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  background: rgba(8, 10, 14, 0.82);
-  backdrop-filter: blur(10px);
-}
-.focus-card {
-  position: relative;
-  width: min(420px, 92vw);
-  padding: 1.75rem 1.5rem;
-  border: 1px solid var(--graphite-line);
-  background: var(--surface-elevated);
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
-  color: var(--text);
-}
-[data-theme='light'] .focus-card {
-  background: #F2F1ED;
-  border-color: color-mix(in srgb, var(--graphite) 22%, transparent);
-}
-.focus-card__close {
-  position: absolute;
-  top: 0.65rem;
-  right: 0.75rem;
-  border: none;
-  background: transparent;
-  color: var(--text-dim);
-  font-size: 1.4rem;
-  line-height: 1;
-  cursor: pointer;
-}
-.focus-card__eyebrow {
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--graphite-mute);
-  margin-bottom: 0.5rem;
-}
-.focus-card h3 {
-  font-size: 1.15rem;
-  margin-bottom: 0.5rem;
-  color: var(--text);
-}
-.focus-card__issuer {
-  font-size: 0.78rem;
-  color: var(--text-dim);
-  margin-bottom: 0.75rem;
-}
-.focus-card__body {
-  font-size: 0.82rem;
-  line-height: 1.55;
-  color: var(--text-dim);
-  margin-bottom: 1rem;
-}
-.focus-card__meta {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  font-size: 0.72rem;
-  color: var(--text-dim);
-  margin-bottom: 1rem;
-}
-.focus-card__action {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--accent);
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-}
-.focus-card__action:hover { opacity: 0.85; }
-
-.tower-rail-divider {
-  height: 1px;
-  background: var(--line);
-  margin: 0.35rem 0;
-  list-style: none;
-}
-
-.scene-label--lab {
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.06em;
-  padding: 0.2rem 0.45rem;
-  background: rgba(14, 15, 16, 0.85);
-  color: #e6e4df;
-  white-space: nowrap;
-}
-.scene-label--lab-title {
-  max-width: 180px;
-  white-space: normal;
-  text-align: center;
-}
-.scene-label--one-line {
-  max-width: 11rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  text-transform: none;
-  letter-spacing: 0.04em;
-  font-size: 0.58rem;
-}
-[data-theme='light'] .scene-label--lab {
-  background: rgba(242, 241, 237, 0.92);
-  color: #2a2c2e;
-}
-
-.scene-label--tiny {
-  font-size: 0.5rem;
-  letter-spacing: 0.06em;
-  opacity: 0.75;
-  text-transform: uppercase;
-}
-
-.scene-label-stack {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.12rem;
 }
 
 /* ── Factory L1 timeline captions (CaptionPlate / site-caption) ── */
@@ -1670,12 +1505,6 @@ a.tower-resume-drawer__btn {
   font-size: 0.62rem;
   letter-spacing: 0.16em;
   color: var(--graphite);
-}
-.tower-boot-plate__rev {
-  margin: 0.5rem 0 0;
-  font-size: 0.52rem;
-  letter-spacing: 0.12em;
-  color: var(--graphite-mute);
 }
 @keyframes stamp-fade {
   from { opacity: 0; transform: translate(-50%, -48%); }
