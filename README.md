@@ -55,6 +55,16 @@ Local dev: `npm run dev` → `http://localhost:5173/towerzero/` (see `vite.confi
 - **Responsive shell** — mobile floor / details drawers
 - **2D fallback** — SVG elevation when WebGL unavailable or reduced motion
 
+## Tech stack
+
+- **React 19** + **TypeScript** — UI shell, routing, i18n
+- **Vite 8** — dev server and production build
+- **Three.js** · **React Three Fiber** · **Drei** — orthographic 3D tower and floor typologies
+- **GSAP** · **Framer Motion** — boot / exit sequences and HUD motion
+- **PDF.js** — in-browser résumé preview (B10)
+- **oxlint** — linting
+- **Vercel** — hosting (subpath `/towerzero/`)
+
 ## Development
 
 ```bash
@@ -93,4 +103,6 @@ Tower 0 builds a separate visual system on top (design tokens, typography, UI ch
 
 ## License
 
-MIT · Louis Li · 2026
+[MIT License](./LICENSE) — Copyright © 2026 Louis Li.
+
+You may use, modify, and distribute this project under the terms of the license above. Attribution is appreciated but not required beyond what the license states.
