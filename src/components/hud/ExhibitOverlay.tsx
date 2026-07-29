@@ -273,6 +273,9 @@ function LabExhibit({ labRoomSlug }: { labRoomSlug: string | null }) {
             <span className="tower-exhibit-project__stack">{p.stack.join(' · ')}</span>
           )}
         </div>
+        {loc?.credit && (
+          <p className="tower-exhibit-card__body tower-exhibit-card__body--credit">{loc.credit}</p>
+        )}
         <div className="tower-exhibit-project__links">
           {p.links.map((link) => (
             <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer">{link.label} ↗</a>

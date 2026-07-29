@@ -17,8 +17,8 @@ export const LAB_SUITES: LabSuite[] = [
   { slug: 'nlp', code: '003', status: 'completed' },
   { slug: 'dl', code: '004', status: 'completed' },
   { slug: 'kata', code: '005', status: 'active' },
-  { slug: 'lab-006', code: '006', status: 'pending', empty: true },
-  { slug: 'lab-007', code: '007', status: 'pending', empty: true },
+  { slug: 'nagi', code: '006', status: 'active' },
+  { slug: 'tower-zero', code: '007', status: 'active' },
   { slug: 'lab-008', code: '008', status: 'pending', empty: true },
 ]
 

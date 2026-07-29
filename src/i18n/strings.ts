@@ -380,8 +380,9 @@ const en: LocaleStrings = {
       title: 'your·rock·is·coming',
       hook: 'Sydney tennis court discovery, weather-aware booking — built in 48 hours at UniHack 2026.',
       body: 'Sydney tennis players juggle fragmented council, club, and school sites — each with its own booking flow. Outdoor courts depend on weather, yet most tools treat forecast as an afterthought.\n\nyour·rock·is·coming maps Sydney venues with surface, lighting, parking, and suburb filters; booking flows through date, slot, and confirmation with a 7-day forecast, rain chance, and dryness index before you commit.\n\nShipped full-stack (React + Express + SQLite) and a frontend-only demo path for hackathon delivery. I formed the UniHack 2026 team and drove end-to-end integration — map, weather APIs, and a demo-ready booking path.',
-      role: 'Team Lead & Full-stack Developer',
-      team: 'UniHack 2026 cross-functional team',
+      role: 'Team Lead & Full-stack Developer (Team of 6)',
+      credit:
+        'Amber H. Hong — full-stack architecture: Express + SQLite, three-panel map UI, booking with conflict detection, weather-aware cancellation & court dryness algorithm. Carrie XIE — lead PM & product advisor: initial concept, PRD, problem definition, close engineering collaboration. Penny Hsieh, Julia Hsieh, Isla Shen — testing & feedback.',
     },
     'cloud-computing': {
       title: 'SUNishop — Cloud E-Commerce',
@@ -401,7 +402,7 @@ const en: LocaleStrings = {
       title: 'VTuber MoCap',
       hook: 'Browser VTuber motion capture: webcam → MediaPipe → Kalidokit → VRM. TechFest 2026 showcase · 95 HD.',
       body: 'Deep Learning & CNN (42028) — real-time pose capture driving a VRM avatar entirely in the browser. Open localhost, allow camera, run the full pipeline.\n\nWebcam → MediaPipe Holistic → Kalidokit (head, arms, finger curl) → three.js + @pixiv/three-vrm retarget. Optional gesture CNN (ONNX) for throttled browser classification.\n\nOwned browser pipeline productization: ESM import maps, CDN deps, camera permissions, EN/zh-TW docs for a stable TechFest demo. Final grade: 95 HD. Nominated to UTS TechFest 2026 AI Showcase (Dr. Nabin Sharma). CV pipelines fail quietly before models fail loudly — smoothing and browser constraints matter as much as the network.',
-      role: 'Software Dev · Productization · Team Coordination',
+      role: 'Software Dev · Productization · Team Coordination (Team of 3)',
       team: 'Ko-Chun Liao (concept & framework), Junjie Niu (experiments)',
       course: '42028 Deep Learning & CNN (95 HD)',
     },
@@ -410,6 +411,20 @@ const en: LocaleStrings = {
       hook: 'Guided résumé builder with live A4 preview, four templates, and print-ready PDF — the tool behind my own applications.',
       body: 'Evolved from desktop RESUmade — step-by-step filling beat one long form. Renamed KATA (型) to mean “shape your professional form,” with landing, editor, and PDF export in one deployable app.\n\nNine-step builder: contact → summary → education → experience → skills → projects → certifications → references → layout. Live A4 preview with zoom and collapsible panels. Heritage, Clean, Sidebar, Classic templates; PDF export with clickable links and multi-page support up to four pages.\n\nLocal-first drafts with .kata.json export (legacy .resumade.json import). Integrated with JOBO tracker under bubblechickenlab.com/kata — résumé shapes the document, tracker holds the pipeline. Active build: template system, Suite AI assist, deeper tracker workflow.',
       role: 'Sole Builder',
+    },
+    nagi: {
+      title: 'NAGI · 凪',
+      hook: 'Personal brand platform — WebGL water surface entry, editorial depth layer, TipTap CMS, and work case studies.',
+      body: 'bubblechickenlab.com needs more than a link list — it needs a memorable entry and a quiet place to read. NAGI (凪, “calm after the wave”) is that hub: full-screen WebGL surface on arrival, then Depth routes for /work, /articles, /about, and an owner-only CMS at /edit.\n\nBuilt as a Vite SPA with a Three.js water shader on Surface and typography-first editorial layout underneath. Supabase stores articles, works, categories, and subscribers; TipTap JSONB bodies power long-form case studies (SUNishop, KATA, Tower Zero, and the rest). RLS separates public read from editor write; build-time prerender gives crawlers HTML snapshots for key routes.\n\nNAGI is the narrative layer of the bubblechickenlab product family — portfolio, writing, and case-study archive — while KATA handles résumé tooling and Tower Zero handles the walk-in 3D resume.',
+      role: 'Founder & Full-Stack Developer',
+    },
+    'tower-zero': {
+      title: 'Tower Zero',
+      hook: 'Walk-in 3D portfolio — each floor is one chapter of the résumé.',
+      body: 'G Lobby — where you enter and meet the author. B2 Infrastructure — the foundation: tech stack and soft skills that support everything above. 23 Factory — four semester production lines, coursework assembled over time. 52 Laboratory — project experiments, each with status and output (including this room). 99 Library & Archive — credentials and published work, everything on record. B10 Tech Centre — social links and résumé print. R Roof — contact and paths to every project.\n\nBuilt with React and Three.js (orthographic 3D), trilingual UI, and Day/Night themes.',
+      role: 'Sole Developer · Designer',
+      credit:
+        'salieri009/resume2 (SITE 009) — orthographic navigation, HUD layout, camera stations, boot/transition language. Visual system and content original to Tower Zero.',
     },
   },
   credentials: {
@@ -686,8 +701,9 @@ const zhTW: LocaleStrings = {
       title: 'your·rock·is·coming',
       hook: 'Sydney 網球場探索 + 天氣感知訂場 — UniHack 2026 48 小時作品。',
       body: 'Sydney 打網球的人面對碎片化生態：場地散在各 council、俱樂部、學校網站，訂場工具各寫各的；戶外場地還受天氣影響，訂完才發現會淋雨很常見。\n\nyour·rock·is·coming 用互動地圖探索 Sydney 場地，依 surface、夜燈、停車、suburb 篩選；訂場整合 7 日 forecast、rain chance 與 dryness index，確認前就知道天氣風險。\n\n支援 full stack（React + Express + SQLite）與 frontend-only demo。我組建 UniHack 2026 團隊，負責前後端整合、天氣 API 串接，以及 hackathon 現場可 demo 的最小完整路徑。',
-      role: '隊長 & 全端開發',
-      team: 'UniHack 2026 跨領域團隊',
+      role: '隊長 & 全端開發（六人團隊）',
+      credit:
+        'Amber H. Hong — 全端架構：Express + SQLite、三欄地圖 UI、含衝突檢測的訂場、天氣感知取消與場地乾燥演算法。Carrie XIE — 主要 PM 與產品顧問：初始題目、產品雛形、PRD 與問題定義，後續與工程師密集協作。Penny Hsieh、Julia Hsieh、Isla Shen — 品質管理與產品測試，提供具體改進建議，協助與支持開發團隊、產品團隊。',
     },
     'cloud-computing': {
       title: 'SUNishop — Cloud E-Commerce',
@@ -707,7 +723,7 @@ const zhTW: LocaleStrings = {
       title: 'VTuber MoCap',
       hook: '瀏覽器 VTuber 動捕：webcam → MediaPipe → Kalidokit → VRM。TechFest 2026 展示 · 95 HD。',
       body: 'Deep Learning & CNN（42028）——在瀏覽器內完成即時動作捕捉並驅動 VRM 虛擬角色。打開 localhost、允許相機，就能 demo 完整 pipeline。\n\nWebcam → MediaPipe Holistic → Kalidokit（頭、手臂、手指 curl）→ three.js + @pixiv/three-vrm retarget。可選手勢 CNN（ONNX）在瀏覽器做 throttled 分類。\n\n負責 browser pipeline 產品化：ESM import map、CDN 依賴、相機權限、EN/zh-TW 文件，讓 TechFest 當天穩定展示。最終 95 HD；獲 Dr. Nabin Sharma 提名 UTS TechFest 2026 AI Showcase。CV pipeline 常常比模型更早、更安靜地壞掉——smoothing 與瀏覽器限制和網路一樣重要。',
-      role: '軟體開發 · 產品化 · 團隊協調',
+      role: '軟體開發 · 產品化 · 團隊協調（三人團隊）',
       team: 'Ko-Chun Liao（構想與框架）、Junjie Niu（實驗設計）',
       course: '42028 深度學習 & CNN (95 HD)',
     },
@@ -716,6 +732,20 @@ const zhTW: LocaleStrings = {
       hook: '引導式履歷編輯 + 即時 A4 預覽、四款模板、可點擊連結的 PDF — 我自己求職在用的工具。',
       body: '前身是桌面版 RESUmade——分步填寫比一次性長表單更不容易放棄。2026 年改名 KATA（型），強調「打造你的專業樣貌」，landing、editor、PDF 匯出收斂成可部署的單頁應用。\n\n九步驟：聯絡 → 簡介 → 學歷 → 經歷 → 技能 → 專案 → 證照 → 推薦人 → 版面。右側 A4 即時預覽；Heritage、Clean、Sidebar、Classic 四款模板；PDF 滿版 A4、連結可點擊，最多四頁。\n\n本機草稿 + .kata.json 匯出（相容 .resumade.json）。與 JOBO tracker 同在 bubblechickenlab.com/kata — 履歷負責「長什麼樣」，tracker 負責「投到哪」。持續迭代模板、Suite AI 輔助與 tracker 工作流串接。',
       role: '獨立開發',
+    },
+    nagi: {
+      title: 'NAGI · 凪',
+      hook: '個人品牌平台 — WebGL 水面入口、深度內容層、TipTap CMS、作品 case study 與多語系文章。',
+      body: 'bubblechickenlab.com 需要的不只是連結清單，而是「記得住的入口 + 安靜可讀的內容層」。NAGI（凪）就是這個 hub：Surface 是全螢幕 WebGL 水面；點進去才是 Depth 的 /work、/articles、/about，以及 /edit 的 owner CMS。\n\nVite SPA + Three.js 水面 shader 做 immersive entry；底下是 typography-first 的 editorial layout。Supabase 存文章、作品、分類、訂閱；TipTap JSONB 正文支撐長篇 case study（SUNishop、KATA、Tower Zero 等）。RLS 區分 public read 與 editor write；build-time prerender 讓 crawler 能讀到關鍵路由的 HTML snapshot。\n\nNAGI 是 bubblechickenlab 產品家族的敘事層 — portfolio、寫作、案例沉澱 — KATA 負責履歷工具，Tower Zero 負責可走進去的 3D 履歷。',
+      role: '創辦人 & 全端開發',
+    },
+    'tower-zero': {
+      title: 'Tower Zero',
+      hook: '可走進去的 3D 作品集 — 每層對應履歷的一章。',
+      body: 'G 大廳 — 進入大樓的起點，簡介作者與就讀背景。B2 基礎設施 — 大樓根基，技術棧與軟技能在此匯集，支撐上層運轉。23F 工廠 — 四條學期產線，修課歷程在此組裝成形。52F 實驗室 — 各項專案實驗，標示狀態與產出（含你現在所在的這間）。99F 圖書館與檔案 — 證書與出版作品，記錄一切成果。B10 科技中心 — 社群連結與履歷列印。R 屋頂 — 聯絡方式與各作品入口。\n\n以 React、Three.js 建構正交 3D 場景，支援繁中、英文、日文與日夜雙主題。',
+      role: '獨立開發 · 設計',
+      credit:
+        'salieri009/resume2（SITE 009）— 正交導覽、HUD 布局、鏡頭站、開場轉場語法。視覺系統與內容為 Tower Zero 原創。',
     },
   },
   credentials: {
@@ -993,8 +1023,9 @@ const ja: LocaleStrings = {
       title: 'your·rock·is·coming',
       hook: 'Sydney テニスコート探索 + 天候連動予約 — UniHack 2026・48時間。',
       body: 'Sydney のテニスプレイヤーは council・クラブ・学校サイトに散らばった予約フローと格闘する。屋外コートは天候依存なのに、多くのツールは forecast を後付けにしている。\n\nyour·rock·is·coming は Sydney コートを地図で探索し、surface・照明・駐車・suburb で絞り込み。7日間 forecast、rain chance、dryness index を予約前に表示。\n\nfull stack（React + Express + SQLite）と frontend-only demo の両方。UniHack 2026 チームを組成し、地図・天候 API・デモ可能な最小 booking パスを end-to-end で担当。',
-      role: 'チームリード & フルスタック',
-      team: 'UniHack 2026 クロスファンクショナルチーム',
+      role: 'チームリード & フルスタック（6名）',
+      credit:
+        'Amber H. Hong — フルスタック設計：Express + SQLite、三ペイン地図 UI、競合検出付き予約、天候連動キャンセルとコート乾燥アルゴリズム。Carrie XIE — リード PM・プロダクト顧問：初期コンセプト、PRD、問題定義、エンジニアリング協働。Penny Hsieh、Julia Hsieh、Isla Shen — テストとフィードバック。',
     },
     'cloud-computing': {
       title: 'SUNishop — Cloud E-Commerce',
@@ -1014,7 +1045,7 @@ const ja: LocaleStrings = {
       title: 'VTuber MoCap',
       hook: 'ブラウザ VTuber モーキャプ：webcam → MediaPipe → Kalidokit → VRM。TechFest 2026 · 95 HD。',
       body: 'Deep Learning & CNN（42028）— ブラウザ内リアルタイム pose capture で VRM アバターを駆動。localhost を開き、カメラ許可で pipeline 全体を demo。\n\nWebcam → MediaPipe Holistic → Kalidokit → three.js + @pixiv/three-vrm。任意で gesture CNN（ONNX）をブラウザで throttled 分類。\n\nbrowser pipeline の製品化：ESM import map、CDN、カメラ権限、TechFest 向け EN/zh-TW ドキュメント。最終 95 HD。UTS TechFest 2026 AI Showcase ノミネート（Dr. Nabin Sharma）。CV pipeline はモデルより先に、静かに壊れる — smoothing とブラウザ制約が同じくらい重要。',
-      role: 'ソフトウェア開発 · 製品化 · チーム調整',
+      role: 'ソフトウェア開発 · 製品化 · チーム調整（3名）',
       team: 'Ko-Chun Liao（構想・フレームワーク）、Junjie Niu（実験設計）',
       course: '42028 深層学習 & CNN (95 HD)',
     },
@@ -1023,6 +1054,20 @@ const ja: LocaleStrings = {
       hook: 'ガイド付き履歴書ビルダー + ライブ A4 プレビュー、4テンプレート、クリック可能 PDF — 自分の応募で使用中。',
       body: 'デスクトップ版 RESUmade から進化 — ステップ入力が長いフォームより続けやすい。2026年 KATA（型）に改名し、landing・editor・PDF を一つの deployable app に。\n\n9ステップ builder + ライブ A4 プレビュー。Heritage、Clean、Sidebar、Classic。PDF は A4 フル、リンククリック可、最大4ページ。\n\nローカルファースト + .kata.json エクスポート（.resumade.json 互換）。JOBO tracker と bubblechickenlab.com/kata で一体 — 履歴書は形、tracker は pipeline。テンプレート、Suite AI、tracker 連携を継続開発中。',
       role: '単独開発者',
+    },
+    nagi: {
+      title: 'NAGI · 凪',
+      hook: '個人ブランド hub — WebGL 水面エントリー、editorial depth、TipTap CMS、work case study、多言語記事。',
+      body: 'bubblechickenlab.com に必要なのはリンク集以上のもの — 記憶に残る入口と、静かに読めるコンテンツ層。NAGI（凪）はその hub：Surface は full-screen WebGL 水面、Depth は /work · /articles · /about、owner CMS は /edit。\n\nVite SPA + Three.js water shader の immersive entry と typography-first editorial layout。Supabase に articles · works · categories · subscribers；TipTap JSONB で長文 case study（SUNishop、KATA、Tower Zero など）。RLS で public read と editor write を分離；build-time prerender で crawler 向け HTML snapshot。\n\nbubblechickenlab product family の narrative 層 — portfolio · writing · case study archive。KATA は résumé tooling、Tower Zero は walk-in 3D resume。',
+      role: 'Founder & フルスタック開発',
+    },
+    'tower-zero': {
+      title: 'Tower Zero',
+      hook: 'Walk-in 3D ポートフォリオ — 各フロアが履歴書の一章。',
+      body: 'G Lobby — 入場と作者紹介。B2 Infrastructure — 基盤：技術スタックとソフトスキルが上層を支える。23 Factory — 四つの学期ライン、履修の組み立て。52 Laboratory — 各プロジェクト実験、状態と成果（今いるこの lab も含む）。99 Library & Archive — 資格と公開作品の記録。B10 Tech Centre — SNS リンクと履歴書印刷。R Roof — 連絡先と各作品への入口。\n\nReact + Three.js の正交 3D、三言語 UI、Day/Night テーマ。',
+      role: '単独開発 · デザイン',
+      credit:
+        'salieri009/resume2（SITE 009）— 正交ナビ、HUD レイアウト、カメラステーション、boot/transition 言語。ビジュアルシステムとコンテンツは Tower Zero オリジナル。',
     },
   },
   credentials: {

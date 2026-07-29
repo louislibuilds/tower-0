@@ -80,7 +80,7 @@ export const LAB_CHUNKS: ExhibitChunk[] = [
   },
   {
     id: 'lab-006',
-    slug: 'lab-006',
+    slug: 'nagi',
     code: '006',
     pos: [-0.2, 0, 0.4],
     size: { w: 0.46, d: 0.4, h: 0.36 },
@@ -89,7 +89,7 @@ export const LAB_CHUNKS: ExhibitChunk[] = [
   },
   {
     id: 'lab-007',
-    slug: 'lab-007',
+    slug: 'tower-zero',
     code: '007',
     pos: [0.2, 0, -0.45],
     size: { w: 0.46, d: 0.4, h: 0.36 },

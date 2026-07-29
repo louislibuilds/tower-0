@@ -13,7 +13,7 @@ Louis Li's Master of IT portfolio — a cyberpunk skyscraper by night, an archit
 | ------------ | ----------------- | ------------------------------------------------------------------------------- |
 | **Roof** `R` | Contact           | Email, GitHub, LinkedIn, Portfolio, NAGI, KATA                                  |
 | **99**       | Library & Archive | Credentials (Dean's List, degree, TSA) · library shelf (NAGI, KATA)             |
-| **52**       | Laboratory        | Eight lab suites — UniHack, SUNishop, NLP, VTuber MoCap, KATA (+ reserved bays) |
+| **52**       | Laboratory        | Eight lab suites — UniHack, SUNishop, NLP, VTuber MoCap, KATA, NAGI, Tower Zero (+ reserved bay) |
 | **23**       | Factory           | Academic timeline · four semester production lines (Area 01–04)                 |
 | **G**        | Lobby             | Welcome · thesis · about · stats                                                |
 | **B2**       | Infrastructure    | Tech stack · soft skills                                                        |
@@ -34,7 +34,8 @@ Routing is **path-based** (legacy `#/…` hashes redirect on load). Default prod
 | `/towerzero/23`              | Factory overview          |
 | `/towerzero/23/area-01`      | Factory · semester line 1 |
 | `/towerzero/52`              | Laboratory overview       |
-| `/towerzero/52/unihack-2026` | Lab suite (project slug)  |
+| `/towerzero/52/nagi` | Lab suite · NAGI personal site |
+| `/towerzero/52/tower-zero` | Lab suite · Tower Zero (this project) |
 | `/towerzero/99/library`      | Library                   |
 | `/towerzero/99/archive`      | Archive                   |
 | `/towerzero/99/library/nagi` | Library · focus item      |

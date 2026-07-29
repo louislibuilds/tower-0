@@ -16,8 +16,7 @@ export const labProjects: LabProject[] = [
     slug: 'unihack-2026',
     title: 'your·rock·is·coming',
     hook: 'Sydney tennis court discovery, weather-aware booking — built in 48 hours at UniHack 2026.',
-    role: 'Team Lead & Full-stack Developer',
-    team: 'UniHack 2026 cross-functional team',
+    role: 'Team Lead & Full-stack Developer (Team of 6)',
     stack: ['React', 'TypeScript', 'Express', 'Leaflet', 'Open-Meteo'],
     links: [
       { label: 'Case Study', url: 'https://www.bubblechickenlab.com/work/your-rock-is-coming' },
@@ -52,7 +51,7 @@ export const labProjects: LabProject[] = [
     slug: 'dl',
     title: 'VTuber MoCap',
     hook: 'Browser motion capture: webcam → MediaPipe → Kalidokit → VRM. TechFest 2026 · 95 HD.',
-    role: 'Software Dev · Productization · Team Coordination',
+    role: 'Software Dev · Productization · Team Coordination (Team of 3)',
     team: 'Ko-Chun Liao (framework), Junjie Niu (experiments)',
     course: '42028 Deep Learning & CNN (95 HD)',
     stack: ['MediaPipe', 'Kalidokit', 'VRM', 'ONNX', 'Three.js'],
@@ -73,7 +72,29 @@ export const labProjects: LabProject[] = [
     links: [
       { label: 'Case Study', url: 'https://www.bubblechickenlab.com/work/kata' },
       { label: 'Live', url: 'https://www.bubblechickenlab.com/kata' },
-      { label: 'GitHub', url: 'https://github.com/louislibuilds/kata.app' },
+    ],
+  },
+  {
+    slug: 'nagi',
+    title: 'NAGI · 凪',
+    hook: 'Personal brand hub — WebGL surface entry, TipTap CMS, work case studies, and multilingual writing.',
+    role: 'Founder & Full-Stack Developer',
+    stack: ['React', 'Three.js', 'WebGL', 'Supabase', 'TipTap', 'Vercel'],
+    links: [
+      { label: 'Case Study', url: 'https://www.bubblechickenlab.com/work/nagi' },
+      { label: 'Live', url: 'https://www.bubblechickenlab.com/' },
+    ],
+  },
+  {
+    slug: 'tower-zero',
+    title: 'Tower Zero',
+    hook: 'Walk-in 3D portfolio — each floor is one chapter of the résumé.',
+    role: 'Sole Developer · Designer',
+    stack: ['React 19', 'Three.js', 'R3F', 'GSAP', 'TypeScript', 'Vite'],
+    links: [
+      { label: 'Case Study', url: 'https://www.bubblechickenlab.com/work/tower-zero' },
+      { label: 'Live', url: 'https://www.bubblechickenlab.com/towerzero/' },
+      { label: 'GitHub', url: 'https://github.com/louislibuilds/tower-0' },
     ],
   },
 ]

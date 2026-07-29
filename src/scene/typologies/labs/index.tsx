@@ -9,8 +9,8 @@ export type LabTypologySlug =
   | 'nlp'
   | 'dl'
   | 'kata'
-  | 'lab-006'
-  | 'lab-007'
+  | 'nagi'
+  | 'tower-zero'
   | 'lab-008'
 
 const LaunchPadStation = lazy(() =>
@@ -26,6 +26,10 @@ const MocapStage = lazy(() => import('./MocapStage').then((m) => ({ default: m.M
 const DocumentFoundryStation = lazy(() =>
   import('./DocumentFoundryStation').then((m) => ({ default: m.DocumentFoundryStation })),
 )
+const NagiStation = lazy(() => import('./NagiStation').then((m) => ({ default: m.NagiStation })))
+const TowerZeroStation = lazy(() =>
+  import('./TowerZeroStation').then((m) => ({ default: m.TowerZeroStation })),
+)
 const EmptyLabStation = lazy(() =>
   import('./EmptyLabStation').then((m) => ({ default: m.EmptyLabStation })),
 )
@@ -36,8 +40,8 @@ const LAB_TYPOLOGY: Record<LabTypologySlug, ComponentType<TypologyProps>> = {
   nlp: InterviewBooth,
   dl: MocapStage,
   kata: DocumentFoundryStation,
-  'lab-006': EmptyLabStation,
-  'lab-007': EmptyLabStation,
+  nagi: NagiStation,
+  'tower-zero': TowerZeroStation,
   'lab-008': EmptyLabStation,
 }
 

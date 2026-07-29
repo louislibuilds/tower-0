@@ -87,8 +87,8 @@ export const LAB_BLUEPRINT_DIMS: Record<string, [number, number]> = {
   nlp: [5, 5],
   dl: [5, 5],
   kata: [5, 5],
-  'lab-006': [5, 5],
-  'lab-007': [5, 5],
+  nagi: [6, 5],
+  'tower-zero': [6, 5],
   'lab-008': [5, 5],
 }
 
