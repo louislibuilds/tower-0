@@ -7,7 +7,7 @@ import { getScenePalette } from '../scene/palette'
 interface TowerSilhouetteProps {
   activeId?: FloorId
   theme?: Theme
-  /** Poster mode — wider canvas for no-WebGL fallback backdrop */
+  /** Poster mode ??wider canvas for no-WebGL fallback backdrop */
   poster?: boolean
 }
 
@@ -54,16 +54,16 @@ export function TowerSilhouette({ activeId, theme: themeProp, poster = false }: 
   const dark = theme === 'dark'
   const activeIdx = resolvedActive ? LIT_FLOORS[resolvedActive] : 2
 
-  const bodyFront = dark ? '#2a3444' : pal.paper
-  const bodySide = dark ? '#1e2630' : pal.concrete
-  const bodyStroke = dark ? '#6ea8ff' : pal.graphite
-  const bandStroke = dark ? '#4a6080' : pal.concrete
-  const activeStroke = dark ? pal.chicken : pal.signal
-  const windowLit = dark ? '#f5c842' : pal.neon
-  const windowBasement = pal.signal
-  const windowOff = dark ? '#3a4555' : pal.concrete
-  const roofFill = dark ? '#3a7bd5' : pal.resin
-  const shaftFill = dark ? pal.chicken : pal.signal
+  const bodyFront = dark ? '#2a3444' : pal.bg
+  const bodySide = dark ? '#1e2630' : pal.mass
+  const bodyStroke = dark ? '#6ea8ff' : pal.fg
+  const bandStroke = dark ? '#4a6080' : pal.mass
+  const activeStroke = dark ? pal.warm : pal.accent
+  const windowLit = dark ? '#f5c842' : pal.glow
+  const windowBasement = pal.accent
+  const windowOff = dark ? '#3a4555' : pal.mass
+  const roofFill = dark ? '#3a7bd5' : pal.panel
+  const shaftFill = dark ? pal.warm : pal.accent
   const skyTop = dark ? '#121820' : '#eef2f6'
   const skyBottom = dark ? '#1a2430' : '#f8fafc'
 
@@ -86,7 +86,7 @@ export function TowerSilhouette({ activeId, theme: themeProp, poster = false }: 
         <rect width="160" height="420" fill="url(#tower-sky)" />
         <PerspectiveGrid color={pal.grid} opacity={dark ? 0.28 : 0.42} />
 
-        {/* Side face — subtle depth */}
+        {/* Side face ??subtle depth */}
         <polygon
           points="92,28 108,36 108,368 92,368"
           fill={bodySide}
@@ -146,9 +146,9 @@ export function TowerSilhouette({ activeId, theme: themeProp, poster = false }: 
               <text
                 x="22"
                 y={yBase - 18}
-                fill={lit ? pal.ink : pal.mute}
+                fill={lit ? pal.ink : pal.muted}
                 fontSize="7"
-                fontFamily="var(--font-mono, monospace)"
+                fontFamily="var(--tower-font-mono, monospace)"
                 textAnchor="end"
                 opacity={lit ? 1 : 0.65}
               >
@@ -164,7 +164,7 @@ export function TowerSilhouette({ activeId, theme: themeProp, poster = false }: 
           y1="368"
           x2="160"
           y2="368"
-          stroke={pal.graphite}
+          stroke={pal.fg}
           strokeWidth={1}
           opacity={0.55}
         />

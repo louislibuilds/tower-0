@@ -75,23 +75,23 @@ function useIdentityPlateMap(theme: Theme) {
   return tex
 }
 
-/** Identity plate mesh — mounted on 99F top front edge (R signage) */
+/** Identity plate mesh ??mounted on 99F top front edge (R signage) */
 export function IdentityPlate({
   theme,
   focus = false,
   muted = false,
 }: {
   theme: Theme
-  /** Roof selected — full prominence */
+  /** Roof selected ??full prominence */
   focus?: boolean
-  /** 99F selected — fade so vault floor reads first */
+  /** 99F selected ??fade so vault floor reads first */
   muted?: boolean
 }) {
   const m = typologyMat(theme, '#2F6BFF', focus)
   const plateMap = useIdentityPlateMap(theme)
   const frameEdges = useMemo(() => new THREE.EdgesGeometry(new THREE.BoxGeometry(0.38, 0.48, 0.018)), [])
   const plateOpacity = muted ? (theme === 'dark' ? 0.16 : 0.1) : 1
-  const frameColor = focus ? m.pal.signal : m.pal.graphite
+  const frameColor = focus ? m.pal.accent : m.pal.fg
   const frameOpacity = muted ? 0.08 : focus ? 0.95 : 0.72
   const ghosted = muted && !focus
 

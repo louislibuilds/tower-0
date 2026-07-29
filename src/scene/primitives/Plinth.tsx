@@ -14,7 +14,7 @@ interface PlinthProps {
   children?: React.ReactNode
 }
 
-/** Exhibit plinth — resin slab with signal boundary on hover. */
+/** Exhibit plinth ??resin slab with signal boundary on hover. */
 export function Plinth({
   width,
   depth,
@@ -54,12 +54,12 @@ export function Plinth({
     >
       <mesh position={[0, y, 0]}>
         <boxGeometry args={[width, thickness, depth]} />
-        <meshStandardMaterial color={pal.resin} transparent opacity={0.85} />
-        <InkEdges lineWidth={hover ? 2 : 1} color={hover ? pal.signal : pal.graphite} />
+        <meshStandardMaterial color={pal.panel} transparent opacity={0.85} />
+        <InkEdges lineWidth={hover ? 2 : 1} color={hover ? pal.accent : pal.fg} />
       </mesh>
       <Line
         points={boundary}
-        color={hover ? pal.signal : pal.graphite}
+        color={hover ? pal.accent : pal.fg}
         lineWidth={hover ? 2 : 1}
         transparent
         opacity={hover ? 1 : 0.65}

@@ -6,7 +6,7 @@ export interface TypologyProps {
   accent: string
   entered: boolean
   active?: boolean
-  /** Non-active sibling pod — ghost fill, no emissive */
+  /** Non-active sibling pod ??ghost fill, no emissive */
   thin?: boolean
   /** Accepted for RoomProps compatibility */
   hover?: boolean
@@ -21,15 +21,15 @@ export function typologyMat(theme: Theme, _accent: string, entered: boolean) {
   const hi = typologyHighlight(theme, lit)
 
   return {
-    body: pal.resin,
-    alt: pal.concrete,
-    edge: pal.graphite,
+    body: pal.panel,
+    alt: pal.mass,
+    edge: pal.fg,
     pal,
     warm: hi.warm,
     cool: hi.cool,
     emissiveWarm: hi.emissiveWarm,
     emissiveCool: hi.emissiveCool,
-    emissive: entered && dark ? pal.neonBright : '#000000',
+    emissive: entered && dark ? pal.glowBright : '#000000',
     emissiveIntensity: entered && dark ? 0.32 : 0,
     metalness: dark ? 0.55 : 0.1,
     roughness: dark ? 0.4 : 0.85,

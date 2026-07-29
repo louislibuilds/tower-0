@@ -3,7 +3,7 @@ import { ghostLit, THIN_INK, THIN_MESH_OPACITY } from '../ghostStyle'
 import { TypologyBpMesh } from '../TypologyBpMesh'
 import { typologyMat, type TypologyProps } from '../types'
 
-/** 005 · Document Foundry — paper stack + printer + filing */
+/** 005 · Document Foundry ??paper stack + printer + filing */
 export function DocumentFoundryStation({ theme, accent, entered, active, thin }: TypologyProps) {
   const m = typologyMat(theme, accent, entered)
   const lit = ghostLit(thin, entered, active)
@@ -49,9 +49,9 @@ export function DocumentFoundryStation({ theme, accent, entered, active, thin }:
         emissive={lit ? accent : undefined}
         emissiveIntensity={0.12}
       />
-      <TypologyBpMesh box={chair} color={m.pal.concrete} thin={thin} />
-      <TypologyBpMesh box={chairBack} color={m.pal.resin} thin={thin} />
-      <TypologyBpMesh box={sideStack} color={m.pal.concrete} thin={thin} />
+      <TypologyBpMesh box={chair} color={m.pal.mass} thin={thin} />
+      <TypologyBpMesh box={chairBack} color={m.pal.panel} thin={thin} />
+      <TypologyBpMesh box={sideStack} color={m.pal.mass} thin={thin} />
       {Array.from({ length: 4 }, (_, i) => {
         const stack = bpBox(0.28 + i * 0.08, 2.58, 0.58 + i * 0.12, 0.55, 0.55, 0.11)
         return (
@@ -68,7 +68,7 @@ export function DocumentFoundryStation({ theme, accent, entered, active, thin }:
       <mesh position={[0, 0.03, 0.05]} raycast={() => null}>
         <boxGeometry args={[0.07, 0.018, 0.04]} />
         <meshStandardMaterial
-          color={ghost ? THIN_INK : lit ? m.warm : m.pal.concrete}
+          color={ghost ? THIN_INK : lit ? m.warm : m.pal.mass}
           emissive={ghost || !lit ? '#000000' : m.warm}
           emissiveIntensity={ghost ? 0 : lit ? 0.45 : 0}
           transparent={ghost}

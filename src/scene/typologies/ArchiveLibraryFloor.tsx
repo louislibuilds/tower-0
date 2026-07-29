@@ -33,7 +33,7 @@ interface ArchiveLibraryFloorProps extends TypologyProps {
   onCredentialClick: (slug: string) => void
 }
 
-/** 99 · Library + Archive pods — corner suites with zoom morph */
+/** 99 · Library + Archive pods ??corner suites with zoom morph */
 export function ArchiveLibraryFloor(props: ArchiveLibraryFloorProps) {
   const {
     theme,
@@ -55,7 +55,7 @@ export function ArchiveLibraryFloor(props: ArchiveLibraryFloorProps) {
   const focusScale = focusPodScale(6, 5, plate)
 
   return (
-    <FloorPlate width={plate.w} depth={plate.d} color={m.pal.graphite} floorColor={m.body}>
+    <FloorPlate width={plate.w} depth={plate.d} color={m.pal.fg} floorColor={m.body}>
       {(['library', 'archive'] as const).map((slug) => {
         const chunk = VAULT_CHUNKS[slug]
         const active = libraryRoomSlug === slug
@@ -261,7 +261,7 @@ function VaultMorphZone({
                     position={box.position}
                     size={box.size}
                     accent={accent}
-                    guideColor={m.pal.graphite}
+                    guideColor={m.pal.fg}
                     active={selectedBookSlug === book.slug}
                     hovered={hoveredBookSlug === book.slug}
                     onClick={() => onBookClick(book.slug)}
@@ -293,7 +293,7 @@ function VaultMorphZone({
                     position={box.position}
                     size={box.size}
                     accent={accent}
-                    guideColor={m.pal.graphite}
+                    guideColor={m.pal.fg}
                     active={selectedCredentialSlug === cred.slug}
                     hovered={hoveredCredentialSlug === cred.slug}
                     onClick={() => onCredentialClick(cred.slug)}

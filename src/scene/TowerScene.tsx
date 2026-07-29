@@ -65,7 +65,7 @@ function SceneContent(
   },
 ) {
   const { phase, bootDone } = useSite()
-  const bg = getScenePalette(props.theme).paper
+  const bg = getScenePalette(props.theme).bg
   return (
     <>
       <InvalidateOnChange

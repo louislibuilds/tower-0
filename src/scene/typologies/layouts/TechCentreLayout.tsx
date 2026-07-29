@@ -92,11 +92,11 @@ function TechCentrePod({
       ))}
       <BpMesh box={hallBox(bay.x + podOx, bay.y + podOy, bay.z, bay.w, bay.d, bay.h)} color={m.alt} />
       {B10_POD_PRINT_CRATES.map(([lx, ly], i) => (
-        <BpMesh key={i} box={hallBox(lx + podOx, ly + podOy, 0, 0.62, 0.62, 0.44)} color={m.pal.concrete} />
+        <BpMesh key={i} box={hallBox(lx + podOx, ly + podOy, 0, 0.62, 0.62, 0.44)} color={m.pal.mass} />
       ))}
       <BpMesh
         box={hallBox(led.x + podOx, led.y + podOy, led.z, led.w, led.d, led.h)}
-        color={lit ? m.warm : m.pal.concrete}
+        color={lit ? m.warm : m.pal.mass}
         emissive={lit ? m.warm : '#000000'}
         emissiveIntensity={lit ? 0.45 : 0}
       />
@@ -104,7 +104,7 @@ function TechCentrePod({
   )
 }
 
-/** B10 · 16 seats (4×pod), single back-wall screen */
+/** B10 · 16 seats (4?pod), single back-wall screen */
 export function TechCentreLayout({
   theme,
   accent,
@@ -120,12 +120,12 @@ export function TechCentreLayout({
     <group scale={scale}>
       <BpMesh
         box={hallBox(B10_FLOOR_SLAB.x, B10_FLOOR_SLAB.y, B10_FLOOR_SLAB.z, B10_FLOOR_SLAB.w, B10_FLOOR_SLAB.d, B10_FLOOR_SLAB.h)}
-        color={m.pal.graphite}
+        color={m.pal.fg}
       />
 
       <BpMesh
         box={hallBox(wall.x, wall.y, wall.z, wall.w, wall.d, wall.h)}
-        color={lit ? accent : m.pal.resin}
+        color={lit ? accent : m.pal.panel}
         emissive={lit ? accent : '#000000'}
         emissiveIntensity={lit ? 0.14 : 0}
       />

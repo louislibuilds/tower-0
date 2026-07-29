@@ -13,7 +13,7 @@ interface AssemblyLineProps extends TypologyProps {
   onHoverStop?: (stop: number | null) => void
 }
 
-/** 23 · Assembly Line — horizontal timeline with assembly arms */
+/** 23 · Assembly Line ??horizontal timeline with assembly arms */
 export function AssemblyLine({
   theme,
   accent,
@@ -28,7 +28,7 @@ export function AssemblyLine({
   const plate = floorPlateSize('23')
 
   return (
-    <FloorPlate width={plate.w} depth={plate.d} color={m.pal.graphite} floorColor={m.body}>
+    <FloorPlate width={plate.w} depth={plate.d} color={m.pal.fg} floorColor={m.body}>
       <FactoryTimelineLayout
         theme={theme}
         accent={accent}

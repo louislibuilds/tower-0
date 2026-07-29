@@ -36,7 +36,7 @@ interface BenchRowProps extends TypologyProps {
   onLabRoomHover: (slug: string | null) => void
 }
 
-/** 52 · Laboratory — five suites with zoom morph (mirrors ArchiveLibraryFloor 99F) */
+/** 52 · Laboratory ??five suites with zoom morph (mirrors ArchiveLibraryFloor 99F) */
 export function BenchRow({
   theme,
   accent,
@@ -51,7 +51,7 @@ export function BenchRow({
   const plate = floorPlateSize('52')
 
   return (
-    <FloorPlate width={plate.w} depth={plate.d} color={m.pal.graphite} floorColor={m.body}>
+    <FloorPlate width={plate.w} depth={plate.d} color={m.pal.fg} floorColor={m.body}>
       {LAB_CHUNKS.map((chunk) => {
         const slug = chunk.slug
         const active = labRoomSlug === slug

@@ -58,10 +58,10 @@ export function FlowTrace({
   return (
     <group>
       {restRuns.map((run, i) => (
-        <Line key={i} points={run} color={pal.graphite} lineWidth={1} transparent opacity={0.45} />
+        <Line key={i} points={run} color={pal.fg} lineWidth={1} transparent opacity={0.45} />
       ))}
       {active && progress > 0.001 && (
-        <Line points={traced} color={pal.signal} lineWidth={2} transparent opacity={0.95} />
+        <Line points={traced} color={pal.accent} lineWidth={2} transparent opacity={0.95} />
       )}
     </group>
   )

@@ -574,14 +574,14 @@ export function FactoryTimelineLayout({
   return (
     <group scale={scale}>
       {conveyorRollers.map((box, i) => (
-        <TypologyBpMesh key={`roller-${i}`} box={box} color={m.pal.concrete} metalness={0.15} />
+        <TypologyBpMesh key={`roller-${i}`} box={box} color={m.pal.mass} metalness={0.15} />
       ))}
 
       {conveyorGuides.map((pts, i) => (
         <Line
           key={`guide-${i}`}
           points={pts}
-          color={m.pal.mute}
+          color={m.pal.muted}
           lineWidth={1}
           transparent
           opacity={0.35}

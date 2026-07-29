@@ -3,7 +3,7 @@ import { WireBox } from '../../primitives/WireBox'
 import { TypologyBpMesh } from '../TypologyBpMesh'
 import { typologyMat, type TypologyProps } from '../types'
 
-/** Reserved lab suite — floor plate and empty bench volume only */
+/** Reserved lab suite ??floor plate and empty bench volume only */
 export function EmptyLabStation({
   theme,
   accent,
@@ -24,7 +24,7 @@ export function EmptyLabStation({
         <WireBox
           position={bench.position}
           size={bench.size}
-          color={m.pal.mute}
+          color={m.pal.muted}
           fillOpacity={active ? 0.05 : 0.02}
           lineOpacity={active ? 0.72 : 0.38}
           passive

@@ -53,7 +53,7 @@ function InkFootprintDemo() {
     return partialPolyline(full, ink)
   }, [ink])
 
-  return <Line points={pts} color={pal.signal} lineWidth={2} transparent opacity={0.95} />
+  return <Line points={pts} color={pal.accent} lineWidth={2} transparent opacity={0.95} />
 }
 
 function InkEdgesDemo() {
@@ -61,7 +61,7 @@ function InkEdgesDemo() {
   return (
     <mesh position={[0, 0.35, 0]}>
       <boxGeometry args={[0.7, 0.7, 0.7]} />
-      <meshStandardMaterial color={pal.resin} transparent opacity={0.35} />
+      <meshStandardMaterial color={pal.panel} transparent opacity={0.35} />
       <InkEdges lineWidth={1.5} />
     </mesh>
   )
@@ -74,8 +74,8 @@ function PlinthDemo() {
     <Plinth width={0.9} depth={0.6} hover={hover} onHover={setHover}>
       <mesh>
         <boxGeometry args={[0.35, 0.35, 0.35]} />
-        <meshStandardMaterial color={hover ? pal.signal : pal.concrete} />
-        <InkEdges color={hover ? pal.signal : pal.graphite} />
+        <meshStandardMaterial color={hover ? pal.accent : pal.mass} />
+        <InkEdges color={hover ? pal.accent : pal.fg} />
       </mesh>
     </Plinth>
   )
@@ -156,7 +156,7 @@ export function PrimitiveGalleryCanvas({ night }: { night: boolean }) {
   return (
     <div className="typology-gallery__canvas">
       <Canvas orthographic frameloop="always" dpr={[1, 2]} gl={{ antialias: true }}>
-        <color attach="background" args={[pal.paper]} />
+        <color attach="background" args={[pal.bg]} />
         <SiteLights theme="dark" />
         <PaletteProvider palette={pal}>
           <GalleryContent night={night} />

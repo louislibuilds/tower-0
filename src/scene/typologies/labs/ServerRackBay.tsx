@@ -3,7 +3,7 @@ import { ghostLit } from '../ghostStyle'
 import { TypologyBpMesh } from '../TypologyBpMesh'
 import { typologyMat, type TypologyProps } from '../types'
 
-/** 002 · Container Bay — vertical rack + conveyor desk + parcels */
+/** 002 · Container Bay ??vertical rack + conveyor desk + parcels */
 export function ServerRackBay({ theme, accent, entered, active, thin }: TypologyProps) {
   const m = typologyMat(theme, accent, entered)
   const lit = ghostLit(thin, entered, active)
@@ -35,7 +35,7 @@ export function ServerRackBay({ theme, accent, entered, active, thin }: Typology
             key={i}
             box={tray}
             thin={thin}
-            color={alt && lit ? accent : m.pal.concrete}
+            color={alt && lit ? accent : m.pal.mass}
             emissive={alt && lit ? accent : undefined}
             emissiveIntensity={0.2}
           />
@@ -44,11 +44,11 @@ export function ServerRackBay({ theme, accent, entered, active, thin }: Typology
       <TypologyBpMesh box={bench} color={m.body} thin={thin} />
       <TypologyBpMesh box={conveyorA} thin={thin} color={lit ? accent : m.pal.glass} emissive={lit ? accent : undefined} emissiveIntensity={0.15} />
       <TypologyBpMesh box={conveyorB} thin={thin} color={lit ? accent : m.pal.glass} emissive={lit ? accent : undefined} emissiveIntensity={0.12} />
-      <TypologyBpMesh box={kiosk} color={m.pal.resin} thin={thin} />
+      <TypologyBpMesh box={kiosk} color={m.pal.panel} thin={thin} />
       <TypologyBpMesh
         box={parcel}
         thin={thin}
-        color={lit ? m.warm : m.pal.concrete}
+        color={lit ? m.warm : m.pal.mass}
         emissive={lit ? m.warm : undefined}
         emissiveIntensity={0.25}
       />

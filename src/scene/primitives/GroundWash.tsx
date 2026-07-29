@@ -8,7 +8,7 @@ interface GroundWashProps {
   opacity?: number
 }
 
-/** Broad authored darkening under footprint — building sits in cast concrete. */
+/** Broad authored darkening under footprint ??building sits in cast concrete. */
 export function GroundWash({ position = [0, 0.004, 0], width, depth, opacity = 0.5 }: GroundWashProps) {
   const tex = useGroundWashTexture()
   const pal = usePalette()
@@ -17,7 +17,7 @@ export function GroundWash({ position = [0, 0.004, 0], width, depth, opacity = 0
       <planeGeometry args={[width, depth]} />
       <meshBasicMaterial
         map={tex}
-        color={pal.graphite}
+        color={pal.fg}
         transparent
         opacity={opacity}
         depthWrite={false}

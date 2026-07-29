@@ -136,7 +136,7 @@ function AutoDoorBay({
   )
 }
 
-/** G-floor +Z facade — doors aligned to escalator · counter · security booth */
+/** G-floor +Z facade ??doors aligned to escalator · counter · security booth */
 export function LobbyAutoDoors({
   bandWidth: w,
   bandHeight: h,
@@ -158,8 +158,8 @@ export function LobbyAutoDoors({
   const transomBottom = panelY + panelH / 2 + headerH
   const transomH = ceilingY - transomBottom - h * 0.03
 
-  const frameColor = night ? pal.neon : active ? pal.bpEdge : pal.graphite
-  const glassColor = night ? pal.bpFace : pal.resin
+  const frameColor = night ? pal.glow : active ? pal.bpEdge : pal.fg
+  const glassColor = night ? pal.bpFace : pal.panel
   const skipRay = () => null
 
   const firstDoorLeft = bays[0].centerX - bays[0].bayW / 2
@@ -167,7 +167,7 @@ export function LobbyAutoDoors({
   const leftSpandrelW = firstDoorLeft - facade.facadeLeft
   const rightSpandrelW = facade.facadeRight - lastDoorRight
 
-  /** Curtain-wall spandrel beside the three door bays — keep glassy, not concrete slabs */
+  /** Curtain-wall spandrel beside the three door bays ??keep glassy, not concrete slabs */
   const spandrelMat = {
     color: glassColor,
     transparent: true as const,

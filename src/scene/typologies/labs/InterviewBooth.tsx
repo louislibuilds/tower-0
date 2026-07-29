@@ -3,7 +3,7 @@ import { ghostLit, THIN_INK, THIN_MESH_OPACITY } from '../ghostStyle'
 import { TypologyBpMesh } from '../TypologyBpMesh'
 import { typologyMat, type TypologyProps } from '../types'
 
-/** 003 · Interview Booth — partition + desk + mic + waveform + seat */
+/** 003 · Interview Booth ??partition + desk + mic + waveform + seat */
 export function InterviewBooth({ theme, accent, entered, active, thin }: TypologyProps) {
   const m = typologyMat(theme, accent, entered)
   const lit = ghostLit(thin, entered, active)
@@ -24,8 +24,8 @@ export function InterviewBooth({ theme, accent, entered, active, thin }: Typolog
       <TypologyBpMesh box={partition} thin={thin} color={lit ? accent : m.alt} emissive={lit ? accent : undefined} emissiveIntensity={0.12} />
       <TypologyBpMesh box={desk} color={m.body} thin={thin} />
       <TypologyBpMesh box={monitor} thin={thin} color={lit ? accent : m.pal.glass} emissive={lit ? accent : undefined} emissiveIntensity={0.2} />
-      <TypologyBpMesh box={chair} color={m.pal.concrete} thin={thin} />
-      <TypologyBpMesh box={chairBack} color={m.pal.resin} thin={thin} />
+      <TypologyBpMesh box={chair} color={m.pal.mass} thin={thin} />
+      <TypologyBpMesh box={chairBack} color={m.pal.panel} thin={thin} />
       <TypologyBpMesh box={lampPole} color={m.edge} thin={thin} metalness={0.85} />
       <TypologyBpMesh box={lampHead} color={m.body} thin={thin} />
       <mesh position={[0.03, 0.1, 0.045]} raycast={() => null}>

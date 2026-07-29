@@ -4,7 +4,7 @@ import * as THREE from 'three'
 import { usePalette } from './InkEdges'
 
 export interface StationCalloutProps {
-  /** Short station code — e.g. 001, LIB, 52 */
+  /** Short station code ??e.g. 001, LIB, 52 */
   code: string
   /** One-line title; detail lives in ExhibitOverlay */
   title: string
@@ -16,14 +16,14 @@ export interface StationCalloutProps {
   offset?: [number, number, number]
   /** Band-edge labels: no leader line */
   edge?: boolean
-  /** Wall certificate hover — solid card, wrapped title */
+  /** Wall certificate hover ??solid card, wrapped title */
   credential?: boolean
-  /** Floor overview — slightly larger type, leader to station top */
+  /** Floor overview ??slightly larger type, leader to station top */
   overview?: boolean
 }
 
 /**
- * Architectural station callout — paper card + optional leader line.
+ * Architectural station callout ??paper card + optional leader line.
  * Overview only; hide when zooming into room (ExhibitOverlay carries narrative).
  */
 export function StationCallout({
@@ -42,7 +42,7 @@ export function StationCallout({
   const [ax, ay, az] = [0, anchorY, 0]
   const [lx, ly, lz] = [offset[0], anchorY + offset[1], offset[2]]
 
-  const lineColor = active ? pal.signal : pal.mute
+  const lineColor = active ? pal.accent : pal.muted
   const points = useMemo(
     () => [new THREE.Vector3(ax, ay, az), new THREE.Vector3(lx, ly, lz)],
     [ax, ay, az, lx, ly, lz],

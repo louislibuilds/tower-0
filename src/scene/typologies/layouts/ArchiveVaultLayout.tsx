@@ -79,7 +79,7 @@ export function ArchiveVaultLayout({
           <Line
             key={key}
             points={[new THREE.Vector3(...seg[0]), new THREE.Vector3(...seg[1])]}
-            color={lit ? accent : m.pal.graphite}
+            color={lit ? accent : m.pal.fg}
             lineWidth={1}
             transparent
             opacity={0.55}
@@ -100,14 +100,14 @@ export function ArchiveVaultLayout({
       <BpMesh
         box={stackA}
         thin={thin}
-        color={lit ? m.warm : m.pal.concrete}
+        color={lit ? m.warm : m.pal.mass}
         emissive={lit ? m.warm : undefined}
         emissiveIntensity={0.08}
       />
       <BpMesh
         box={stackB}
         thin={thin}
-        color={lit ? m.warm : m.pal.concrete}
+        color={lit ? m.warm : m.pal.mass}
         emissive={lit ? m.warm : undefined}
         emissiveIntensity={0.08}
       />

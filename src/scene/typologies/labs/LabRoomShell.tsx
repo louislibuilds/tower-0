@@ -25,14 +25,14 @@ export function LabRoomShell({
         box={bpBox(0, 0, 0, roomW, 0.12, 2.8, roomW, roomD)}
         color={shellFill}
         thin={thin}
-        emissive={dark && !thin ? m.pal.neon : undefined}
+        emissive={dark && !thin ? m.pal.glow : undefined}
         emissiveIntensity={dark && !thin ? 0.08 : 0}
       />
       <TypologyBpMesh
         box={bpBox(0, 0, 0, 0.12, roomD, 2.8, roomW, roomD)}
         color={shellFill}
         thin={thin}
-        emissive={dark && !thin ? m.pal.neon : undefined}
+        emissive={dark && !thin ? m.pal.glow : undefined}
         emissiveIntensity={dark && !thin ? 0.06 : 0}
       />
     </>

@@ -28,6 +28,9 @@ import {
   factoryAreaSlug,
 } from '../building/siteRoute'
 
+import { applyTowerTokens } from '../design/applyTokens'
+import { DEFAULT_FONT_STACK } from '../design/tokens'
+
 import { printResumePdf, resumeLocaleForSite } from '../data/resumePrint'
 
 import { FACTORY_STOPS } from '../scene/factoryStops'
@@ -491,7 +494,11 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
     document.documentElement.dataset.theme = theme
 
+    document.documentElement.dataset.font = DEFAULT_FONT_STACK
+
     document.documentElement.lang = HTML_LANG[locale]
+
+    applyTowerTokens(theme, DEFAULT_FONT_STACK)
 
   }, [theme, locale])
 

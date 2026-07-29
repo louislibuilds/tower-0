@@ -10,34 +10,23 @@ import { useSite } from '../../context/SiteContext'
 import type { Locale } from '../../i18n/strings'
 import { getFloor } from '../../building/program'
 
-/** Top-right — lang + Day/Night toggle */
+/** Top-right — lang + Day/Night toggle (+ mobile drawer triggers live in footer) */
 export function TowerToolbar() {
-  const { strings, theme, toggleTheme, locale, setLocale, localeLabels, bootDone, startExit, phase, openResumePreview, floorId, viewMode } = useSite()
-  const mobile = useMobileShell()
-  const showExhibitTrigger = bootDone && phase !== 'exit' && phase !== 'void' && viewMode !== 'tower' && floorId
+  const {
+    strings,
+    theme,
+    toggleTheme,
+    locale,
+    setLocale,
+    localeLabels,
+    bootDone,
+    startExit,
+    phase,
+    openResumePreview,
+  } = useSite()
 
   return (
     <div className="tower-toolbar">
-      {mobile?.layout === 'mobile' && (
-        <>
-          <button
-            type="button"
-            className="tower-toolbar-btn tower-toolbar-drawer"
-            onClick={mobile.toggleRailDrawer}
-          >
-            {strings.site.floors}
-          </button>
-          {showExhibitTrigger && (
-            <button
-              type="button"
-              className="tower-toolbar-btn tower-toolbar-drawer"
-              onClick={mobile.toggleExhibitDrawer}
-            >
-              {strings.site.details}
-            </button>
-          )}
-        </>
-      )}
       {bootDone && phase !== 'exit' && phase !== 'void' && (
         <button type="button" className="tower-toolbar-btn tower-toolbar-exit" onClick={startExit}>
           {strings.site.rollDrawing}
@@ -219,6 +208,40 @@ export function TowerRail() {
 
       <p className="tower-rail-hint">{strings.site.hint}</p>
     </aside>
+  )
+}
+
+/** Mobile footer — Floors (left) · Details (right) */
+export function TowerMobileFooter() {
+  const { strings, bootDone, phase, floorId, viewMode } = useSite()
+  const mobile = useMobileShell()
+
+  if (!mobile || mobile.layout !== 'mobile') return null
+  if (!bootDone || phase === 'exit' || phase === 'void') return null
+
+  const showDetails = viewMode !== 'tower' && !!floorId
+
+  return (
+    <footer className="tower-mobile-footer" aria-label="Navigation">
+      <button
+        type="button"
+        className="tower-toolbar-btn tower-mobile-footer__btn tower-mobile-footer__btn--floors"
+        onClick={mobile.toggleRailDrawer}
+        aria-expanded={mobile.railDrawerOpen}
+      >
+        {strings.site.floors}
+      </button>
+      {showDetails && (
+        <button
+          type="button"
+          className="tower-toolbar-btn tower-mobile-footer__btn tower-mobile-footer__btn--details"
+          onClick={mobile.toggleExhibitDrawer}
+          aria-expanded={mobile.exhibitDrawerOpen}
+        >
+          {strings.site.details}
+        </button>
+      )}
+    </footer>
   )
 }
 

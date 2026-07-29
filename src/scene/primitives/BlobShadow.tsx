@@ -8,7 +8,7 @@ interface BlobShadowProps {
   opacity?: number
 }
 
-/** Authored maquette shadow — soft, zero runtime shadow map cost. */
+/** Authored maquette shadow ??soft, zero runtime shadow map cost. */
 export function BlobShadow({ position, width, depth, opacity = 0.3 }: BlobShadowProps) {
   const tex = useSoftShadowTexture()
   const pal = usePalette()
@@ -17,7 +17,7 @@ export function BlobShadow({ position, width, depth, opacity = 0.3 }: BlobShadow
       <planeGeometry args={[width, depth]} />
       <meshBasicMaterial
         map={tex}
-        color={pal.graphite}
+        color={pal.fg}
         transparent
         opacity={opacity}
         depthWrite={false}

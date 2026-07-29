@@ -22,7 +22,7 @@ export function StationFootprint({
   thin?: boolean
 }) {
   const pal = getScenePalette(theme)
-  const edge = thin ? pal.graphite : active ? accent : pal.graphite
+  const edge = thin ? pal.fg : active ? accent : pal.fg
   const fill = thin ? 0.015 : active ? 0.12 : 0.07
   const y = 0.008
 
@@ -45,7 +45,7 @@ export function StationFootprint({
         position={[0, y, 0]}
         color={edge}
         fillOpacity={fill}
-        fillColor={pal.resin}
+        fillColor={pal.panel}
         passive
         lineOpacity={thin ? 0.06 : active ? 0.95 : 0.7}
       />

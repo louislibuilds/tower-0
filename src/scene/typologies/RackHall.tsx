@@ -12,7 +12,7 @@ export function RackHall({ theme, accent, entered, active }: TypologyProps) {
   const roomScale = blueprintFitScale(B10_ROOM_W, B10_ROOM_D, { w: plate.w * 0.88, d: plate.d * 0.88 }, 0.95)
 
   return (
-    <FloorPlate width={plate.w} depth={plate.d} color={m.pal.graphite} floorColor={m.body} variant="grid">
+    <FloorPlate width={plate.w} depth={plate.d} color={m.pal.fg} floorColor={m.body} variant="grid">
       <group position={[0, 0.01, 0]} scale={roomScale}>
         <TechCentreLayout theme={theme} accent={accent} entered={entered} active={lit} />
       </group>

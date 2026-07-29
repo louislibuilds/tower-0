@@ -3,7 +3,7 @@ import { ghostLit } from '../ghostStyle'
 import { TypologyBpMesh } from '../TypologyBpMesh'
 import { typologyMat, type TypologyProps } from '../types'
 
-/** 004 · Capture Stage — green screen + ring light + tripod + monitor stack */
+/** 004 · Capture Stage ??green screen + ring light + tripod + monitor stack */
 export function MocapStage({
   theme,
   accent,
@@ -14,7 +14,7 @@ export function MocapStage({
 }: TypologyProps & { showShell?: boolean }) {
   const m = typologyMat(theme, accent, entered)
   const lit = ghostLit(thin, entered, active)
-  const green = lit ? accent : m.pal.concrete
+  const green = lit ? accent : m.pal.mass
 
   const backdrop = bpBox(0.3, 0.15, 0.25, 3.6, 0.07, 2.4)
   const tripod = bpBox(2.1, 2.6, 0, 0.12, 0.12, 1.5)
@@ -45,8 +45,8 @@ export function MocapStage({
       <TypologyBpMesh box={monitorBar} thin={thin} color={lit ? accent : m.pal.glass} emissive={lit ? accent : undefined} emissiveIntensity={0.15} />
       <TypologyBpMesh box={monitor} color={m.pal.ink} thin={thin} />
       <TypologyBpMesh box={desk} color={m.body} thin={thin} />
-      <TypologyBpMesh box={chair} color={m.pal.concrete} thin={thin} />
-      <TypologyBpMesh box={chairBack} color={m.pal.resin} thin={thin} />
+      <TypologyBpMesh box={chair} color={m.pal.mass} thin={thin} />
+      <TypologyBpMesh box={chairBack} color={m.pal.panel} thin={thin} />
     </group>
   )
 }

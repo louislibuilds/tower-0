@@ -16,7 +16,7 @@ export interface FactoryTimelineRailProps {
   hidden?: boolean
 }
 
-/** L1 timeline datum — one hairline tying all semester stops + tick marks. */
+/** L1 timeline datum ??one hairline tying all semester stops + tick marks. */
 export function FactoryTimelineRail({ hidden = false }: FactoryTimelineRailProps) {
   const pal = usePalette()
 
@@ -45,7 +45,7 @@ export function FactoryTimelineRail({ hidden = false }: FactoryTimelineRailProps
     <group>
       <Line
         points={spine}
-        color={pal.graphite}
+        color={pal.fg}
         lineWidth={1.2}
         transparent
         opacity={0.88}
@@ -54,7 +54,7 @@ export function FactoryTimelineRail({ hidden = false }: FactoryTimelineRailProps
         <Line
           key={i}
           points={pts}
-          color={pal.graphite}
+          color={pal.fg}
           lineWidth={1}
           transparent
           opacity={0.72}
@@ -64,7 +64,7 @@ export function FactoryTimelineRail({ hidden = false }: FactoryTimelineRailProps
   )
 }
 
-/** Scene Y of the shared timeline datum (after blueprint → meters). */
+/** Scene Y of the shared timeline datum (after blueprint ??meters). */
 export function factoryTimelineSceneY() {
   return bpPoint(0, 1.5, FACTORY_TIMELINE_BP_Z, ROOM_W, ROOM_D)[1]
 }

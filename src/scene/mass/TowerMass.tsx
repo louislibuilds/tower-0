@@ -11,13 +11,13 @@ interface TowerMassProps {
   extrude: number
   theme: Theme
   showGroundGrid?: boolean
-  /** Hide poured concrete / wash (legacy — basement floors now use transparent grid plates) */
+  /** Hide poured concrete / wash (legacy ??basement floors now use transparent grid plates) */
   hideSolidGround?: boolean
   footprintW: number
   footprintD: number
 }
 
-/** Boot-layer massing — footprint ink, ground grid, poured ground */
+/** Boot-layer massing ??footprint ink, ground grid, poured ground */
 export function TowerMass({
   ink,
   extrude,
@@ -56,13 +56,13 @@ export function TowerMass({
       )}
 
       {footprint.length >= 2 && (
-        <Line points={footprint} color={pal.signal} lineWidth={1.5} transparent opacity={ink} />
+        <Line points={footprint} color={pal.accent} lineWidth={1.5} transparent opacity={ink} />
       )}
 
       {!hideSolidGround && foundation > 0.2 && (
         <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.008 * foundation, 0]} raycast={() => null}>
           <planeGeometry args={[footprintW * foundation, footprintD * foundation]} />
-          <meshStandardMaterial color={pal.concrete} transparent opacity={0.35 * foundation} />
+          <meshStandardMaterial color={pal.mass} transparent opacity={0.35 * foundation} />
         </mesh>
       )}
     </group>

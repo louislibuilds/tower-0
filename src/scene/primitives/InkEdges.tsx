@@ -17,7 +17,7 @@ export function usePalette(): ScenePalette {
   return p
 }
 
-/** Resting edge ink on a mesh — line survives when fill fades. */
+/** Resting edge ink on a mesh ??line survives when fill fades. */
 export function InkEdges({
   threshold = 15,
   lineWidth = 1,
@@ -29,6 +29,6 @@ export function InkEdges({
 }) {
   const pal = usePalette()
   const override = useContext(EdgeInkContext)
-  const ink = color ?? override ?? pal.graphite
+  const ink = color ?? override ?? pal.fg
   return <Edges threshold={threshold} color={ink} lineWidth={lineWidth} />
 }

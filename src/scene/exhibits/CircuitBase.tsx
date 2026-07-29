@@ -14,8 +14,8 @@ interface CircuitBaseProps {
 export function CircuitBase({ theme, active }: CircuitBaseProps) {
   const pal = getScenePalette(theme)
   const dark = theme === 'dark'
-  const accent = active ? (dark ? pal.neonBright : pal.signal) : dark ? pal.neon : pal.grid
-  const boardColor = dark ? pal.bpFace : pal.shade
+  const accent = active ? (dark ? pal.glowBright : pal.accent) : dark ? pal.glow : pal.grid
+  const boardColor = dark ? pal.bpFace : pal.depth
   const b10Base = programBaseY(getProgramFloor('B10'))
 
   const traces = useMemo(() => {
@@ -61,7 +61,7 @@ export function CircuitBase({ theme, active }: CircuitBaseProps) {
       {chips.map(([x, z], i) => (
         <mesh key={i} position={[x, 0.06, z]}>
           <boxGeometry args={[0.5, 0.08, 0.35]} />
-          <meshStandardMaterial color={pal.concrete} metalness={0.5} roughness={0.4} />
+          <meshStandardMaterial color={pal.mass} metalness={0.5} roughness={0.4} />
         </mesh>
       ))}
     </group>

@@ -99,7 +99,7 @@ function ShaftSection({
   }, [h, w, d, segment.floorCount])
 
   const isNight = theme === 'dark'
-  const shaftFill = isNight ? pal.bpFace : pal.resin
+  const shaftFill = isNight ? pal.bpFace : pal.panel
   const shaftOpacity = shellFade ? 0.06 : isNight ? 0.18 : 1
 
   if (shaftExtrude < 0.01) return null
@@ -119,7 +119,7 @@ function ShaftSection({
       </mesh>
       <lineSegments geometry={edges} raycast={() => null}>
         <lineBasicMaterial
-          color={isNight ? pal.neon : pal.graphite}
+          color={isNight ? pal.glow : pal.fg}
           transparent
           opacity={shellFade ? 0.45 : isNight ? 0.7 : 0.55}
         />
@@ -130,7 +130,7 @@ function ShaftSection({
           <mesh key={i} position={[x, 0, d / 2 + 0.006]} raycast={() => null}>
             <planeGeometry args={[0.035, h * 0.94]} />
             <meshStandardMaterial
-              color={isNight ? pal.neon : pal.graphite}
+              color={isNight ? pal.glow : pal.fg}
               transparent
               opacity={shellFade ? 0.08 : isNight ? 0.22 : 0.14}
               depthWrite={false}
@@ -142,7 +142,7 @@ function ShaftSection({
         <Line
           key={i}
           points={pts}
-          color={isNight ? pal.neonBright : pal.grid}
+          color={isNight ? pal.glowBright : pal.grid}
           lineWidth={0.5}
           transparent
           opacity={isNight ? 0.55 : 0.4}
@@ -152,7 +152,7 @@ function ShaftSection({
   )
 }
 
-/** Dollhouse cutaway — drop +Z front & +X right faces (camera side), decorative only */
+/** Dollhouse cutaway ??drop +Z front & +X right faces (camera side), decorative only */
 function BandCutawayShell({
   w,
   h,
@@ -253,7 +253,7 @@ function ProgramFloorBand({
   const zone = getFloor(program.id).zone
   const windowPattern = zone === 'basement' ? 'basement' as const : zone === 'roof' ? 'tower' as const : 'grid' as const
 
-  /** Site-rail floor zoom — peel camera-facing band faces, keep back/side shell */
+  /** Site-rail floor zoom ??peel camera-facing band faces, keep back/side shell */
   const floorCutaway =
     entered &&
     viewMode === 'floor' &&
@@ -264,7 +264,7 @@ function ProgramFloorBand({
   const hideBandShell =
     entered && program.id === '23' && (viewMode === 'floor' || viewMode === 'room' || viewMode === 'focus')
 
-  const shellColor = isNight ? pal.bpFace : entered ? pal.concrete : pal.resin
+  const shellColor = isNight ? pal.bpFace : entered ? pal.mass : pal.panel
 
   const fillOpacity = (() => {
     if (shellFade) return 0.12
@@ -335,7 +335,7 @@ function ProgramFloorBand({
       {!hideBandShell && !floorCutaway && (
       <lineSegments geometry={edges} raycast={() => null}>
         <lineBasicMaterial
-          color={pal.graphite}
+          color={pal.fg}
           transparent
           opacity={shellFade ? 0.2 : entered ? 0.72 : 0.58}
         />
@@ -391,7 +391,7 @@ function ProgramFloorBand({
       }
 
       {isNight && entered && !hideBandShell && !floorCutaway && (
-        <pointLight position={[0, 0.35, 0]} intensity={0.85} distance={4.5} color={pal.neonBright} decay={2} />
+        <pointLight position={[0, 0.35, 0]} intensity={0.85} distance={4.5} color={pal.glowBright} decay={2} />
       )}
 
       {entered && bandProgress > 0.6 && viewMode !== 'tower' && (
@@ -400,7 +400,7 @@ function ProgramFloorBand({
             floorId={program.id}
             bandHeight={program.interiorHeight}
             theme={theme}
-            accent={pal.signal}
+            accent={pal.accent}
             entered={entered}
             hover={hovered}
             labRoomSlug={labRoomSlug}
@@ -435,7 +435,7 @@ function ProgramFloorBand({
       <mesh position={[0, h / 2 + 0.012, 0]} raycast={() => null}>
         <boxGeometry args={[w + 0.04, 0.025, d + 0.04]} />
         <meshStandardMaterial
-          color={isNight ? pal.graphite : shellColor}
+          color={isNight ? pal.fg : shellColor}
           transparent
           opacity={shellFade ? 0.16 : isNight ? 0.8 : 0.35}
         />
@@ -445,7 +445,7 @@ function ProgramFloorBand({
       {!disableFloorPick && (
       <FloorPickTarget
         size={[w, h, d]}
-        accent={pal.signal}
+        accent={pal.accent}
         hovered={hovered}
         hitPad={viewMode === 'tower' ? 1.22 : undefined}
         onClick={() => onFloorClick(program.id)}
@@ -484,7 +484,7 @@ function Spire({
           <mesh key={i} position={[0, i * 0.28 + 0.15, 0]}>
             <boxGeometry args={[0.35 * taper, 0.22, 0.35 * taper]} />
             <meshStandardMaterial
-              color={pal.concrete}
+              color={pal.mass}
               transparent
               opacity={faded ? 0.12 : 1}
               depthWrite={!faded}
@@ -494,7 +494,7 @@ function Spire({
       })}
       <mesh position={[0, SPIRE_HEIGHT * 0.75, 0]}>
         <cylinderGeometry args={[0.012, 0.025, SPIRE_HEIGHT * 0.7, 6]} />
-        <meshStandardMaterial color={active ? pal.signal : pal.graphite} metalness={0.8} roughness={0.2} />
+        <meshStandardMaterial color={active ? pal.accent : pal.fg} metalness={0.8} roughness={0.2} />
       </mesh>
     </group>
   )
@@ -536,16 +536,16 @@ export function CyberTower({
 
   useEffect(() => {
     if (!glowRef.current) return
-    glowRef.current.color.set(pal.signal)
+    glowRef.current.color.set(pal.accent)
     invalidate()
-  }, [activeFloorId, activeProgram, pal.signal, invalidate])
+  }, [activeFloorId, activeProgram, pal.accent, invalidate])
 
   const footprintW = PROGRAM_FLOORS[0].width
   const footprintD = PROGRAM_FLOORS[0].depth
   const edgeInk = useMemo(() => {
     if (teardownBlueprint <= 0) return null
-    return '#' + new THREE.Color(pal.graphite).lerp(new THREE.Color(pal.blueprint), teardownBlueprint).getHexString()
-  }, [teardownBlueprint, pal.graphite, pal.blueprint])
+    return '#' + new THREE.Color(pal.fg).lerp(new THREE.Color(pal.blueprint), teardownBlueprint).getHexString()
+  }, [teardownBlueprint, pal.fg, pal.blueprint])
 
   const roofProgram = getProgramFloor('roof')
   const spireBase = programBaseY(roofProgram) + visualBandHeight(roofProgram)
@@ -558,11 +558,11 @@ export function CyberTower({
   return (
     <EdgeInkContext.Provider value={edgeInk}>
     <group>
-      <fog attach="fog" args={[pal.paper, 30, 70]} />
+      <fog attach="fog" args={[pal.bg, 30, 70]} />
 
       {extrude > 0.05 && <GroundGrid extent={12} step={0.75} opacity={0.24} />}
 
-      <Line points={[[-8, 0.03, 0], [8, 0.03, 0]]} color={pal.graphite} lineWidth={1} transparent opacity={0.35} />
+      <Line points={[[-8, 0.03, 0], [8, 0.03, 0]]} color={pal.fg} lineWidth={1} transparent opacity={0.35} />
 
       <TowerMass
         ink={ink}

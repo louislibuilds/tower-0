@@ -67,7 +67,7 @@ function ovalHalfWidthAtZ(rx: number, rz: number, z: number) {
   return rx * Math.sqrt(Math.max(0, 1 - t * t))
 }
 
-/** Flat racket on court — oval head frame, clipped string grid, tapered handle */
+/** Flat racket on court ??oval head frame, clipped string grid, tapered handle */
 function FloorTennisRacket({
   position,
   rotationY = 0,
@@ -144,7 +144,7 @@ function FloorTennisRacket({
 
   return (
     <group position={position} rotation={[0, rotationY, 0]} scale={RACKET_SCALE}>
-      {/* String bed — faint oval face */}
+      {/* String bed ??faint oval face */}
       <mesh
         position={[0, FLOOR_TOP + 0.0015, headZ]}
         rotation={[-Math.PI / 2, 0, 0]}
@@ -296,12 +296,12 @@ const COURT_LINES: [[number, number], [number, number], number?, boolean?][] = [
   [[6.2, 0.5], [6.2, 4.5], 0.28, true],
 ]
 
-/** 001 · Launch Pad — tennis lab layout (8×5): court, net, balls, observer, tower */
+/** 001 · Launch Pad ??tennis lab layout (8?5): court, net, balls, observer, tower */
 export function LaunchPadStation({ theme, accent, entered, active, thin }: TypologyProps) {
   const m = typologyMat(theme, accent, entered)
   const lit = ghostLit(thin, entered, active)
   const ghost = !!thin
-  const lineColor = theme === 'dark' ? m.pal.graphite : m.pal.concrete
+  const lineColor = theme === 'dark' ? m.pal.fg : m.pal.mass
 
   const courtLines = useMemo(
     () =>
@@ -321,18 +321,18 @@ export function LaunchPadStation({ theme, accent, entered, active, thin }: Typol
   const signalTower = bpBox(7.2, 1.5, 0, 0.22, 2.2, 1.8, ROOM_W, ROOM_D)
   const entryPole = bpBox(7.08, 0.2, 0, 0.14, 0.6, 1.4, ROOM_W, ROOM_D)
 
-  const ballColor = m.pal.chicken
-  const ballEmissive = theme === 'dark' ? m.pal.chicken : '#000000'
+  const ballColor = m.pal.warm
+  const ballEmissive = theme === 'dark' ? m.pal.warm : '#000000'
   const ballEmissiveIntensity = theme === 'dark' ? (lit ? 0.22 : 0.08) : 0
   const ballLiftZ = (FLOOR_TOP + BALL_RADIUS) / 0.1
-  /** Scattered on court — not a rigid row */
+  /** Scattered on court ??not a rigid row */
   const ballScatter: [number, number][] = [
     [2.35, 1.72],
     [3.55, 2.95],
     [1.62, 2.48],
   ]
   const ballPositions = ballScatter.map(([x, y]) => bpPoint(x, y, ballLiftZ, ROOM_W, ROOM_D))
-  /** Back-left corner — handle tucked toward wall, clear of balls */
+  /** Back-left corner ??handle tucked toward wall, clear of balls */
   const racketPos = bpPoint(0.78, 4.28, 0, ROOM_W, ROOM_D)
 
   return (
@@ -355,7 +355,7 @@ export function LaunchPadStation({ theme, accent, entered, active, thin }: Typol
       <BpMesh box={netPostB} thin={thin} color={m.edge} metalness={0.85} />
 
       <BpMesh box={observer} thin={thin} color={m.alt} />
-      <BpMesh box={observerSeat} thin={thin} color={m.pal.resin} />
+      <BpMesh box={observerSeat} thin={thin} color={m.pal.panel} />
 
       {ballPositions.map((pos, i) => (
         <mesh key={i} position={pos} raycast={() => null}>
@@ -377,12 +377,12 @@ export function LaunchPadStation({ theme, accent, entered, active, thin }: Typol
         position={racketPos}
         rotationY={2.35}
         thin={thin}
-        frameColor={m.pal.alum}
+        frameColor={m.pal.metal}
         gripColor={m.edge}
-        stringColor={theme === 'dark' ? m.pal.graphite : m.pal.concrete}
+        stringColor={theme === 'dark' ? m.pal.fg : m.pal.mass}
       />
 
-      <BpMesh box={bench} thin={thin} color={m.pal.concrete} />
+      <BpMesh box={bench} thin={thin} color={m.pal.mass} />
       <BpMesh
         box={signalTower}
         thin={thin}

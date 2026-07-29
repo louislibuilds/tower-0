@@ -10,7 +10,7 @@ import { ExhibitOverlay } from './hud/ExhibitOverlay'
 import { FocusOverlay } from './hud/FocusOverlay'
 import { MobileDrawer } from './hud/MobileDrawer'
 import { SceneBootSplash } from './SceneBootSplash'
-import { TowerCredits, TowerRail, TowerStatus, TowerToolbar } from './hud/TowerHud'
+import { TowerCredits, TowerMobileFooter, TowerRail, TowerStatus, TowerToolbar } from './hud/TowerHud'
 import { ResumePrintDrawer } from './resume/ResumePrintDrawer'
 import { TowerFallbackPoster } from './TowerFallbackPoster'
 import { resetSceneCursor } from '../scene/sceneCursor'
@@ -170,6 +170,7 @@ export function TowerShell() {
           </aside>
         )}
         <TowerToolbar />
+        <TowerMobileFooter />
         {!interactionLocked && <TowerStatus />}
         <BootPlateOverlay visible={phase === 'boot' || phase === 'scan'} />
         {phase === 'void' && <ExitOverlay onReopen={reopenSite} />}

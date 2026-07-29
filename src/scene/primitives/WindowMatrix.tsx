@@ -13,9 +13,9 @@ interface WindowMatrixProps {
   pattern?: WindowPattern
   night?: boolean
   active?: boolean
-  /** Fraction of lit windows that use green cyber accent (0–1) */
+  /** Fraction of lit windows that use green cyber accent (0??) */
   accentRatio?: number
-  /** Pane height as fraction of cell (0.2–0.6 typical curtain wall) */
+  /** Pane height as fraction of cell (0.2??.6 typical curtain wall) */
   paneFloorRatio?: number
 }
 
@@ -26,7 +26,7 @@ function cellOffset(pattern: WindowPattern, col: number, row: number, cols: numb
   return 0
 }
 
-/** Grid window panes — blueprint by day, cyber glow by night */
+/** Grid window panes ??blueprint by day, cyber glow by night */
 export function WindowMatrix({
   width: w,
   height: h,
@@ -53,7 +53,7 @@ export function WindowMatrix({
         const x = x0 + col * cellW + cellW / 2 + stagger * cellW * 0.2
         const y = y0 + row * cellH + cellH / 2
         const hash = gridHash(col, row, 7)
-        // Basement floors stay dark at night — no occupied-office glow
+        // Basement floors stay dark at night ??no occupied-office glow
         const lit = night && pattern !== 'basement' && hash > 0.28
         const accent = lit && hash < accentRatio
         const pw = cellW * (0.55 + hash * 0.15)
@@ -71,15 +71,15 @@ export function WindowMatrix({
       {panes.map((p, i) => {
         const fill = p.lit
           ? p.accent
-            ? pal.neonGreen
+            ? pal.glowGreen
             : active
-              ? pal.neonBright
-              : pal.neon
+              ? pal.glowBright
+              : pal.glow
           : night
             ? pal.bpFace
-            : pal.resin
+            : pal.panel
 
-        const emissive = p.lit ? (p.accent ? pal.neonGreen : pal.neonBright) : '#000000'
+        const emissive = p.lit ? (p.accent ? pal.glowGreen : pal.glowBright) : '#000000'
         const ei = p.lit ? (p.accent ? 0.5 : active ? 0.42 : 0.3) : 0
 
         return (

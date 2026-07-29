@@ -1,95 +1,126 @@
-/* Tower 0 design tokens — DARK / LIGHT */
+/* Tower 0 design tokens ? colors synced from src/design/tokens.ts via applyTowerTokens() */
 :root,
 [data-theme='light'] {
-  --paper: #F7F4EF;
-  --concrete: #D4CFC6;
-  --resin: #EDE8E0;
-  --graphite: #2C2824;
-  --graphite-mute: #6B6560;
-  --ink: #1A1714;
-  --alum: #B0AAA2;
-  --glass: #A8B8B0;
-  --blueprint: #3D6B5C;
-  --signal: #C45C26;
-  --chicken: #D4923A;
-  --chicken-mute: #A8742E;
-  --grid: #DDD6CC;
-  --shade: #5C5650;
-  --neon: #3D6B5C;
-  --neon-bright: #5A8A72;
-  --line: color-mix(in srgb, var(--graphite) 14%, transparent);
-  --bg: var(--paper);
-  --text: var(--graphite);
-  --text-dim: var(--graphite-mute);
-  --accent: var(--signal);
-  --surface-elevated: var(--resin);
-  --graphite-line: color-mix(in srgb, var(--graphite) 22%, transparent);
-  --font-display: 'Georgia', 'Times New Roman', serif;
-  --font-mono: 'Consolas', 'Monaco', 'Courier New', monospace;
-  --font-body: system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --ease-tower: cubic-bezier(0.25, 0.92, 0.38, 1);
-  --hd: #1a6b3a;
-  --d: #C45C26;
-  --cr: #8a6a00;
-  --scene-cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M12 5v14M5 12h14' stroke='%232C2824' stroke-width='1.25' fill='none'/%3E%3C/svg%3E") 12 12, crosshair;
+  --tower-bg: #F7F4EF;
+  --tower-mass: #D4CFC6;
+  --tower-panel: #EDE8E0;
+  --tower-fg: #2C2824;
+  --tower-muted: #6B6560;
+  --tower-ink: #1A1714;
+  --tower-metal: #B0AAA2;
+  --tower-glass: #A8B8B0;
+  --tower-blueprint: #3D6B5C;
+  --tower-accent: #C45C26;
+  --tower-warm: #D4923A;
+  --tower-warm-muted: #A8742E;
+  --tower-grid: #DDD6CC;
+  --tower-depth: #5C5650;
+  --tower-glow: #3D6B5C;
+  --tower-glow-bright: #5A8A72;
+  --tower-border: color-mix(in srgb, var(--tower-fg) 14%, transparent);
+  --tower-panel-elevated: var(--tower-panel);
+  --tower-edge: color-mix(in srgb, var(--tower-fg) 22%, transparent);
+  --tower-font-display: 'Georgia', 'Times New Roman', serif;
+  --tower-font-mono: 'Consolas', 'Monaco', 'Courier New', monospace;
+  --tower-font-body: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --tower-ease: cubic-bezier(0.25, 0.92, 0.38, 1);
+  --tower-grade-hd: #1a6b3a;
+  --tower-grade-d: #C45C26;
+  --tower-grade-cr: #8a6a00;
+  --tower-scene-cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M12 5v14M5 12h14' stroke='%232C2824' stroke-width='1.25' fill='none'/%3E%3C/svg%3E") 12 12, crosshair;
   --tower-sidebar-w: min(15rem, 42vw);
   --tower-exhibit-w: min(22rem, 38vw);
   --tower-touch-min: 2.75rem;
+  --tower-mobile-bar-min: 1.925rem;
+  --tower-mobile-bar-pad: 0.25rem;
+  --tower-mobile-footer-h: calc(var(--tower-mobile-bar-min) + var(--tower-mobile-bar-pad) * 2);
   --tower-safe-top: env(safe-area-inset-top, 0px);
   --tower-safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 [data-theme='dark'] {
-  --paper: #0C1218;
-  --concrete: #1A3848;
-  --resin: #142028;
-  --graphite: #88D4F0;
-  --graphite-mute: #5A8AA0;
-  --ink: #E8F8FF;
-  --alum: #3A5870;
-  --glass: #33404E;
-  --blueprint: #5B82BC;
-  --signal: #3A8AFF;
-  --chicken: #E8B84A;
-  --chicken-mute: #B8922E;
-  --grid: #1A4058;
-  --shade: #080C10;
-  --neon: #00AAD0;
-  --neon-bright: #56DAFF;
-  --line: color-mix(in srgb, var(--graphite) 22%, transparent);
-  --bg: var(--paper);
-  --text: var(--graphite);
-  --text-dim: var(--graphite-mute);
-  --surface-elevated: #1A1B1D;
-  --graphite-line: color-mix(in srgb, var(--graphite) 28%, transparent);
-  --ease-tower: cubic-bezier(0.22, 1, 0.36, 1);
-  --scene-cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M12 5v14M5 12h14' stroke='%23F2F1ED' stroke-width='1.25' fill='none'/%3E%3C/svg%3E") 12 12, crosshair;
+  --tower-bg: #0C1218;
+  --tower-mass: #1A3848;
+  --tower-panel: #142028;
+  --tower-fg: #88D4F0;
+  --tower-muted: #5A8AA0;
+  --tower-ink: #E8F8FF;
+  --tower-metal: #3A5870;
+  --tower-glass: #33404E;
+  --tower-blueprint: #5B82BC;
+  --tower-accent: #3A8AFF;
+  --tower-warm: #E8B84A;
+  --tower-warm-muted: #B8922E;
+  --tower-grid: #1A4058;
+  --tower-depth: #080C10;
+  --tower-glow: #00AAD0;
+  --tower-glow-bright: #56DAFF;
+  --tower-border: color-mix(in srgb, var(--tower-fg) 22%, transparent);
+  --tower-panel-elevated: #1A1B1D;
+  --tower-edge: color-mix(in srgb, var(--tower-fg) 28%, transparent);
+  --tower-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --tower-scene-cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M12 5v14M5 12h14' stroke='%2388D4F0' stroke-width='1.25' fill='none'/%3E%3C/svg%3E") 12 12, crosshair;
+}
+
+/* Night mode ? glass HUD panels aligned with 3D cyber glow */
+[data-theme='dark'] .tower-rail-brand,
+[data-theme='dark'] .tower-exhibit-card,
+[data-theme='dark'] .tower-rail-floors > li > button,
+[data-theme='dark'] .tower-toolbar-langs,
+[data-theme='dark'] .tower-toolbar-btn {
+  background: color-mix(in srgb, var(--tower-panel) 72%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+[data-theme='dark'] .tower-rail-brand,
+[data-theme='dark'] .tower-exhibit-card {
+  border-color: color-mix(in srgb, var(--tower-glow) 32%, transparent);
+  border-top-color: var(--tower-glow);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--tower-glow) 10%, transparent),
+    0 8px 28px color-mix(in srgb, var(--tower-depth) 45%, transparent);
+}
+
+[data-theme='dark'] .tower-credits {
+  border-top-color: var(--tower-glow);
+}
+
+[data-theme='dark'] .tower-credits__name,
+[data-theme='dark'] .tower-rail-title {
+  color: var(--tower-glow-bright);
+  letter-spacing: 0.04em;
+}
+
+[data-theme='dark'] .tower-toolbar-langs button.is-active {
+  color: var(--tower-glow-bright);
+  background: color-mix(in srgb, var(--tower-panel) 55%, var(--tower-glow) 45%);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html { font-size: 16px; }
 body {
-  font-family: var(--font-body);
-  background: var(--bg);
-  color: var(--text);
+  font-family: var(--tower-font-body);
+  background: var(--tower-bg);
+  color: var(--tower-fg);
   min-height: 100dvh;
   overflow: hidden;
   -webkit-font-smoothing: antialiased;
 }
 #root { min-height: 100dvh; }
 
-a { color: var(--signal); text-decoration: none; }
+a { color: var(--tower-accent); text-decoration: none; }
 a:hover { opacity: 0.85; }
 button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
 
-/* ── Root ── */
+/* ???? Root ???? */
 .tower-root {
   position: relative;
   width: 100vw;
   height: 100dvh;
   overflow: hidden;
-  background: var(--paper);
+  background: var(--tower-bg);
 }
 
 .tower-canvas {
@@ -100,21 +131,21 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 .tower-canvas__gl {
   width: 100% !important;
   height: 100% !important;
-  background: var(--paper);
-  cursor: var(--scene-cursor);
+  background: var(--tower-bg);
+  cursor: var(--tower-scene-cursor);
 }
 .tower-canvas--booting .tower-canvas__gl { opacity: 0.55; }
-.tower-canvas--ready .tower-canvas__gl { opacity: 1; transition: opacity 0.5s var(--ease-tower); }
+.tower-canvas--ready .tower-canvas__gl { opacity: 1; transition: opacity 0.5s var(--tower-ease); }
 
 .tower-canvas__boot {
   position: absolute;
   bottom: 4.5rem;
   left: 50%;
   transform: translateX(-50%);
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: 0.62rem;
   letter-spacing: 0.14em;
-  color: var(--signal);
+  color: var(--tower-accent);
   z-index: 1;
   pointer-events: none;
 }
@@ -124,10 +155,10 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   bottom: 4.5rem;
   left: 50%;
   transform: translateX(-50%);
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: 0.62rem;
   letter-spacing: 0.14em;
-  color: var(--graphite-mute);
+  color: var(--tower-muted);
   z-index: 12;
   pointer-events: none;
 }
@@ -136,7 +167,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   position: absolute;
   inset: 0;
   z-index: 0;
-  background: var(--paper);
+  background: var(--tower-bg);
 }
 .tower-loading__label {
   position: absolute;
@@ -144,10 +175,10 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   left: 50%;
   transform: translateX(-50%);
   margin: 0;
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: 0.62rem;
   letter-spacing: 0.14em;
-  color: var(--signal);
+  color: var(--tower-accent);
   pointer-events: none;
 }
 
@@ -158,14 +189,14 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(ellipse 80% 60% at 50% 40%, var(--paper) 0%, var(--shade) 100%);
+  background: radial-gradient(ellipse 80% 60% at 50% 40%, var(--tower-bg) 0%, var(--tower-depth) 100%);
   gap: 1rem;
   overflow: hidden;
 }
 .tower-fallback-note {
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: 0.62rem;
-  color: var(--graphite-mute);
+  color: var(--tower-muted);
   letter-spacing: 0.08em;
 }
 .tower-fallback-poster {
@@ -181,14 +212,14 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   width: 100%;
   height: auto;
   border-radius: 6px;
-  border: 1px solid color-mix(in srgb, var(--graphite) 25%, transparent);
+  border: 1px solid color-mix(in srgb, var(--tower-fg) 25%, transparent);
 }
 .tower-silhouette__svg { max-width: 180px; width: 100%; height: auto; }
 .tower-silhouette__shaft { transition: y 0.45s cubic-bezier(0.34, 1.2, 0.64, 1); }
-.tower-silhouette__name { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.2em; color: var(--signal); display: block; text-align: center; }
-.tower-silhouette__sub { font-family: var(--font-mono); font-size: 0.6rem; color: var(--graphite-mute); text-align: center; display: block; }
+.tower-silhouette__name { font-family: var(--tower-font-mono); font-size: 0.7rem; letter-spacing: 0.2em; color: var(--tower-accent); display: block; text-align: center; }
+.tower-silhouette__sub { font-family: var(--tower-font-mono); font-size: 0.6rem; color: var(--tower-muted); text-align: center; display: block; }
 
-/* ── Left sidebar — title block + rail (stacked, no overlap) ── */
+/* ???? Left sidebar ??title block + rail (stacked, no overlap) ???? */
 .tower-sidebar {
   position: absolute;
   left: 0;
@@ -206,22 +237,22 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   pointer-events: auto;
 }
 
-/* ── Title block (top-left) ── */
+/* ???? Title block (top-left) ???? */
 .tower-credits {
   flex-shrink: 0;
   padding-top: 0.5rem;
-  border-top: 2px solid var(--graphite);
+  border-top: 2px solid var(--tower-fg);
 }
 .tower-credits__eyebrow {
   margin-bottom: 0.35rem;
 }
 .tower-credits__name {
-  font-family: var(--font-display);
+  font-family: var(--tower-font-display);
   font-size: 1.15rem;
   line-height: 1.1;
   font-weight: 600;
   letter-spacing: -0.01em;
-  color: var(--graphite);
+  color: var(--tower-fg);
   margin: 0 0 0.3rem;
 }
 .tower-credits__tagline {
@@ -239,21 +270,21 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 }
 .tower-credits-links a {
   pointer-events: auto;
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: 0.52rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--graphite-mute);
-  border-bottom: 1px solid var(--line);
+  color: var(--tower-muted);
+  border-bottom: 1px solid var(--tower-border);
   transition: color 0.2s, border-color 0.2s;
 }
 .tower-credits-links a:hover {
-  color: var(--signal);
-  border-bottom-color: var(--signal);
+  color: var(--tower-accent);
+  border-bottom-color: var(--tower-accent);
   opacity: 1;
 }
 
-/* ── Chrome (top-right) ── */
+/* ???? Chrome (top-right) ???? */
 .tower-toolbar {
   position: absolute;
   top: 1rem;
@@ -262,20 +293,22 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: 0.65rem;
   letter-spacing: 0.1em;
 }
-.tower-toolbar-langs {
+.tower-toolbar-langs,
+.tower-toolbar-fonts {
   display: flex;
-  border: 1px solid var(--line);
-  background: color-mix(in srgb, var(--paper) 94%, transparent);
+  border: 1px solid var(--tower-border);
+  background: color-mix(in srgb, var(--tower-bg) 94%, transparent);
 }
-.tower-toolbar-langs button {
+.tower-toolbar-langs button,
+.tower-toolbar-fonts button {
   appearance: none;
   background: transparent;
   border: none;
-  color: var(--graphite-mute);
+  color: var(--tower-muted);
   padding: 0.35rem 0.45rem;
   cursor: pointer;
   font: inherit;
@@ -285,9 +318,9 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 }
 .tower-toolbar-btn {
   appearance: none;
-  background: color-mix(in srgb, var(--paper) 94%, transparent);
-  border: 1px solid var(--line);
-  color: var(--graphite-mute);
+  background: color-mix(in srgb, var(--tower-bg) 94%, transparent);
+  border: 1px solid var(--tower-border);
+  color: var(--tower-muted);
   padding: 0.35rem 0.45rem;
   cursor: pointer;
   font: inherit;
@@ -296,20 +329,27 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   transition: color 0.2s, background 0.2s, border-color 0.2s;
 }
 .tower-toolbar-langs button:hover,
+.tower-toolbar-fonts button:hover,
 .tower-toolbar-btn:hover {
-  color: var(--graphite);
-  background: color-mix(in srgb, var(--paper) 88%, var(--signal) 12%);
+  color: var(--tower-fg);
+  background: color-mix(in srgb, var(--tower-bg) 88%, var(--tower-accent) 12%);
 }
-.tower-toolbar-langs button.is-active {
-  color: var(--signal);
-  background: color-mix(in srgb, var(--paper) 82%, var(--signal) 18%);
+.tower-toolbar-langs button.is-active,
+.tower-toolbar-fonts button.is-active {
+  color: var(--tower-accent);
+  background: color-mix(in srgb, var(--tower-bg) 82%, var(--tower-accent) 18%);
+}
+.tower-toolbar-langs button:focus-visible,
+.tower-toolbar-fonts button:focus-visible {
+  outline: 1px solid var(--tower-accent);
+  outline-offset: -1px;
 }
 .tower-toolbar-exit:hover {
-  border-color: color-mix(in srgb, var(--signal) 40%, transparent);
-  color: var(--signal);
+  border-color: color-mix(in srgb, var(--tower-accent) 40%, transparent);
+  color: var(--tower-accent);
 }
 
-/* ── Left rail ── */
+/* ???? Left rail ???? */
 .tower-rail {
   flex: 1;
   min-height: 0;
@@ -322,9 +362,9 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 
 .tower-rail-brand {
   appearance: none;
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-top: 2px solid var(--graphite);
+  background: var(--tower-bg);
+  border: 1px solid var(--tower-border);
+  border-top: 2px solid var(--tower-fg);
   text-align: left;
   cursor: pointer;
   color: inherit;
@@ -332,26 +372,26 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   transition: border-color 0.2s, background 0.2s;
 }
 .tower-rail-brand:hover {
-  border-color: var(--signal);
-  border-top-color: var(--signal);
-  background: color-mix(in srgb, var(--paper) 92%, transparent);
+  border-color: var(--tower-accent);
+  border-top-color: var(--tower-accent);
+  background: color-mix(in srgb, var(--tower-bg) 92%, transparent);
 }
 .tower-rail-title {
   display: block;
-  font-family: var(--font-display);
+  font-family: var(--tower-font-display);
   font-size: 1.05rem;
   line-height: 1.2;
   font-weight: 600;
   letter-spacing: -0.01em;
-  color: var(--graphite);
+  color: var(--tower-fg);
 }
 .tower-rail-code {
   display: block;
   margin-top: 0.25rem;
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: 0.62rem;
   letter-spacing: 0.12em;
-  color: var(--graphite-mute);
+  color: var(--tower-muted);
 }
 
 .tower-rail-floors {
@@ -368,68 +408,68 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   display: flex;
   gap: 0.65rem;
   align-items: baseline;
-  background: color-mix(in srgb, var(--paper) 72%, transparent);
+  background: color-mix(in srgb, var(--tower-bg) 72%, transparent);
   border: none;
-  border-left: 1px solid var(--line);
+  border-left: 1px solid var(--tower-border);
   padding: 0.35rem 0.5rem;
   cursor: pointer;
-  color: var(--graphite-mute);
-  font-family: var(--font-mono);
+  color: var(--tower-muted);
+  font-family: var(--tower-font-mono);
   font-size: 0.68rem;
   letter-spacing: 0.06em;
   text-align: left;
   transition: color 0.2s, background 0.2s, border-color 0.2s;
 }
 .tower-rail-floors > li > button:hover {
-  color: var(--graphite);
-  background: color-mix(in srgb, var(--paper) 94%, transparent);
-  border-left-color: var(--signal);
+  color: var(--tower-fg);
+  background: color-mix(in srgb, var(--tower-bg) 94%, transparent);
+  border-left-color: var(--tower-accent);
 }
 .tower-rail-floors > li.is-active > button {
-  border-left-color: var(--signal);
-  color: var(--graphite);
-  background: color-mix(in srgb, var(--paper) 96%, transparent);
+  border-left-color: var(--tower-accent);
+  color: var(--tower-fg);
+  background: color-mix(in srgb, var(--tower-bg) 96%, transparent);
 }
 .tower-rail-id {
   min-width: 1.5rem;
-  color: var(--signal);
+  color: var(--tower-accent);
 }
 
 .tower-rail-rooms {
   list-style: none;
   margin: 0.25rem 0 0.5rem 1.1rem;
   padding: 0.15rem 0.35rem;
-  background: color-mix(in srgb, var(--paper) 88%, transparent);
-  border: 1px solid color-mix(in srgb, var(--line) 80%, transparent);
+  background: color-mix(in srgb, var(--tower-bg) 88%, transparent);
+  border: 1px solid color-mix(in srgb, var(--tower-border) 80%, transparent);
 }
 .tower-rail-rooms button {
   appearance: none;
   background: none;
   border: none;
   padding: 0.25rem 0.15rem;
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: 0.58rem;
   letter-spacing: 0.04em;
-  color: var(--graphite-mute);
+  color: var(--tower-muted);
   cursor: pointer;
   width: 100%;
   text-align: left;
   transition: color 0.2s;
 }
-.tower-rail-rooms button:hover { color: var(--graphite); }
-.tower-rail-rooms button.is-room-active { color: var(--signal); }
+.tower-rail-rooms button:hover { color: var(--tower-fg); }
+.tower-rail-rooms button.is-room-active { color: var(--tower-accent); }
 
 .tower-rail-hint {
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: 0.58rem;
   letter-spacing: 0.08em;
-  color: var(--graphite-mute);
+  color: var(--tower-muted);
   line-height: 1.4;
   padding-top: 0.5rem;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--tower-border);
 }
 
-/* ── Bottom annotation ── */
+/* ???? Bottom annotation ???? */
 .tower-status {
   position: absolute;
   left: 50%;
@@ -438,18 +478,18 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   z-index: 7;
   max-width: min(28rem, calc(100vw - 2rem));
   padding: 0.4rem 0.75rem;
-  border: 1px solid var(--signal);
-  color: var(--signal);
-  font-family: var(--font-mono);
+  border: 1px solid var(--tower-accent);
+  color: var(--tower-accent);
+  font-family: var(--tower-font-mono);
   font-size: 0.68rem;
   letter-spacing: 0.08em;
   text-align: center;
-  background: color-mix(in srgb, var(--paper) 96%, transparent);
+  background: color-mix(in srgb, var(--tower-bg) 96%, transparent);
   pointer-events: none;
 }
 .tower-status--muted {
-  border-color: var(--line);
-  color: var(--graphite-mute);
+  border-color: var(--tower-border);
+  color: var(--tower-muted);
 }
 .tower-status--nav {
   pointer-events: auto;
@@ -520,7 +560,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   }
 }
 
-/* ── Exhibit overlay (right) ── */
+/* ???? Exhibit overlay (right) ???? */
 .tower-exhibit {
   position: absolute;
   right: 1rem;
@@ -530,9 +570,9 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   width: var(--tower-exhibit-w);
   display: flex;
   flex-direction: column;
-  background: color-mix(in srgb, var(--paper) 92%, transparent);
-  border: 1px solid var(--line);
-  border-top: 2px solid var(--graphite);
+  background: color-mix(in srgb, var(--tower-bg) 92%, transparent);
+  border: 1px solid var(--tower-border);
+  border-top: 2px solid var(--tower-fg);
   overflow: hidden;
   pointer-events: auto;
 }
@@ -541,28 +581,28 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   display: flex;
   gap: 0.75rem;
   padding: 0.85rem 1rem 0.65rem;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--tower-border);
   flex-shrink: 0;
 }
 .tower-exhibit-card__badge {
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: 0.8rem;
   font-weight: 700;
   padding: 0.3rem 0.55rem;
-  border: 1px solid var(--signal);
-  color: var(--signal);
+  border: 1px solid var(--tower-accent);
+  color: var(--tower-accent);
   height: fit-content;
 }
 .tower-exhibit-card__header h2 {
-  font-family: var(--font-display);
+  font-family: var(--tower-font-display);
   font-size: 1rem;
   font-weight: 600;
   line-height: 1.2;
-  color: var(--graphite);
+  color: var(--tower-fg);
 }
 .tower-exhibit-card__header p {
   font-size: 0.72rem;
-  color: var(--graphite-mute);
+  color: var(--tower-muted);
   margin-top: 0.15rem;
 }
 .tower-exhibit-card__scroll {
@@ -573,31 +613,31 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   flex-direction: column;
 }
 .tower-exhibit-card__eyebrow {
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: 0.6rem;
   letter-spacing: 0.12em;
-  color: var(--graphite-mute);
+  color: var(--tower-muted);
   text-transform: uppercase;
   margin-bottom: 0.45rem;
 }
 .tower-exhibit-card__thesis {
-  font-family: var(--font-display);
+  font-family: var(--tower-font-display);
   font-size: 0.95rem;
   font-style: italic;
-  border-left: 2px solid var(--signal);
+  border-left: 2px solid var(--tower-accent);
   padding-left: 0.75rem;
   margin-bottom: 0.75rem;
   line-height: 1.45;
-  color: var(--graphite);
+  color: var(--tower-fg);
 }
 .tower-exhibit-card__body {
   font-size: 0.82rem;
-  color: var(--graphite-mute);
+  color: var(--tower-muted);
   line-height: 1.55;
   margin-bottom: 0.75rem;
 }
 .tower-exhibit-card__body--lead {
-  color: var(--graphite);
+  color: var(--tower-fg);
   margin-bottom: 0.5rem;
 }
 .tower-exhibit-card__body--credit {
@@ -605,24 +645,24 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   font-style: italic;
   margin-top: -0.35rem;
   padding-top: 0.55rem;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--tower-border);
 }
 .tower-exhibit-card__bullets {
   margin: 0 0 0.75rem;
   padding-left: 1.1rem;
   font-size: 0.78rem;
-  color: var(--graphite-mute);
+  color: var(--tower-muted);
   line-height: 1.5;
 }
 .tower-exhibit-card__bullets li + li {
   margin-top: 0.35rem;
 }
 .tower-exhibit-card__name {
-  font-family: var(--font-display);
+  font-family: var(--tower-font-display);
   font-size: 1.5rem;
   line-height: 1;
   margin-bottom: 0.2rem;
-  color: var(--graphite);
+  color: var(--tower-fg);
 }
 .tower-exhibit-roof__eyebrow {
   letter-spacing: 0.06em;
@@ -638,7 +678,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 }
 .tower-exhibit-roof__rule {
   border: none;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--tower-border);
   margin: 0 0 0.65rem;
 }
 .tower-exhibit-roof__print {
@@ -646,19 +686,19 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   width: 100%;
   margin-top: 0.65rem;
   padding: 0.5rem;
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: 0.62rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--graphite-mute);
+  color: var(--tower-muted);
   background: transparent;
-  border: 1px solid var(--line);
+  border: 1px solid var(--tower-border);
   cursor: pointer;
   transition: color 0.2s, border-color 0.2s;
 }
 .tower-exhibit-roof__print:hover {
-  color: var(--signal);
-  border-color: color-mix(in srgb, var(--signal) 40%, transparent);
+  color: var(--tower-accent);
+  border-color: color-mix(in srgb, var(--tower-accent) 40%, transparent);
 }
 .tower-exhibit-card__meta {
   display: grid;
@@ -666,13 +706,13 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   gap: 0.5rem;
 }
 .tower-exhibit-card__meta dt {
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: 0.55rem;
   letter-spacing: 0.1em;
-  color: var(--graphite-mute);
+  color: var(--tower-muted);
   text-transform: uppercase;
 }
-.tower-exhibit-card__meta dd { font-size: 0.8rem; color: var(--graphite); }
+.tower-exhibit-card__meta dd { font-size: 0.8rem; color: var(--tower-fg); }
 
 .tower-exhibit-stats {
   display: grid;
@@ -683,25 +723,25 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 .tower-exhibit-stat {
   text-align: center;
   padding: 0.4rem;
-  border: 1px solid var(--line);
+  border: 1px solid var(--tower-border);
 }
 .tower-exhibit-stat span {
   display: block;
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: 1rem;
   font-weight: 700;
-  color: var(--signal);
+  color: var(--tower-accent);
 }
-.tower-exhibit-stat label { font-size: 0.55rem; color: var(--graphite-mute); }
+.tower-exhibit-stat label { font-size: 0.55rem; color: var(--tower-muted); }
 
 .tower-exhibit-timeline { display: flex; flex-direction: column; gap: 0.5rem; }
-.tower-exhibit-timeline__sem { border: 1px solid var(--line); overflow: hidden; }
+.tower-exhibit-timeline__sem { border: 1px solid var(--tower-border); overflow: hidden; }
 .tower-exhibit-timeline__head {
   display: flex;
   justify-content: space-between;
   padding: 0.4rem 0.6rem;
-  background: color-mix(in srgb, var(--paper) 88%, transparent);
-  font-family: var(--font-mono);
+  background: color-mix(in srgb, var(--tower-bg) 88%, transparent);
+  font-family: var(--tower-font-mono);
   font-size: 0.68rem;
 }
 .tower-exhibit-timeline__row {
@@ -710,53 +750,53 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   gap: 0.5rem;
   padding: 0.3rem 0.6rem;
   font-size: 0.68rem;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--tower-border);
 }
-.grade-hd { color: var(--hd); }
-.grade-d { color: var(--d); }
-.grade-cr { color: var(--cr); }
-.grade-hd, .grade-d, .grade-cr { font-family: var(--font-mono); font-size: 0.65rem; }
+.grade-hd { color: var(--tower-grade-hd); }
+.grade-d { color: var(--tower-grade-d); }
+.grade-cr { color: var(--tower-grade-cr); }
+.grade-hd, .grade-d, .grade-cr { font-family: var(--tower-font-mono); font-size: 0.65rem; }
 
 .tower-exhibit-projects { display: flex; flex-direction: column; gap: 0.5rem; }
 .tower-exhibit-project {
   padding: 0.6rem;
-  border: 1px solid var(--line);
+  border: 1px solid var(--tower-border);
 }
-.tower-exhibit-project h4 { font-size: 0.8rem; margin-bottom: 0.25rem; color: var(--graphite); }
-.tower-exhibit-project p { font-size: 0.72rem; color: var(--graphite-mute); margin-bottom: 0.35rem; }
-.tower-exhibit-project__meta { font-size: 0.65rem; color: var(--graphite-mute); display: flex; flex-direction: column; gap: 0.1rem; margin-top: 0.15rem; }
-.tower-exhibit-project__links { display: flex; gap: 0.65rem; margin-top: 0.55rem; padding-top: 0.55rem; border-top: 1px solid var(--line); }
-.tower-exhibit-project__links a { font-family: var(--font-mono); font-size: 0.65rem; }
+.tower-exhibit-project h4 { font-size: 0.8rem; margin-bottom: 0.25rem; color: var(--tower-fg); }
+.tower-exhibit-project p { font-size: 0.72rem; color: var(--tower-muted); margin-bottom: 0.35rem; }
+.tower-exhibit-project__meta { font-size: 0.65rem; color: var(--tower-muted); display: flex; flex-direction: column; gap: 0.1rem; margin-top: 0.15rem; }
+.tower-exhibit-project__links { display: flex; gap: 0.65rem; margin-top: 0.55rem; padding-top: 0.55rem; border-top: 1px solid var(--tower-border); }
+.tower-exhibit-project__links a { font-family: var(--tower-font-mono); font-size: 0.65rem; }
 
 .tower-exhibit-section-title {
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: 0.6rem;
   letter-spacing: 0.1em;
-  color: var(--graphite-mute);
+  color: var(--tower-muted);
   text-transform: uppercase;
   margin: 0.65rem 0 0.4rem;
   padding-bottom: 0.3rem;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--tower-border);
 }
 .tower-exhibit-section-title:first-child { margin-top: 0; }
 .tower-exhibit-skills { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 0.5rem; }
-.tower-exhibit-skills strong { font-size: 0.7rem; color: var(--signal); display: block; margin-bottom: 0.1rem; }
-.tower-exhibit-skills p { font-size: 0.7rem; color: var(--graphite-mute); }
+.tower-exhibit-skills strong { font-size: 0.7rem; color: var(--tower-accent); display: block; margin-bottom: 0.1rem; }
+.tower-exhibit-skills p { font-size: 0.7rem; color: var(--tower-muted); }
 
-/* ── Exhibit elevator (floor picker) ── */
+/* ???? Exhibit elevator (floor picker) ???? */
 .tower-exhibit-elevator {
   margin-top: auto;
   padding-top: 0.75rem;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--tower-border);
   flex-shrink: 0;
 }
 .tower-exhibit-elevator__label {
   margin: 0 0 0.4rem;
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: 0.54rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--graphite-mute);
+  color: var(--tower-muted);
 }
 .tower-exhibit-elevator__shaft {
   list-style: none;
@@ -774,10 +814,10 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   appearance: none;
   width: 100%;
   padding: 0.38rem 0.15rem;
-  border: 1px solid var(--line);
-  background: color-mix(in srgb, var(--paper) 96%, var(--graphite) 4%);
-  color: var(--graphite-mute);
-  font-family: var(--font-mono);
+  border: 1px solid var(--tower-border);
+  background: color-mix(in srgb, var(--tower-bg) 96%, var(--tower-fg) 4%);
+  color: var(--tower-muted);
+  font-family: var(--tower-font-mono);
   font-size: 0.62rem;
   font-weight: 500;
   letter-spacing: 0.04em;
@@ -787,16 +827,16 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   transition: border-color 0.2s, background 0.2s, color 0.2s, box-shadow 0.2s;
 }
 .tower-exhibit-elevator__shaft button:hover:not(:disabled) {
-  border-color: color-mix(in srgb, var(--signal) 55%, var(--line));
-  background: color-mix(in srgb, var(--paper) 88%, var(--signal) 12%);
-  color: var(--graphite);
+  border-color: color-mix(in srgb, var(--tower-accent) 55%, var(--tower-border));
+  background: color-mix(in srgb, var(--tower-bg) 88%, var(--tower-accent) 12%);
+  color: var(--tower-fg);
 }
 .tower-exhibit-elevator__shaft button.is-here {
-  border: 2px solid var(--signal);
-  background: color-mix(in srgb, var(--paper) 76%, var(--signal) 24%);
-  color: var(--graphite);
+  border: 2px solid var(--tower-accent);
+  background: color-mix(in srgb, var(--tower-bg) 76%, var(--tower-accent) 24%);
+  color: var(--tower-fg);
   font-weight: 700;
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--signal) 28%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--tower-accent) 28%, transparent);
   cursor: default;
 }
 .tower-exhibit-courses { display: flex; flex-direction: column; gap: 0.3rem; }
@@ -806,10 +846,10 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   gap: 0.3rem 0.45rem;
   font-size: 0.68rem;
   padding: 0.35rem 0;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--tower-border);
 }
-.tower-exhibit-course span:first-child { font-family: var(--font-mono); color: var(--graphite-mute); }
-.tower-exhibit-course a { grid-column: 1 / -1; font-family: var(--font-mono); font-size: 0.62rem; }
+.tower-exhibit-course span:first-child { font-family: var(--tower-font-mono); color: var(--tower-muted); }
+.tower-exhibit-course a { grid-column: 1 / -1; font-family: var(--tower-font-mono); font-size: 0.62rem; }
 
 .tower-exhibit-actions { display: flex; flex-direction: column; gap: 0.45rem; }
 .tower-exhibit-action {
@@ -817,15 +857,15 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   flex-direction: column;
   gap: 0.12rem;
   padding: 0.65rem;
-  border: 1px solid var(--line);
+  border: 1px solid var(--tower-border);
   text-align: left;
   color: inherit;
   transition: border-color 0.2s;
 }
-.tower-exhibit-action:hover { border-color: var(--signal); opacity: 1; }
-.tower-exhibit-action strong { font-size: 0.82rem; color: var(--graphite); }
-.tower-exhibit-action span { font-size: 0.7rem; color: var(--graphite-mute); }
-.tower-exhibit-action em { font-family: var(--font-mono); font-size: 0.62rem; color: var(--signal); font-style: normal; margin-top: 0.2rem; }
+.tower-exhibit-action:hover { border-color: var(--tower-accent); opacity: 1; }
+.tower-exhibit-action strong { font-size: 0.82rem; color: var(--tower-fg); }
+.tower-exhibit-action span { font-size: 0.7rem; color: var(--tower-muted); }
+.tower-exhibit-action em { font-family: var(--tower-font-mono); font-size: 0.62rem; color: var(--tower-accent); font-style: normal; margin-top: 0.2rem; }
 
 .tower-exhibit-contacts { display: grid; grid-template-columns: 1fr 1fr; gap: 0.35rem; }
 .tower-exhibit-contacts--stack { grid-template-columns: 1fr; }
@@ -834,12 +874,12 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   display: flex;
   flex-direction: column;
   padding: 0.5rem;
-  border: 1px solid var(--line);
+  border: 1px solid var(--tower-border);
   color: inherit;
 }
-.tower-exhibit-contacts strong { font-family: var(--font-mono); font-size: 0.6rem; color: var(--signal); }
-.tower-exhibit-contacts span { font-size: 0.65rem; color: var(--graphite-mute); }
-.tower-exhibit-contacts em { font-style: normal; font-family: var(--font-mono); font-size: 0.55rem; color: var(--graphite-mute); opacity: 0.85; margin-top: 0.2rem; }
+.tower-exhibit-contacts strong { font-family: var(--tower-font-mono); font-size: 0.6rem; color: var(--tower-accent); }
+.tower-exhibit-contacts span { font-size: 0.65rem; color: var(--tower-muted); }
+.tower-exhibit-contacts em { font-style: normal; font-family: var(--tower-font-mono); font-size: 0.55rem; color: var(--tower-muted); opacity: 0.85; margin-top: 0.2rem; }
 .tower-exhibit-vault-entry--link { text-decoration: none; }
 .tower-exhibit-vault-entry {
   appearance: none;
@@ -850,7 +890,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   background: transparent;
 }
 .tower-exhibit-vault-entry:hover {
-  border-color: var(--signal);
+  border-color: var(--tower-accent);
 }
 
 @media (max-width: 1100px) {
@@ -866,7 +906,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   }
 }
 
-/* ── Mobile app shell (data-layout set by JS) ── */
+/* ???? Mobile app shell (data-layout set by JS) ???? */
 .tower-root[data-layout='mobile'] {
   height: 100dvh;
   overflow: hidden;
@@ -886,41 +926,88 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 
 .tower-root[data-layout='mobile'] .tower-toolbar {
   position: fixed;
-  top: calc(0.5rem + var(--tower-safe-top));
-  left: 0.5rem;
-  right: 0.5rem;
+  top: calc(var(--tower-mobile-bar-pad) + var(--tower-safe-top));
+  left: var(--tower-mobile-bar-pad);
+  right: var(--tower-mobile-bar-pad);
   z-index: 20;
   flex-wrap: wrap;
   justify-content: flex-end;
-  gap: 0.35rem;
-  padding: 0.35rem;
-  background: color-mix(in srgb, var(--paper) 88%, transparent);
-  border: 1px solid var(--line);
+  gap: 0.25rem;
+  padding: var(--tower-mobile-bar-pad);
+  background: color-mix(in srgb, var(--tower-bg) 88%, transparent);
+  border: 1px solid var(--tower-border);
   backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 .tower-root[data-layout='mobile'] .tower-toolbar-btn,
-.tower-root[data-layout='mobile'] .tower-toolbar-langs button {
-  min-height: var(--tower-touch-min);
-  padding: 0.4rem 0.55rem;
-  font-size: clamp(0.62rem, 2.6vw, 0.72rem);
+.tower-root[data-layout='mobile'] .tower-toolbar-langs button,
+.tower-root[data-layout='mobile'] .tower-toolbar-fonts button,
+.tower-root[data-layout='mobile'] .tower-mobile-footer__btn {
+  min-height: var(--tower-mobile-bar-min);
+  padding: 0.28rem 0.4rem;
+  font-size: clamp(0.58rem, 2.4vw, 0.65rem);
 }
 
-.tower-root[data-layout='mobile'] .tower-toolbar-drawer {
+.tower-mobile-footer {
+  display: none;
+}
+
+.tower-root[data-layout='mobile'] .tower-mobile-footer {
+  position: fixed;
+  left: var(--tower-mobile-bar-pad);
+  right: var(--tower-mobile-bar-pad);
+  bottom: calc(var(--tower-mobile-bar-pad) + var(--tower-safe-bottom));
+  z-index: 20;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: var(--tower-mobile-bar-pad);
+  background: color-mix(in srgb, var(--tower-bg) 88%, transparent);
+  border: 1px solid var(--tower-border);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  font-family: var(--tower-font-mono);
+  font-size: clamp(0.58rem, 2.4vw, 0.65rem);
+  letter-spacing: 0.1em;
+}
+
+.tower-mobile-footer__btn {
+  flex: 0 0 auto;
+  width: auto;
+  max-width: none;
+}
+
+.tower-mobile-footer__btn--floors {
   margin-right: auto;
+}
+
+.tower-mobile-footer__btn--details {
+  margin-left: auto;
+}
+
+[data-theme='dark'] .tower-root[data-layout='mobile'] .tower-toolbar {
+  background: color-mix(in srgb, var(--tower-panel) 72%, transparent);
+  border-color: color-mix(in srgb, var(--tower-glow) 32%, transparent);
+}
+
+[data-theme='dark'] .tower-root[data-layout='mobile'] .tower-mobile-footer {
+  background: color-mix(in srgb, var(--tower-panel) 72%, transparent);
+  border-color: color-mix(in srgb, var(--tower-glow) 32%, transparent);
 }
 
 .tower-root[data-layout='mobile'] .tower-status {
   position: fixed;
   left: 50%;
-  bottom: calc(0.75rem + var(--tower-safe-bottom));
+  bottom: calc(var(--tower-mobile-footer-h) + var(--tower-mobile-bar-pad) * 2 + var(--tower-safe-bottom));
   transform: translateX(-50%);
   z-index: 18;
   max-width: min(28rem, calc(100vw - 1.5rem));
 }
 
 .tower-root[data-layout='mobile'] .tower-focus-hint {
-  bottom: calc(4.5rem + var(--tower-safe-bottom));
+  bottom: calc(var(--tower-mobile-footer-h) + var(--tower-mobile-bar-pad) * 2 + 2.75rem + var(--tower-safe-bottom));
   max-width: calc(100vw - 1.5rem);
   flex-wrap: wrap;
   justify-content: center;
@@ -928,7 +1015,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 
 .tower-root[data-layout='mobile'] .tower-canvas__boot,
 .tower-root[data-layout='mobile'] .tower-exit-progress {
-  bottom: calc(4.5rem + var(--tower-safe-bottom));
+  bottom: calc(var(--tower-mobile-footer-h) + var(--tower-mobile-bar-pad) * 2 + var(--tower-safe-bottom));
 }
 
 .tower-root[data-layout='mobile'] .tower-rail-floors > li > button,
@@ -938,7 +1025,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   font-size: clamp(0.75rem, 2.8vw, 0.875rem);
 }
 
-/* ── Slide-over drawers ── */
+/* ???? Slide-over drawers ???? */
 .tower-drawer {
   position: fixed;
   inset: 0;
@@ -950,7 +1037,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   position: absolute;
   inset: 0;
   border: none;
-  background: color-mix(in srgb, var(--ink) 35%, transparent);
+  background: color-mix(in srgb, var(--tower-ink) 35%, transparent);
   cursor: pointer;
   pointer-events: auto;
 }
@@ -963,9 +1050,9 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   max-width: 100%;
   display: flex;
   flex-direction: column;
-  background: var(--paper);
-  border: 1px solid var(--line);
-  box-shadow: 0 12px 48px color-mix(in srgb, var(--ink) 22%, transparent);
+  background: var(--tower-bg);
+  border: 1px solid var(--tower-border);
+  box-shadow: 0 12px 48px color-mix(in srgb, var(--tower-ink) 22%, transparent);
   pointer-events: auto;
   outline: none;
 }
@@ -973,13 +1060,13 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 .tower-drawer--left .tower-drawer__panel {
   left: 0;
   border-left: none;
-  animation: tower-drawer-in-left 0.32s var(--ease-tower) both;
+  animation: tower-drawer-in-left 0.32s var(--tower-ease) both;
 }
 
 .tower-drawer--right .tower-drawer__panel {
   right: 0;
   border-right: none;
-  animation: tower-drawer-in-right 0.32s var(--ease-tower) both;
+  animation: tower-drawer-in-right 0.32s var(--tower-ease) both;
 }
 
 .tower-drawer[data-reduced-motion] .tower-drawer__panel {
@@ -1002,17 +1089,17 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   justify-content: space-between;
   gap: 0.75rem;
   padding: calc(0.65rem + var(--tower-safe-top)) 0.85rem 0.65rem;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--tower-border);
   flex-shrink: 0;
 }
 
 .tower-drawer__title {
   margin: 0;
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: 0.72rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--graphite);
+  color: var(--tower-fg);
 }
 
 .tower-drawer__close {
@@ -1023,9 +1110,9 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   justify-content: center;
   font-size: 1.35rem;
   line-height: 1;
-  border: 1px solid var(--line);
-  background: color-mix(in srgb, var(--paper) 92%, transparent);
-  color: var(--graphite-mute);
+  border: 1px solid var(--tower-border);
+  background: color-mix(in srgb, var(--tower-bg) 92%, transparent);
+  color: var(--tower-muted);
 }
 
 .tower-drawer__body {
@@ -1065,7 +1152,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   }
 }
 
-/* ── Station callouts (architectural drawing labels) ── */
+/* ???? Station callouts (architectural drawing labels) ???? */
 .station-callout {
   display: flex;
   flex-direction: column;
@@ -1074,43 +1161,43 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   min-width: 3.4rem;
   max-width: 9rem;
   padding: 0.22rem 0.42rem;
-  border: 1px solid var(--line);
-  background: color-mix(in srgb, var(--paper) 94%, transparent);
-  font-family: var(--font-mono);
+  border: 1px solid var(--tower-border);
+  background: color-mix(in srgb, var(--tower-bg) 94%, transparent);
+  font-family: var(--tower-font-mono);
   text-align: center;
   backdrop-filter: blur(4px);
-  box-shadow: 0 1px 0 color-mix(in srgb, var(--graphite) 8%, transparent);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--tower-fg) 8%, transparent);
   pointer-events: none;
-  transition: border-color 0.25s var(--ease-tower), color 0.25s var(--ease-tower);
+  transition: border-color 0.25s var(--tower-ease), color 0.25s var(--tower-ease);
 }
 
 .station-callout--active {
-  border-color: color-mix(in srgb, var(--signal) 55%, transparent);
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--signal) 12%, transparent);
+  border-color: color-mix(in srgb, var(--tower-accent) 55%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--tower-accent) 12%, transparent);
 }
 
 .station-callout__code {
   font-size: 0.48rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--graphite-mute);
+  color: var(--tower-muted);
   line-height: 1.2;
 }
 
 .station-callout--active .station-callout__code {
-  color: var(--signal);
+  color: var(--tower-accent);
 }
 
 .station-callout__title {
   font-size: 0.54rem;
   letter-spacing: 0.04em;
-  color: var(--graphite);
+  color: var(--tower-fg);
   line-height: 1.25;
   white-space: nowrap;
 }
 
 .station-callout--active .station-callout__title {
-  color: var(--graphite);
+  color: var(--tower-fg);
 }
 
 .station-callout--edge .station-callout__title {
@@ -1139,11 +1226,11 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   min-width: 4.4rem;
   max-width: 11rem;
   padding: 0.3rem 0.56rem;
-  background: var(--paper);
-  border-color: color-mix(in srgb, var(--line) 88%, transparent);
+  background: var(--tower-bg);
+  border-color: color-mix(in srgb, var(--tower-border) 88%, transparent);
   box-shadow:
-    0 1px 0 color-mix(in srgb, var(--graphite) 10%, transparent),
-    0 4px 14px color-mix(in srgb, var(--graphite) 12%, transparent);
+    0 1px 0 color-mix(in srgb, var(--tower-fg) 10%, transparent),
+    0 4px 14px color-mix(in srgb, var(--tower-fg) 12%, transparent);
 }
 
 .station-callout--credential .station-callout__title {
@@ -1155,21 +1242,21 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 }
 
 [data-theme='dark'] .station-callout {
-  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  background: color-mix(in srgb, var(--tower-bg) 88%, transparent);
 }
 
 .tower-exhibit-card__hint {
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: 0.62rem;
   letter-spacing: 0.06em;
-  color: var(--graphite-mute);
+  color: var(--tower-muted);
   margin-bottom: 0.75rem;
 }
 .tower-exhibit-project--solo h4 { font-size: 1.05rem; margin-bottom: 0.5rem; }
 .tower-exhibit-project__stack {
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: 0.62rem;
-  color: var(--graphite-mute);
+  color: var(--tower-muted);
   line-height: 1.45;
 }
 .tower-exhibit-project__meta .tower-exhibit-project__stack {
@@ -1192,7 +1279,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   text-overflow: ellipsis;
   display: block;
 }
-.tower-exhibit-stat--hero span { font-size: 1.05rem; color: var(--signal); font-weight: 600; }
+.tower-exhibit-stat--hero span { font-size: 1.05rem; color: var(--tower-accent); font-weight: 600; }
 .tower-exhibit-stats--hero .tower-exhibit-stat--hero label { font-size: 0.58rem; }
 .tower-exhibit-semester-tabs {
   display: grid;
@@ -1204,19 +1291,19 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   width: 100%;
   min-width: 0;
   text-align: left;
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: clamp(0.52rem, 1.6vw, 0.58rem);
   letter-spacing: 0.05em;
   padding: 0.32rem 0.45rem;
-  border: 1px solid var(--line);
-  background: color-mix(in srgb, var(--paper) 92%, transparent);
+  border: 1px solid var(--tower-border);
+  background: color-mix(in srgb, var(--tower-bg) 92%, transparent);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .tower-exhibit-semester-tabs button.is-active {
-  border-color: var(--signal);
-  color: var(--signal);
+  border-color: var(--tower-accent);
+  color: var(--tower-accent);
 }
 .tower-exhibit-details {
   margin-top: 1rem;
@@ -1224,26 +1311,26 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 }
 .tower-exhibit-details summary {
   cursor: pointer;
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: 0.62rem;
   letter-spacing: 0.06em;
-  color: var(--graphite-mute);
+  color: var(--tower-muted);
   margin-bottom: 0.5rem;
 }
 .tower-exhibit-experience { display: flex; flex-direction: column; gap: 0.65rem; }
 .tower-exhibit-experience__item strong { display: block; font-size: 0.82rem; }
 .tower-exhibit-experience__item span {
   display: block;
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: 0.6rem;
-  color: var(--graphite-mute);
+  color: var(--tower-muted);
   margin-top: 0.18rem;
 }
 .tower-exhibit-experience__item p,
 .tower-exhibit-experience__item li {
   font-size: 0.75rem;
   margin-top: 0.25rem;
-  color: var(--text-dim);
+  color: var(--tower-muted);
 }
 .tower-exhibit-experience__item ul { padding-left: 1rem; }
 
@@ -1257,23 +1344,23 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   align-items: center;
   gap: 0.75rem;
   padding: 0.35rem 0.65rem;
-  border: 1px solid color-mix(in srgb, var(--graphite) 25%, transparent);
-  background: color-mix(in srgb, var(--paper) 92%, transparent);
+  border: 1px solid color-mix(in srgb, var(--tower-fg) 25%, transparent);
+  background: color-mix(in srgb, var(--tower-bg) 92%, transparent);
   pointer-events: auto;
 }
 .tower-focus-hint__label {
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: 0.58rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--graphite-mute);
+  color: var(--tower-muted);
 }
 .tower-focus-hint__back {
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: 0.58rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--signal);
+  color: var(--tower-accent);
   background: none;
   border: none;
   cursor: pointer;
@@ -1284,11 +1371,11 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 .tower-exhibit-card__action {
   display: inline-flex;
   margin-top: 0.75rem;
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: 0.72rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--signal);
+  color: var(--tower-accent);
   background: none;
   border: none;
   cursor: pointer;
@@ -1297,11 +1384,11 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 .tower-exhibit-card__action:hover { opacity: 0.85; }
 .tower-exhibit-card__issuer {
   font-size: 0.78rem;
-  color: var(--text-dim);
+  color: var(--tower-muted);
   margin-bottom: 0.5rem;
 }
 
-/* ── Factory L1 timeline captions (CaptionPlate / site-caption) ── */
+/* ???? Factory L1 timeline captions (CaptionPlate / site-caption) ???? */
 .site-caption-html,
 .site-caption-html > div,
 .site-caption-wrap {
@@ -1317,20 +1404,20 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   flex-direction: column;
   gap: 2px;
   padding: 3px 6px;
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: 0.48rem;
   letter-spacing: 0.09em;
   line-height: 1.3;
   text-transform: uppercase;
-  color: var(--graphite);
+  color: var(--tower-fg);
   white-space: nowrap;
   text-align: left;
-  background: color-mix(in srgb, var(--paper) 96%, transparent);
-  border: 1px solid color-mix(in srgb, var(--graphite) 22%, transparent);
+  background: color-mix(in srgb, var(--tower-bg) 96%, transparent);
+  border: 1px solid color-mix(in srgb, var(--tower-fg) 22%, transparent);
 }
 
 .site-caption span {
-  border-top: 1px solid color-mix(in srgb, var(--graphite) 35%, transparent);
+  border-top: 1px solid color-mix(in srgb, var(--tower-fg) 35%, transparent);
   padding-top: 1px;
 }
 
@@ -1340,14 +1427,14 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 }
 
 .site-caption--note {
-  color: var(--signal);
-  border-color: color-mix(in srgb, var(--signal) 55%, transparent);
-  border-left: 2px solid var(--signal);
+  color: var(--tower-accent);
+  border-color: color-mix(in srgb, var(--tower-accent) 55%, transparent);
+  border-left: 2px solid var(--tower-accent);
   padding-left: 6px;
 }
 
 .site-caption--note span {
-  border-top-color: color-mix(in srgb, var(--signal) 35%, transparent);
+  border-top-color: color-mix(in srgb, var(--tower-accent) 35%, transparent);
 }
 
 .site-caption--above {
@@ -1372,28 +1459,28 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 
 .factory-plaque {
   padding: 0.2rem 0.35rem;
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: 0.44rem;
   font-weight: 600;
   letter-spacing: 0.14em;
   line-height: 1.2;
   text-align: center;
-  color: var(--graphite);
+  color: var(--tower-fg);
   white-space: nowrap;
-  background: color-mix(in srgb, var(--paper) 94%, transparent);
-  border: 1px solid color-mix(in srgb, var(--graphite) 28%, transparent);
-  box-shadow: 0 1px 0 color-mix(in srgb, var(--graphite) 12%, transparent);
+  background: color-mix(in srgb, var(--tower-bg) 94%, transparent);
+  border: 1px solid color-mix(in srgb, var(--tower-fg) 28%, transparent);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--tower-fg) 12%, transparent);
 }
 
 .factory-plaque--lit {
-  color: var(--signal);
-  border-color: color-mix(in srgb, var(--signal) 45%, transparent);
+  color: var(--tower-accent);
+  border-color: color-mix(in srgb, var(--tower-accent) 45%, transparent);
 }
 
 [data-theme='dark'] .site-caption,
 [data-theme='dark'] .site-caption--note {
-  background: color-mix(in srgb, var(--paper) 82%, var(--graphite) 18%);
-  border-color: color-mix(in srgb, var(--graphite) 40%, transparent);
+  background: color-mix(in srgb, var(--tower-bg) 82%, var(--tower-fg) 18%);
+  border-color: color-mix(in srgb, var(--tower-fg) 40%, transparent);
 }
 
 .factory-callout {
@@ -1403,9 +1490,9 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   align-items: center;
   gap: 0.04rem;
   padding: 0.16rem 0.28rem;
-  border: 1px solid var(--line);
-  background: color-mix(in srgb, var(--paper) 94%, transparent);
-  font-family: var(--font-mono);
+  border: 1px solid var(--tower-border);
+  background: color-mix(in srgb, var(--tower-bg) 94%, transparent);
+  font-family: var(--tower-font-mono);
   white-space: nowrap;
   cursor: pointer;
   backdrop-filter: blur(4px);
@@ -1414,25 +1501,25 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 }
 
 .factory-callout--active {
-  border-color: color-mix(in srgb, var(--signal) 55%, transparent);
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--signal) 18%, transparent);
+  border-color: color-mix(in srgb, var(--tower-accent) 55%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--tower-accent) 18%, transparent);
 }
 
 .factory-callout__area {
   font-size: 0.44rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--graphite-mute);
+  color: var(--tower-muted);
 }
 
 .factory-callout__sem {
   font-size: 0.5rem;
   letter-spacing: 0.04em;
-  color: var(--graphite);
+  color: var(--tower-fg);
 }
 
 .factory-callout--active .factory-callout__sem {
-  color: var(--signal);
+  color: var(--tower-accent);
 }
 
 .factory-bubble {
@@ -1445,8 +1532,8 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   min-width: 6.5rem;
   max-width: 8.5rem;
   padding: 0.35rem 0.45rem 0.42rem;
-  border: 1px solid var(--line);
-  background: color-mix(in srgb, var(--paper) 94%, transparent);
+  border: 1px solid var(--tower-border);
+  background: color-mix(in srgb, var(--tower-bg) 94%, transparent);
   text-align: left;
   cursor: pointer;
   font: inherit;
@@ -1454,27 +1541,27 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 }
 
 .factory-bubble--active {
-  border-color: color-mix(in srgb, var(--signal) 55%, transparent);
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--signal) 20%, transparent);
+  border-color: color-mix(in srgb, var(--tower-accent) 55%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--tower-accent) 20%, transparent);
 }
 
 .factory-bubble__eyebrow {
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: 0.48rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--graphite-mute);
+  color: var(--tower-muted);
 }
 
 .factory-bubble__sem {
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: 0.58rem;
-  color: var(--graphite);
+  color: var(--tower-fg);
 }
 
 .factory-bubble__project {
   font-size: 0.52rem;
-  color: var(--graphite-mute);
+  color: var(--tower-muted);
   line-height: 1.25;
 }
 
@@ -1487,8 +1574,8 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   height: 0;
   border-left: 0.28rem solid transparent;
   border-right: 0.28rem solid transparent;
-  border-top: 0.35rem solid color-mix(in srgb, var(--paper) 94%, transparent);
-  filter: drop-shadow(0 1px 0 var(--line));
+  border-top: 0.35rem solid color-mix(in srgb, var(--tower-bg) 94%, transparent);
+  filter: drop-shadow(0 1px 0 var(--tower-border));
 }
 
 @keyframes factory-rise {
@@ -1515,27 +1602,27 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 
 .tower-exhibit-card__body--mute {
   font-size: 0.68rem;
-  color: var(--graphite-mute);
+  color: var(--tower-muted);
   margin-top: -0.15rem;
   margin-bottom: 0.45rem;
 }
 
-/* ── B10 résumé PDF embed ── */
+/* ???? B10 r?sum? PDF embed ???? */
 .tower-resume-preview-embed {
   margin-bottom: 0.55rem;
-  border: 1px solid var(--line);
+  border: 1px solid var(--tower-border);
   border-radius: 6px;
-  background: color-mix(in srgb, #fff 92%, var(--paper) 8%);
+  background: color-mix(in srgb, #fff 92%, var(--tower-bg) 8%);
   overflow: hidden;
   max-height: 11rem;
 }
 [data-theme='dark'] .tower-resume-preview-embed {
-  background: color-mix(in srgb, var(--resin) 88%, #000 12%);
-  border-color: color-mix(in srgb, var(--neon) 28%, transparent);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--neon) 12%, transparent);
+  background: color-mix(in srgb, var(--tower-panel) 88%, #000 12%);
+  border-color: color-mix(in srgb, var(--tower-glow) 28%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tower-glow) 12%, transparent);
 }
 
-/* ── PDF.js canvas preview ── */
+/* ???? PDF.js canvas preview ???? */
 .resume-preview {
   display: flex;
   flex-direction: column;
@@ -1557,23 +1644,23 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 }
 .resume-preview__loading,
 .resume-preview__error {
-  font-family: var(--font-body);
+  font-family: var(--tower-font-body);
   font-size: 0.75rem;
-  color: var(--graphite-mute);
+  color: var(--tower-muted);
   padding: 0.5rem;
 }
 .resume-preview__page {
   margin: 0;
   background: #fff;
-  border: 1px solid color-mix(in srgb, var(--graphite) 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--tower-fg) 18%, transparent);
   border-radius: 4px;
-  box-shadow: 0 8px 24px color-mix(in srgb, var(--shade) 18%, transparent);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--tower-depth) 18%, transparent);
   overflow: hidden;
 }
 [data-theme='dark'] .resume-preview__page {
-  border-color: color-mix(in srgb, var(--neon) 22%, transparent);
+  border-color: color-mix(in srgb, var(--tower-glow) 22%, transparent);
   box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--neon) 14%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--tower-glow) 14%, transparent),
     0 12px 36px color-mix(in srgb, #000 55%, transparent);
 }
 .resume-preview--compact .resume-preview__page {
@@ -1583,11 +1670,11 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   border-radius: 3px;
 }
 [data-theme='dark'] .resume-preview--compact .resume-preview__page {
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--neon) 12%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--tower-glow) 12%, transparent);
 }
 .resume-preview__page--loading {
   aspect-ratio: 210 / 297;
-  background: color-mix(in srgb, var(--paper) 90%, var(--graphite) 10%);
+  background: color-mix(in srgb, var(--tower-bg) 90%, var(--tower-fg) 10%);
 }
 .resume-preview__canvas-wrap {
   position: relative;
@@ -1608,22 +1695,22 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   background: transparent;
 }
 .resume-preview__links a:hover {
-  outline: 1px solid color-mix(in srgb, var(--signal) 55%, transparent);
-  background: color-mix(in srgb, var(--signal) 8%, transparent);
+  outline: 1px solid color-mix(in srgb, var(--tower-accent) 55%, transparent);
+  background: color-mix(in srgb, var(--tower-accent) 8%, transparent);
 }
 [data-theme='dark'] .resume-preview__links a:hover {
-  outline-color: color-mix(in srgb, var(--neon) 55%, transparent);
-  background: color-mix(in srgb, var(--neon) 10%, transparent);
+  outline-color: color-mix(in srgb, var(--tower-glow) 55%, transparent);
+  background: color-mix(in srgb, var(--tower-glow) 10%, transparent);
 }
 
-/* ── Résumé print drawer ── */
+/* ???? R?sum? print drawer ???? */
 .tower-resume-drawer {
   position: fixed;
   inset: 0;
   z-index: 50;
   display: flex;
   flex-direction: column;
-  background: var(--paper);
+  background: var(--tower-bg);
 }
 .tower-resume-drawer__bar {
   display: flex;
@@ -1631,19 +1718,19 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   align-items: center;
   gap: 1rem;
   padding: 0.85rem 1.1rem;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--tower-border);
   flex-shrink: 0;
 }
 [data-theme='light'] .tower-resume-drawer__bar {
-  border-top: 3px solid var(--signal);
-  background: color-mix(in srgb, var(--resin) 55%, var(--paper) 45%);
-  font-family: var(--font-body);
+  border-top: 3px solid var(--tower-accent);
+  background: color-mix(in srgb, var(--tower-panel) 55%, var(--tower-bg) 45%);
+  font-family: var(--tower-font-body);
 }
 [data-theme='dark'] .tower-resume-drawer__bar {
-  border-top: 2px solid var(--neon);
-  background: color-mix(in srgb, var(--resin) 92%, #000 8%);
-  font-family: var(--font-mono);
-  box-shadow: 0 1px 0 color-mix(in srgb, var(--neon) 18%, transparent);
+  border-top: 2px solid var(--tower-glow);
+  background: color-mix(in srgb, var(--tower-panel) 92%, #000 8%);
+  font-family: var(--tower-font-mono);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--tower-glow) 18%, transparent);
 }
 .tower-resume-drawer__head {
   display: flex;
@@ -1653,32 +1740,32 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 }
 .tower-resume-drawer__title {
   margin: 0;
-  font-family: var(--font-display);
+  font-family: var(--tower-font-display);
   font-size: 1rem;
   font-weight: 600;
   letter-spacing: -0.01em;
-  color: var(--graphite);
+  color: var(--tower-fg);
   text-transform: none;
 }
 [data-theme='dark'] .tower-resume-drawer__title {
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--neon-bright);
+  color: var(--tower-glow-bright);
 }
 .tower-resume-drawer__meta {
   margin: 0;
   font-size: 0.78rem;
-  color: var(--graphite-mute);
+  color: var(--tower-muted);
   letter-spacing: 0.01em;
   text-transform: none;
 }
 [data-theme='dark'] .tower-resume-drawer__meta {
   font-size: 0.62rem;
   letter-spacing: 0.06em;
-  color: var(--graphite-mute);
+  color: var(--tower-muted);
 }
 .tower-resume-drawer__actions {
   display: flex;
@@ -1688,9 +1775,9 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 .tower-resume-drawer__btn {
   appearance: none;
   padding: 0.45rem 0.75rem;
-  border: 1px solid var(--signal);
-  background: color-mix(in srgb, var(--paper) 70%, var(--signal) 30%);
-  color: var(--graphite);
+  border: 1px solid var(--tower-accent);
+  background: color-mix(in srgb, var(--tower-bg) 70%, var(--tower-accent) 30%);
+  color: var(--tower-fg);
   font-family: inherit;
   font-size: 0.78rem;
   font-weight: 600;
@@ -1700,25 +1787,25 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   cursor: pointer;
 }
 [data-theme='dark'] .tower-resume-drawer__btn {
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: 0.62rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   border-radius: 0;
-  border-color: var(--neon);
-  background: color-mix(in srgb, var(--resin) 80%, var(--neon) 20%);
-  color: var(--ink);
+  border-color: var(--tower-glow);
+  background: color-mix(in srgb, var(--tower-panel) 80%, var(--tower-glow) 20%);
+  color: var(--tower-ink);
 }
 .tower-resume-drawer__btn--ghost {
-  border-color: var(--line);
+  border-color: var(--tower-border);
   background: transparent;
   font-weight: 500;
 }
 [data-theme='dark'] .tower-resume-drawer__btn--ghost {
-  border-color: color-mix(in srgb, var(--graphite) 35%, transparent);
+  border-color: color-mix(in srgb, var(--tower-fg) 35%, transparent);
   background: transparent;
-  color: var(--graphite);
+  color: var(--tower-fg);
 }
 a.tower-resume-drawer__btn {
   display: inline-flex;
@@ -1732,13 +1819,13 @@ a.tower-resume-drawer__btn {
 }
 [data-theme='light'] .tower-resume-drawer__body {
   background:
-    radial-gradient(ellipse 120% 80% at 50% 0%, color-mix(in srgb, var(--resin) 80%, transparent), transparent 55%),
-    var(--paper);
+    radial-gradient(ellipse 120% 80% at 50% 0%, color-mix(in srgb, var(--tower-panel) 80%, transparent), transparent 55%),
+    var(--tower-bg);
 }
 [data-theme='dark'] .tower-resume-drawer__body {
   background:
-    radial-gradient(ellipse 90% 60% at 50% 20%, color-mix(in srgb, var(--neon) 8%, transparent), transparent 70%),
-    linear-gradient(180deg, var(--paper) 0%, color-mix(in srgb, var(--shade) 70%, var(--paper) 30%) 100%);
+    radial-gradient(ellipse 90% 60% at 50% 20%, color-mix(in srgb, var(--tower-glow) 8%, transparent), transparent 70%),
+    linear-gradient(180deg, var(--tower-bg) 0%, color-mix(in srgb, var(--tower-depth) 70%, var(--tower-bg) 30%) 100%);
 }
 
 .tower-boot-plate {
@@ -1749,26 +1836,26 @@ a.tower-resume-drawer__btn {
   z-index: 3;
   pointer-events: none;
   text-align: center;
-  font-family: var(--font-mono);
-  animation: stamp-fade 0.6s var(--ease-tower) both;
+  font-family: var(--tower-font-mono);
+  animation: stamp-fade 0.6s var(--tower-ease) both;
 }
 .tower-boot-plate__code {
   margin: 0;
   font-size: 0.72rem;
   letter-spacing: 0.2em;
-  color: var(--signal);
+  color: var(--tower-accent);
 }
 [data-theme='dark'] .tower-boot-plate__code {
-  color: var(--neon);
+  color: var(--tower-glow);
 }
 .tower-boot-plate__name {
   margin: 0.35rem 0 0;
   font-size: 0.62rem;
   letter-spacing: 0.16em;
-  color: var(--graphite-mute);
+  color: var(--tower-muted);
 }
 [data-theme='dark'] .tower-boot-plate__name {
-  color: var(--graphite);
+  color: var(--tower-fg);
 }
 @keyframes stamp-fade {
   from { opacity: 0; transform: translate(-50%, -48%); }
@@ -1784,36 +1871,36 @@ a.tower-resume-drawer__btn {
   align-items: center;
   justify-content: center;
   gap: 1rem;
-  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  background: color-mix(in srgb, var(--tower-bg) 88%, transparent);
   pointer-events: auto;
 }
 .tower-exit__label {
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: 0.68rem;
   letter-spacing: 0.18em;
-  color: var(--graphite-mute);
+  color: var(--tower-muted);
   margin: 0;
 }
 .tower-exit__btn {
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: 0.62rem;
   letter-spacing: 0.12em;
   padding: 0.5rem 1rem;
-  border: 1px solid var(--graphite);
+  border: 1px solid var(--tower-fg);
   background: transparent;
-  color: var(--graphite);
+  color: var(--tower-fg);
   cursor: pointer;
 }
 .tower-exit__btn:hover {
-  color: var(--signal);
-  border-color: var(--signal);
+  color: var(--tower-accent);
+  border-color: var(--tower-accent);
 }
 
-/* ── Dev: Phase A primitive gallery ── */
+/* ???? Dev: Phase A primitive gallery ???? */
 .typology-gallery {
   min-height: 100dvh;
-  background: var(--paper);
-  color: var(--graphite);
+  background: var(--tower-bg);
+  color: var(--tower-fg);
   display: flex;
   flex-direction: column;
 }
@@ -1823,26 +1910,26 @@ a.tower-resume-drawer__btn {
   align-items: flex-start;
   gap: 1rem;
   padding: 1rem 1.25rem 0.75rem;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--tower-border);
   flex-shrink: 0;
 }
 .typology-gallery__eyebrow {
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: 0.58rem;
   letter-spacing: 0.14em;
-  color: var(--signal);
+  color: var(--tower-accent);
   margin: 0 0 0.25rem;
 }
 .typology-gallery__title {
-  font-family: var(--font-display);
+  font-family: var(--tower-font-display);
   font-size: 1.35rem;
   font-weight: 400;
   margin: 0;
 }
 .typology-gallery__sub {
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: 0.62rem;
-  color: var(--graphite-mute);
+  color: var(--tower-muted);
   margin: 0.35rem 0 0;
 }
 .typology-gallery__actions {
@@ -1852,7 +1939,7 @@ a.tower-resume-drawer__btn {
   gap: 0.5rem;
 }
 .typology-gallery__toggle {
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: 0.62rem;
   display: flex;
   align-items: center;
@@ -1860,12 +1947,12 @@ a.tower-resume-drawer__btn {
   cursor: pointer;
 }
 .typology-gallery__link {
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: 0.62rem;
-  color: var(--graphite);
-  border-bottom: 1px solid var(--line);
+  color: var(--tower-fg);
+  border-bottom: 1px solid var(--tower-border);
 }
-.typology-gallery__link:hover { color: var(--signal); border-color: var(--signal); }
+.typology-gallery__link:hover { color: var(--tower-accent); border-color: var(--tower-accent); }
 .typology-gallery__canvas {
   flex: 1;
   min-height: 55dvh;
@@ -1883,19 +1970,19 @@ a.tower-resume-drawer__btn {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
   gap: 0.5rem 1rem;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--tower-border);
   flex-shrink: 0;
 }
 .typology-gallery__legend li {
-  font-family: var(--font-mono);
+  font-family: var(--tower-font-mono);
   font-size: 0.58rem;
   letter-spacing: 0.04em;
 }
 .typology-gallery__legend strong {
   display: block;
-  color: var(--graphite);
+  color: var(--tower-fg);
   margin-bottom: 0.15rem;
 }
 .typology-gallery__legend span {
-  color: var(--graphite-mute);
+  color: var(--tower-muted);
 }

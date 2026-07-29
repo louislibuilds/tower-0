@@ -83,7 +83,7 @@ export function InfraRackLayout({
       />
       <BpMesh
         box={bpBox(4.0, 3.5, 0, 1.5, 0.65, 0.22, ROOM_W, ROOM_D)}
-        color={lit ? m.warm : m.pal.resin}
+        color={lit ? m.warm : m.pal.panel}
         emissive={lit ? m.warm : undefined}
         emissiveIntensity={0.1}
       />
@@ -92,7 +92,7 @@ export function InfraRackLayout({
         <Line
           key={key}
           points={[new THREE.Vector3(...seg[0]), new THREE.Vector3(...seg[1])]}
-          color={lit ? accent : m.pal.graphite}
+          color={lit ? accent : m.pal.fg}
           lineWidth={1}
           transparent
           opacity={0.5}
