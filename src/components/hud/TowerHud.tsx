@@ -1,5 +1,6 @@
 import { FLOORS } from '../../building/program'
 import { FACTORY_AREAS, areaLabel } from '../../scene/factoryStops'
+import { useMobileShell } from '../../context/MobileShellContext'
 import { libraryBooks } from '../../data/libraryBooks'
 import { credentials } from '../../data/credentials'
 import { LAB_SUITES, labCardTitle, labResearchTitle, labSuite } from '../../data/labs'
@@ -11,10 +12,32 @@ import { getFloor } from '../../building/program'
 
 /** Top-right — lang + Day/Night toggle */
 export function TowerToolbar() {
-  const { strings, theme, toggleTheme, locale, setLocale, localeLabels, bootDone, startExit, phase, openResumePreview } = useSite()
+  const { strings, theme, toggleTheme, locale, setLocale, localeLabels, bootDone, startExit, phase, openResumePreview, floorId, viewMode } = useSite()
+  const mobile = useMobileShell()
+  const showExhibitTrigger = bootDone && phase !== 'exit' && phase !== 'void' && viewMode !== 'tower' && floorId
 
   return (
     <div className="tower-toolbar">
+      {mobile?.layout === 'mobile' && (
+        <>
+          <button
+            type="button"
+            className="tower-toolbar-btn tower-toolbar-drawer"
+            onClick={mobile.toggleRailDrawer}
+          >
+            {strings.site.floors}
+          </button>
+          {showExhibitTrigger && (
+            <button
+              type="button"
+              className="tower-toolbar-btn tower-toolbar-drawer"
+              onClick={mobile.toggleExhibitDrawer}
+            >
+              {strings.site.details}
+            </button>
+          )}
+        </>
+      )}
       {bootDone && phase !== 'exit' && phase !== 'void' && (
         <button type="button" className="tower-toolbar-btn tower-toolbar-exit" onClick={startExit}>
           {strings.site.rollDrawing}
@@ -96,8 +119,13 @@ export function TowerRail() {
     toggleCredential,
     strings,
   } = useSite()
+  const mobile = useMobileShell()
 
   const railFloorOpen = !atTower && viewMode !== 'tower' && floorId !== null
+
+  const afterNav = () => {
+    mobile?.closeRailDrawer()
+  }
 
   return (
     <aside className="tower-rail">
@@ -113,7 +141,7 @@ export function TowerRail() {
             const loc = strings.floors[floor.id]
             return (
               <li key={floor.id} className={active ? 'is-active' : undefined}>
-                <button type="button" onClick={() => toggleFloor(floor.id)}>
+                <button type="button" onClick={() => { toggleFloor(floor.id); afterNav() }}>
                   <span className="tower-rail-id">{floor.label}</span>
                   <span>{loc?.title ?? floor.title}</span>
                 </button>

@@ -14,6 +14,7 @@ export interface LocaleStrings {
     rollingDrawing: string
     fallback: string
     floors: string
+    details: string
     hint: string
     themeDark: string
     themeLight: string
@@ -161,6 +162,7 @@ const en: LocaleStrings = {
     rollingDrawing: 'Ending set…',
     fallback: '2D elevation · WebGL unavailable',
     floors: 'FLOORS',
+    details: 'DETAILS',
     hint: 'Select a floor or room on the model or rail.',
     themeDark: 'Night',
     themeLight: 'Day',
@@ -471,6 +473,7 @@ const zhTW: LocaleStrings = {
     rollingDrawing: '收起中…',
     fallback: '2D 立面 · WebGL 不可用',
     floors: '樓層',
+    details: '詳情',
     hint: '在模型或左欄選擇樓層或房間。',
     themeDark: '夜間',
     themeLight: '日間',
@@ -778,6 +781,7 @@ const ja: LocaleStrings = {
     rollingDrawing: 'セットを終了中…',
     fallback: '2D 表示 · WebGL 非対応',
     floors: '階',
+    details: '詳細',
     hint: 'モデルまたは左のレールで階・部屋を選んでください。',
     themeDark: 'ナイト',
     themeLight: 'デイ',

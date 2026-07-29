@@ -8,6 +8,7 @@ import type { SitePhase } from '../building/sitePhase'
 import type { ViewMode } from '../building/viewMode'
 import type { LibraryRoomSlug } from '../data/libraryRooms'
 import { cameraPreset } from './presets'
+import { scaledZoom } from './viewportZoom'
 import { DUR, EASE_INK, EASE_TOWER } from '../scene/motion'
 import { towerTotalHeight } from '../scene/towerGeometry'
 
@@ -45,7 +46,9 @@ export function OrthoRig({
   const orbitOffset = useRef(new THREE.Vector3())
   const orbitActive = useRef(false)
   const tweening = useRef(false)
+  const baseZoom = useRef(26)
   const invalidate = useThree((s) => s.invalidate)
+  const viewport = useThree((s) => s.size)
 
   const focusTarget = selectedBookSlug
     ? 'book'
@@ -105,8 +108,9 @@ export function OrthoRig({
     tweening.current = true
 
     if (reducedMotion) {
+      baseZoom.current = target.zoom
       cam.position.set(...target.position)
-      cam.zoom = target.zoom
+      cam.zoom = scaledZoom(target.zoom, viewport.width, viewport.height)
       look.current.set(...target.lookAt)
       cam.lookAt(look.current)
       cam.updateProjectionMatrix()
@@ -146,12 +150,14 @@ export function OrthoRig({
                   : DUR.civic
 
     const ease = stationSwitch ? EASE_INK : EASE_TOWER
+    baseZoom.current = target.zoom
+    const endZoom = scaledZoom(target.zoom, viewport.width, viewport.height)
 
     const tween = gsap.to(from, {
       x: target.position[0],
       y: target.position[1],
       z: target.position[2],
-      zoom: target.zoom,
+      zoom: endZoom,
       lx: target.lookAt[0],
       ly: target.lookAt[1],
       lz: target.lookAt[2],
@@ -188,7 +194,17 @@ export function OrthoRig({
     reducedMotion,
     allowOrbit,
     invalidate,
+    viewport.width,
+    viewport.height,
   ])
+
+  useEffect(() => {
+    const cam = camRef.current
+    if (!cam || tweening.current) return
+    cam.zoom = scaledZoom(baseZoom.current, viewport.width, viewport.height)
+    cam.updateProjectionMatrix()
+    invalidate()
+  }, [viewport.width, viewport.height, invalidate])
 
   useFrame((_, delta) => {
     const cam = camRef.current

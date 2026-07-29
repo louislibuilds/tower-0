@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { isBootSequence } from '../building/sitePhase'
+import { useMobileShell } from '../context/MobileShellContext'
 import { useSite } from '../context/SiteContext'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import { DUR } from '../scene/motion'
@@ -28,6 +29,7 @@ export function DelayedExhibitOverlay() {
     selectedBookSlug,
     selectedCredentialSlug,
   } = useSite()
+  const mobile = useMobileShell()
   const reducedMotion = useReducedMotion()
   const [visible, setVisible] = useState(true)
 
@@ -48,7 +50,20 @@ export function DelayedExhibitOverlay() {
     return () => window.clearTimeout(t)
   }, [key, reducedMotion, floorId, viewMode])
 
-  if (viewMode === 'tower' || !floorId || !visible || !bootDone || isBootSequence(phase) || phase === 'exit' || phase === 'void') return null
+  useEffect(() => {
+    if (!mobile || mobile.layout !== 'mobile') return
+    if (!visible || viewMode === 'tower' || !floorId) return
+    if (!bootDone || isBootSequence(phase) || phase === 'exit' || phase === 'void') return
+    mobile.openExhibitDrawer()
+  }, [mobile, visible, viewMode, floorId, bootDone, phase])
+
+  if (viewMode === 'tower' || !floorId || !visible || !bootDone || isBootSequence(phase) || phase === 'exit' || phase === 'void') {
+    return null
+  }
+
+  if (mobile?.layout === 'mobile') {
+    return null
+  }
 
   return (
     <div className="tower-exhibit-wrap tower-exhibit-wrap--enter">
