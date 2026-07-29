@@ -1,13 +1,13 @@
 html[data-theme='light'] {
-  --scrollbar-size: 6px;
-  --scrollbar-thumb: color-mix(in srgb, var(--tower-muted) 52%, transparent);
-  --scrollbar-thumb-hover: color-mix(in srgb, var(--tower-accent) 62%, transparent);
+  --scrollbar-size: 4px;
+  --scrollbar-thumb: color-mix(in srgb, var(--tower-muted) 22%, transparent);
+  --scrollbar-thumb-hover: color-mix(in srgb, var(--tower-muted) 38%, transparent);
 }
 
 html[data-theme='dark'] {
-  --scrollbar-size: 6px;
-  --scrollbar-thumb: color-mix(in srgb, var(--tower-glow) 44%, transparent);
-  --scrollbar-thumb-hover: color-mix(in srgb, var(--tower-glow-bright) 68%, transparent);
+  --scrollbar-size: 4px;
+  --scrollbar-thumb: color-mix(in srgb, var(--tower-glow) 22%, transparent);
+  --scrollbar-thumb-hover: color-mix(in srgb, var(--tower-glow-bright) 38%, transparent);
 }
 
 /* Firefox */

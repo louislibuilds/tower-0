@@ -48,14 +48,14 @@ export function applyTowerTokens(theme: ThemeMode, fontStack: FontStack = 'herit
   )
 
   const scrollMix = theme === 'dark' ? c.glow : c.muted
-  const scrollHoverMix = theme === 'dark' ? c.glowBright : c.accent
-  root.setProperty('--scrollbar-size', '6px')
+  const scrollHoverMix = theme === 'dark' ? c.glowBright : c.muted
+  root.setProperty('--scrollbar-size', '4px')
   root.setProperty(
     '--scrollbar-thumb',
-    `color-mix(in srgb, ${scrollMix} ${theme === 'dark' ? '44%' : '52%'}, transparent)`,
+    `color-mix(in srgb, ${scrollMix} 22%, transparent)`,
   )
   root.setProperty(
     '--scrollbar-thumb-hover',
-    `color-mix(in srgb, ${scrollHoverMix} ${theme === 'dark' ? '68%' : '62%'}, transparent)`,
+    `color-mix(in srgb, ${scrollHoverMix} 38%, transparent)`,
   )
 }
