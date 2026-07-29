@@ -10,11 +10,9 @@ html[data-theme='dark'] {
   --scrollbar-thumb-hover: color-mix(in srgb, var(--tower-glow-bright) 38%, transparent);
 }
 
-/* Firefox */
-.tower-rail-floors,
-.tower-exhibit-card__scroll,
-.tower-drawer__body,
-.tower-resume-drawer__body {
+/* Firefox — thin preset only; width vars do not apply here */
+.tower-root,
+.tower-root * {
   scrollbar-width: thin;
   scrollbar-color: var(--scrollbar-thumb) transparent;
 }
@@ -28,37 +26,49 @@ html[data-theme='dark'] {
   scrollbar-color: var(--scrollbar-thumb) transparent;
 }
 
-/* WebKit */
-.tower-rail-floors::-webkit-scrollbar,
-.tower-exhibit-card__scroll::-webkit-scrollbar,
-.tower-drawer__body::-webkit-scrollbar,
-.tower-resume-drawer__body::-webkit-scrollbar {
+/* WebKit — global within app shell (matches KATA approach) */
+.tower-root ::-webkit-scrollbar {
   width: var(--scrollbar-size);
   height: var(--scrollbar-size);
 }
 
-.tower-rail-floors::-webkit-scrollbar-track,
-.tower-exhibit-card__scroll::-webkit-scrollbar-track,
-.tower-drawer__body::-webkit-scrollbar-track,
-.tower-resume-drawer__body::-webkit-scrollbar-track {
+.tower-root ::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.tower-exhibit-card__scroll::-webkit-scrollbar-thumb,
-.tower-drawer__body::-webkit-scrollbar-thumb,
-.tower-resume-drawer__body::-webkit-scrollbar-thumb {
+.tower-root ::-webkit-scrollbar-thumb {
   background: var(--scrollbar-thumb);
   border-radius: 999px;
 }
 
-.tower-exhibit-card__scroll::-webkit-scrollbar-thumb:hover,
-.tower-drawer__body::-webkit-scrollbar-thumb:hover,
-.tower-resume-drawer__body::-webkit-scrollbar-thumb:hover {
+.tower-root ::-webkit-scrollbar-thumb:hover {
   background: var(--scrollbar-thumb-hover);
 }
 
-.tower-rail-floors::-webkit-scrollbar-thumb {
+.tower-root ::-webkit-scrollbar-corner {
   background: transparent;
+}
+
+.tower-root ::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+/* Left rail — collapse gutter entirely until hover/focus */
+.tower-rail-floors:not(:hover):not(:focus-within)::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+.tower-rail-floors:not(:hover):not(:focus-within)::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+.tower-rail-floors:hover::-webkit-scrollbar,
+.tower-rail-floors:focus-within::-webkit-scrollbar {
+  width: var(--scrollbar-size);
+  height: var(--scrollbar-size);
 }
 
 .tower-rail-floors:hover::-webkit-scrollbar-thumb,
@@ -69,4 +79,10 @@ html[data-theme='dark'] {
 .tower-rail-floors:hover::-webkit-scrollbar-thumb:hover,
 .tower-rail-floors:focus-within::-webkit-scrollbar-thumb:hover {
   background: var(--scrollbar-thumb-hover);
+}
+
+.tower-exhibit-card__scroll,
+.tower-drawer__body,
+.tower-resume-drawer__body {
+  scrollbar-gutter: auto;
 }
