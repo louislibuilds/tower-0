@@ -403,7 +403,9 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   white-space: nowrap;
 }
 .tower-toolbar-theme {
-  width: 4.85rem;
+  width: auto;
+  min-width: 3.25rem;
+  padding-inline: 0.55rem;
 }
 .tower-toolbar-exit {
   width: auto;
