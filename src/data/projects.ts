@@ -19,7 +19,7 @@ export const labProjects: LabProject[] = [
     role: 'Team Lead & Full-stack Developer (Team of 6)',
     stack: ['React', 'TypeScript', 'Express', 'Leaflet', 'Open-Meteo'],
     links: [
-      { label: 'Case Study', url: 'https://www.bubblechickenlab.com/work/your-rock-is-coming' },
+      { label: 'Case Study', url: 'https://www.bubblechickenlab.com/work/unihack2026' },
       { label: 'GitHub', url: 'https://github.com/louislibuilds/your-rock-is-coming' },
     ],
   },
