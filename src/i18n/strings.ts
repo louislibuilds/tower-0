@@ -442,7 +442,7 @@ const en: LocaleStrings = {
     acf: {
       title: 'ACF Mentoring Program',
       detail: 'Mentee · Mentor: Howard C. · Organizer: Peter Wei',
-      body: 'Joined the Australia Career Forum (ACF) Mentoring Program in 2026 as a mentee. Through structured sessions and ongoing check-ins with Howard C., worked on graduate job-search strategy, resume refinement, interview preparation, and navigating the Australian tech hiring market — with honest, practical feedback tied to real applications. Mentorship here was more than career tactics: having someone in your corner who normalizes growing, stumbling, and trying again made a real difference — including naming and working through imposter syndrome when it mattered most during job search.',
+      body: 'Joined the Australia Career Forum (ACF) Mentoring Program in 2026 as a mentee. Through structured sessions and ongoing check-ins with Howard C., worked on graduate job-search strategy, resume refinement, interview preparation, and navigating the Australian tech hiring market — with honest, practical feedback tied to real applications. Mentorship here was more than career tactics: having someone in your corner who normalizes growing, stumbling, and trying again made a real difference — including walking alongside me through imposter syndrome, a common psychological struggle, and working together to address it when job search was at its hardest.',
       credit: 'Peter Wei — organized the program and created space for mentors and mentees to learn from one another. Howard C. — resume reviews, fresh insights when they were needed most, and encouragement to keep going.',
     },
   },
@@ -748,7 +748,7 @@ const zhTW: LocaleStrings = {
     acf: {
       title: 'ACF 導師計畫',
       detail: '學員 · 導師：Howard C. · 舉辦：Peter Wei',
-      body: '2026 年參加 Australia Career Forum (ACF) 導師計畫。與 Howard C. 定期會談，針對畢業求職策略、履歷修訂、面試準備與澳洲科技業市場 — 獲得務實、誠實、貼近真實申請的回饋。導師的價值不只是求職技巧：有人在旁提醒你可以成長、可以跌倒、可以再試一次，意義重大 — 包括在求職期間一起面對並命名 imposter syndrome。',
+      body: '2026 年參加 Australia Career Forum (ACF) 導師計畫。與 Howard C. 定期會談，針對畢業求職策略、履歷修訂、面試準備與澳洲科技業市場 — 獲得務實、誠實、貼近真實申請的回饋。導師的價值不只是求職技巧：有人在旁提醒你可以成長、可以跌倒、可以再試一次，意義重大 — 求職最艱難的時候，也一路陪伴我面對冒牌者症候群（imposter syndrome）這類常見的心理困境，並一起嘗試化解。',
       credit: 'Peter Wei — 策劃計畫並建立導師與學員互相學習的空間。Howard C. — 履歷檢視、關鍵時刻的新視角，以及持續的鼓勵。',
     },
   },
@@ -1055,7 +1055,7 @@ const ja: LocaleStrings = {
     acf: {
       title: 'ACF メンタリングプログラム',
       detail: 'メンティ · メンター: Howard C. · 主催: Peter Wei',
-      body: '2026 年に Australia Career Forum (ACF) メンタリングプログラムに参加。Howard C. との定期セッションで、新卒就職戦略、履歴書改善、面接準備、豪州テック市場への適応 — 実際の応募に即した実践的なフィードバックを得た。メンターシップはキャリア術だけではなく、成長・失敗・再挑戦を当たり前にしてくれる存在 — 求職中の imposter syndrome に向き合う支援も含め、大きな意味を持った。',
+      body: '2026 年に Australia Career Forum (ACF) メンタリングプログラムに参加。Howard C. との定期セッションで、新卒就職戦略、履歴書改善、面接準備、豪州テック市場への適応 — 実際の応募に即した実践的なフィードバックを得た。メンターシップはキャリア術だけではなく、成長・失敗・再挑戦を当たり前にしてくれる存在 — 就活が最も厳しい時期に、インポスター症候群（imposter syndrome）というよくある心理的な壁と向き合い、共に乗り越えようと寄り添ってくれたことも、大きな意味を持った。',
       credit: 'Peter Wei — プログラムを組織し、メンターとメンティが学び合う場を創出。Howard C. — 履歴書レビュー、必要な時の新しい視点、継続的な励まし。',
     },
   },

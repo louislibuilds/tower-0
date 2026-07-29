@@ -54,7 +54,7 @@ export const credentials: Credential[] = [
     title: 'ACF Mentoring Program',
     issuer: 'Australia Career Forum',
     detail: 'Mentee · Mentor: Howard C. · Organizer: Peter Wei',
-    body: 'Joined the Australia Career Forum (ACF) Mentoring Program in 2026 as a mentee. Through structured sessions and ongoing check-ins with Howard C., worked on graduate job-search strategy, resume refinement, interview preparation, and navigating the Australian tech hiring market — with honest, practical feedback tied to real applications. Mentorship here was more than career tactics: having someone in your corner who normalizes growing, stumbling, and trying again made a real difference — including naming and working through imposter syndrome when it mattered most during job search.',
+    body: 'Joined the Australia Career Forum (ACF) Mentoring Program in 2026 as a mentee. Through structured sessions and ongoing check-ins with Howard C., worked on graduate job-search strategy, resume refinement, interview preparation, and navigating the Australian tech hiring market — with honest, practical feedback tied to real applications. Mentorship here was more than career tactics: having someone in your corner who normalizes growing, stumbling, and trying again made a real difference — including walking alongside me through imposter syndrome, a common psychological struggle, and working together to address it when job search was at its hardest.',
     credit: 'Peter Wei — organized the program and created space for mentors and mentees to learn from one another. Howard C. — resume reviews, fresh insights when they were needed most, and encouragement to keep going.',
   },
 ]
