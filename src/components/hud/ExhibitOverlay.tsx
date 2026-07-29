@@ -33,10 +33,10 @@ function LobbyPanelHeader() {
     <>
       <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{eyebrow}</p>
       <h3 className="tower-exhibit-card__name">{s.welcomeName}</h3>
-      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{profile.tagline}</p>
+      <p className="tower-exhibit-card__tagline">{profile.tagline}</p>
       <hr className="tower-exhibit-roof__rule" />
       <blockquote className="tower-exhibit-card__thesis">{s.motto}</blockquote>
-      <p className="tower-exhibit-card__body">{s.floorIntro}</p>
+      <p className="tower-exhibit-card__body tower-exhibit-card__body--intro">{s.floorIntro}</p>
     </>
   )
 }
@@ -48,7 +48,7 @@ function LobbyExhibit() {
     <>
       <LobbyPanelHeader />
 
-      <div className="tower-exhibit-stats tower-exhibit-stats--hero">
+      <div className="tower-exhibit-stats tower-exhibit-stats--row">
         <div className="tower-exhibit-stat tower-exhibit-stat--hero">
           <span>{profile.gpa}/{profile.gpaScale}</span>
           <label>{s.gpa}</label>
@@ -76,15 +76,17 @@ function LobbyExhibit() {
         <div><dt>{LOBBY_RESUME_LABELS.location}</dt><dd>{profile.location}</dd></div>
       </dl>
 
-      <h4 className="tower-exhibit-section-title">{LOBBY_RESUME_LABELS.experience}</h4>
-      <div className="tower-exhibit-experience">
-        {experiences.slice(0, 2).map((exp) => (
-          <article key={exp.slug} className="tower-exhibit-experience__item">
-            <strong>{exp.title}</strong>
-            <span>{exp.company} · {exp.start} – {exp.end}</span>
-            <p>{exp.bullets[0]}</p>
-          </article>
-        ))}
+      <div className="tower-exhibit-stack">
+        <h4 className="tower-exhibit-section-title">{LOBBY_RESUME_LABELS.experience}</h4>
+        <div className="tower-exhibit-experience">
+          {experiences.slice(0, 2).map((exp) => (
+            <article key={exp.slug} className="tower-exhibit-experience__item">
+              <strong>{exp.title}</strong>
+              <span>{exp.company} · {exp.start} – {exp.end}</span>
+              <p>{exp.bullets[0]}</p>
+            </article>
+          ))}
+        </div>
       </div>
     </>
   )
@@ -92,13 +94,12 @@ function LobbyExhibit() {
 
 function FactoryStats() {
   const { strings } = useSite()
-  const w = strings.factory
   const s = strings.lobby
   return (
-    <div className="tower-exhibit-stats tower-exhibit-stats--hero">
-      <div className="tower-exhibit-stat tower-exhibit-stat--hero"><span>{profile.wam}</span><label>{w.wam}</label></div>
-      <div className="tower-exhibit-stat tower-exhibit-stat--hero"><span>{gradeSummary.HD}</span><label>{w.hd}</label></div>
-      <div className="tower-exhibit-stat tower-exhibit-stat--hero"><span>{gradeSummary.D}</span><label>{w.d}</label></div>
+    <div className="tower-exhibit-stats tower-exhibit-stats--row">
+      <div className="tower-exhibit-stat tower-exhibit-stat--hero"><span>{profile.gpa}/{profile.gpaScale}</span><label>{s.gpa}</label></div>
+      <div className="tower-exhibit-stat tower-exhibit-stat--hero"><span>{profile.wam}</span><label>{s.wam}</label></div>
+      <div className="tower-exhibit-stat tower-exhibit-stat--hero"><span>{gradeSummary.HD}</span><label>{s.hdCount}</label></div>
       {profile.deansList && (
         <div className="tower-exhibit-stat tower-exhibit-stat--hero"><span>✦</span><label>{s.deansList}</label></div>
       )}
@@ -118,7 +119,7 @@ function FactoryPanelHeader({ areaIndex }: { areaIndex?: number }) {
       <>
         <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{eyebrow}</p>
         <h3 className="tower-exhibit-card__name">{areaLabel(areaIndex)} · {sem.label}</h3>
-        <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">
+        <p className="tower-exhibit-card__tagline tower-exhibit-card__tagline--latin">
           {hl.project} ‧ {hl.takeaway}
         </p>
         <hr className="tower-exhibit-roof__rule" />
@@ -130,9 +131,9 @@ function FactoryPanelHeader({ areaIndex }: { areaIndex?: number }) {
     <>
       <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{eyebrow}</p>
       <h3 className="tower-exhibit-card__name">{w.heroTitle}</h3>
-      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{FLOOR_HERO_TAGLINES.factory}</p>
+      <p className="tower-exhibit-card__tagline">{FLOOR_HERO_TAGLINES.factory}</p>
       <hr className="tower-exhibit-roof__rule" />
-      <p className="tower-exhibit-card__body">{w.floorIntro}</p>
+      <p className="tower-exhibit-card__body tower-exhibit-card__body--intro">{w.floorIntro}</p>
     </>
   )
 }
@@ -144,8 +145,8 @@ function FactoryOverview() {
     <>
       <FactoryPanelHeader />
       <FactoryStats />
-      <p className="tower-exhibit-card__hint">{w.selectArea}</p>
-      <div className="tower-exhibit-timeline">
+      <p className="tower-exhibit-card__hint tower-exhibit-card__hint--slot">{w.selectArea}</p>
+      <div className="tower-exhibit-timeline tower-exhibit-factory__latin">
         {FACTORY_AREAS.map((sem, i) => (
           <div key={sem.id} className="tower-exhibit-timeline__sem">
             <div className="tower-exhibit-timeline__head">
@@ -175,7 +176,7 @@ function FactoryExhibit({ factoryStop }: { factoryStop: number }) {
       <FactoryPanelHeader areaIndex={factoryStop} />
       <FactoryStats />
 
-      <div className="tower-exhibit-semester-tabs">
+      <div className="tower-exhibit-semester-tabs tower-exhibit-factory__latin">
         {FACTORY_AREAS.map((sem, i) => (
           <button
             key={sem.id}
@@ -189,7 +190,7 @@ function FactoryExhibit({ factoryStop }: { factoryStop: number }) {
       </div>
 
       {activeSem && (
-        <div className="tower-exhibit-timeline tower-exhibit-timeline--focus">
+        <div className="tower-exhibit-timeline tower-exhibit-timeline--focus tower-exhibit-factory__latin">
           <div className="tower-exhibit-timeline__sem">
             <div className="tower-exhibit-timeline__head">
               <strong>{areaLabel(factoryStop)} · {activeSem.label}</strong>
@@ -206,8 +207,8 @@ function FactoryExhibit({ factoryStop }: { factoryStop: number }) {
       )}
 
       <details className="tower-exhibit-details">
-        <summary>{w.allAreas}</summary>
-        <div className="tower-exhibit-timeline">
+        <summary className="tower-exhibit-details__summary--slot">{w.allAreas}</summary>
+        <div className="tower-exhibit-timeline tower-exhibit-factory__latin">
           {FACTORY_AREAS.map((sem, i) => (
             <div key={sem.id} className="tower-exhibit-timeline__sem">
               <div className="tower-exhibit-timeline__head">
@@ -246,7 +247,7 @@ function LabExhibit({ labRoomSlug }: { labRoomSlug: string | null }) {
         <>
           <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{eyebrow}</p>
           <h3 className="tower-exhibit-card__name">{cardTitle}</h3>
-          <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{tagline}</p>
+          <p className="tower-exhibit-card__tagline tower-exhibit-card__tagline--fluid">{tagline}</p>
           <hr className="tower-exhibit-roof__rule" />
           <p className="tower-exhibit-card__body">{l.emptyIntro}</p>
         </>
@@ -259,7 +260,7 @@ function LabExhibit({ labRoomSlug }: { labRoomSlug: string | null }) {
       <>
         <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{eyebrow}</p>
         <h3 className="tower-exhibit-card__name">{cardTitle}</h3>
-        <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{tagline}</p>
+        <p className="tower-exhibit-card__tagline tower-exhibit-card__tagline--fluid">{tagline}</p>
         <hr className="tower-exhibit-roof__rule" />
         {(loc?.body ?? loc?.hook ?? p.hook).split('\n\n').map((para, i) => (
           <p key={i} className="tower-exhibit-card__body">{para}</p>
@@ -285,9 +286,9 @@ function LabExhibit({ labRoomSlug }: { labRoomSlug: string | null }) {
     <>
       <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{eyebrow}</p>
       <h3 className="tower-exhibit-card__name">{l.heroTitle}</h3>
-      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{FLOOR_HERO_TAGLINES.lab}</p>
+      <p className="tower-exhibit-card__tagline">{FLOOR_HERO_TAGLINES.lab}</p>
       <hr className="tower-exhibit-roof__rule" />
-      <p className="tower-exhibit-card__body">{l.floorIntro}</p>
+      <p className="tower-exhibit-card__body tower-exhibit-card__body--intro">{l.floorIntro}</p>
       <div className="tower-exhibit-contacts tower-exhibit-contacts--stack">
         {LAB_SUITES.map((suite) => (
           <button
@@ -345,9 +346,9 @@ function InfraPanelHeader() {
     <>
       <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{eyebrow}</p>
       <h3 className="tower-exhibit-card__name">{b.heroTitle}</h3>
-      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{FLOOR_HERO_TAGLINES.infra}</p>
+      <p className="tower-exhibit-card__tagline">{FLOOR_HERO_TAGLINES.infra}</p>
       <hr className="tower-exhibit-roof__rule" />
-      <p className="tower-exhibit-card__body">{b.floorIntro}</p>
+      <p className="tower-exhibit-card__body tower-exhibit-card__body--intro">{b.floorIntro}</p>
     </>
   )
 }
@@ -384,10 +385,14 @@ function InfraExhibit() {
   return (
     <>
       <InfraPanelHeader />
-      <h4 className="tower-exhibit-section-title">{TECH_SKILLS_TITLE}</h4>
-      <TechSkillGroupList />
-      <h4 className="tower-exhibit-section-title">{i.softSkillsTitle}</h4>
-      <SoftSkillGroupList groups={i.softSkillGroups} />
+      <div className="tower-exhibit-stack">
+        <h4 className="tower-exhibit-section-title">{TECH_SKILLS_TITLE}</h4>
+        <TechSkillGroupList />
+      </div>
+      <div className="tower-exhibit-stack">
+        <h4 className="tower-exhibit-section-title">{i.softSkillsTitle}</h4>
+        <SoftSkillGroupList groups={i.softSkillGroups} />
+      </div>
     </>
   )
 }
@@ -401,9 +406,9 @@ function TechPanelHeader() {
     <>
       <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{eyebrow}</p>
       <h3 className="tower-exhibit-card__name">{t.heroTitle}</h3>
-      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{FLOOR_HERO_TAGLINES.tech}</p>
+      <p className="tower-exhibit-card__tagline">{FLOOR_HERO_TAGLINES.tech}</p>
       <hr className="tower-exhibit-roof__rule" />
-      <p className="tower-exhibit-card__body">{t.floorIntro}</p>
+      <p className="tower-exhibit-card__body tower-exhibit-card__body--intro">{t.floorIntro}</p>
     </>
   )
 }
@@ -417,47 +422,51 @@ function TechExhibit() {
     <>
       <TechPanelHeader />
 
-      <h4 className="tower-exhibit-section-title">{t.socialTitle}</h4>
-      <div className="tower-exhibit-contacts tower-exhibit-contacts--stack">
-        {techCentreLinks.map((link) => (
-          <a
-            key={link.key}
-            className="tower-exhibit-vault-entry tower-exhibit-vault-entry--link"
-            href={link.url}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <strong>{t.linkLabels[link.key]}</strong>
-            <span>{link.desc}</span>
+      <div className="tower-exhibit-stack">
+        <h4 className="tower-exhibit-section-title tower-exhibit-section-title--slot">{t.socialTitle}</h4>
+        <div className="tower-exhibit-contacts tower-exhibit-contacts--stack">
+          {techCentreLinks.map((link) => (
+            <a
+              key={link.key}
+              className="tower-exhibit-vault-entry tower-exhibit-vault-entry--link"
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <strong>{t.linkLabels[link.key]}</strong>
+              <span>{link.desc}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <div className="tower-exhibit-stack">
+        <h4 className="tower-exhibit-section-title tower-exhibit-section-title--slot">{t.printerTitle}</h4>
+        <p className="tower-exhibit-card__body tower-exhibit-card__body--slot-2">{t.resumeIntro}</p>
+        <div className="tower-resume-preview-embed">
+          <ResumePdfPreview resumeLocale={resumeLocale} compact />
+        </div>
+
+        <div className="tower-exhibit-actions">
+          <button type="button" className="tower-exhibit-action" onClick={openResumePreview}>
+            <strong>{t.openPreview}</strong>
+            <span>{t.previewHint}</span>
+            <em>{t.openPreview}</em>
+          </button>
+          <button type="button" className="tower-exhibit-action" onClick={printResume}>
+            <strong>{t.print}</strong>
+            <span>{t.printDesc}</span>
+            <em>{t.printNow}</em>
+          </button>
+        </div>
+
+        <p className="tower-exhibit-card__body tower-exhibit-card__body--mute tower-exhibit-card__body--kata">
+          {t.kataNote}{' '}
+          <a href={profile.links.kata} target="_blank" rel="noopener noreferrer">
+            {t.openKata}
           </a>
-        ))}
+        </p>
       </div>
-
-      <h4 className="tower-exhibit-section-title">{t.printerTitle}</h4>
-      <p className="tower-exhibit-card__body">{t.resumeIntro}</p>
-      <div className="tower-resume-preview-embed">
-        <ResumePdfPreview resumeLocale={resumeLocale} compact />
-      </div>
-
-      <div className="tower-exhibit-actions">
-        <button type="button" className="tower-exhibit-action" onClick={openResumePreview}>
-          <strong>{t.openPreview}</strong>
-          <span>{t.previewHint}</span>
-          <em>{t.openPreview}</em>
-        </button>
-        <button type="button" className="tower-exhibit-action" onClick={printResume}>
-          <strong>{t.print}</strong>
-          <span>{t.printDesc}</span>
-          <em>{t.printNow}</em>
-        </button>
-      </div>
-
-      <p className="tower-exhibit-card__body tower-exhibit-card__body--mute">
-        {t.kataNote}{' '}
-        <a href={profile.links.kata} target="_blank" rel="noopener noreferrer">
-          {t.openKata}
-        </a>
-      </p>
     </>
   )
 }
@@ -471,9 +480,9 @@ function ArchiveExhibit() {
     <>
       <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{eyebrow}</p>
       <h3 className="tower-exhibit-card__name">{l.archiveTitle}</h3>
-      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{l.archiveTagline}</p>
+      <p className="tower-exhibit-card__tagline">{l.archiveTagline}</p>
       <hr className="tower-exhibit-roof__rule" />
-      <p className="tower-exhibit-card__body">{l.archiveIntro}</p>
+      <p className="tower-exhibit-card__body tower-exhibit-card__body--intro">{l.archiveIntro}</p>
       <div className="tower-exhibit-contacts tower-exhibit-contacts--stack">
         {credentials.map((cred) => {
           const loc = strings.credentials[cred.slug as keyof typeof strings.credentials]
@@ -508,11 +517,11 @@ function LibraryPlatformExhibit() {
     <>
       <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{eyebrow}</p>
       <h3 className="tower-exhibit-card__name">{l.libraryTitle}</h3>
-      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{l.libraryTagline}</p>
+      <p className="tower-exhibit-card__tagline">{l.libraryTagline}</p>
       <hr className="tower-exhibit-roof__rule" />
-      <p className="tower-exhibit-card__body">{l.libraryIntro}</p>
+      <p className="tower-exhibit-card__body tower-exhibit-card__body--intro">{l.libraryIntro}</p>
       {featured && (
-        <>
+        <div className="tower-exhibit-stack">
           <h4 className="tower-exhibit-section-title">{l.librarianTitle}</h4>
           <div className="tower-exhibit-experience">
             <article className="tower-exhibit-experience__item">
@@ -526,21 +535,23 @@ function LibraryPlatformExhibit() {
               </ul>
             </article>
           </div>
-        </>
+        </div>
       )}
-      <h4 className="tower-exhibit-section-title">{l.publicationsTitle}</h4>
-      <div className="tower-exhibit-contacts tower-exhibit-contacts--stack">
-        {libraryBooks.map((book) => (
-          <button
-            key={book.slug}
-            type="button"
-            className="tower-exhibit-vault-entry"
-            onClick={() => toggleBook(book.slug)}
-          >
-            <strong>{bookTitle(book.slug, book.title)}</strong>
-            <span>{bookDetail(book.slug)}</span>
-          </button>
-        ))}
+      <div className="tower-exhibit-stack">
+        <h4 className="tower-exhibit-section-title">{l.publicationsTitle}</h4>
+        <div className="tower-exhibit-contacts tower-exhibit-contacts--stack">
+          {libraryBooks.map((book) => (
+            <button
+              key={book.slug}
+              type="button"
+              className="tower-exhibit-vault-entry"
+              onClick={() => toggleBook(book.slug)}
+            >
+              <strong>{bookTitle(book.slug, book.title)}</strong>
+              <span>{bookDetail(book.slug)}</span>
+            </button>
+          ))}
+        </div>
       </div>
     </>
   )
@@ -559,7 +570,7 @@ function Floor99Exhibit({ libraryRoomSlug }: { libraryRoomSlug: LibraryRoomSlug 
     <>
       <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{eyebrow}</p>
       <h3 className="tower-exhibit-card__name">{l.heroTitle}</h3>
-      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{FLOOR_HERO_TAGLINES.library}</p>
+      <p className="tower-exhibit-card__tagline">{FLOOR_HERO_TAGLINES.library}</p>
       <hr className="tower-exhibit-roof__rule" />
       <div className="tower-exhibit-contacts tower-exhibit-contacts--stack">
         {LIBRARY_ROOMS.map((room) => (
@@ -593,7 +604,7 @@ function RoofExhibit() {
     <>
       <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{eyebrow}</p>
       <h3 className="tower-exhibit-card__name">{profile.displayName}</h3>
-      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{r.cta}</p>
+      <p className="tower-exhibit-card__tagline">{r.cta}</p>
       <hr className="tower-exhibit-roof__rule" />
       <div className="tower-exhibit-contacts tower-exhibit-contacts--stack">
         {links.map((link) => (
@@ -752,20 +763,24 @@ export function ExhibitOverlay() {
         </header>
         )}
         <div className="tower-exhibit-card__scroll">
-          {viewMode === 'focus' ? (
-            <FocusExhibit />
-          ) : (
-            <>
+          <div className="tower-exhibit-flow">
+            {viewMode === 'focus' ? (
+              <FocusExhibit />
+            ) : (
               <ExhibitBody
                 floorId={floorId}
                 labRoomSlug={labRoomSlug}
                 libraryRoomSlug={libraryRoomSlug}
                 factoryStop={factoryStop}
               />
-              <ExhibitElevator currentFloorId={floorId} />
-            </>
-          )}
+            )}
+          </div>
         </div>
+        {viewMode !== 'focus' && (
+          <div className="tower-exhibit-card__footer">
+            <ExhibitElevator currentFloorId={floorId} />
+          </div>
+        )}
       </motion.aside>
     </AnimatePresence>
   )

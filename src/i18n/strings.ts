@@ -48,8 +48,6 @@ export interface LocaleStrings {
   factory: {
     wam: string
     cp: string
-    hd: string
-    d: string
     avg: string
     heroTitle: string
     floorIntro: string
@@ -237,8 +235,6 @@ const en: LocaleStrings = {
   factory: {
     wam: 'WAM',
     cp: 'Credit Points',
-    hd: 'High Distinction',
-    d: 'Distinction',
     avg: 'Avg',
     heroTitle: 'Factory',
     floorIntro: 'Four semester production lines — marks, averages, and the degree at end of belt.',
@@ -548,8 +544,6 @@ const zhTW: LocaleStrings = {
   factory: {
     wam: 'WAM',
     cp: '學分',
-    hd: 'High Distinction',
-    d: 'Distinction',
     avg: '平均',
     heroTitle: '工廠',
     floorIntro: '四條學期產線 — 成績、平均與輸送帶末端的學位證書。',
@@ -856,8 +850,6 @@ const ja: LocaleStrings = {
   factory: {
     wam: 'WAM',
     cp: '単位',
-    hd: 'High Distinction',
-    d: 'Distinction',
     avg: '平均',
     heroTitle: 'ファクトリー',
     floorIntro: '4学期の生産ライン — 成績、平均、ベルト末端の学位証書。',

@@ -65,22 +65,40 @@ export function TowerToolbar() {
   )
 }
 
+/** Middle dot with fixed slot — avoids CJK/Latin font metric shift on · */
+function CreditSep() {
+  return <span className="tower-credits__sep" aria-hidden="true">·</span>
+}
+
 /** Top-left author block — same hierarchy as G lobby detail card */
 export function TowerCredits() {
   const { strings } = useSite()
   const s = strings.site
-  const eyebrow = `${profile.brand} · ${profile.siteCode}`
   const gradYear = profile.programEnd.match(/\d{4}/)?.[0] ?? '2026'
-  const credential = `${profile.institution}, ${profile.degree} · GPA ${profile.gpa}/${profile.gpaScale} · WAM ${profile.wam} · ${gradYear} ${s.creditsComplete}`
 
   return (
     <div className="tower-credits">
-      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow tower-credits__eyebrow">{eyebrow}</p>
-      <h2 className="tower-credits__name">{s.architectName}</h2>
-      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow tower-credits__tagline">
-        {profile.tagline}
+      <p className="tower-credits__eyebrow">
+        {profile.brand}
+        <CreditSep />
+        {profile.siteCode}
       </p>
-      <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow tower-credits__credential">{credential}</p>
+      <h2 className="tower-credits__name">{s.architectName}</h2>
+      <p className="tower-credits__tagline">{profile.tagline}</p>
+      <p className="tower-credits__credential">
+        <span className="tower-credits__credential-line">{profile.institution}</span>
+        <span className="tower-credits__credential-line">
+          {profile.degree}
+          <CreditSep />
+          GPA {profile.gpa}/{profile.gpaScale}
+          <CreditSep />
+          <span className="tower-credits__credential-keep">
+            WAM {profile.wam}
+            <CreditSep />
+            {gradYear} {s.creditsComplete}
+          </span>
+        </span>
+      </p>
       <div className="tower-credits-links">
         <a href={profile.links.github} target="_blank" rel="noopener noreferrer">{s.linkGithub}</a>
         <a href={profile.links.linkedin} target="_blank" rel="noopener noreferrer">{s.linkLinkedin}</a>
@@ -231,16 +249,17 @@ export function TowerMobileFooter() {
       >
         {strings.site.floors}
       </button>
-      {showDetails && (
-        <button
-          type="button"
-          className="tower-toolbar-btn tower-mobile-footer__btn tower-mobile-footer__btn--details"
-          onClick={mobile.toggleExhibitDrawer}
-          aria-expanded={mobile.exhibitDrawerOpen}
-        >
-          {strings.site.details}
-        </button>
-      )}
+      <button
+        type="button"
+        className="tower-toolbar-btn tower-mobile-footer__btn tower-mobile-footer__btn--details"
+        onClick={mobile.toggleExhibitDrawer}
+        aria-expanded={mobile.exhibitDrawerOpen}
+        disabled={!showDetails}
+        aria-hidden={!showDetails}
+        tabIndex={showDetails ? 0 : -1}
+      >
+        {strings.site.details}
+      </button>
     </footer>
   )
 }
