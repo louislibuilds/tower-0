@@ -1,3 +1,5 @@
+@import './scrollbars.css';
+
 /* Tower 0 design tokens ? colors synced from src/design/tokens.ts via applyTowerTokens() */
 :root,
 [data-theme='light'] {
