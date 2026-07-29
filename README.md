@@ -4,36 +4,62 @@
 
 Louis Li's Master of IT portfolio — a cyberpunk skyscraper by night, an architectural model by day. Navigate floor by floor.
 
-**Repo:** [github.com/louislibuilds/tower-0](https://github.com/louislibuilds/tower-0)
+**Live (subpath):** [bubblechickenlab.com/towerzero](https://www.bubblechickenlab.com/towerzero/) · **Repo:** [github.com/louislibuilds/tower-0](https://github.com/louislibuilds/tower-0)
 
-## Floor Plan
+## Floor plan
 
-| Floor | Room | Content |
-|-------|------|---------|
-| **Roof** | Contact | Email, GitHub, LinkedIn, nagi, KATA |
-| **99** | Library & Archive | Dean's List, MIT degree, UTS TSA, awards |
-| **52** | Laboratory | UniHack 2026, Cloud, NLP, DL, KATA |
-| **23** | Warehouse | Academic timeline · semester grades |
-| **G** | Lobby | Welcome · thesis · about |
-| **B2** | Infrastructure | Skills · course → project links |
-| **B10** | Tech Centre | GitHub · print résumé |
 
-URL: `#/G`, `#/23`, `#/52`, `#/B2`, `#/B10`, `#/99`, `#/roof`
+| Floor        | Zone              | Content                                                                         |
+| ------------ | ----------------- | ------------------------------------------------------------------------------- |
+| **Roof** `R` | Contact           | Email, GitHub, LinkedIn, Portfolio, NAGI, KATA                                  |
+| **99**       | Library & Archive | Credentials (Dean's List, degree, TSA) · library shelf (NAGI, KATA)             |
+| **52**       | Laboratory        | Eight lab suites — UniHack, SUNishop, NLP, VTuber MoCap, KATA (+ reserved bays) |
+| **23**       | Factory           | Academic timeline · four semester production lines (Area 01–04)                 |
+| **G**        | Lobby             | Welcome · thesis · about · stats                                                |
+| **B2**       | Infrastructure    | Tech stack · soft skills                                                        |
+| **B10**      | Tech Centre       | Social links (LinkedIn, Instagram, Threads, Portfolio, GitHub) · résumé print   |
+
+
+Site UI is available in **English · 繁體中文 · 日本語** (in-app language switcher). This README stays in English for developers.
+
+## URLs
+
+Routing is **path-based** (legacy `#/…` hashes redirect on load). Default production base is `/towerzero/`.
+
+
+| Path                         | Destination               |
+| ---------------------------- | ------------------------- |
+| `/towerzero/`                | Tower overview            |
+| `/towerzero/G/lobby`         | Lobby                     |
+| `/towerzero/23`              | Factory overview          |
+| `/towerzero/23/area-01`      | Factory · semester line 1 |
+| `/towerzero/52`              | Laboratory overview       |
+| `/towerzero/52/unihack-2026` | Lab suite (project slug)  |
+| `/towerzero/99/library`      | Library                   |
+| `/towerzero/99/archive`      | Archive                   |
+| `/towerzero/99/library/nagi` | Library · focus item      |
+| `/towerzero/B2`              | Infrastructure            |
+| `/towerzero/B10`             | Tech Centre               |
+| `/towerzero/R`               | Roof                      |
+
+
+Local dev: `npm run dev` → `http://localhost:5173/towerzero/` (see `vite.config.ts` · `SITE_BASE_PATH` in `src/building/siteRoute.ts`).
 
 ## Features
 
-- **Full-viewport 3D tower** — art-deco tiered cyberpunk skyscraper (React Three Fiber, orthographic camera)
-- **Per-floor exhibits** — holographic 3D markers + glass overlay cards
-- **Boot sequence** — footprint ink → tower extrude
-- **Themes** — Day (warm architectural model) / Night (neon cyberpunk)
+- **Full-viewport 3D tower** — art-deco tiered cyberpunk skyscraper (React Three Fiber, **orthographic camera**)
+- **Per-floor exhibits** — 3D typologies + glass HUD overlay cards
+- **Boot sequence** — footprint ink → staggered tower extrude · exit teardown
+- **Themes** — Day (warm architectural maquette) / Night (cyber glass HUD)
 - **i18n** — English · 繁體中文 · 日本語
+- **Responsive shell** — mobile floor / details drawers
 - **2D fallback** — SVG elevation when WebGL unavailable or reduced motion
 
 ## Development
 
 ```bash
 npm install
-npm run dev      # localhost:5173
+npm run dev      # http://localhost:5173/towerzero/
 npm run build
 npm run preview
 ```
@@ -42,41 +68,28 @@ npm run preview
 
 Connect repo to [Vercel](https://vercel.com) — framework preset **Vite**, output `dist`.
 
+- Subpath deploy (default): `VITE_BASE_PATH=/towerzero/`
+- Root deploy: `VITE_BASE_PATH=/`
+
 ## Architecture
 
 ```
 src/
+  building/siteRoute.ts      Path routing + legacy hash migration
+  design/tokens.ts           Colors, typography, theme tokens
   scene/CyberTower.tsx       Tiered tower + spire + circuit base
-  scene/exhibits/            Floor holograms, circuit board
+  scene/typologies/          Per-floor 3D room layouts
   components/hud/            TowerHud, ExhibitOverlay, BootPlateOverlay
-  context/SiteContext.tsx    Theme + locale + navigation
+  context/SiteContext.tsx    Theme, locale, navigation, boot/exit
   i18n/strings.ts            EN / zh-TW / ja
-  camera/OrthoRig.tsx        Per-floor orthographic camera
+  camera/OrthoRig.tsx        Orthographic camera stations
 ```
 
-Day architectural tower · Night cyberpunk · Louis Li portfolio.
+## Acknowledgments
 
-## Acknowledgments & design lineage
+Inspired by [salieri009/resume2](https://github.com/salieri009/resume2) (SITE 009); Especially the timeline idea, orthographic building navigation, HUD layout, camera stations, and boot/transition language.
 
-Tower 0 shares a **design lineage** with [salieri009/resume2](https://github.com/salieri009/resume2) (SITE 009 · *The Architecture of Software*) — both treat a portfolio as an **orthographic building** you visit floor by floor, rather than a page you scroll.
-
-**What is shared (interaction pattern, not a visual clone):**
-
-- The **portfolio-as-architecture** metaphor — floors as life stages, rooms as projects or records
-- **Parallel projection only** — the camera stays orthographic; the model admits it is a model
-- A familiar **HUD layout**: floor rail on the left, exhibit panel on the right, language / theme / résumé controls in the chrome
-- Boot (ink-on footprint → extrude) and exit (teardown → reopen) as part of the experience
-
-If you have seen SITE 009, the **interface furniture** will feel related. That is intentional: the navigation grammar comes from the same reference family.
-
-**What is different (especially visually):**
-
-- **Print system:** resume2 uses **PAPER / INK** — the same drawing in light and as a **negative print** (blueprint register). Tower 0 uses **Day / Night** — by day a warm **architectural maquette** on paper; by night a **cyberpunk glass HUD** (glow, blur, neon cyan). Night is not an inverted sheet of the same drawing.
-- **Visual identity:** terracotta / blueprint Day palette, cyber Night palette, Tower 0 / bubblechickenlab branding — not SITE 009 / Siteline
-- **Content & structure:** Louis Li’s UTS MIT story, floor program (G · 23 · 52 · 99 · B2 · B10), projects, credentials, and 3D room typologies are authored for this site
-- **Implementation:** separate codebase, tokens, typologies, mobile drawer shell, PDF résumé preview
-
-**In short:** same *genre* (architectural orthographic portfolio), different *print* (PAPER·INK vs Day·Night), different *building* and *story*. Credit where the navigation pattern owes a debt; own what is original.
+Tower 0 builds a separate visual system on top (design tokens, typography, UI chrome, responsive mobile shell) and uses a **Day / Night** palette rather than PAPER/INK. Content and 3D typologies are original to this project.
 
 ## License
 
