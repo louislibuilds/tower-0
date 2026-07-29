@@ -46,4 +46,16 @@ export function applyTowerTokens(theme: ThemeMode, fontStack: FontStack = 'herit
     '--tower-scene-cursor',
     `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M12 5v14M5 12h14' stroke='${cursorStroke}' stroke-width='1.25' fill='none'/%3E%3C/svg%3E") 12 12, crosshair`,
   )
+
+  const scrollMix = theme === 'dark' ? c.glow : c.muted
+  const scrollHoverMix = theme === 'dark' ? c.glowBright : c.accent
+  root.setProperty('--scrollbar-size', '6px')
+  root.setProperty(
+    '--scrollbar-thumb',
+    `color-mix(in srgb, ${scrollMix} ${theme === 'dark' ? '44%' : '52%'}, transparent)`,
+  )
+  root.setProperty(
+    '--scrollbar-thumb-hover',
+    `color-mix(in srgb, ${scrollHoverMix} ${theme === 'dark' ? '68%' : '62%'}, transparent)`,
+  )
 }

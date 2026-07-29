@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { PrimitiveGalleryCanvas } from './PrimitiveGalleryScene'
 import '../styles/tower.css'
+import '../styles/scrollbars.css'
 
 const STATIONS = [
   { id: 'ink', label: 'partialPolyline', hint: 'Ink-on footprint (loops)' },

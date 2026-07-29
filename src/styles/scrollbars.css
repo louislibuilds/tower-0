@@ -1,13 +1,13 @@
-:root,
-[data-theme='light'] {
-  --scrollbar-size: 5px;
-  --scrollbar-thumb: color-mix(in srgb, var(--tower-muted) 38%, transparent);
-  --scrollbar-thumb-hover: color-mix(in srgb, var(--tower-accent) 52%, transparent);
+html[data-theme='light'] {
+  --scrollbar-size: 6px;
+  --scrollbar-thumb: color-mix(in srgb, var(--tower-muted) 52%, transparent);
+  --scrollbar-thumb-hover: color-mix(in srgb, var(--tower-accent) 62%, transparent);
 }
 
-[data-theme='dark'] {
-  --scrollbar-thumb: color-mix(in srgb, var(--tower-glow) 32%, transparent);
-  --scrollbar-thumb-hover: color-mix(in srgb, var(--tower-glow-bright) 52%, transparent);
+html[data-theme='dark'] {
+  --scrollbar-size: 6px;
+  --scrollbar-thumb: color-mix(in srgb, var(--tower-glow) 44%, transparent);
+  --scrollbar-thumb-hover: color-mix(in srgb, var(--tower-glow-bright) 68%, transparent);
 }
 
 /* Firefox */

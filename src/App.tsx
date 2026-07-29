@@ -3,6 +3,7 @@ import { pathSegments } from './building/siteRoute'
 import { SiteProvider } from './context/SiteContext'
 import { TowerShell } from './components/TowerShell'
 import './styles/tower.css'
+import './styles/scrollbars.css'
 
 const TypologyGallery = lazy(() =>
   import('./dev/TypologyGallery').then((m) => ({ default: m.TypologyGallery })),
