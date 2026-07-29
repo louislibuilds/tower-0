@@ -407,15 +407,17 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   width: 100%;
   display: flex;
   gap: 0.65rem;
-  align-items: baseline;
+  align-items: center;
+  min-height: 1.625rem;
   background: color-mix(in srgb, var(--tower-bg) 72%, transparent);
   border: none;
   border-left: 1px solid var(--tower-border);
-  padding: 0.35rem 0.5rem;
+  padding: 0.28rem 0.5rem;
   cursor: pointer;
   color: var(--tower-muted);
   font-family: var(--tower-font-mono);
   font-size: 0.68rem;
+  line-height: 1.1;
   letter-spacing: 0.06em;
   text-align: left;
   transition: color 0.2s, background 0.2s, border-color 0.2s;
@@ -431,8 +433,19 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   background: color-mix(in srgb, var(--tower-bg) 96%, transparent);
 }
 .tower-rail-id {
+  flex-shrink: 0;
   min-width: 1.5rem;
+  line-height: 1.1;
   color: var(--tower-accent);
+}
+
+.tower-rail-floors > li > button > span:not(.tower-rail-id) {
+  flex: 1;
+  min-width: 0;
+  line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .tower-rail-rooms {
@@ -447,17 +460,31 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   background: none;
   border: none;
   padding: 0.25rem 0.15rem;
+  min-height: 1.375rem;
   font-family: var(--tower-font-mono);
   font-size: 0.58rem;
+  line-height: 1.15;
   letter-spacing: 0.04em;
   color: var(--tower-muted);
   cursor: pointer;
   width: 100%;
   text-align: left;
   transition: color 0.2s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .tower-rail-rooms button:hover { color: var(--tower-fg); }
 .tower-rail-rooms button.is-room-active { color: var(--tower-accent); }
+
+/* TC rail labels: IBM Plex Mono lacks Han glyphs ? use a loaded sans fallback with fixed metrics */
+:root:lang(zh-Hant) .tower-rail-floors > li > button,
+:root:lang(zh-Hant) .tower-rail-rooms button,
+:root:lang(zh-Hant) .tower-rail-hint {
+  font-family: var(--tower-font-mono), 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+  letter-spacing: 0.02em;
+  font-weight: 500;
+}
 
 .tower-rail-hint {
   font-family: var(--tower-font-mono);
@@ -1264,23 +1291,31 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 }
 .tower-exhibit-stats--hero {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.35rem;
   margin: 0.75rem 0 1rem;
 }
 .tower-exhibit-stats--hero .tower-exhibit-stat {
   min-width: 0;
   text-align: center;
+  padding: 0.45rem 0.35rem;
 }
-.tower-exhibit-stats--hero .tower-exhibit-stat span,
-.tower-exhibit-stats--hero .tower-exhibit-stat label {
+.tower-exhibit-stats--hero .tower-exhibit-stat span {
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   display: block;
 }
+.tower-exhibit-stats--hero .tower-exhibit-stat label {
+  display: block;
+  font-family: var(--tower-font-mono);
+  font-size: clamp(0.48rem, 2.2vw, 0.56rem);
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+}
 .tower-exhibit-stat--hero span { font-size: 1.05rem; color: var(--tower-accent); font-weight: 600; }
-.tower-exhibit-stats--hero .tower-exhibit-stat--hero label { font-size: 0.58rem; }
+.tower-exhibit-stats--hero .tower-exhibit-stat--hero label { font-size: clamp(0.48rem, 2.2vw, 0.56rem); }
 .tower-exhibit-semester-tabs {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
