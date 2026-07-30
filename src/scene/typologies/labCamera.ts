@@ -1,7 +1,7 @@
 /** Lab station layout anchors — camera presets live in camera/stationPresets.ts */
 
 import {
-  chunkLookAtY,
+  chunkBaseLookAt,
   chunkPosition,
   LAB_CHUNKS,
   type ExhibitChunk,
@@ -20,7 +20,7 @@ function toAnchor(chunk: ExhibitChunk): LabStationAnchor {
     slug: chunk.slug,
     code: chunk.code ?? '',
     pos: chunkPosition(chunk),
-    lookAtY: chunkLookAtY(chunk),
+    lookAtY: chunkBaseLookAt(chunk),
   }
 }
 

@@ -6,7 +6,7 @@ export interface TypologyProps {
   accent: string
   entered: boolean
   active?: boolean
-  /** Non-active sibling pod ??ghost fill, no emissive */
+  /** Non-active sibling pod — ghost fill, no emissive */
   thin?: boolean
   /** Accepted for RoomProps compatibility */
   hover?: boolean

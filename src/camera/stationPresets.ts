@@ -254,6 +254,3 @@ export function stationCameraPreset(
 
   return compose(y, { lookAt: [0, 0, 0], eye: [0.35, 0.45, 2.2], zoom: 78 })
 }
-
-/** @deprecated Use stationCameraPreset — kept for lab layout exports */
-export const LAB_FLOOR_OVERVIEW_ZOOM = LAB_FLOOR_OVERVIEW.zoom

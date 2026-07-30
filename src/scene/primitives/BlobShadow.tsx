@@ -8,7 +8,7 @@ interface BlobShadowProps {
   opacity?: number
 }
 
-/** Authored maquette shadow ??soft, zero runtime shadow map cost. */
+/** Authored maquette shadow — soft, zero runtime shadow map cost. */
 export function BlobShadow({ position, width, depth, opacity = 0.3 }: BlobShadowProps) {
   const tex = useSoftShadowTexture()
   const pal = usePalette()

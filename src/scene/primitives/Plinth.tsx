@@ -14,7 +14,7 @@ interface PlinthProps {
   children?: React.ReactNode
 }
 
-/** Exhibit plinth ??resin slab with signal boundary on hover. */
+/** Exhibit plinth — resin slab with signal boundary on hover. */
 export function Plinth({
   width,
   depth,

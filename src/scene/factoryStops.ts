@@ -28,9 +28,6 @@ export function factoryStationSceneX(index: number): number {
 /** Four timeline stations left→right on 23F plate (2024 Spring first) */
 export const FACTORY_LINE_X = FACTORY_STATION_GRID_X.map((_, i) => factoryStationSceneX(i))
 
-/** @deprecated Use FACTORY_LINE_X */
-export const FACTORY_LINE_Z = FACTORY_LINE_X
-
 export const FACTORY_STOPS = [...FACTORY_LINE_X]
 
 /** End-of-line completion plaque — blueprint x after Area 04 */

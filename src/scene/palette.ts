@@ -32,15 +32,6 @@ function toScenePalette(mode: ThemeMode): ScenePalette {
 export const TOWER_DAY = toScenePalette('light')
 export const TOWER_NIGHT = toScenePalette('dark')
 
-/** @deprecated use TOWER_DAY */
-export const DAY_PRINT = TOWER_DAY
-/** @deprecated use TOWER_NIGHT */
-export const NIGHT_PRINT = TOWER_NIGHT
-/** @deprecated use TOWER_DAY */
-export const PAPER_PRINT = TOWER_DAY
-/** @deprecated use TOWER_NIGHT */
-export const INK_PRINT = TOWER_NIGHT
-
 export function getScenePalette(theme: 'light' | 'dark'): ScenePalette {
   return theme === 'dark' ? TOWER_NIGHT : TOWER_DAY
 }

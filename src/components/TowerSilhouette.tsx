@@ -7,7 +7,7 @@ import { getScenePalette } from '../scene/palette'
 interface TowerSilhouetteProps {
   activeId?: FloorId
   theme?: Theme
-  /** Poster mode ??wider canvas for no-WebGL fallback backdrop */
+  /** Poster mode — wider canvas for no-WebGL fallback backdrop */
   poster?: boolean
 }
 
@@ -86,7 +86,7 @@ export function TowerSilhouette({ activeId, theme: themeProp, poster = false }: 
         <rect width="160" height="420" fill="url(#tower-sky)" />
         <PerspectiveGrid color={pal.grid} opacity={dark ? 0.28 : 0.42} />
 
-        {/* Side face ??subtle depth */}
+        {/* Side face — subtle depth */}
         <polygon
           points="92,28 108,36 108,368 92,368"
           fill={bodySide}

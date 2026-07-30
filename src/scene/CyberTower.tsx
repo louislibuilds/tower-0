@@ -152,7 +152,7 @@ function ShaftSection({
   )
 }
 
-/** Dollhouse cutaway ??drop +Z front & +X right faces (camera side), decorative only */
+/** Dollhouse cutaway — drop +Z front & +X right faces (camera side), decorative only */
 function BandCutawayShell({
   w,
   h,
@@ -253,7 +253,7 @@ function ProgramFloorBand({
   const zone = getFloor(program.id).zone
   const windowPattern = zone === 'basement' ? 'basement' as const : zone === 'roof' ? 'tower' as const : 'grid' as const
 
-  /** Site-rail floor zoom ??peel camera-facing band faces, keep back/side shell */
+  /** Site-rail floor zoom — peel camera-facing band faces, keep back/side shell */
   const floorCutaway =
     entered &&
     viewMode === 'floor' &&

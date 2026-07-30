@@ -6,13 +6,13 @@ import { usePalette } from './InkEdges'
 export interface FactoryTimelineCalloutProps {
   /** e.g. Area 01 */
   area: string
-  /** e.g. 2024 SPR ??ruled on the timeline datum */
+  /** e.g. 2024 SPR — ruled on the timeline datum */
   semester: string
   active?: boolean
   /** Ghost sibling when another stop is focused */
   dimmed?: boolean
   hidden?: boolean
-  /** Crate stack top ??leader anchor (local Y) */
+  /** Crate stack top — leader anchor (local Y) */
   anchorY?: number
   /** Shared timeline datum height (local Y) */
   timelineY?: number
@@ -20,7 +20,7 @@ export interface FactoryTimelineCalloutProps {
 }
 
 /**
- * L1 timeline callout ??label on datum + dashed leader to crate stack.
+ * L1 timeline callout — label on datum + dashed leader to crate stack.
  */
 export function FactoryTimelineCallout({
   area,

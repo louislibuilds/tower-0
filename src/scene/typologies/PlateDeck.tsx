@@ -1,7 +1,7 @@
 import type { Theme } from '../../context/SiteContext'
 import { typologyMat } from './types'
 
-/** R · Plate Deck ??helipad ring only; identity plate lives on 99F top edge */
+/** R · Plate Deck — helipad ring only; identity plate lives on 99F top edge */
 export function PlateDeck({
   theme,
   entered,
@@ -21,5 +21,3 @@ export function PlateDeck({
     </group>
   )
 }
-
-export { PlateDeck as RoofPlate }

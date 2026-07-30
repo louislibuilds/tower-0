@@ -30,7 +30,7 @@ export const STATION_FOOTPRINT_INSET = 0.92
 export const STATION_HIT_MARGIN = { w: 0.18, h: 0.1, d: 0.18 } as const
 
 /**
- * 52F — eight lab suites in a 4×2 grid (five active + three reserved).
+ * 52F — eight lab suites in a 4×2 grid (seven suites + one reserved lab-008).
  */
 export const LAB_CHUNKS: ExhibitChunk[] = [
   {
@@ -136,11 +136,6 @@ export function chunkPosition(chunk: ExhibitChunk): [number, number, number] {
 /** Station footprint center — not label height */
 export function chunkBaseLookAt(chunk: ExhibitChunk): number {
   return chunk.lookAtY ?? 0.04
-}
-
-/** @deprecated Use chunkBaseLookAt */
-export function chunkLookAtY(chunk: ExhibitChunk): number {
-  return chunkBaseLookAt(chunk)
 }
 
 export function labChunk(slug: string): ExhibitChunk | undefined {

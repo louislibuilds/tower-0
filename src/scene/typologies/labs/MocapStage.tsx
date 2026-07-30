@@ -3,7 +3,7 @@ import { ghostLit } from '../ghostStyle'
 import { TypologyBpMesh } from '../TypologyBpMesh'
 import { typologyMat, type TypologyProps } from '../types'
 
-/** 004 · Capture Stage ??green screen + ring light + tripod + monitor stack */
+/** 004 · Capture Stage — green screen + ring light + tripod + monitor stack */
 export function MocapStage({
   theme,
   accent,

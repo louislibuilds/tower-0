@@ -97,9 +97,6 @@ export const DEFAULT_FONT_STACK: FontStack = 'heritage'
 
 export const FONT_STACK_ORDER: FontStack[] = ['classic', 'heritage', 'cyber']
 
-/** @deprecated use TOWER_FONTS_CLASSIC */
-export const TOWER_FONTS = TOWER_FONTS_CLASSIC
-
 export function getTowerFonts(stack: FontStack) {
   switch (stack) {
     case 'cyber':

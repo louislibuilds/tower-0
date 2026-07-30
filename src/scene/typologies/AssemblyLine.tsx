@@ -13,7 +13,7 @@ interface AssemblyLineProps extends TypologyProps {
   onHoverStop?: (stop: number | null) => void
 }
 
-/** 23 · Assembly Line ??horizontal timeline with assembly arms */
+/** 23 · Assembly Line — horizontal timeline with assembly arms */
 export function AssemblyLine({
   theme,
   accent,

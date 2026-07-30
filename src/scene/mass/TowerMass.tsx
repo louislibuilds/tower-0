@@ -11,13 +11,13 @@ interface TowerMassProps {
   extrude: number
   theme: Theme
   showGroundGrid?: boolean
-  /** Hide poured concrete / wash (legacy ??basement floors now use transparent grid plates) */
+  /** Hide poured concrete / wash (legacy — basement floors now use transparent grid plates) */
   hideSolidGround?: boolean
   footprintW: number
   footprintD: number
 }
 
-/** Boot-layer massing ??footprint ink, ground grid, poured ground */
+/** Boot-layer massing — footprint ink, ground grid, poured ground */
 export function TowerMass({
   ink,
   extrude,

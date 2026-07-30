@@ -10,7 +10,7 @@ const QUAD_OFFSETS: [number, number][] = [
   [0.32, -0.28],
 ]
 
-/** B2 · Infrastructure ??four rack halls filling the floor plate */
+/** B2 · Infrastructure — four rack halls filling the floor plate */
 export function RiserCore({ theme, accent, entered, active = false }: TypologyProps) {
   const m = typologyMat(theme, accent, entered)
   const lit = entered || active

@@ -3,7 +3,7 @@ import { ghostLit, THIN_INK, THIN_MESH_OPACITY } from '../ghostStyle'
 import { TypologyBpMesh } from '../TypologyBpMesh'
 import { typologyMat, type TypologyProps } from '../types'
 
-/** 005 · Document Foundry ??paper stack + printer + filing */
+/** 005 · Document Foundry — paper stack + printer + filing */
 export function DocumentFoundryStation({ theme, accent, entered, active, thin }: TypologyProps) {
   const m = typologyMat(theme, accent, entered)
   const lit = ghostLit(thin, entered, active)

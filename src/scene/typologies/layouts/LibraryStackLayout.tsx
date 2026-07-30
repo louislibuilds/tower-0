@@ -10,7 +10,7 @@ const ROOM_D = 5
 const SHELVES = [0.2, 1.4, 2.6, 3.8] as const
 const SHELF_ROWS = [0.48, 0.98, 1.52, 1.98] as const
 
-/** Three book spines per shelf row ??center spine warm highlight (tokens tpW / sW) */
+/** Three book spines per shelf row — center spine warm highlight (tokens tpW / sW) */
 const BOOK_SPINES = [
   { xOff: 0.04, w: 0.18, h: 0.2, tone: 'edge' as const },
   { xOff: 0.28, w: 0.26, h: 0.3, tone: 'highlight' as const },

@@ -3,7 +3,7 @@ import { ghostLit } from '../ghostStyle'
 import { TypologyBpMesh } from '../TypologyBpMesh'
 import { typologyMat, type TypologyProps } from '../types'
 
-/** 002 · Container Bay ??vertical rack + conveyor desk + parcels */
+/** 002 · Container Bay — vertical rack + conveyor desk + parcels */
 export function ServerRackBay({ theme, accent, entered, active, thin }: TypologyProps) {
   const m = typologyMat(theme, accent, entered)
   const lit = ghostLit(thin, entered, active)

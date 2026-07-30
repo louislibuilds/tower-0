@@ -75,16 +75,16 @@ function useIdentityPlateMap(theme: Theme) {
   return tex
 }
 
-/** Identity plate mesh ??mounted on 99F top front edge (R signage) */
+/** Identity plate mesh — mounted on 99F top front edge (R signage) */
 export function IdentityPlate({
   theme,
   focus = false,
   muted = false,
 }: {
   theme: Theme
-  /** Roof selected ??full prominence */
+  /** Roof selected — full prominence */
   focus?: boolean
-  /** 99F selected ??fade so vault floor reads first */
+  /** 99F selected — fade so vault floor reads first */
   muted?: boolean
 }) {
   const m = typologyMat(theme, '#2F6BFF', focus)

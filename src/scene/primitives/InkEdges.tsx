@@ -17,7 +17,7 @@ export function usePalette(): ScenePalette {
   return p
 }
 
-/** Resting edge ink on a mesh ??line survives when fill fades. */
+/** Resting edge ink on a mesh — line survives when fill fades. */
 export function InkEdges({
   threshold = 15,
   lineWidth = 1,

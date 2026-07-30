@@ -1,1 +1,1 @@
-export { LabTypology, StationPlinth, type LabTypologySlug } from './labs/index'
+export { LabTypology, type LabTypologySlug } from './labs/index'

@@ -110,8 +110,17 @@ export function TowerShell() {
       e.preventDefault()
       navigateBack()
     }
+    const onContextMenu = (e: MouseEvent) => {
+      if (interactionLocked) return
+      e.preventDefault()
+      navigateBack()
+    }
     window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
+    window.addEventListener('contextmenu', onContextMenu)
+    return () => {
+      window.removeEventListener('keydown', onKeyDown)
+      window.removeEventListener('contextmenu', onContextMenu)
+    }
   }, [interactionLocked, navigateBack])
 
   useEffect(() => {

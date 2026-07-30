@@ -12,7 +12,7 @@ interface BootControllerProps {
   children: React.ReactNode
 }
 
-/** Ink-on → staggered extrude → boot hold (Phase B). */
+/** Ink-on → staggered extrude → boot hold. */
 export function BootController({
   reducedMotion,
   onComplete,

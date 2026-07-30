@@ -13,7 +13,7 @@ const STATIONS = [
   { id: 'grid', label: 'GroundGrid', hint: 'Boot blueprint grid (background)' },
 ]
 
-/** Dev sandbox — Phase A primitive gallery. Route: /towerzero/dev/typologies */
+/** Dev sandbox — primitive gallery. Route: /towerzero/dev/typologies */
 export function TypologyGallery() {
   const [night, setNight] = useState(true)
 
@@ -21,7 +21,7 @@ export function TypologyGallery() {
     <div className="typology-gallery" data-theme="dark">
       <header className="typology-gallery__header">
         <div>
-          <p className="typology-gallery__eyebrow">TOWER 0 · PHASE A</p>
+          <p className="typology-gallery__eyebrow">TOWER 0 · DEV SANDBOX</p>
           <h1 className="typology-gallery__title">Primitive Gallery</h1>
           <p className="typology-gallery__sub">Component sandbox — not wired to main tower yet</p>
         </div>

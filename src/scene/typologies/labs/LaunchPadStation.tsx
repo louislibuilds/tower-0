@@ -67,7 +67,7 @@ function ovalHalfWidthAtZ(rx: number, rz: number, z: number) {
   return rx * Math.sqrt(Math.max(0, 1 - t * t))
 }
 
-/** Flat racket on court ??oval head frame, clipped string grid, tapered handle */
+/** Flat racket on court — oval head frame, clipped string grid, tapered handle */
 function FloorTennisRacket({
   position,
   rotationY = 0,
@@ -144,7 +144,7 @@ function FloorTennisRacket({
 
   return (
     <group position={position} rotation={[0, rotationY, 0]} scale={RACKET_SCALE}>
-      {/* String bed ??faint oval face */}
+      {/* String bed — faint oval face */}
       <mesh
         position={[0, FLOOR_TOP + 0.0015, headZ]}
         rotation={[-Math.PI / 2, 0, 0]}
@@ -296,7 +296,7 @@ const COURT_LINES: [[number, number], [number, number], number?, boolean?][] = [
   [[6.2, 0.5], [6.2, 4.5], 0.28, true],
 ]
 
-/** 001 · Launch Pad ??tennis lab layout (8?5): court, net, balls, observer, tower */
+/** 001 · Launch Pad — tennis lab layout (8×5): court, net, balls, observer, tower */
 export function LaunchPadStation({ theme, accent, entered, active, thin }: TypologyProps) {
   const m = typologyMat(theme, accent, entered)
   const lit = ghostLit(thin, entered, active)
@@ -325,14 +325,14 @@ export function LaunchPadStation({ theme, accent, entered, active, thin }: Typol
   const ballEmissive = theme === 'dark' ? m.pal.warm : '#000000'
   const ballEmissiveIntensity = theme === 'dark' ? (lit ? 0.22 : 0.08) : 0
   const ballLiftZ = (FLOOR_TOP + BALL_RADIUS) / 0.1
-  /** Scattered on court ??not a rigid row */
+  /** Scattered on court — not a rigid row */
   const ballScatter: [number, number][] = [
     [2.35, 1.72],
     [3.55, 2.95],
     [1.62, 2.48],
   ]
   const ballPositions = ballScatter.map(([x, y]) => bpPoint(x, y, ballLiftZ, ROOM_W, ROOM_D))
-  /** Back-left corner ??handle tucked toward wall, clear of balls */
+  /** Back-left corner — handle tucked toward wall, clear of balls */
   const racketPos = bpPoint(0.78, 4.28, 0, ROOM_W, ROOM_D)
 
   return (

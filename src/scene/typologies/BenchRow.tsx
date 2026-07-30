@@ -15,16 +15,10 @@ import { ThinnedStation } from './ThinnedStation'
 import { typologyMat, type TypologyProps } from './types'
 import { lerpZoom, useZoomMorph } from './useZoomMorph'
 
-export { LAB_CAMERA_TARGETS, LAB_STATIONS as LAB_LAYOUT } from './labAnchors'
-
 export function labShortTitle(slug: string): string {
   const suite = labSuite(slug)
   if (suite) return labCardTitle(suite.code)
   return slug
-}
-
-export function labLabel(code: string, _slug?: string): string {
-  return labCardTitle(code)
 }
 
 interface BenchRowProps extends TypologyProps {
@@ -36,7 +30,7 @@ interface BenchRowProps extends TypologyProps {
   onLabRoomHover: (slug: string | null) => void
 }
 
-/** 52 · Laboratory ??five suites with zoom morph (mirrors ArchiveLibraryFloor 99F) */
+/** 52 · Laboratory — eight suites with zoom morph (mirrors ArchiveLibraryFloor 99F) */
 export function BenchRow({
   theme,
   accent,

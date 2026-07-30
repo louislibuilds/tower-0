@@ -33,7 +33,7 @@ interface ArchiveLibraryFloorProps extends TypologyProps {
   onCredentialClick: (slug: string) => void
 }
 
-/** 99 · Library + Archive pods ??corner suites with zoom morph */
+/** 99 · Library + Archive pods — corner suites with zoom morph */
 export function ArchiveLibraryFloor(props: ArchiveLibraryFloorProps) {
   const {
     theme,
