@@ -4,7 +4,7 @@
 
 Louis Li's Master of IT portfolio — a cyberpunk skyscraper by night, an architectural model by day. Navigate floor by floor.
 
-**Live (subpath):** [bubblechickenlab.com/towerzero](https://www.bubblechickenlab.com/towerzero/) · **Repo:** [github.com/louislibuilds/tower-0](https://github.com/louislibuilds/tower-0)
+**Live (subpath):** [bubblechickenlab.com/towerzero](https://www.bubblechickenlab.com/towerzero/) · **Repo:** [github.com/louislibuilds/tower-zero](https://github.com/louislibuilds/tower-zero)
 
 > **Forking?** Author contact stays in `content.sample/`; **grades, cert scans, and detailed marks** live in gitignored `content/` only. See [content.sample/README.md](./content.sample/README.md).
 

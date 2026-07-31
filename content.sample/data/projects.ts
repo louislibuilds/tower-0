@@ -31,7 +31,7 @@ export const labProjects: LabProject[] = [
     role: 'Template by Louis Li',
     stack: ['React 19', 'Three.js', 'R3F', 'TypeScript', 'Vite'],
     links: [
-      { label: 'GitHub', url: 'https://github.com/louislibuilds/tower-0' },
+      { label: 'GitHub', url: 'https://github.com/louislibuilds/tower-zero' },
       { label: 'Live demo', url: 'https://www.bubblechickenlab.com/towerzero/' },
     ],
   },

@@ -24,7 +24,7 @@ export default defineConfig({
     {
       name: 'log-site-content',
       configResolved() {
-        console.log(`[tower-0] site content ← ${path.relative(root, contentDir)}`)
+        console.log(`[tower-zero] site content ← ${path.relative(root, contentDir)}`)
       },
     },
   ],
