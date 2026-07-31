@@ -60,6 +60,7 @@ export interface LocaleStrings {
     tsaCertTitle: string
     deansListCertTitle: string
     degreeCertTitle: string
+    highlights: { project: string; takeaway: string }[]
   }
   lab: {
     heroTitle: string
@@ -166,6 +167,7 @@ function mergeSiteCopy(
       tsaCertTitle: copy.factory.tsaCertTitle,
       deansListCertTitle: copy.factory.deansListCertTitle,
       degreeCertTitle: copy.factory.degreeCertTitle,
+      highlights: copy.factory.highlights ?? [],
     },
     infra: { ...base.infra, softSkillGroups: copy.infra.softSkillGroups },
     library: {
@@ -279,6 +281,7 @@ const enBase = {
     tsaCertTitle: 'Certificate · Recognition',
     deansListCertTitle: 'Certificate · Academic Honor',
     degreeCertTitle: 'Certificate · Degree',
+    highlights: [],
   },
   lab: {
     heroTitle: 'Laboratory',
@@ -368,31 +371,26 @@ const enBase = {
     libraryTitle: 'Library',
     libraryTagline: 'Platform · Writing · Projects',
     archiveIntro: 'Document vault — what was earned, recognized, and led along the way.',
-    libraryIntro: 'Desk of shipped work — bubblechickenlab tools, repos, and ongoing builds.',
+    libraryIntro: 'Desk of shipped work — portfolio, repos, and ongoing builds.',
     librarianTitle: 'Librarian',
     featuredRole: 'Your Role Title',
     featuredBullets: [
-      'Independent practice under bubblechickenlab — products, portfolios, and tools where software meets storytelling and craft.',
-      'Full-stack ownership from idea to ship: design, engineering, deployment, and the narrative around what gets published.',
+      'What you publish or maintain — portfolio, blog, open source.',
+      'Scope you own: design → ship → iterate.',
     ],
     publicationsTitle: 'Publications',
     publications: {
-      nagi: {
-        title: 'NAGI · Portfolio',
-        description: 'Self-hosted personal site — portfolio and writing in one place.',
-      },
-      kata: {
-        title: 'KATA · Résumé & Tracker',
-        description:
-          'Draft résumés and track applications in one workflow — local or cloud saves, PDF export when you need it.',
+      portfolio: {
+        title: 'Portfolio',
+        description: 'Link title & one-line blurb — edit in content/i18n/copy.ts',
       },
       github: {
-        title: 'GitHub · louislibuilds',
-        description: 'github.com/louislibuilds',
+        title: 'GitHub',
+        description: 'your-handle',
       },
       linkedin: {
         title: 'LinkedIn',
-        description: 'linkedin.com/in/louis-li-builds',
+        description: 'linkedin.com/in/your-handle',
       },
     },
   },
@@ -406,7 +404,8 @@ const enBase = {
       portfolio: 'Portfolio',
       kata: 'KATA.app',
     },
-  },
+  },
+
   focus: {
     panelHint: 'Focus detail · side panel',
     back: 'Back to room',
@@ -517,6 +516,7 @@ const zhTWBase = {
     tsaCertTitle: 'Certificate · Recognition',
     deansListCertTitle: 'Certificate · Academic Honor',
     degreeCertTitle: 'Certificate · Degree',
+    highlights: [],
   },
   lab: {
     heroTitle: '實驗室',
@@ -604,30 +604,26 @@ const zhTWBase = {
     libraryTitle: '圖書館',
     libraryTagline: '平台 · 寫作 · 專案',
     archiveIntro: '文件庫 — 一路走來的成就、榮譽與領導經歷。',
-    libraryIntro: '出貨書桌 — bubblechickenlab 工具、repo 與進行中的作品。',
+    libraryIntro: '出貨書桌 — 作品集、repo 與進行中的作品。',
     librarianTitle: '館長',
     featuredRole: 'Your Role Title',
     featuredBullets: [
-      '以 bubblechickenlab 為名的獨立工作室 — 在軟體、敘事與工藝的交會處，打造產品、作品集與工具。',
-      '從構想到上線全責：設計、工程、部署，以及圍繞每次發佈的敘事與迭代。',
+      '你維護或發佈的內容 — 作品集、部落格、開源。',
+      '你負責的範圍：設計 → 上線 → 迭代。',
     ],
     publicationsTitle: '著作',
     publications: {
-      nagi: {
-        title: 'NAGI · Portfolio',
-        description: '自架個人網站，收錄作品集與文章。',
-      },
-      kata: {
-        title: 'KATA · Résumé & Tracker',
-        description: '一站式撰寫履歷、追蹤求職申請 — 支援本地與雲端存檔，可匯出 PDF。',
+      portfolio: {
+        title: '作品集',
+        description: '連結標題與一行描述 — 在 content/i18n/copy.ts 編輯',
       },
       github: {
-        title: 'GitHub · louislibuilds',
-        description: 'github.com/louislibuilds',
+        title: 'GitHub',
+        description: 'your-handle',
       },
       linkedin: {
         title: 'LinkedIn',
-        description: 'linkedin.com/in/louis-li-builds',
+        description: 'linkedin.com/in/your-handle',
       },
     },
   },
@@ -641,7 +637,8 @@ const zhTWBase = {
       portfolio: 'Portfolio',
       kata: 'KATA.app',
     },
-  },
+  },
+
   focus: {
     panelHint: '特寫詳情 · 右側面板',
     back: '返回房間',
@@ -752,6 +749,7 @@ const jaBase = {
     tsaCertTitle: 'Certificate · Recognition',
     deansListCertTitle: 'Certificate · Academic Honor',
     degreeCertTitle: 'Certificate · Degree',
+    highlights: [],
   },
   lab: {
     heroTitle: 'ラボラトリー',
@@ -840,30 +838,26 @@ const jaBase = {
     libraryTitle: '図書館',
     libraryTagline: 'プラットフォーム · 執筆 · プロジェクト',
     archiveIntro: '文書保管庫 — これまでに得た実績、評価、リーダーシップ。',
-    libraryIntro: '出荷デスク — bubblechickenlab のツール、リポジトリ、進行中のビルド。',
+    libraryIntro: '出荷デスク — ポートフォリオ、リポジトリ、進行中のビルド。',
     librarianTitle: '館長',
     featuredRole: 'Your Role Title',
     featuredBullets: [
-      'bubblechickenlab 名義の独立スタジオ — ソフトウェアとストーリーテリング、クラフトが交わるプロダクト・ポートフォリオ・ツールを構築。',
-      'アイデアから公開まで一貫して担当：デザイン、エンジニアリング、デプロイ、そして発表物をめぐるナラティブ。',
+      '公開・維持しているもの — ポートフォリオ、ブログ、OSS。',
+      '担当範囲：設計 → リリース → 改善。',
     ],
     publicationsTitle: '著作',
     publications: {
-      nagi: {
-        title: 'NAGI · ポートフォリオ',
-        description: '自前ホストの個人サイト — ポートフォリオと文章をひとまとめに。',
-      },
-      kata: {
-        title: 'KATA · 履歴書 & トラッカー',
-        description: '履歴書の作成から応募管理まで — ローカル／クラウド保存、PDF エクスポート対応。',
+      portfolio: {
+        title: 'ポートフォリオ',
+        description: 'リンクタイトルと一行説明 — content/i18n/copy.ts で編集',
       },
       github: {
-        title: 'GitHub · louislibuilds',
-        description: 'github.com/louislibuilds',
+        title: 'GitHub',
+        description: 'your-handle',
       },
       linkedin: {
         title: 'LinkedIn',
-        description: 'linkedin.com/in/louis-li-builds',
+        description: 'linkedin.com/in/your-handle',
       },
     },
   },
@@ -877,7 +871,8 @@ const jaBase = {
       portfolio: 'Portfolio',
       kata: 'KATA.app',
     },
-  },
+  },
+
   focus: {
     panelHint: 'フォーカス詳細 · サイドパネル',
     back: 'ルームに戻る',

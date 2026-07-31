@@ -4,6 +4,7 @@ import { type TypologyProps } from '../types'
 import { LabRoomShell } from './LabRoomShell'
 
 export type LabTypologySlug =
+  | 'sample-project'
   | 'unihack-2026'
   | 'cloud-computing'
   | 'nlp'
@@ -34,7 +35,8 @@ const EmptyLabStation = lazy(() =>
   import('./EmptyLabStation').then((m) => ({ default: m.EmptyLabStation })),
 )
 
-const LAB_TYPOLOGY: Record<LabTypologySlug, ComponentType<TypologyProps>> = {
+const LAB_TYPOLOGY: Partial<Record<LabTypologySlug, ComponentType<TypologyProps>>> = {
+  'sample-project': DocumentFoundryStation,
   'unihack-2026': LaunchPadStation,
   'cloud-computing': ServerRackBay,
   nlp: InterviewBooth,
@@ -50,8 +52,7 @@ export function LabTypology({
   showShell,
   ...props
 }: TypologyProps & { slug: string; showShell?: boolean }) {
-  const Comp = LAB_TYPOLOGY[slug as LabTypologySlug]
-  if (!Comp) return null
+  const Comp = LAB_TYPOLOGY[slug as LabTypologySlug] ?? EmptyLabStation
   const [roomW, roomD] = LAB_BLUEPRINT_DIMS[slug] ?? [5, 5]
   return (
     <Suspense fallback={null}>

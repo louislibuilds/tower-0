@@ -9,41 +9,19 @@ export interface Experience {
   bullets: string[]
 }
 
+/** Placeholder — first entry powers 99F Library "librarian" block. Replace in content/. */
 export const experiences: Experience[] = [
   {
-    slug: 'bubblechickenlab',
-    company: 'bubblechickenlab',
-    title: 'Founder · Developer · Creator',
-    location: 'Sydney, NSW',
-    start: 'Jun 2026',
+    slug: 'sample-role',
+    company: 'Your Studio or Brand',
+    title: 'Your Role · e.g. Developer · Designer',
+    location: 'City, Country',
+    start: 'Jan 20XX',
     end: 'Present',
     current: true,
     bullets: [
-      'Independent practice under bubblechickenlab — products, portfolios, and tools where software meets storytelling and craft.',
-      'Full-stack ownership from idea to ship: design, engineering, deployment, and the narrative around what gets published.',
+      '這裡放你的工作室／品牌描述 — 你維護或發佈什麼（作品集、工具、開源）。',
+      '建議寫法：一句 scope（design → ship → iterate）。',
     ],
-  },
-  {
-    slug: 'uts-tsa',
-    company: 'UTS Taiwan Student Association',
-    title: 'Co-founder · Vice President & Secretary',
-    location: 'Sydney, NSW',
-    start: 'Jun 2025',
-    end: 'Jun 2026',
-    bullets: [
-      'Built the association from zero to 1,000+ followers across platforms.',
-      'Led cross-functional volunteer delivery — scope, assign, unblock, ship on deadlines.',
-      'Consultant role (2026) for ongoing association operations.',
-    ],
-  },
-  {
-    slug: 'tutor',
-    company: 'Self-employed',
-    title: 'Private Tutor',
-    location: 'Sydney, NSW',
-    start: 'Sep 2024',
-    end: 'Present',
-    current: true,
-    bullets: ['One-on-one tutoring for university and high-school students in Sydney.'],
   },
 ]

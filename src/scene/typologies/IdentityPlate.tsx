@@ -4,6 +4,18 @@ import { profile } from '../../data/profile'
 import type { Theme } from '../../context/SiteContext'
 import { typologyMat } from './types'
 
+function linkDesc(url: string): string {
+  if (url.startsWith('mailto:')) return url.replace('mailto:', '')
+  try {
+    const u = new URL(url)
+    const host = u.hostname.replace(/^www\./, '')
+    const path = u.pathname.replace(/\/$/, '')
+    return path && path !== '/' ? `${host}${path}` : host
+  } catch {
+    return url
+  }
+}
+
 function useIdentityPlateMap(theme: Theme) {
   const m = typologyMat(theme, '#2F6BFF', true)
 
@@ -48,11 +60,11 @@ function useIdentityPlateMap(theme: Theme) {
     y += 28
 
     const doors: [string, string][] = [
-      ['MAIL', 'louis.li.builds@gmail.com'],
-      ['GITHUB', 'github.com/louislibuilds'],
-      ['LINKEDIN', 'linkedin.com/in/louis-li-builds'],
-      ['PORTFOLIO', 'bubblechickenlab.com/work'],
-      ['KATA.app', 'bubblechickenlab.com/kata'],
+      ['MAIL', linkDesc(profile.links.email)],
+      ['GITHUB', linkDesc(profile.links.github)],
+      ['LINKEDIN', linkDesc(profile.links.linkedin)],
+      ['PORTFOLIO', linkDesc(profile.links.portfolio)],
+      ['KATA.app', linkDesc(profile.links.kata)],
     ]
     ctx.font = '600 12px monospace'
     for (const [label, addr] of doors) {

@@ -7,17 +7,12 @@ export interface LabSuite {
   slug: string
   code: string
   status: LabResearchStatus
-  /** Reserved suite — no project payload yet */
   empty?: boolean
 }
 
+/** Minimal demo suites — expand in content/data/labs.ts. Slugs must match content/i18n/copy.ts projects keys. */
 export const LAB_SUITES: LabSuite[] = [
-  { slug: 'unihack-2026', code: '001', status: 'completed' },
-  { slug: 'cloud-computing', code: '002', status: 'completed' },
-  { slug: 'nlp', code: '003', status: 'completed' },
-  { slug: 'dl', code: '004', status: 'completed' },
-  { slug: 'kata', code: '005', status: 'active' },
-  { slug: 'nagi', code: '006', status: 'active' },
+  { slug: 'sample-project', code: '001', status: 'completed' },
   { slug: 'tower-zero', code: '007', status: 'active' },
   { slug: 'lab-008', code: '008', status: 'pending', empty: true },
 ]

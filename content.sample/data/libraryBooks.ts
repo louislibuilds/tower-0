@@ -6,9 +6,9 @@ export interface LibraryBook {
   url: string
 }
 
+/** Slugs must match publications keys in content/i18n/copy.ts. Roof/B10 use profile.links. */
 export const libraryBooks: LibraryBook[] = [
-  { slug: 'nagi', title: 'NAGI · Portfolio', url: 'https://www.bubblechickenlab.com/about' },
-  { slug: 'kata', title: 'KATA · Résumé & Tracker', url: profile.links.kata },
-  { slug: 'github', title: 'GitHub · louislibuilds', url: profile.links.github },
+  { slug: 'portfolio', title: 'Portfolio', url: profile.links.portfolio },
+  { slug: 'github', title: 'GitHub', url: profile.links.github },
   { slug: 'linkedin', title: 'LinkedIn', url: profile.links.linkedin },
 ]

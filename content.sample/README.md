@@ -1,63 +1,73 @@
 # Site content (sample)
 
-This folder is the **public-repo template**. It ships:
+This folder is the **public-repo fork template**.
 
-- **Author identity & contact** — Louis Li, bubblechickenlab, email, GitHub, LinkedIn (OK to be public)
-- **Placeholder academics** — illustrative course rows & stats, not real marks
-- **Generic certificate graphics** — no official document scans
-- **Sanitized narrative** — project stories without HD/WAM lines; credentials are summary placeholders only
+## What stays as author info (Louis / bubblechickenlab)
 
-Real grades, cert scans, and detailed credential copy live in gitignored **`content/`** (private deploy repo).
+Only **contact & attribution** — safe to show on B10 (Tech Centre) and R Roof:
 
-## Quick start (forking this repo)
+| File | Kept |
+|------|------|
+| `data/profile.ts` → `links` | email, GitHub, LinkedIn, portfolio, Instagram, Threads, bubblechickenlab URLs |
+| `data/techLinks.ts` | B10 social handles (derived from `profile.links`) |
+| `i18n/copy.ts` → `site` / `stamp` | Template author credit on boot plate |
+
+## Everything else = placeholders
+
+| Floor | Data files | i18n keys (`copy.ts`) |
+|-------|------------|------------------------|
+| **23F Factory** | `academic.ts` (4 sample semesters), `assets/factory/` (placeholder SVG) | `factory.panelTitle`, cert titles, **`factory.highlights[]`** (4 items, one per area) |
+| **52F Laboratory** | `labs.ts` (3 suites), `projects.ts` | `projects.{slug}` — body, role, credit, team, course |
+| **99F Library & Archive** | `credentials.ts`, `libraryBooks.ts`, `experience.ts` | `library.*`, `credentials.{slug}` |
+| **B2 Infrastructure** | `skills.ts` (tech groups) | `infra.softSkillGroups` |
+
+Suggested writing patterns (EN / zh-TW / ja), e.g.:
+
+- 「這裡放你的證書標題」
+- 「建議寫法：背景 → 你做了什麼 → 成果」
+- Illustrative course rows (`Sample Course A`–`H`) — not real marks
+
+Real grades, cert scans, résumé PDFs, and your narrative live in gitignored **`content/`** (private deploy).
+
+## Quick start (forking)
 
 ```bash
 npm run content:init   # copies content.sample → content/
-# Edit content/data/*.ts, add your cert images & résumé PDFs
+# Edit content/data/*.ts and content/i18n/copy.ts
+# Add cert images & résumé PDFs under content/
 npm run dev
 ```
 
 ## Layout
 
 ```
-content.sample/          ← committed (safe to fork)
-content/                 ← your personal copy (gitignored)
-  data/                  profile, academic, projects, …
-  i18n/copy.ts           personal narrative (EN / zh-TW / ja)
-  assets/factory/        certificate images for 23F wall
+content.sample/          ← committed (fork template)
+content/                 ← your personal overlay (gitignored)
+  data/
+  i18n/copy.ts
+  assets/factory/
   resume/
-    en/resume.pdf
-    zh-TW/resume.pdf
 ```
 
 When `content/` exists locally, Vite loads it instead of `content.sample/`.
 
-## Personal narrative (`i18n/copy.ts`)
+## Keys must match
 
-Long-form copy lives in **`content/i18n/copy.ts`** (not in `src/i18n/strings.ts`):
+| Data slugs | Must match i18n keys in |
+|------------|-------------------------|
+| `labs.ts` / `projects.ts` | `copy.ts` → `projects` |
+| `credentials.ts` | `copy.ts` → `credentials` |
+| `libraryBooks.ts` | `copy.ts` → `library.publications` |
+| `academic.ts` semesters (reversed) | `copy.ts` → `factory.highlights` (Area 01 = index 0) |
 
-| Section | What to write |
-|---------|----------------|
-| `site` / `stamp` | Brand line and display name on boot plate |
-| `lobby` | Motto + positioning paragraph |
-| `factory` | University panel title and certificate labels on the 23F wall |
-| `infra.softSkillGroups` | Soft skills grouped by category |
-| `library` | Featured role, bullets, publication blurbs (keys must match `libraryBooks` slugs) |
-| `projects` | Title, hook, body, role, team/course/credit per lab slug |
-| `credentials` | Title, detail, body, bullets, credit per credential slug |
+## 52F lab count
 
-`src/i18n/strings.ts` keeps **UI chrome only** (button labels, floor names, hints). Forkers edit `content/i18n/copy.ts`; the sample file includes suggested placeholder text in all three locales.
+Sample ships **3 suites** (`sample-project`, `tower-zero`, empty `lab-008`). The 3D scene derives pod count from `labs.ts` — your private `content/` can list up to 8.
 
 ## Certificate images
 
-Place PNG or SVG files in `content/assets/factory/` and list them in `content/assets/factory/index.ts`. The sample uses `cert-placeholder.svg`.
-
-**Do not commit official document scans** (degree testamur, letters with ID numbers) to a public repository.
+Place PNG/SVG in `content/assets/factory/` — **never commit official document scans** to the public repo.
 
 ## Résumé PDFs
 
-Export PDFs from KATA (or your builder) into `content/resume/{en,zh-TW}/`. The `predev` / `prebuild` script copies them to `public/resume/` for static serving.
-
-## Narrative copy
-
-Project-specific long-form text lives in **`content/i18n/copy.ts`** — see the table in this README. UI labels remain in `src/i18n/strings.ts`.
+`content/resume/{en,zh-TW}/` → copied to `public/resume/` at build time.

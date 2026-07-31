@@ -9,22 +9,31 @@ export interface Credential {
   credit?: string
 }
 
-/** Public sample — summary only; detailed honors & cert scans live in gitignored content/. */
+/** Placeholders — add real entries in content/data/credentials.ts + matching keys in content/i18n/copy.ts. */
 export const credentials: Credential[] = [
   {
     slug: 'degree',
     year: 2026,
-    title: 'Master of Information Technology',
-    issuer: 'University of Technology Sydney',
-    detail: 'Program · credit points',
-    body: 'Graduation summary — replace in content/ with your public-safe version or keep private.',
+    title: 'Your Degree',
+    issuer: 'Your University',
+    detail: 'Program code · credit points · optional WAM/GPA (only if you want them public)',
+    body: 'Graduation summary — 2–3 sentences on themes, highlights, skills gained. Keep detailed marks private in content/ if preferred.',
   },
   {
-    slug: 'award',
+    slug: 'certificate-a',
     year: 2026,
-    title: 'Sample Honor or Award',
-    issuer: 'Your Faculty or Organization',
-    detail: 'Outstanding achievement · year',
-    body: 'Forkers: add credentials in content/data/credentials.ts and matching keys in content/i18n/copy.ts.',
+    title: 'Your Certificate or Honor',
+    issuer: 'Issuing body',
+    detail: 'Short label · year',
+    body: 'Describe what this credential represents. Do not commit document scans to the public repo — use content/assets/factory/ in your private deploy.',
+    bullets: ['Optional bullet for multi-line roles or achievements.'],
+  },
+  {
+    slug: 'certificate-b',
+    year: 2026,
+    title: 'Another Certificate (optional)',
+    issuer: 'Organization',
+    detail: 'e.g. leadership · service · competition',
+    body: 'Add or remove credential objects to match your Archive vault.',
   },
 ]

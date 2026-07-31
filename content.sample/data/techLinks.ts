@@ -6,6 +6,7 @@ export interface TechLink {
   desc: string
 }
 
+/** B10 Tech Centre — template author contact. Replace links in content/data/profile.ts. */
 export const techCentreLinks: TechLink[] = [
   { key: 'linkedin', url: profile.links.linkedin, desc: 'louis-li-builds' },
   { key: 'instagram', url: profile.links.instagram, desc: '@bubblechickenlab' },

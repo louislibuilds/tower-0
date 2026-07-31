@@ -3,55 +3,33 @@ export interface SkillGroup {
   items: string[]
 }
 
-/**
- * Technical skills — union of archived résumé tiers (swe-26-06 master, cloud/web variants).
- */
+/** Placeholder groups — replace in content/data/skills.ts. */
 export const techSkillGroups: SkillGroup[] = [
   {
     category: 'Languages',
-    items: ['JavaScript', 'TypeScript', 'Python', 'Java', 'SQL', 'HTML', 'CSS'],
+    items: ['JavaScript', 'TypeScript', 'Python', '…在此列出你的語言'],
   },
   {
-    category: 'Frontend & UI',
-    items: ['React', 'Next.js', 'Three.js', 'Tailwind CSS', 'Responsive UI', 'i18n (EN / zh-TW / zh-CN)', 'SEO', 'Google Analytics'],
+    category: 'Frontend',
+    items: ['React', 'CSS', '…在此列出前端技術棧'],
   },
   {
     category: 'Backend & Data',
-    items: ['Node.js', 'Express', 'FastAPI', 'REST APIs', 'JSON schemas', 'PostgreSQL', 'MongoDB', 'Supabase', 'OAuth'],
+    items: ['Node.js', 'PostgreSQL', '…在此列出後端與資料'],
   },
   {
     category: 'Cloud & DevOps',
-    items: ['AWS', 'Azure', 'GCP', 'Docker', 'Git', 'GitHub', 'CI/CD', 'Vercel', 'Railway', 'Linux', 'UNIX', 'Networking (TCP/IP, DNS)'],
-  },
-  {
-    category: 'CS & Systems',
-    items: ['Data structures & algorithms', 'Databases', 'Object-oriented design', 'System design basics', 'Debugging & troubleshooting'],
-  },
-  {
-    category: 'ML / AI',
-    items: ['PyTorch', 'NLP', 'Deep Learning', 'CNN', 'MediaPipe', 'ONNX', 'Computer vision'],
+    items: ['Docker', 'CI/CD', '…在此列出部署與工具'],
   },
 ]
 
-/** Soft skills — leadership, delivery, communication from archived résumés & UTS experience. */
 export const softSkillGroups: SkillGroup[] = [
   {
-    category: 'Leadership & Collaboration',
-    items: ['Team leadership', 'Cross-functional planning', 'Stakeholder communication', 'Volunteer coordination', 'Code review participation'],
-  },
-  {
-    category: 'Delivery & Quality',
-    items: ['End-to-end ownership', 'Deadline-driven delivery', 'Automated testing', 'Agile delivery', 'Technical documentation'],
-  },
-  {
     category: 'Communication',
-    items: [
-      'English (Fluent)',
-      'Mandarin Chinese (Native)',
-      'Japanese (Learning)',
-      'Explaining trade-offs to non-technical audiences',
-      'Async / remote collaboration',
-      'Risk communication',
-    ],
+    items: ['English', 'Your other languages', 'Technical writing'],
+  },
+  {
+    category: 'Delivery',
+    items: ['End-to-end ownership', 'Agile / deadline-driven delivery'],
   },
 ]

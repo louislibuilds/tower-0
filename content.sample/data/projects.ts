@@ -11,88 +11,28 @@ export interface LabProject {
   links: { label: string; url: string }[]
 }
 
-/** Public sample — author projects & links; no course marks (those live in gitignored content/). */
+/** Fork template — add your projects in content/data/projects.ts. */
 export const labProjects: LabProject[] = [
   {
-    slug: 'unihack-2026',
-    title: 'your·rock·is·coming',
-    hook: 'Sydney tennis court discovery, weather-aware booking — built in 48 hours at UniHack 2026.',
-    role: 'Team Lead & Full-stack Developer (Team of 6)',
-    stack: ['React', 'TypeScript', 'Express', 'Leaflet', 'Open-Meteo'],
+    slug: 'sample-project',
+    title: 'Sample Project',
+    hook: 'One-line hook — problem, stack, or outcome.',
+    role: 'Your Role',
+    stack: ['React', 'TypeScript', 'Node.js'],
     links: [
-      { label: 'Case Study', url: 'https://www.bubblechickenlab.com/work/unihack2026' },
-      { label: 'GitHub', url: 'https://github.com/louislibuilds/your-rock-is-coming' },
-    ],
-  },
-  {
-    slug: 'cloud-computing',
-    title: 'SUNishop — Cloud E-Commerce',
-    hook: 'LAMP → MERN migration with CI gates and a storefront that kept shipping after AWS credits expired.',
-    role: 'Full-stack Developer',
-    stack: ['React', 'Node.js', 'MongoDB', 'AWS', 'CI/CD'],
-    links: [{ label: 'GitHub', url: 'https://github.com/louislibuilds/SUNi-Make-Your-Day-Shining' }],
-  },
-  {
-    slug: 'nlp',
-    title: 'Mock Interview Coach',
-    hook: 'STT → structured STAR scoring → feedback. Hybrid LLM + offline mock.',
-    role: 'Lead Developer',
-    stack: ['Python', 'FastAPI', 'faster-whisper', 'React', 'STAR Scoring'],
-    links: [
-      { label: 'Case Study', url: 'https://www.bubblechickenlab.com/work/mock-interview-coach' },
-      {
-        label: 'GitHub',
-        url: 'https://github.com/louis-li-builds/mock-interview-coach-stt-star-feedback-scoring-nlp-uts-project',
-      },
-    ],
-  },
-  {
-    slug: 'dl',
-    title: 'VTuber MoCap',
-    hook: 'Browser motion capture: webcam → MediaPipe → Kalidokit → VRM. TechFest 2026 showcase.',
-    role: 'Software Dev · Productization · Team Coordination (Team of 3)',
-    team: 'Ko-Chun Liao (framework), Junjie Niu (experiments)',
-    stack: ['MediaPipe', 'Kalidokit', 'VRM', 'ONNX', 'Three.js'],
-    links: [
-      { label: 'Case Study', url: 'https://www.bubblechickenlab.com/work/vtuber-mocap' },
-      {
-        label: 'GitHub',
-        url: 'https://github.com/louis-li-builds/dl-cnn-UTSproject51-vtuber-mediapipe-kalidokit',
-      },
-    ],
-  },
-  {
-    slug: 'kata',
-    title: 'KATA',
-    hook: 'Guided résumé builder with live A4 preview, four templates, print-ready PDF.',
-    role: 'Sole Builder',
-    stack: ['React', 'TypeScript', 'Vite', 'PDF Export', 'Local-first'],
-    links: [
-      { label: 'Case Study', url: 'https://www.bubblechickenlab.com/work/kata' },
-      { label: 'Live', url: 'https://www.bubblechickenlab.com/kata' },
-    ],
-  },
-  {
-    slug: 'nagi',
-    title: 'NAGI · 凪',
-    hook: 'Personal brand hub — WebGL surface entry, TipTap CMS, work case studies, and multilingual writing.',
-    role: 'Founder & Full-Stack Developer',
-    stack: ['React', 'Three.js', 'WebGL', 'Supabase', 'TipTap', 'Vercel'],
-    links: [
-      { label: 'Case Study', url: 'https://www.bubblechickenlab.com/work/nagi' },
-      { label: 'Live', url: 'https://www.bubblechickenlab.com/' },
+      { label: 'Live', url: 'https://example.com' },
+      { label: 'GitHub', url: 'https://github.com/your-handle/sample-project' },
     ],
   },
   {
     slug: 'tower-zero',
     title: 'Tower Zero',
-    hook: 'Walk-in 3D portfolio — each floor is one chapter of the résumé.',
-    role: 'Sole Developer · Designer',
-    stack: ['React 19', 'Three.js', 'R3F', 'GSAP', 'TypeScript', 'Vite'],
+    hook: 'This template — walk-in 3D portfolio. Each floor is a résumé chapter.',
+    role: 'Template by Louis Li',
+    stack: ['React 19', 'Three.js', 'R3F', 'TypeScript', 'Vite'],
     links: [
-      { label: 'Case Study', url: 'https://www.bubblechickenlab.com/work/tower-zero' },
-      { label: 'Live', url: 'https://www.bubblechickenlab.com/towerzero/' },
       { label: 'GitHub', url: 'https://github.com/louislibuilds/tower-0' },
+      { label: 'Live demo', url: 'https://www.bubblechickenlab.com/towerzero/' },
     ],
   },
 ]

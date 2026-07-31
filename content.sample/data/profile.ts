@@ -1,27 +1,26 @@
 export const profile = {
+  /** Template author — shown on Roof (contact) and B10 (social links). Replace in content/ for your live site. */
   displayName: 'Louis Li',
   locationShort: 'Sydney',
   brand: 'bubblechickenlab',
   siteCode: 'TOWER ZERO',
-  tagline: 'Software Engineer · Full-Stack · Creator',
-  thesis:
-    'Master of Information Technology graduate (UTS) building full-stack systems — from cloud infrastructure to NLP pipelines — with a portfolio-as-architecture mindset.',
-  bio: 'Full-stack developer · UTS MIT · Sydney. I construct software the way buildings are built: load-bearing boundaries, service risers, and rooms that each tell a story.',
-  summary:
-    'Full-stack engineer operating a 3-app production platform on bubblechickenlab.com — sole builder from database schema to deploy. React/TypeScript, Supabase, Three.js. UTS MIT graduate. Bilingual EN/ZH.',
-  location: 'Sydney, NSW, Australia',
-  degree: 'Master of Information Technology',
-  institution: 'University of Technology Sydney',
-  programCode: 'C04295',
-  /** Illustrative placeholders in public sample — real stats live in gitignored content/ */
+  tagline: 'Your tagline · e.g. Software Engineer · Full-Stack',
+  thesis: 'Replace in content/data/profile.ts — one-line positioning for the Lobby.',
+  bio: 'Replace in content/ — short bio for metadata and exports.',
+  summary: 'Replace in content/ — 2–3 sentences: stack, focus, what you build.',
+  location: 'City, Country',
+  degree: 'Your Degree',
+  institution: 'Your University',
+  programCode: 'XXXXX',
+  /** Illustrative stats — replace in content/ with your real numbers */
   wam: 84,
   gpa: 6.0,
   gpaScale: 7,
-  cp: 96,
+  cp: 48,
   deansList: false,
-  programStart: 'Aug 2024',
-  programEnd: 'Aug 2026',
-  gradeSummary: { HD: 2, D: 2, CR: 0 } as const,
+  programStart: 'Jan 20XX',
+  programEnd: 'Dec 20XX',
+  gradeSummary: { HD: 4, D: 4, CR: 0 } as const,
   links: {
     email: 'mailto:louis.li.builds@gmail.com',
     github: 'https://github.com/louislibuilds',

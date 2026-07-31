@@ -38,6 +38,8 @@ export interface SiteCopy {
     tsaCertTitle: string
     deansListCertTitle: string
     degreeCertTitle: string
+    /** One entry per factory area (Area 01 = index 0, newest semester after reverse) */
+    highlights?: { project: string; takeaway: string }[]
   }
   infra: {
     softSkillGroups: { category: string; items: string[] }[]

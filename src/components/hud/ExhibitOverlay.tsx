@@ -16,7 +16,24 @@ import { FLOORS } from '../../building/program'
 import type { LibraryRoomSlug } from '../../data/libraryRooms'
 import { LIBRARY_ROOMS } from '../../data/libraryRooms'
 
-import { FACTORY_AREAS, areaLabel, factoryHighlight } from '../../scene/factoryStops'
+import { FACTORY_AREAS, areaLabel } from '../../scene/factoryStops'
+
+const FACTORY_HIGHLIGHT_FALLBACK = {
+  project: 'Semester highlight',
+  takeaway: 'Edit in content/i18n/copy.ts → factory.highlights',
+} as const
+
+function linkDesc(url: string): string {
+  if (url.startsWith('mailto:')) return url.replace('mailto:', '')
+  try {
+    const u = new URL(url)
+    const host = u.hostname.replace(/^www\./, '')
+    const path = u.pathname.replace(/\/$/, '')
+    return path && path !== '/' ? `${host}${path}` : host
+  } catch {
+    return url
+  }
+}
 
 function gradeClass(grade: string) {
   if (grade === 'HD') return 'grade-hd'
@@ -114,7 +131,7 @@ function FactoryPanelHeader({ areaIndex }: { areaIndex?: number }) {
 
   if (areaIndex !== undefined) {
     const sem = FACTORY_AREAS[areaIndex]
-    const hl = factoryHighlight(areaIndex)
+    const hl = w.highlights[areaIndex] ?? FACTORY_HIGHLIGHT_FALLBACK
     return (
       <>
         <p className="tower-exhibit-card__eyebrow tower-exhibit-roof__eyebrow">{eyebrow}</p>
@@ -510,7 +527,7 @@ function LibraryPlatformExhibit() {
   const { strings, toggleBook } = useSite()
   const l = strings.library
   const eyebrow = `99F · ${profile.brand} · ${profile.siteCode}`
-  const featured = experiences.find((exp) => exp.slug === 'bubblechickenlab')
+  const featured = experiences.find((exp) => exp.current) ?? experiences[0]
 
   const bookDetail = (slug: string) => l.publications[slug]?.description ?? ''
 
@@ -597,11 +614,11 @@ function RoofExhibit() {
   const r = strings.roof
   const eyebrow = `${profile.locationShort} · ${profile.brand} · ${profile.siteCode}`
   const links = [
-    { label: r.linkLabels.email, url: profile.links.email, desc: 'louis.li.builds@gmail.com' },
-    { label: r.linkLabels.github, url: profile.links.github, desc: 'louislibuilds' },
-    { label: r.linkLabels.linkedin, url: profile.links.linkedin, desc: 'louis-li-builds' },
-    { label: r.linkLabels.portfolio, url: profile.links.portfolio, desc: 'bubblechickenlab.com/work' },
-    { label: r.linkLabels.kata, url: profile.links.kata, desc: 'bubblechickenlab.com/kata' },
+    { label: r.linkLabels.email, url: profile.links.email, desc: linkDesc(profile.links.email) },
+    { label: r.linkLabels.github, url: profile.links.github, desc: linkDesc(profile.links.github) },
+    { label: r.linkLabels.linkedin, url: profile.links.linkedin, desc: linkDesc(profile.links.linkedin) },
+    { label: r.linkLabels.portfolio, url: profile.links.portfolio, desc: linkDesc(profile.links.portfolio) },
+    { label: r.linkLabels.kata, url: profile.links.kata, desc: linkDesc(profile.links.kata) },
   ]
   return (
     <>

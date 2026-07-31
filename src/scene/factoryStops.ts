@@ -113,20 +113,3 @@ function buildCrateStack(count: number): FactoryCrate[] {
 }
 
 export const FACTORY_CRATE_STACKS: FactoryCrate[][] = FACTORY_CRATE_COUNTS.map(buildCrateStack)
-
-/** Semester highlight — detail panel copy (not shown in 3D callouts) */
-export interface FactoryHighlight {
-  project: string
-  takeaway: string
-}
-
-export const FACTORY_HIGHLIGHTS: FactoryHighlight[] = [
-  { project: 'Enterprise IS · Database', takeaway: 'Full-stack foundations' },
-  { project: 'Cloud SaaS · Data Analytics', takeaway: 'MERN + AWS pipeline' },
-  { project: 'Cyber · Unix · Cloud Infra', takeaway: 'Systems & security depth' },
-  { project: 'DL · NLP · Industry Project', takeaway: 'AI pipelines to production' },
-]
-
-export function factoryHighlight(index: number): FactoryHighlight {
-  return FACTORY_HIGHLIGHTS[index] ?? FACTORY_HIGHLIGHTS[0]
-}

@@ -1,7 +1,9 @@
 import type { FloorId } from '../../building/program'
 import type { LibraryRoomSlug } from '../../data/libraryRooms'
+import { LAB_SUITES, type LabSuite } from '../../data/labs'
 import { getProgramFloor } from '../towerGeometry'
 import { bandInterior, LAB_BLUEPRINT_DIMS } from './interiorScale'
+import { LAB_GRID_SLOTS } from './labGrid'
 
 export interface ExhibitChunk {
   id: string
@@ -29,83 +31,20 @@ export const MIN_CHUNK = { w: 0.34, d: 0.3, h: 0.34 } as const
 export const STATION_FOOTPRINT_INSET = 0.92
 export const STATION_HIT_MARGIN = { w: 0.18, h: 0.1, d: 0.18 } as const
 
-/**
- * 52F — eight lab suites in a 4×2 grid (seven suites + one reserved lab-008).
- */
-export const LAB_CHUNKS: ExhibitChunk[] = [
-  {
-    id: 'lab-001',
-    slug: 'unihack-2026',
-    code: '001',
-    pos: [-0.2, 0, -0.45],
-    size: { w: 0.46, d: 0.4, h: 0.36 },
-    cameraSide: 'left',
-    calloutOffset: [0, 0.34, 0.06],
-  },
-  {
-    id: 'lab-002',
-    slug: 'cloud-computing',
-    code: '002',
-    pos: [-0.6, 0, 0.4],
-    size: { w: 0.46, d: 0.4, h: 0.36 },
-    cameraSide: 'right',
-    calloutOffset: [-0.48, 0.3, 0.28],
-  },
-  {
-    id: 'lab-003',
-    slug: 'nlp',
-    code: '003',
-    pos: [0.6, 0, -0.45],
-    size: { w: 0.46, d: 0.4, h: 0.36 },
-    cameraSide: 'left',
-    calloutOffset: [0.48, 0.34, -0.28],
-  },
-  {
-    id: 'lab-004',
-    slug: 'dl',
-    code: '004',
-    pos: [-0.6, 0, -0.45],
-    size: { w: 0.46, d: 0.4, h: 0.36 },
-    cameraSide: 'right',
-    calloutOffset: [-0.48, 0.34, -0.28],
-  },
-  {
-    id: 'lab-005',
-    slug: 'kata',
-    code: '005',
-    pos: [0.6, 0, 0.4],
-    size: { w: 0.46, d: 0.4, h: 0.36 },
-    cameraSide: 'left',
-    calloutOffset: [0.48, 0.3, 0.28],
-  },
-  {
-    id: 'lab-006',
-    slug: 'nagi',
-    code: '006',
-    pos: [-0.2, 0, 0.4],
-    size: { w: 0.46, d: 0.4, h: 0.36 },
-    cameraSide: 'right',
-    calloutOffset: [0, 0.3, 0.28],
-  },
-  {
-    id: 'lab-007',
-    slug: 'tower-zero',
-    code: '007',
-    pos: [0.2, 0, -0.45],
-    size: { w: 0.46, d: 0.4, h: 0.36 },
-    cameraSide: 'left',
-    calloutOffset: [0.2, 0.34, -0.2],
-  },
-  {
-    id: 'lab-008',
-    slug: 'lab-008',
-    code: '008',
-    pos: [0.2, 0, 0.4],
-    size: { w: 0.46, d: 0.4, h: 0.36 },
-    cameraSide: 'right',
-    calloutOffset: [0.2, 0.3, 0.28],
-  },
-]
+export function buildLabChunks(suites: LabSuite[]): ExhibitChunk[] {
+  return suites.slice(0, LAB_GRID_SLOTS.length).map((suite, i) => {
+    const slot = LAB_GRID_SLOTS[i]
+    return {
+      id: `lab-${suite.code}`,
+      slug: suite.slug,
+      code: suite.code,
+      ...slot,
+    }
+  })
+}
+
+/** 52F — lab suites from content/data/labs.ts (sample: 3 pods, personal: up to 8) */
+export const LAB_CHUNKS: ExhibitChunk[] = buildLabChunks(LAB_SUITES)
 
 /** 99F — library mid-left, archive top-right corner (slightly larger pods) */
 export const VAULT_CHUNKS: Record<LibraryRoomSlug, ExhibitChunk> = {
