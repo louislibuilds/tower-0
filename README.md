@@ -6,6 +6,8 @@ Louis Li's Master of IT portfolio — a cyberpunk skyscraper by night, an archit
 
 **Live (subpath):** [bubblechickenlab.com/towerzero](https://www.bubblechickenlab.com/towerzero/) · **Repo:** [github.com/louislibuilds/tower-0](https://github.com/louislibuilds/tower-0)
 
+> **Forking?** Author contact stays in `content.sample/`; **grades, cert scans, and detailed marks** live in gitignored `content/` only. See [content.sample/README.md](./content.sample/README.md).
+
 ## Floor plan
 
 
@@ -82,10 +84,32 @@ Connect repo to [Vercel](https://vercel.com) — framework preset **Vite**, outp
 - Subpath deploy (default): `VITE_BASE_PATH=/towerzero/`
 - Root deploy: `VITE_BASE_PATH=/`
 
+### Personal content vs public template
+
+| Path | In public repo? | Purpose |
+|------|----------------|---------|
+| `content.sample/` | Yes | Author identity & contact; illustrative stats; no real grades or cert scans |
+| `content/` | **No** (gitignored) | Real WAM/GPA, transcript rows, cert images, résumé PDFs, full **`i18n/copy.ts`** |
+| `src/i18n/strings.ts` | Yes | UI chrome only (labels, hints, floor titles) |
+
+**Local / production with your data:** keep a `content/` folder (run `npm run content:init` once, then customize). Vite prefers `content/` over `content.sample/` when present.
+
+**Public GitHub + Vercel (your live site):** the public repo alone builds with placeholders. To deploy your real site, use one of:
+
+1. **Private deploy repo (recommended)** — mirror this codebase, commit `content/` there (private repo), point Vercel at it. Keep the public repo as the forkable template.
+2. **Force-add on a private remote** — `git add -f content/` only on a private GitHub repo used for deploy.
+3. **Same machine CI** — build locally or in a private pipeline where `content/` exists, deploy `dist/` (no GitHub content needed).
+
+You do **not** need a second codebase — only separate **public template** vs **private deploy** remotes if you want both open-source and a personal live site.
+
 ## Architecture
 
 ```
+content.sample/              Fork-safe profile + placeholder certs + sample i18n (committed)
+content/                     Personal overlay (gitignored)
+scripts/sync-content-assets.mjs   Copies content/resume → public/resume
 src/
+  i18n/strings.ts            UI chrome — merges content/i18n/copy at build time
   building/siteRoute.ts      Path routing + legacy hash migration
   design/tokens.ts           Colors, typography, theme tokens
   scene/CyberTower.tsx       Tiered tower + spire + circuit base

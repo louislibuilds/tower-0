@@ -5,6 +5,9 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
+    "content:init": "node scripts/init-content.mjs",
+    "predev": "node scripts/sync-content-assets.mjs",
+    "prebuild": "node scripts/sync-content-assets.mjs",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 560" role="img" aria-label="Certificate placeholder">
+  <rect width="400" height="560" fill="#f4efe6"/>
+  <rect x="24" y="24" width="352" height="512" fill="none" stroke="#9a8570" stroke-width="3"/>
+  <rect x="40" y="40" width="320" height="480" fill="none" stroke="#c4b8a8" stroke-width="1"/>
+  <text x="200" y="250" text-anchor="middle" font-family="Georgia, serif" font-size="28" fill="#6b5a48">Certificate</text>
+  <text x="200" y="300" text-anchor="middle" font-family="ui-monospace, monospace" font-size="13" fill="#9a8570">Replace in content/assets/factory/</text>
+</svg>

@@ -20,7 +20,11 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "paths": {
+      "@site-content/*": ["./content.sample/*"],
+      "@site-content/i18n/copy": ["./content.sample/i18n/copy.ts"]
+    }
   },
-  "include": ["src"]
+  "include": ["src", "content.sample"]
 }

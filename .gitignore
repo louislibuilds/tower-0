@@ -1,3 +1,9 @@
+# Local personal content — never commit (cert scans, résumé PDFs, profile data)
+content/
+
+# Copied from content/ at dev & build time
+public/resume/
+
 # Dependencies
 node_modules/
 
