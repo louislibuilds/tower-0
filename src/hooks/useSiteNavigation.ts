@@ -1,3 +1,4 @@
+import { pageview } from '@vercel/analytics'
 import { useCallback, useEffect, useState } from 'react'
 import type { FloorId } from '../building/program'
 import { getFloor } from '../building/program'
@@ -20,6 +21,7 @@ function pushLocation(loc: SiteLocation, replace = false) {
   } else {
     window.history.pushState(null, '', path)
   }
+  pageview({ route: path, path })
 }
 
 export function useSiteNavigation() {
@@ -36,7 +38,11 @@ export function useSiteNavigation() {
   }, [])
 
   useEffect(() => {
-    const onPop = () => setLocation(parseSiteLocation())
+    const onPop = () => {
+      const next = parseSiteLocation()
+      setLocation(next)
+      pageview({ route: buildSitePath(next), path: window.location.pathname })
+    }
     window.addEventListener('popstate', onPop)
     return () => window.removeEventListener('popstate', onPop)
   }, [])
