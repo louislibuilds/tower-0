@@ -15,7 +15,7 @@ Louis Li's Master of IT portfolio — a cyberpunk skyscraper by night, an archit
 | ------------ | ----------------- | ------------------------------------------------------------------------------- |
 | **Roof** `R` | Contact           | Email, GitHub, LinkedIn, Portfolio, NAGI, KATA                                  |
 | **99**       | Library & Archive | Credentials (Dean's List, degree, TSA) · library shelf (NAGI, KATA)             |
-| **52**       | Laboratory        | Eight lab suites — UniHack, SUNishop, NLP, VTuber MoCap, KATA, NAGI, Tower Zero (+ reserved bay) |
+| **52**       | Laboratory        | Up to eight lab suites (template ships 3 placeholders; live site: UniHack, SUNishop, NLP, VTuber MoCap, KATA, NAGI, Tower Zero + reserved bay) |
 | **23**       | Factory           | Academic timeline · four semester production lines (Area 01–04)                 |
 | **G**        | Lobby             | Welcome · thesis · about · stats                                                |
 | **B2**       | Infrastructure    | Tech stack · soft skills                                                        |
@@ -36,8 +36,9 @@ Routing is **path-based** (legacy `#/…` hashes redirect on load). Default prod
 | `/towerzero/23`              | Factory overview          |
 | `/towerzero/23/area-01`      | Factory · semester line 1 |
 | `/towerzero/52`              | Laboratory overview       |
-| `/towerzero/52/nagi` | Lab suite · NAGI personal site |
+| `/towerzero/52/sample-project` | Lab suite · template placeholder |
 | `/towerzero/52/tower-zero` | Lab suite · Tower Zero (this project) |
+| `/towerzero/52/nagi` | Lab suite · example slug from live `content/` |
 | `/towerzero/99/library`      | Library                   |
 | `/towerzero/99/archive`      | Archive                   |
 | `/towerzero/99/library/nagi` | Library · focus item      |
@@ -46,7 +47,7 @@ Routing is **path-based** (legacy `#/…` hashes redirect on load). Default prod
 | `/towerzero/R`               | Roof                      |
 
 
-Local dev: `npm run dev` → `http://localhost:5173/towerzero/` (see `vite.config.ts` · `SITE_BASE_PATH` in `src/building/siteRoute.ts`).
+Lab and library item slugs come from `content/` (or `content.sample/` when forking). Local dev: `npm run dev` → `http://localhost:5173/towerzero/` (see `vite.config.ts` · `SITE_BASE_PATH` in `src/building/siteRoute.ts`).
 
 ## Features
 
@@ -57,6 +58,8 @@ Local dev: `npm run dev` → `http://localhost:5173/towerzero/` (see `vite.confi
 - **i18n** — English · 繁體中文 · 日本語
 - **Responsive shell** — mobile floor / details drawers
 - **2D fallback** — SVG elevation when WebGL unavailable or reduced motion
+- **Social preview** — Open Graph + Twitter cards (`public/og-poster.svg`) for LinkedIn and link unfurling
+- **Analytics** — Vercel Web Analytics with path-based pageviews on floor navigation
 
 ## Tech stack
 
@@ -66,15 +69,19 @@ Local dev: `npm run dev` → `http://localhost:5173/towerzero/` (see `vite.confi
 - **GSAP** · **Framer Motion** — boot / exit sequences and HUD motion
 - **PDF.js** — in-browser résumé preview (B10)
 - **oxlint** — linting
+- **@vercel/analytics** — route pageviews (tower + floor paths)
 - **Vercel** — hosting (subpath `/towerzero/`)
 
 ## Development
 
 ```bash
 npm install
-npm run dev      # http://localhost:5173/towerzero/
+npm run content:init   # first time: copy content.sample → content/
+npm run dev            # http://localhost:5173/towerzero/
 npm run build
 npm run preview
+npm run lint
+npm run verify:viewport-zoom   # responsive ortho-camera zoom regression check
 ```
 
 ## Deploy
@@ -96,7 +103,7 @@ Connect repo to [Vercel](https://vercel.com) — framework preset **Vite**, outp
 
 **Public GitHub + Vercel (your live site):** the public repo alone builds with placeholders. To deploy your real site, use one of:
 
-1. **Private deploy repo (recommended)** — mirror this codebase, commit `content/` there (private repo), point Vercel at it. Keep the public repo as the forkable template.
+1. **Private deploy repo (recommended)** — mirror this codebase, commit `content/` there (e.g. `tower-zero-deploy`), point Vercel at it. Keep the public repo as the forkable template.
 2. **Force-add on a private remote** — `git add -f content/` only on a private GitHub repo used for deploy.
 3. **Same machine CI** — build locally or in a private pipeline where `content/` exists, deploy `dist/` (no GitHub content needed).
 
@@ -111,12 +118,12 @@ scripts/sync-content-assets.mjs   Copies content/resume → public/resume
 src/
   i18n/strings.ts            UI chrome — merges content/i18n/copy at build time
   building/siteRoute.ts      Path routing + legacy hash migration
+  hooks/useSiteNavigation.ts History API navigation + analytics pageviews
   design/tokens.ts           Colors, typography, theme tokens
   scene/CyberTower.tsx       Tiered tower + spire + circuit base
   scene/typologies/          Per-floor 3D room layouts
   components/hud/            TowerHud, ExhibitOverlay, BootPlateOverlay
   context/SiteContext.tsx    Theme, locale, navigation, boot/exit
-  i18n/strings.ts            EN / zh-TW / ja
   camera/OrthoRig.tsx        Orthographic camera stations
 ```
 
