@@ -59,7 +59,6 @@ Lab and library item slugs come from `content/` (or `content.sample/` when forki
 - **Responsive shell** — mobile floor / details drawers
 - **2D fallback** — SVG elevation when WebGL unavailable or reduced motion
 - **Social preview** — Open Graph + Twitter cards (`public/og-poster.svg`) for LinkedIn and link unfurling
-- **Analytics** — Vercel Web Analytics with path-based pageviews on floor navigation
 
 ## Tech stack
 
@@ -69,7 +68,6 @@ Lab and library item slugs come from `content/` (or `content.sample/` when forki
 - **GSAP** · **Framer Motion** — boot / exit sequences and HUD motion
 - **PDF.js** — in-browser résumé preview (B10)
 - **oxlint** — linting
-- **@vercel/analytics** — route pageviews (tower + floor paths)
 - **Vercel** — hosting (subpath `/towerzero/`)
 
 ## Development
@@ -90,6 +88,8 @@ Connect repo to [Vercel](https://vercel.com) — framework preset **Vite**, outp
 
 - Subpath deploy (default): `VITE_BASE_PATH=/towerzero/`
 - Root deploy: `VITE_BASE_PATH=/`
+
+The repo ships with optional `@vercel/analytics` wired in (`main.tsx`, `useSiteNavigation.ts`). It only reports when deployed on Vercel with Web Analytics enabled — safe to remove if you fork and do not need it.
 
 ### Personal content vs public template
 
@@ -118,7 +118,7 @@ scripts/sync-content-assets.mjs   Copies content/resume → public/resume
 src/
   i18n/strings.ts            UI chrome — merges content/i18n/copy at build time
   building/siteRoute.ts      Path routing + legacy hash migration
-  hooks/useSiteNavigation.ts History API navigation + analytics pageviews
+  hooks/useSiteNavigation.ts History API navigation
   design/tokens.ts           Colors, typography, theme tokens
   scene/CyberTower.tsx       Tiered tower + spire + circuit base
   scene/typologies/          Per-floor 3D room layouts
